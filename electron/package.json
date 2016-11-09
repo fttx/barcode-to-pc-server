@@ -1,0 +1,11 @@
+{
+  "name": "electron",
+  "version": "0.2.0",
+  "main": "main.js",
+  "dependencies": {
+    "bonjour": "^3.5.0",
+    "express": "^4.14.0",
+    "express-ws": "^2.0.0",
+    "robotjs": "^0.4.5"
+  }
+}
