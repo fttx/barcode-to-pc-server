@@ -1,5 +1,13 @@
-<div>
-  <div *ngFor="let scan of scanSession?.scannings">
+<div class="scan-session">
+  <div class="item" *ngFor="let scan of scanSession?.scannings">
     {{ scan.text }}
+    <button class="btn btn-sm btn-custom" type="button" ngIIclipboard [cbContent]="scan.text">
+        <img src="assets/icons/glyphicons-512-copy.png">
+        Copy
+    </button>
+  </div>
+
+  <div class="empty" *ngIf="!scanSession">
+    Please select a scan session
   </div>
 </div>

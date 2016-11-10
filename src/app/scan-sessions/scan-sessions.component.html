@@ -1,11 +1,22 @@
-<div class="scan-sessions">
-	<div class="item" *ngFor="let scanSession of scanSessions; let i = index;" (click)="onItemSelected(i)">
-		<div class="icon">
-			<circle-text [value]="scanSession.name">{{ scanSession.name }}</circle-text>			
-		</div>
-		<h2>{{ scanSession.name }}</h2>
-		<p>Created: {{ scanSession.date }}</p>
-		<!-- | date: 'yyyy/MM/dd hh:mm' -->
-		<p>Number of scannings: {{ scanSession.scannings.length }}</p>
+<div class="scan-sessions noselect">
+	<div 
+		class="item row"
+	 	*ngFor="let scanSession of scanSessions; let i = index;" 
+	 	(click)="onItemSelected(i); selectedItemIndex = i;"
+		[class.selected]="selectedItemIndex == i">
+			<div class="col-sm-9 scan">
+				<div class="icon">
+					<circle-text [value]="scanSession.name">{{ scanSession.name }}</circle-text>
+				</div>
+				<h2>{{ scanSession.name }}</h2>
+				<p>Created: {{ scanSession.date | date: 'yyyy/MM/dd hh:mm' }}</p>
+				<p>Number of scannings: {{ scanSession.scannings.length }}</p>
+
+			</div>
+			<div class="col-sm-3 export">
+				<button class="btn btn-custom" (click)="export(i)">
+					<img src="assets/icons/glyphicons-447-floppy-save.png">
+				</button>
+			</div>
 	</div>
 </div>

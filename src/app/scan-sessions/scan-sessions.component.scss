@@ -1,18 +1,15 @@
-.scan-sessions {
-    overflow: hidden;
-    overflow-y: auto;
-    height: calc(100vh - 54px);
-}
-
 .item * {
-    padding: 0;
-    margin: 0;
+    font-size: 15px;
 }
 
 .item {
     cursor: pointer;
     padding: 5px 0 !important;
-    height: 80px;
+    height: 78px;
+}
+
+.item p, .item h2 {
+    padding: 0; margin: 0;
 }
 
 .item:hover {
@@ -38,3 +35,49 @@ p {
     color: darkgrey;
     line-height: 16px;
 }
+
+.selected {
+    background: #d65858 !important;
+    color: white;
+}
+
+.selected {
+    h2 {
+        font-weight: 400;
+    }
+
+    p {
+        color: white; 
+    }
+
+    img {
+        filter: none !important;
+    }
+
+    .btn {
+        background-color: #fff;
+        border-color: #fff;
+    }
+}
+/*
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}*/
+
+.row {
+    margin: 0;
+    padding: 0;
+}
+
+.export {
+    line-height: 67px;
+    vertical-align: middle;
+}
+
+
+.scan {
+    padding-top: 5px !important;
+}
+

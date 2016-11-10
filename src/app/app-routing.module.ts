@@ -10,6 +10,8 @@ import { ScanSessionsComponent } from './scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './scan-session/scan-session.component';
 import { CircleTextComponent } from '../components/circle-text';
 
+import { ClipboardModule } from 'angular2-clipboard';
+
 const routes: Routes = [
   {
     path: '',
@@ -27,8 +29,8 @@ const routes: Routes = [
   imports: [
     BrowserModule,
     RouterModule.forRoot(routes, { useHash: true }),
-    NgbModule.forRoot()
-
+    NgbModule.forRoot(),
+    ClipboardModule
   ],
   providers: [ScanSessionsService],
   declarations: [

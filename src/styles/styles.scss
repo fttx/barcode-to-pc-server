@@ -2,10 +2,31 @@ body {
 	font-family: sans-serif;
 	background: #fff;
 	color: #000;
+  overflow: hidden;
 }
 html {
   height: 100%;
 }
 body {
   min-height: 100%;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Chrome/Safari/Opera */
+     -khtml-user-select: none; /* Konqueror */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.btn-custom {
+    background-color: #b71c1c; /*b71c1c*/
+    border-color: #b71c1c;
+    color: #fff;
+}
+
+.btn-custom img {
+    filter: invert(100%)
 }
