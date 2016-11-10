@@ -1,7 +1,14 @@
-<h1>Angular2 Electron Starter</h1>
-<nav>
-  <a routerLink="/login" routerLinkActive="active">Login</a>
-  <a routerLink="/authorized" routerLinkActive="active">Authorized</a>
+<nav class="navbar navbar-full navbar-light bg-faded">
+  <a class="navbar-brand" href="#">Barcode to PC server</a>
 </nav>
 
-<router-outlet></router-outlet>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-6">
+            <app-scan-sessions></app-scan-sessions>
+        </div>
+        <div class="col-xs-6">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

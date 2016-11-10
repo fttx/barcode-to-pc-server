@@ -18,10 +18,10 @@
       "prefix": "app",
       "mobile": false,
       "styles": [
-        "styles/styles.scss"
+        "styles/styles.scss",
+        "../node_modules/bootstrap/dist/css/bootstrap.css"
       ],
-      "scripts": [        
-      ],
+      "scripts": [],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
@@ -29,10 +29,8 @@
       }
     }
   ],
-  "addons": [
-  ],
-  "packages": [
-  ],
+  "addons": [],
+  "packages": [],
   "e2e": {
     "protractor": {
       "config": "./protractor.conf.js"

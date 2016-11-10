@@ -1,10 +1,11 @@
 body {
 	font-family: sans-serif;
-	background: #448;
-	color: #fff;
+	background: #fff;
+	color: #000;
 }
-a {
-	color: #fb0;
-	&:hover {text-decoration: none;}
-	&.active {text-decoration: none; color: #fd8;}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
 }

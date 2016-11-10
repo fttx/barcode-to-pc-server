@@ -61,6 +61,7 @@ ipcMain.on('connect', (event, arg) => {
   console.log("client connected")
 })
 
+
 setTimeout(() => {
   sender.send('message', "FINALMENTE")
   console.log("message sent");
@@ -80,34 +81,34 @@ var port = 57891;
 bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })
 
 express.ws('/', (ws, req) => {
-    console.log("incoming connection");
-    ws.send('Hello! from server!', () => { });
-    ws.on('message', (message) => {
-        message = JSON.parse(message);
-        console.log(message)
-        sender.send('message',message)        
-        switch (message.action) {
-            case 'scan':
-                robot.typeString(message.data.text);
-                break;
+  console.log("incoming connection");
+  ws.send('Hello! from server!', () => { });
+  ws.on('message', (message) => {
+    message = JSON.parse(message);
+    sender.send(message.action, message.data)
+    console.log("FROM APP: ", message)
+    switch (message.action) {
+      case 'scan':
+        robot.typeString(message.data.text);
+        break;
 
-            case 'scanSession':
+      case 'scanSession':
 
-                break;
+        break;
 
-            case 'scanSessions':
+      case 'scanSessions':
 
-                break;
-        }
-    });
+        break;
+    }
+  });
 
-    ws.on('close', function close() {
-        console.log('disconnected');
-    });
-    
-    ws.on('error', function close() {
-        console.log('error');
-    });
+  ws.on('close', function close() {
+    console.log('disconnected');
+  });
+
+  ws.on('error', function close() {
+    console.log('error');
+  });
 
 });
 express.listen(port, () => { });

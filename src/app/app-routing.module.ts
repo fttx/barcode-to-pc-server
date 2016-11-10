@@ -2,25 +2,23 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LoggedInGuard } from '../services/logged-in.guard';
-import { UserService } from '../services/user';
+import { ScanSessionsService } from '../services/scan-sessions.service'
 
-import { LoginComponent } from './+login/login.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { ScanSessionsComponent } from './scan-sessions/scan-sessions.component';
+import { ScanSessionComponent } from './scan-session/scan-session.component';
+import { CircleTextComponent } from '../components/circle-text';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'authorized',
-    pathMatch: 'full',
+    redirectTo: '/-1',
+    pathMatch: 'full'
   },
   {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'authorized',
-    loadChildren: './+authorized/authorized.module#AuthorizedModule',
-    canActivate: [ LoggedInGuard ],
+    path: ':index',
+    component: ScanSessionComponent,
   },
 ];
 
@@ -28,13 +26,21 @@ const routes: Routes = [
 @NgModule({
   imports: [
     BrowserModule,
-    RouterModule.forRoot( routes, { useHash: true } ),
+    RouterModule.forRoot(routes, { useHash: true }),
+    NgbModule.forRoot()
+
   ],
-  providers: [ LoggedInGuard, UserService ],
-  declarations: [ LoginComponent ],
-  exports: [
-    RouterModule
+  providers: [ScanSessionsService],
+  declarations: [
+    ScanSessionComponent,
+    ScanSessionsComponent,
+    CircleTextComponent
+  ],
+  exports: [ // solo se si se si deve usare nel template
+    RouterModule,
+    ScanSessionsComponent,
+    CircleTextComponent,
   ],
 })
 
-export class AppRoutingModule {}
+export class AppRoutingModule { }

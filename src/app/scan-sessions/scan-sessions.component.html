@@ -1,0 +1,11 @@
+<div class="scan-sessions">
+	<div class="item" *ngFor="let scanSession of scanSessions; let i = index;" (click)="onItemSelected(i)">
+		<div class="icon">
+			<circle-text [value]="scanSession.name">{{ scanSession.name }}</circle-text>			
+		</div>
+		<h2>{{ scanSession.name }}</h2>
+		<p>Created: {{ scanSession.date }}</p>
+		<!-- | date: 'yyyy/MM/dd hh:mm' -->
+		<p>Number of scannings: {{ scanSession.scannings.length }}</p>
+	</div>
+</div>
