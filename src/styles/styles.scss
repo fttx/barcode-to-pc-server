@@ -11,6 +11,12 @@ body {
   min-height: 100%;
 }
 
+.root-loading {
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
+}
+
 .noselect {
   cursor: default;
   -webkit-touch-callout: none; /* iOS Safari */
