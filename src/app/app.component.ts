@@ -21,22 +21,5 @@ export class AppComponent {
 
     ) { }
 
-    ngOnInit() {
-        this.scanSessionService.onScanSessions().subscribe(scanSessions => {
-            this.scanSessions = scanSessions;
-        });
-
-        this.scanSessionService.onScan().subscribe(scanSession => {
-            this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
-
-            let alredInIndex = this.scanSessions.findIndex(x => x.date.valueOf() == scanSession.date.valueOf());
-            if (alredInIndex != -1) {
-                this.scanSessions[alredInIndex].scannings.unshift(scanSession.scannings[0]);
-                this.selectedScanSession = this.scanSessions[alredInIndex];
-            } else {
-                this.scanSessions.unshift(scanSession);
-                this.selectedScanSession = this.scanSessions[0];
-            }
-        });
-    }
+    ngOnInit() { }
 }
