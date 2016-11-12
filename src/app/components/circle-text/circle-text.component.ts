@@ -6,7 +6,7 @@ import { Component, Input, OnInit } from '@angular/core';
     <div class="circle-text" [style.background-color]="backgroundColor">
       {{ letters }}
     </div>`,
-  styleUrls: ['./circle-text.scss']
+  styleUrls: ['./circle-text.component.scss']
 })
 
 export class CircleTextComponent implements OnInit {
@@ -16,9 +16,7 @@ export class CircleTextComponent implements OnInit {
   public backgroundColor: string;
   public letters: string;
 
-  constructor() {
-
-  }
+  constructor() { }
 
   ngOnInit() {
     let colors = CircleTextComponent.colors;

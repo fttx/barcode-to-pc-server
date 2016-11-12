@@ -1,5 +1,5 @@
 <div class="scan-session">
-  <div class="item" *ngFor="let scan of scanSession?.scannings">
+  <div class="item" *ngFor="let scan of scanSession?.scannings; let i = index"   [@addedJustNowState]="animateLast && i == 0 ? 'true' : 'false'">
     {{ scan.text }}
     <button class="btn btn-sm btn-custom" type="button" ngIIclipboard [cbContent]="scan.text">
         <img src="assets/icons/glyphicons-512-copy.png">
@@ -7,7 +7,7 @@
     </button>
   </div>
 
-  <div class="empty" *ngIf="!scanSession">
+  <div class="empty noselect" *ngIf="!scanSession">
     Please select a scan session
   </div>
 </div>

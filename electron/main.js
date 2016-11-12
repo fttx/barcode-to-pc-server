@@ -58,17 +58,14 @@ let ipcMain = electron.ipcMain;
 let sender;
 ipcMain.on('connect', (event, arg) => {
   sender = event.sender;
-  console.log("client connected")
+  // console.log("client connected")
 })
 
 
-setTimeout(() => {
-  sender.send('message', "FINALMENTE")
-  console.log("message sent");
-}, 5000)
-
-
-console.log("TEST")
+// setTimeout(() => {
+//   sender.send('message', "FINALMENTE")
+//   console.log("message sent");
+// }, 5000)
 
 
 var express = require('express')();
@@ -82,23 +79,13 @@ bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })
 
 express.ws('/', (ws, req) => {
   console.log("incoming connection");
-  ws.send('Hello! from server!', () => { });
+  // ws.send('Hello! from server!', () => { });
   ws.on('message', (message) => {
     message = JSON.parse(message);
     sender.send(message.action, message.data)
-    console.log("FROM APP: ", message)
-    switch (message.action) {
-      case 'scan':
-        robot.typeString(message.data.text);
-        break;
-
-      case 'scanSession':
-
-        break;
-
-      case 'scanSessions':
-
-        break;
+    console.log("message: ", message)
+    if (message.action == 'putScan') {
+      robot.typeString(message.data.scannings[0].text);
     }
   });
 

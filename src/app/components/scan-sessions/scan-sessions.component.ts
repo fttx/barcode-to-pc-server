@@ -1,7 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges } from '@angular/core';
 import { ScanSessionModel } from '../../models/scan-session.model'
-import { ScanSessionsService } from '../../services/scan-sessions.service'
 import { saveAs } from 'file-saver';
 
 @Component({
@@ -11,28 +9,22 @@ import { saveAs } from 'file-saver';
 })
 
 export class ScanSessionsComponent implements OnInit {
+    @Input() scanSessions: ScanSessionModel[] = []
+    @Input() selectedScanSession: ScanSessionModel;
+    @Output() onSelect = new EventEmitter();
 
-    public scanSessions: ScanSessionModel[] = [];
+    constructor() { }
 
-    constructor(
-        private router: Router,
-        private scanSessionService: ScanSessionsService,
+    ngOnInit() { }
 
-    ) { }
-
-    ngOnInit() {
-        this.scanSessionService.getScanSessions().subscribe(
-            message => {
-                this.scanSessions = message;
-            },
-            err => {
-
-            });
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['selectedScanSession']) {
+            // TODO scrollTop
+        }
     }
 
-
     onItemSelected(index) {
-        this.router.navigate(['', index]);
+        this.onSelect.emit(this.scanSessions[index]);
     }
 
     export(index) {

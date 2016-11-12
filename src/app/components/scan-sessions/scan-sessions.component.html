@@ -2,8 +2,9 @@
 	<div 
 		class="item row"
 	 	*ngFor="let scanSession of scanSessions; let i = index;" 
-	 	(click)="onItemSelected(i); selectedItemIndex = i;"
-		[class.selected]="selectedItemIndex == i">
+	 	(click)="onItemSelected(i);"
+		[id]="scanSession.date"
+		[class.selected]="scanSession == selectedScanSession">
 			<div class="col-sm-9 scan">
 				<div class="icon">
 					<circle-text [value]="scanSession.name">{{ scanSession.name }}</circle-text>

@@ -1,0 +1,13 @@
+<div class="parent">
+    <div class="bar noselect">
+        Barcode to PC server
+    </div>
+
+    <div class="col left">
+        <app-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></app-scan-sessions>
+    </div>
+
+    <div class="col right">
+        <app-scan-session [scanSession]="selectedScanSession" [animateLast]="animateLast"></app-scan-session>
+    </div>
+</div>

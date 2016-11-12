@@ -1,0 +1,30 @@
+.parent {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+    align-content: stretch;
+    height: 100vh;
+}
+
+.bar {
+    height: 48px;
+    width: 100%;
+    background: #B71C1C;
+    color: #fff;
+    font-size: 16px;
+    line-height: 48px;
+    padding-left: 10px;
+}
+
+.col {
+    width: 50%;
+    height: calc(100% - 48px);
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+.right {
+    background: #f2f2f2;
+}
