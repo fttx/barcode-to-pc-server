@@ -10,7 +10,7 @@ let mainWindow
 
 function createWindow() {
   // Create the browser window.
-  mainWindow = new BrowserWindow({ width: 800, height: 600 })
+  mainWindow = new BrowserWindow({ width: 950, height: 660 })
 
   // and load the index.html of the app.
   mainWindow.loadURL(`file://${__dirname}/index.html`)
@@ -53,37 +53,28 @@ app.on('activate', function () {
 // code. You can also put them in separate files and require them here.
 
 // In main process.
-
-let ipcMain = electron.ipcMain;
-let sender;
-ipcMain.on('connect', (event, arg) => {
-  sender = event.sender;
-  // console.log("client connected")
-})
-
-
-// setTimeout(() => {
-//   sender.send('message', "FINALMENTE")
-//   console.log("message sent");
-// }, 5000)
-
-
 var express = require('express')();
 var ws = require('express-ws')(express);
 var robot = require("robotjs");
 var bonjour = require('bonjour')();
+let ipcMain = electron.ipcMain;
 
 var port = 57891;
+let ipcClient;
+
+ipcMain.on('connect', (event, arg) => {
+  ipcClient = event.sender;
+})
 
 bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })
 
 express.ws('/', (ws, req) => {
   console.log("incoming connection");
-  // ws.send('Hello! from server!', () => { });
+
   ws.on('message', (message) => {
-    message = JSON.parse(message);
-    sender.send(message.action, message.data)
     console.log("message: ", message)
+    message = JSON.parse(message);
+    ipcClient.send(message.action, message.data);
     if (message.action == 'putScan') {
       robot.typeString(message.data.scannings[0].text);
     }
