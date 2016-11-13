@@ -42,4 +42,13 @@ export class ScanSessionsServer {
             });
         });
     }
+
+    onDeleteScanSessions() {
+        return Observable.create(observer => {
+            if (!ipcRenderer) return;
+            ipcRenderer.on('deleteScanSession', (event, scanSession) => {
+                this.ngZone.run(() => observer.next(scanSession))
+            });
+        });
+    }
 }

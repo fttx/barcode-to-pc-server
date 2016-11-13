@@ -45,13 +45,21 @@ export class MainComponent {
             this.save();
         });
 
-        this.scanSessionServer.onDeleteScan().subscribe((scanSessionToRemove: ScanSessionModel) => {
-            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSessionToRemove.id);
+        this.scanSessionServer.onDeleteScan().subscribe((associatedScanSession: ScanSessionModel) => {
+            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == associatedScanSession.id);
             if (scanSessionIndex != -1) {
-                let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == scanSessionToRemove.scannings[0].id);
+                let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == associatedScanSession.scannings[0].id);
                 this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
             }
             this.save();
+        });
+
+        this.scanSessionServer.onDeleteScanSessions().subscribe((scanSession: ScanSessionModel) => {
+            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
+            if (scanSessionIndex != -1) {
+                this.scanSessions.splice(scanSessionIndex, 1);
+                this.save();
+            }
         });
     }
 
