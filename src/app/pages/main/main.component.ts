@@ -26,12 +26,12 @@ export class MainComponent {
             }
         })
 
-        this.scanSessionServer.onScanSessions().subscribe(scanSessions => {
+        this.scanSessionServer.onPutScanSessions().subscribe(scanSessions => {
             this.scanSessions = scanSessions;
             this.save();
         });
 
-        this.scanSessionServer.onScan().subscribe(scanSession => {
+        this.scanSessionServer.onPutScan().subscribe(scanSession => {
             this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
 
             let alredInIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
@@ -41,6 +41,15 @@ export class MainComponent {
             } else {
                 this.scanSessions.unshift(scanSession);
                 this.selectedScanSession = this.scanSessions[0];
+            }
+            this.save();
+        });
+
+        this.scanSessionServer.onDeleteScan().subscribe((scanSessionToRemove: ScanSessionModel) => {
+            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSessionToRemove.id);
+            if (scanSessionIndex != -1) {
+                let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == scanSessionToRemove.scannings[0].id);
+                this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
             }
             this.save();
         });

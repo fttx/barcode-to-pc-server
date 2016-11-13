@@ -8,7 +8,7 @@ const ipcRenderer = window.require ? window.require('electron').ipcRenderer : nu
 
 @Injectable()
 export class ScanSessionsServer {
-    
+
     constructor(
         private ngZone: NgZone,
     ) {
@@ -16,7 +16,7 @@ export class ScanSessionsServer {
         ipcRenderer.send('connect');
     }
 
-    onScan(): Observable<ScanSessionModel> {
+    onPutScan(): Observable<ScanSessionModel> {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('putScan', (event, scanSession) => {
@@ -25,11 +25,20 @@ export class ScanSessionsServer {
         });
     }
 
-    onScanSessions(): Observable<ScanSessionModel[]> {
+    onPutScanSessions(): Observable<ScanSessionModel[]> {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('putScanSessions', (event, data) => {
                 this.ngZone.run(() => observer.next(data))
+            });
+        });
+    }
+
+    onDeleteScan() {
+        return Observable.create(observer => {
+            if (!ipcRenderer) return;
+            ipcRenderer.on('deleteScan', (event, scanSession) => {
+                this.ngZone.run(() => observer.next(scanSession))
             });
         });
     }
