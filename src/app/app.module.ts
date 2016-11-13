@@ -5,11 +5,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ClipboardModule } from 'angular2-clipboard';
+import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-local-storage';
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 
-import { ScanSessionsService } from './services/scan-sessions.service'
+import { ScanSessionsServer } from './services/scan-sessions-server.service'
+import { ScanSessionsStorage } from './services/scan-sessions-storage.service'
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
@@ -21,6 +23,11 @@ const routes: Routes = [
     },
 ];
 
+let localStorageServiceConfig = {
+    prefix: 'barcode-to-pc-server',
+    storageType: 'localStorage'
+};
+
 @NgModule({
     imports: [
         HttpModule,
@@ -29,7 +36,12 @@ const routes: Routes = [
         RouterModule.forRoot(routes, { useHash: true }),
         NgbModule.forRoot(),
     ],
-    providers: [ScanSessionsService],
+    providers: [
+        ScanSessionsServer,
+        ScanSessionsStorage,
+        LocalStorageService,
+        { provide: LOCAL_STORAGE_SERVICE_CONFIG, useValue: localStorageServiceConfig },
+    ],
     declarations: [
         AppComponent,
         MainComponent,

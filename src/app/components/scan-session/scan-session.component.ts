@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { ScanSessionModel } from '../../models/scan-session.model'
-import { ScanSessionsService } from '../../services/scan-sessions.service'
 
 @Component({
     selector: 'app-scan-session',
@@ -21,7 +20,6 @@ export class ScanSessionComponent implements OnInit {
     @Input() animateLast = false;
 
     constructor(
-        private scanSessionService: ScanSessionsService,
     ) { }
 
     ngOnInit() { }

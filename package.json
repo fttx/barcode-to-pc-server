@@ -26,6 +26,7 @@
     "@angular/router": "~3.1.0",
     "@ng-bootstrap/ng-bootstrap": "^1.0.0-alpha.11",
     "@types/file-saver": "0.0.0",
+    "angular-2-local-storage": "0.0.22",
     "angular2-clipboard": "^1.0.2",
     "bonjour": "^3.5.0",
     "bootstrap": "^4.0.0-alpha.5",

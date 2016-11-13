@@ -7,7 +7,7 @@ declare var window: any;
 const ipcRenderer = window.require ? window.require('electron').ipcRenderer : null;
 
 @Injectable()
-export class ScanSessionsService {
+export class ScanSessionsServer {
     
     constructor(
         private ngZone: NgZone,
