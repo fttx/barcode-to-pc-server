@@ -37,3 +37,7 @@ body {
 .btn-custom img {
     filter: invert(100%)
 }
+
+@import "variables.scss";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
