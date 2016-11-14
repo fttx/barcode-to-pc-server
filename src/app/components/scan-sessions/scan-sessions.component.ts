@@ -30,6 +30,6 @@ export class ScanSessionsComponent implements OnInit {
     export(index) {
         let content = this.scanSessions[index].scannings.map(x => x.text + "\n")
         let file = new Blob(content, { type: 'text/csv;charset=utf-8' });
-        saveAs(file, this.scanSessions[index].name + ' - ' + this.scanSessions[index].date + ".csv");
+        saveAs(file, this.scanSessions[index].name + ".csv");
     }
 }
