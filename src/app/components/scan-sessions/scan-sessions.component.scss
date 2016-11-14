@@ -1,3 +1,5 @@
+@import "../../../styles/variables.scss";
+
 .item * {
     font-size: 15px;
 }
@@ -37,7 +39,7 @@ p {
 }
 
 .selected {
-    background: #d65858 !important;
+    background: $brand-selected !important;
     color: white;
 }
 
@@ -81,3 +83,22 @@ input::-moz-focus-inner {
     padding-top: 5px !important;
 }
 
+
+.desaturate-img {
+    filter: none;
+    -webkit-filter: grayscale(100%);
+    -moz-filter:    grayscale(100%);
+    -ms-filter:     grayscale(100%);
+    opacity: .3;
+    max-height: 45%;
+    max-width: 55%;
+    margin: 110px 0 40px 0;     
+}
+
+.empty {
+    opacity: .6;
+    color: black;
+    width: 100%;
+    text-align: center;
+    padding: 0 35px;
+}

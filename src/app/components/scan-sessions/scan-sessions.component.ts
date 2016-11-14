@@ -1,6 +1,9 @@
 import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges } from '@angular/core';
 import { ScanSessionModel } from '../../models/scan-session.model'
+import { SettingsModel } from '../../models/settings.model'
+import { Storage } from '../../services/storage.service'
 import { saveAs } from 'file-saver';
+import * as Papa from 'papaparse';
 
 @Component({
     selector: 'app-scan-sessions',
@@ -13,9 +16,19 @@ export class ScanSessionsComponent implements OnInit {
     @Input() selectedScanSession: ScanSessionModel;
     @Output() onSelect = new EventEmitter();
 
-    constructor() { }
+    private settings: SettingsModel = new SettingsModel();;
 
-    ngOnInit() { }
+    constructor(
+        private storage: Storage,
+    ) { }
+
+    ngOnInit() {
+        this.storage.getSettings().then(settings => {
+            if (settings) {
+                this.settings = settings;
+            }
+        });
+    }
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['selectedScanSession']) {
@@ -28,7 +41,12 @@ export class ScanSessionsComponent implements OnInit {
     }
 
     export(index) {
-        let content = this.scanSessions[index].scannings.map(x => x.text + "\n")
+        let content = [];
+        content.push(Papa.unparse(this.scanSessions[index].scannings.map(x => { return { 'text': x.text } }), {
+            quotes: this.settings.enableQuotes,
+            delimiter: ",",
+            newline: this.settings.newLineCharacter
+        }));
         let file = new Blob(content, { type: 'text/csv;charset=utf-8' });
         saveAs(file, this.scanSessions[index].name + ".csv");
     }

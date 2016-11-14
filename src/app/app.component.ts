@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
 
 @Component({
     selector: 'app-root',
@@ -7,7 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
 
-    constructor() { }
+    constructor(
+        public viewContainerRef: ViewContainerRef, // required from ng2-bootstrap Modals
+    ) { }
 
     ngOnInit() { }
 }

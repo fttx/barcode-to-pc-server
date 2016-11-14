@@ -1,3 +1,5 @@
+@import "../../../styles/variables.scss";
+
 .parent {
     display: flex;
     flex-direction: row;
@@ -11,14 +13,14 @@
 .bar {
     height: 48px;
     width: 100%;
-    background: #B71C1C;
+    background: $brand-primary;
     color: #fff;
     font-size: 16px;
     line-height: 48px;
     padding-left: 10px;
 }
 
-.col {
+.col-half {
     width: 50%;
     height: calc(100% - 48px);
     overflow: hidden;
@@ -27,4 +29,28 @@
 
 .right {
     background: #f2f2f2;
+}
+
+
+.menu-item {
+    display: inline-block;
+    margin-left: 10px;
+    color: rgba(255,255,255,.88);
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    color: #fff;
+}
+
+.logo {
+    width: 36px;
+    height: auto;
+    margin-top: -4px;
+}
+
+.section-title {
+    font-size: 1em;
+    font-weight: bold;
+    margin-top: 40px;
 }

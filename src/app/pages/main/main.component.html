@@ -1,13 +1,97 @@
 <div class="parent">
     <div class="bar noselect">
-        Barcode to PC server
+        <div class="menu-item">
+            <img class="logo" src="assets/logo.png" alt="logo" />
+        </div>
+        <div class="menu-item" (click)="settingsModal.show()">Settings</div>
+        <div class="menu-item" (click)="infoModal.show()">Info</div>
     </div>
 
-    <div class="col left">
+    <div class="col-half left">
         <app-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></app-scan-sessions>
     </div>
 
-    <div class="col right">
+    <div class="col-half right">
         <app-scan-session [scanSession]="selectedScanSession" [animateLast]="animateLast"></app-scan-session>
+    </div>
+</div>
+
+
+<!-- Settings -->
+<div bsModal #settingsModal="bs-modal" class="modal fade noselect" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="settingsModal.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Settings</h4>
+            </div>
+            <div class="modal-body">
+
+                <h1 class="section-title" style="margin-top: 20px;">General</h1>
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableRealtimeStrokes" >
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Enable realtime strokes</span>
+                    </label>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="end-char">Select end character</label>
+                    <select class="form-control" id="end-char" [(ngModel)]="settings && settings.endCharacter">
+                        <option selected value="\r\n">\r\n</option>
+                        <option value="\n">\n</option>
+                    </select>
+                </div>
+                
+
+                <h1  class="section-title">CSV Settings</h1>
+
+                <div class="form-group">
+                    <label for="divider-charr">New line character</label>
+                    <select class="form-control" id="divider-char" [(ngModel)]="settings && settings.newLineCharacter">
+                        <option selected value="\r\n">\r\n</option>
+                        <option value="\n">\n</option>
+                    </select>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableQuotes" >
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Enable quotes</span>
+                    </label>
+                </div>
+
+                <br />
+
+                <button type="submit" class="btn btn-primary" (click)="settingsModal.hide()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Info -->
+<div bsModal #infoModal="bs-modal" class="modal fade noselect" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Info</h4>
+            </div>
+            <div class="modal-body">
+                hello
+
+            </div>
+        </div>
     </div>
 </div>

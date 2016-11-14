@@ -1,23 +1,24 @@
 <div class="scan-sessions noselect">
-	<div 
-		class="item row"
-	 	*ngFor="let scanSession of scanSessions; let i = index;" 
-	 	(click)="onItemSelected(i);"
-		[id]="scanSession.date"
+	<div class="item row" *ngFor="let scanSession of scanSessions; let i = index;" (click)="onItemSelected(i);" [id]="scanSession.date"
 		[class.selected]="scanSession == selectedScanSession">
-			<div class="col-sm-9 scan">
-				<div class="icon">
-					<circle-text [value]="scanSession.name">{{ scanSession.name }}</circle-text>
-				</div>
-				<h2>{{ scanSession.name }}</h2>
-				<p>Created: {{ scanSession.date | date: 'yyyy/MM/dd hh:mm' }}</p>
-				<p>Number of scannings: {{ scanSession.scannings.length }}</p>
-
+		<div class="col-sm-9 scan">
+			<div class="icon">
+				<circle-text [value]="scanSession.name">{{ scanSession.name }}</circle-text>
 			</div>
-			<div class="col-sm-3 export">
-				<button class="btn btn-custom" (click)="export(i)">
+			<h2>{{ scanSession.name }}</h2>
+			<p>Created: {{ scanSession.date | date: 'yyyy/MM/dd hh:mm' }}</p>
+			<p>Number of scannings: {{ scanSession.scannings.length }}</p>
+
+		</div>
+		<div class="col-sm-3 export">
+			<button class="btn btn-custom" (click)="export(i)">
 					<img src="assets/icons/glyphicons-447-floppy-save.png">
 				</button>
-			</div>
+		</div>
+	</div>
+
+	<div *ngIf="!scanSessions || !scanSessions.length" class="empty noselect">
+		<img src="assets/logo_desaturate.jpg" alt="logo" class="desaturate-img" /><br /> Scan sessions list is empty<br /> Open the app and click
+		on the camera button to start scanning
 	</div>
 </div>

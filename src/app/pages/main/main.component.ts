@@ -1,7 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
+
+import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
+
+import { SettingsModel } from '../../models/settings.model'
 import { ScanSessionModel } from '../../models/scan-session.model'
 import { ScanSessionsServer } from '../../services/scan-sessions-server.service'
-import { ScanSessionsStorage } from '../../services/scan-sessions-storage.service'
+import { Storage } from '../../services/storage.service'
 
 @Component({
     selector: 'app-main',
@@ -9,19 +13,34 @@ import { ScanSessionsStorage } from '../../services/scan-sessions-storage.servic
     styleUrls: ['./main.component.scss'],
 })
 export class MainComponent {
+    @ViewChild('settingsModal') public settingsModal: ModalDirective;
+    @ViewChild('infoModal') public infoModal: ModalDirective;
+
 
     public scanSessions: ScanSessionModel[] = [];
     public selectedScanSession: ScanSessionModel;
     public animateLast = false;
 
+    public settings: SettingsModel = new SettingsModel();
+
     constructor(
         private scanSessionServer: ScanSessionsServer,
-        private scanSessionStorage: ScanSessionsStorage,
+        private storage: Storage,
     ) { }
 
     ngOnInit() {
-        this.scanSessionStorage.getScanSessions().then(scanSessions => {
-            if (this.scanSessions.length == 0) {
+        this.settingsModal.onHide.subscribe(() => {
+            this.storage.setSettings(this.settings);
+        });
+
+        this.storage.getSettings().then(settings => {
+            if (settings) {
+                this.settings = settings;
+            }
+        });
+
+        this.storage.getScanSessions().then(scanSessions => {
+            if (this.scanSessions) {
                 this.scanSessions = scanSessions;
             }
         })
@@ -65,6 +84,7 @@ export class MainComponent {
 
     save() {
         console.log("SAVED")
-        this.scanSessionStorage.setScanSessions(this.scanSessions);
+        this.storage.setScanSessions(this.scanSessions);
     }
+
 }

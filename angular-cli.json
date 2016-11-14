@@ -20,7 +20,9 @@
       "styles": [
         "styles/styles.scss"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/papaparse/papaparse.min.js"
+      ],
       "environments": {
         "source": "environments/environment.ts",
         "dev": "environments/environment.ts",
