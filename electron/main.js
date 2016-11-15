@@ -36,6 +36,9 @@ function createWindow() {
         if (wsConnection) {
             wsConnection.close();
         }
+        bonjour.unpublishAll(() => {
+          bonjour.destroy()
+        });
     })
 }
 
