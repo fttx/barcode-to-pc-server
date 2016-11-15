@@ -10,7 +10,7 @@ import { LocalStorageService, LOCAL_STORAGE_SERVICE_CONFIG } from 'angular-2-loc
 import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 
-import { ScanSessionsServer } from './services/scan-sessions-server.service'
+import { IpcProxy } from './services/ipc-proxy.service'
 import { Storage } from './services/storage.service'
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
@@ -40,7 +40,7 @@ let localStorageServiceConfig = {
         FormsModule
     ],
     providers: [
-        ScanSessionsServer,
+        IpcProxy,
         Storage,
         LocalStorageService,
         { provide: LOCAL_STORAGE_SERVICE_CONFIG, useValue: localStorageServiceConfig },

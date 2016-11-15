@@ -40,10 +40,11 @@
 
 
                 <div class="form-group">
-                    <label for="end-char">Select end character</label>
+                    <label for="end-char">End character</label>
                     <select class="form-control" id="end-char" [(ngModel)]="settings && settings.endCharacter">
-                        <option selected value="\r\n">\r\n</option>
-                        <option value="\n">\n</option>
+                        <option value="">Disabled</option>
+                        <option selected value="enter">ENTER</option>
+                        <option value="tab">TAB</option>
                     </select>
                 </div>
                 

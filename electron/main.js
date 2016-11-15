@@ -64,10 +64,14 @@ let ipcMain = electron.ipcMain;
 
 var port = 57891;
 let ipcClient;
+var settings;
 
-ipcMain.on('connect', (event, arg) => {
-  ipcClient = event.sender;
-})
+ipcMain
+  .on('connect', (event, arg) => {
+    ipcClient = event.sender;
+  }).on('sendSettings', (event, arg)  => {
+    settings = arg;
+  });
 
 bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })
 
@@ -79,7 +83,13 @@ express.ws('/', (ws, req) => {
     message = JSON.parse(message);
     ipcClient.send(message.action, message.data);
     if (message.action == 'putScan') {
-      robot.typeString(message.data.scannings[0].text);
+      console.log(settings.enableRealtimeStrokes)
+      if (settings.enableRealtimeStrokes) {
+        robot.typeString(message.data.scannings[0].text);
+        if (settings.endCharacter) {
+          robot.keyTap(settings.endCharacter);
+        }
+      }
     }
   });
 

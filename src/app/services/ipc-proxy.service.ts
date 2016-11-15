@@ -2,18 +2,26 @@ import { Injectable, NgZone, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs'
 import { ScanSessionModel } from '../models/scan-session.model'
 import { ScanModel } from '../models/scan.model'
+import { SettingsModel } from '../models/settings.model'
+import { Storage } from './storage.service'
 
 declare var window: any;
 const ipcRenderer = window.require ? window.require('electron').ipcRenderer : null;
 
 @Injectable()
-export class ScanSessionsServer {
+export class IpcProxy {
 
     constructor(
         private ngZone: NgZone,
+        private storage: Storage,
     ) {
         if (!ipcRenderer) return;
         ipcRenderer.send('connect');
+
+        this.storage.getSettings().then(settings => {
+            this.sendSettings(settings);
+            console.log("settings sent")
+        })
     }
 
     onPutScan(): Observable<ScanSessionModel> {
@@ -50,5 +58,10 @@ export class ScanSessionsServer {
                 this.ngZone.run(() => observer.next(scanSession))
             });
         });
+    }
+
+    sendSettings(settings: SettingsModel) {
+        if (!ipcRenderer) return;
+        ipcRenderer.send('sendSettings', settings);
     }
 }

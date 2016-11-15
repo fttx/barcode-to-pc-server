@@ -4,7 +4,7 @@ import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 
 import { SettingsModel } from '../../models/settings.model'
 import { ScanSessionModel } from '../../models/scan-session.model'
-import { ScanSessionsServer } from '../../services/scan-sessions-server.service'
+import { IpcProxy } from '../../services/ipc-proxy.service'
 import { Storage } from '../../services/storage.service'
 
 @Component({
@@ -24,13 +24,14 @@ export class MainComponent {
     public settings: SettingsModel = new SettingsModel();
 
     constructor(
-        private scanSessionServer: ScanSessionsServer,
+        private ipcProxy: IpcProxy,
         private storage: Storage,
     ) { }
 
     ngOnInit() {
         this.settingsModal.onHide.subscribe(() => {
             this.storage.setSettings(this.settings);
+            this.ipcProxy.sendSettings(this.settings);
         });
 
         this.storage.getSettings().then(settings => {
@@ -45,12 +46,12 @@ export class MainComponent {
             }
         })
 
-        this.scanSessionServer.onPutScanSessions().subscribe(scanSessions => {
+        this.ipcProxy.onPutScanSessions().subscribe(scanSessions => {
             this.scanSessions = scanSessions;
             this.save();
         });
 
-        this.scanSessionServer.onPutScan().subscribe(scanSession => {
+        this.ipcProxy.onPutScan().subscribe(scanSession => {
             this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
 
             let alredInIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
@@ -64,7 +65,7 @@ export class MainComponent {
             this.save();
         });
 
-        this.scanSessionServer.onDeleteScan().subscribe((associatedScanSession: ScanSessionModel) => {
+        this.ipcProxy.onDeleteScan().subscribe((associatedScanSession: ScanSessionModel) => {
             let scanSessionIndex = this.scanSessions.findIndex(x => x.id == associatedScanSession.id);
             if (scanSessionIndex != -1) {
                 let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == associatedScanSession.scannings[0].id);
@@ -73,7 +74,7 @@ export class MainComponent {
             this.save();
         });
 
-        this.scanSessionServer.onDeleteScanSessions().subscribe((scanSession: ScanSessionModel) => {
+        this.ipcProxy.onDeleteScanSessions().subscribe((scanSession: ScanSessionModel) => {
             let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
             if (scanSessionIndex != -1) {
                 this.scanSessions.splice(scanSessionIndex, 1);
