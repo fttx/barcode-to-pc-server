@@ -54,8 +54,9 @@
                 <div class="form-group">
                     <label for="divider-charr">New line character</label>
                     <select class="form-control" id="divider-char" [(ngModel)]="settings && settings.newLineCharacter">
-                        <option selected value="\r\n">\r\n</option>
-                        <option value="\n">\n</option>
+                        <option selected value="CRLF">\r\n</option>
+                        <option value="LF">\n</option>
+                        <option value="CR">\r</option>
                     </select>
                 </div>
 
