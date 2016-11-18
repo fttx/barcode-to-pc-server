@@ -23,8 +23,4 @@ export class WelcomeComponent implements OnInit {
       this.router.navigate(['']);
     });
   }
-
-  openUrl(url) {
-    this.ipcProxy.openUrl(url);
-  }
 }
