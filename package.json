@@ -12,7 +12,7 @@
     "build": "ng build",
     "prepare": "cp -a electron/. dist",
     "electron": "npm run prepare && electron dist",
-    "package": "npm run build && npm run prepare && ./node_modules/electron-packager/cli.js dist App --platform=darwin --arch=all --out=dist-app --overwrite"
+    "package": "ng build --prod && npm run prepare && ./node_modules/electron-packager/cli.js dist App --platform=darwin --arch=all --out=dist-app --overwrite"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +40,7 @@
     "@types/file-saver": "0.0.0",
     "@types/jasmine": "^2.2.30",
     "@types/node": "^6.0.42",
+    "node-gyp": "^3.4.0",
     "@types/papaparse": "^4.1.28",
     "angular-cli": "1.0.0-beta.18",
     "codelyzer": "1.0.0-beta.1",
