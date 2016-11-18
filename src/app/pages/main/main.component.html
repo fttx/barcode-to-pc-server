@@ -49,7 +49,7 @@
                 </div>
                 
 
-                <h1  class="section-title">CSV Settings</h1>
+                <h1 class="section-title">CSV Settings</h1>
 
                 <div class="form-group">
                     <label for="divider-charr">New line character</label>
@@ -90,8 +90,28 @@
                 <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Info</h4>
             </div>
-            <div class="modal-body">
-                hello
+            <div class="modal-body info">
+
+              
+                    Barcode to PC server v1.0.0
+                    <a (click)="ipcProxy.openUrl('https://barcode2pc.io')">www.barcode2pc.io</a>
+
+                    <br />
+                    <br />
+                    <br />
+                    <br /> This is an opensource project! Contribute on GitHub:
+
+
+                    <div>
+                        <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
+                        <a (click)="ipcProxy.openUrl('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
+                    </div>
+
+                    <div>
+                        <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
+                        <a (click)="ipcProxy.openUrl('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
+                    </div>
+
 
             </div>
         </div>
