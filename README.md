@@ -1,5 +1,5 @@
 
-# Angular2 Electron Starter (with angular cli)
+# Barcode to PC server app
 
 ```bash
 
@@ -9,12 +9,6 @@ npm install -g angular-cli
 
 # install
 npm install
-
-cd ./electron/
-npm install
-cd ./node_modules/robotjs
-HOME=~/.electron-gyp ../../../node_modules/node-gyp/bin/node-gyp.js rebuild --target=1.4.7 --arch=x64 --dist-url=https://atom.io/download/electron
-cd ../../../
 
 # run webpack dev server
 npm start
@@ -31,4 +25,18 @@ npm run electron
 # create electron package (build included)
 npm run package
 
+```
+
+
+# Build
+```bash
+npm install
+# build angular project and put it on electron/app directory
+npm dist
+
+cd electron
+# install non-angular dependencies (they've been alredy included in a single file by the previous step)
+npm install
+# build installation files and put them in the electron/dist folder
+npm dist
 ```

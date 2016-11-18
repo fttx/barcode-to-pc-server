@@ -3,7 +3,8 @@
 /node_modules
 /typings
 /dist
-/dist-app
+/electron/dist
+/electron/app
 /electron/node_modules
 .DS_Store
 Thumbs.db

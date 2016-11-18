@@ -1,7 +1,13 @@
 {
-  "name": "angular2-electron-starter",
-  "version": "0.3.0",
+  "name": "barcode-to-pc-server",
+  "description": "Barcode to PC server app",
+  "version": "1.0.0",
   "license": "MIT",
+  "author": {
+    "name": "Filippo Tortomasi",
+    "email": "filippo.tortomasi@gmail.com.com",
+    "url": "https://github.com/fttx"
+  },
   "angular-cli": {},
   "scripts": {
     "start": "ng serve",
@@ -10,9 +16,7 @@
     "pree2e": "webdriver-manager update",
     "e2e": "protractor",
     "build": "ng build",
-    "prepare": "cp -a electron/. dist",
-    "electron": "npm run prepare && electron dist",
-    "package": "ng build --prod && npm run prepare && ./node_modules/electron-packager/cli.js dist App --platform=darwin --arch=all --out=dist-app --overwrite"
+    "dist": "ng build --prod --output-path=electron/app"
   },
   "private": true,
   "dependencies": {
@@ -36,16 +40,12 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
-    "@types/electron": "^1.4.26",
     "@types/file-saver": "0.0.0",
     "@types/jasmine": "^2.2.30",
     "@types/node": "^6.0.42",
-    "node-gyp": "^3.4.0",
     "@types/papaparse": "^4.1.28",
     "angular-cli": "1.0.0-beta.18",
     "codelyzer": "1.0.0-beta.1",
-    "electron": "^1.4.4",
-    "electron-packager": "^8.1.0",
     "jasmine-core": "2.4.1",
     "jasmine-spec-reporter": "2.5.0",
     "karma": "1.2.0",

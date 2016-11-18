@@ -1,11 +1,35 @@
 {
-  "name": "electron",
-  "version": "0.2.0",
+  "name": "barcode-to-pc-server",
+  "description": "Barcode to PC server app",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Filippo Tortomasi",
+    "email": "filippo.tortomasi@gmail.com.com",
+    "url": "https://github.com/fttx"
+  },
+  "scripts": {   
+    "dist": "./node_modules/.bin/build"
+  },
+  "build": {
+    "appId": "io.barcode2pc",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "iconUrl": "(windows-only) https link to icon"
+    }
+  },
   "main": "main.js",
+  "private": true,
   "dependencies": {
     "bonjour": "^3.5.0",
     "express": "^4.14.0",
     "express-ws": "^2.0.0",
     "robotjs": "^0.4.5"
+  },
+  "devDependencies": {
+    "electron": "^1.4.7",
+    "electron-builder": "^8.6.0"
   }
 }
