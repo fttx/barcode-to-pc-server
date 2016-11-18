@@ -10,9 +10,11 @@ npm install -g angular-cli
 # install
 npm install
 
+cd ./electron/
+npm install
 cd ./node_modules/robotjs
-HOME=~/.electron-gyp node-gyp rebuild --target=1.4.5 --arch=x64 --dist-url=https://atom.io/download/electron
-cd ../../
+HOME=~/.electron-gyp ../node-gyp/bin/node-gyp.js rebuild --target=1.4.7 --arch=x64 --dist-url=https://atom.io/download/electron
+cd ../../../
 
 # run webpack dev server
 npm start
