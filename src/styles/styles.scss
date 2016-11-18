@@ -1,12 +1,17 @@
+@import "variables.scss";
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
 body {
 	font-family: sans-serif;
 	background: #fff;
 	color: #000;
   overflow: hidden;
 }
+
 html {
   height: 100%;
 }
+
 body {
   min-height: 100%;
 }
@@ -29,8 +34,8 @@ body {
 }
 
 .btn-custom {
-    background-color: #b71c1c; /*b71c1c*/
-    border-color: #b71c1c;
+    background-color: $brand-primary; /*b71c1c*/
+    border-color: $brand-primary;
     color: #fff;
 }
 
@@ -38,6 +43,12 @@ body {
     filter: invert(100%)
 }
 
-@import "variables.scss";
-@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+a {
+  color: $brand-primary !important;
+}
+
+a:hover {
+  color: $brand-secondary !important;
+}
+
 
