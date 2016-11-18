@@ -9,6 +9,7 @@
     "url": "https://github.com/fttx"
   },
   "scripts": {   
+    "preview": "./node_modules/.bin/build --dir",
     "dist": "./node_modules/.bin/build"
   },
   "build": {

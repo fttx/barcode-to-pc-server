@@ -19,17 +19,14 @@ npm test
 # build angular project
 npm run build
 
-# preview electron (without angular build)
-npm run electron
-
-# create electron package (build included)
-npm run package
-
+# generates the executable whitout the installer
+npm run preview
 ```
 
 
 # Build
 ```bash
 npm install
+# builds angular project in prod mode and generate app install files
 npm run dist
 ```
