@@ -35,7 +35,8 @@ npm install
 npm dist
 
 cd electron
-# install non-angular dependencies (they've been alredy included in a single file by the previous step)
+# install the dependencies that run on node
+# the angular dependencies that run on chromium have been already included in a single file by the previous step
 npm install
 # build installation files and put them in the electron/dist folder
 npm dist
