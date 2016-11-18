@@ -31,13 +31,5 @@ npm run package
 # Build
 ```bash
 npm install
-# build angular project and put it on electron/app directory
-npm dist
-
-cd electron
-# install the dependencies that run on node
-# the angular dependencies that run on chromium have been already included in a single file by the previous step
-npm install
-# build installation files and put them in the electron/dist folder
-npm dist
+npm run dist
 ```
