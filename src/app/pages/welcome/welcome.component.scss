@@ -1,0 +1,31 @@
+.parent {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+    height:100%;
+    position: absolute;
+    text-align: center;
+    flex-direction: column;
+}
+
+.parent img {
+    cursor: pointer;
+}
+
+.playstore {
+    width: 285px;
+}
+
+.appstore {
+    width: 250px;
+}
+
+.help {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: grey;
+    padding: 5px;
+    cursor: pointer
+}

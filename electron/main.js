@@ -1,4 +1,5 @@
-const electron = require('electron')
+const electron = require('electron');
+const {shell} = require('electron')
 const express = require('express')();
 const ws = require('express-ws')(express);
 const robot = require("robotjs");
@@ -17,8 +18,8 @@ let ipcMain = electron.ipcMain
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 950, height: 660,
-        minWidth: 950, minHeight: 660
+        width: 950, height: 600,
+        minWidth: 950, minHeight: 600
     })
 
     // and load the index.html of the app.
@@ -37,7 +38,7 @@ function createWindow() {
             wsConnection.close();
         }
         bonjour.unpublishAll(() => {
-          bonjour.destroy()
+            bonjour.destroy()
         });
     })
 }
@@ -79,6 +80,8 @@ ipcMain
         ipcClient = event.sender;
     }).on('sendSettings', (event, arg) => {
         settings = arg;
+    }).on('openUrl', (event, arg) => {
+        shell.openExternal(arg);
     });
 
 bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })
@@ -87,6 +90,7 @@ express.ws('/', (ws, req) => {
     wsConnection = ws;
 
     console.log("incoming connection");
+    ipcClient.send('onClientConnect', '');
 
     ws.on('message', (message) => {
         if (!mainWindow) return;

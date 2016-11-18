@@ -12,16 +12,23 @@ import { MainComponent } from './pages/main/main.component';
 
 import { IpcProxy } from './services/ipc-proxy.service'
 import { Storage } from './services/storage.service'
+import { EverConnectedService } from './services/ever-connected.service'
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
 
 import { ModalModule } from 'ng2-bootstrap/ng2-bootstrap';
+import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 const routes: Routes = [
     {
         path: '',
-        component: MainComponent
+        component: MainComponent,
+        canActivate: [EverConnectedService]
+    },
+    {
+        path: 'welcome',
+        component: WelcomeComponent
     },
 ];
 
@@ -43,6 +50,7 @@ let localStorageServiceConfig = {
         IpcProxy,
         Storage,
         LocalStorageService,
+        EverConnectedService,
         { provide: LOCAL_STORAGE_SERVICE_CONFIG, useValue: localStorageServiceConfig },
     ],
     declarations: [
@@ -50,7 +58,8 @@ let localStorageServiceConfig = {
         MainComponent,
         ScanSessionComponent,
         ScanSessionsComponent,
-        CircleTextComponent
+        CircleTextComponent,
+        WelcomeComponent
     ],
     exports: [ // solo se si se si deve usare nel template
         CircleTextComponent,

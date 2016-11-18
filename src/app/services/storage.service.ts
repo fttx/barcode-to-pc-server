@@ -11,6 +11,7 @@ const ipcRenderer = window.require ? window.require('electron').ipcRenderer : nu
 export class Storage {
     private static SCAN_SESSIONS = "scan_sessions";
     private static SETTINGS = "settings";
+    private static EVER_CONNECTED = "ever_connected";
 
     constructor(
         private storage: LocalStorageService,
@@ -37,5 +38,17 @@ export class Storage {
             resolve(data);
         });
     }
+
+    setEverConnected(everConnected: boolean) {
+        return this.storage.set(Storage.EVER_CONNECTED, everConnected);
+    }
+
+    getEverConnected(): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            let data = this.storage.get<boolean>(Storage.EVER_CONNECTED);
+            resolve(data);
+        });
+    }
+
 
 }

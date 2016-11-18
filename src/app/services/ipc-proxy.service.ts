@@ -24,6 +24,15 @@ export class IpcProxy {
         })
     }
 
+    onClientConnect(): Observable<boolean> {
+        return Observable.create(observer => {
+            if (!ipcRenderer) return;
+            ipcRenderer.on('onClientConnect', (event, scanSession) => {
+                this.ngZone.run(() => observer.next(scanSession))
+            });
+        });
+    }
+
     onPutScan(): Observable<ScanSessionModel> {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
@@ -63,5 +72,10 @@ export class IpcProxy {
     sendSettings(settings: SettingsModel) {
         if (!ipcRenderer) return;
         ipcRenderer.send('sendSettings', settings);
+    }
+
+    openUrl(url: string) {
+        if (!ipcRenderer) return;
+        ipcRenderer.send('openUrl', url);
     }
 }
