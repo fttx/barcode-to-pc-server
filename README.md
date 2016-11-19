@@ -19,12 +19,15 @@ npm run build
 npm run preview
 ```
 
-# Build
-Install node-gyp: https://github.com/nodejs/node-gyp#installation
+# Build 
 
-Install other required libraries: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
+Install library dependencies
+robotjs: https://github.com/octalmage/robotjs#building
+electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+
+and finally build the project
+
 ```bash
 npm install
-# builds angular project in prod mode and generate app install files
-npm run dist
+npm run dist # builds angular project in prod mode and generate app install files
 ```
