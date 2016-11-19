@@ -1,8 +1,10 @@
 {
   "name": "barcode-to-pc-server",
+  "productName": "Barcode to PC server",
   "description": "Barcode to PC server app",
+  "homepage": "barcode2pc.io",
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "author": {
     "name": "Filippo Tortomasi",
     "email": "filippo.tortomasi@gmail.com.com",
