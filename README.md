@@ -21,6 +21,7 @@ npm run preview
 
 # Build
 Install node-gyp: https://github.com/nodejs/node-gyp#installation
+
 Install other required libraries: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
 ```bash
 npm install
