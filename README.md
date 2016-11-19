@@ -22,8 +22,12 @@ npm run preview
 # Build 
 
 Install library dependencies
+
 robotjs: https://github.com/octalmage/robotjs#building
+
 electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+
+
 
 and finally build the project
 
