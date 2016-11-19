@@ -10,7 +10,7 @@
   },
   "scripts": {   
     "preview": "./node_modules/.bin/build --dir",
-    "dist": "./node_modules/.bin/build"
+    "dist": "rm -rf app/*.map app/*.js.gz && ./node_modules/.bin/build"
   },
   "build": {
     "compression": "maximum",
