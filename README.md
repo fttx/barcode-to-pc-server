@@ -21,17 +21,12 @@ npm run preview
 
 # Build 
 
-Install library dependencies
-
-robotjs: https://github.com/octalmage/robotjs#building
-
-electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
-
-
-
-and finally build the project
-
-```bash
-npm install
-npm run dist # builds angular project in prod mode and generate app install files
-```
+- Install required dependencies:
+  - robotjs: https://github.com/octalmage/robotjs#building
+  - electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+  
+- and finally build the project:
+  ```bash
+  npm install
+  npm run dist # builds angular project in prod mode and generate app install files
+  ```
