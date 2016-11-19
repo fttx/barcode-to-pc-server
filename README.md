@@ -20,8 +20,8 @@ npm run preview
 ```
 
 # Build
-https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
-
+Install node-gyp: https://github.com/nodejs/node-gyp#installation
+Install other required libraries: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build
 ```bash
 npm install
 # builds angular project in prod mode and generate app install files
