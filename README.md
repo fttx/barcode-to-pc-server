@@ -1,10 +1,11 @@
 
 # Barcode to PC server app
 
-# Download
+## Download
 https://barcodetopc.com/
 
-# Build 
+
+## Build 
 
 - Install required dependencies:
   - robotjs: https://github.com/octalmage/robotjs#building
@@ -17,7 +18,8 @@ https://barcodetopc.com/
   npm run dist
   ```
 
-# Run
+
+## Run
 ```bash
 npm install
 # run webpack dev server
