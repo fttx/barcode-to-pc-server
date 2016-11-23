@@ -35,6 +35,9 @@ export class Storage {
     getSettings(): Promise<SettingsModel> {
         return new Promise((resolve, reject) => {
             let data = this.storage.get<SettingsModel>(Storage.SETTINGS);
+            if (data == null) { 
+                data = new SettingsModel();
+            }
             resolve(data);
         });
     }
