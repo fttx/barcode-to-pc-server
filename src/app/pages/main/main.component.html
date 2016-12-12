@@ -47,7 +47,16 @@
                         <option value="tab">TAB</option>
                     </select>
                 </div>
-                
+
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableOpenInBrowser" >
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Automatically open URLs in browser</span>
+                    </label>
+                </div>
+
 
                 <h1 class="section-title">CSV Settings</h1>
 
@@ -92,25 +101,25 @@
             </div>
             <div class="modal-body info">
 
-              
-                    Barcode to PC server v1.0.0
-                    <a (click)="ipcProxy.openUrl('https://barcodetopc.com')">barcodetopc.com</a>
 
-                    <br />
-                    <br />
-                    <br />
-                    <br /> This is an opensource project! Contribute on GitHub:
+                Barcode to PC server v1.0.0
+                <a (click)="ipcProxy.openUrl('https://barcodetopc.com')">barcodetopc.com</a>
+
+                <br />
+                <br />
+                <br />
+                <br /> This is an opensource project! Contribute on GitHub:
 
 
-                    <div>
-                        <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
-                        <a (click)="ipcProxy.openUrl('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
-                    </div>
+                <div>
+                    <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
+                    <a (click)="ipcProxy.openUrl('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
+                </div>
 
-                    <div>
-                        <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
-                        <a (click)="ipcProxy.openUrl('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
-                    </div>
+                <div>
+                    <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
+                    <a (click)="ipcProxy.openUrl('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
+                </div>
 
 
             </div>
