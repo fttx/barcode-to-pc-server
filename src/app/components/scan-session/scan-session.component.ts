@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { ScanSessionModel } from '../../models/scan-session.model'
+import { IpcProxy } from '../../services/ipc-proxy.service'
 
 @Component({
     selector: 'app-scan-session',
@@ -20,7 +21,15 @@ export class ScanSessionComponent implements OnInit {
     @Input() animateLast = false;
 
     constructor(
+        private ipcProxy: IpcProxy,
     ) { }
 
     ngOnInit() { }
+
+    isUrl(scan) {
+        if (!scan || !scan.text || !scan.text.length) {
+            return false;
+        }
+        return scan.text.indexOf('http') != -1 || scan.text.indexOf('ftp') != -1;
+    }
 }
