@@ -1,13 +1,14 @@
 <div class="scan-session">
   <div class="item" *ngFor="let scan of scanSession?.scannings; let i = index" [@addedJustNowState]="animateLast && i == 0 ? 'true' : 'false'">
-    {{ scan.text }}
+    <a *ngIf="isUrl(scan)" class="item-text" (click)="ipcProxy.openUrl(scan.text)">
+        {{ scan.text }}
+    </a>
+    <div *ngIf="!isUrl(scan)" class="item-text">
+      {{ scan.text }}
+    </div>
     <button class="btn btn-sm btn-custom" type="button" ngIIclipboard [cbContent]="scan.text">
         <img src="assets/icons/glyphicons-512-copy.png">
         Copy
-    </button>
-    <button *ngIf="isUrl(scan)" class="btn btn-sm btn-custom" type="button" (click)="ipcProxy.openUrl(scan.text)">
-        <img src="assets/icons/glyphicons-152-new-window.png">
-        Open in browser
     </button>
   </div>
 
