@@ -42,6 +42,7 @@
     "zone.js": "^0.6.23"
   },
   "devDependencies": {
+    "@types/clipboard": "^1.5.30",
     "@types/file-saver": "0.0.0",
     "@types/jasmine": "^2.2.30",
     "@types/node": "^6.0.42",
