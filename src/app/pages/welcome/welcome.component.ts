@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IpcProxy } from '../../services/ipc-proxy.service'
+import { Electron } from '../../services/electron.service'
 import { Storage } from '../../services/storage.service';
 
 
@@ -13,6 +14,7 @@ export class WelcomeComponent implements OnInit {
 
   constructor(
     private ipcProxy: IpcProxy,
+    private electron: Electron,
     private storage: Storage,
     private router: Router,
   ) { }

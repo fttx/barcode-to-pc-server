@@ -5,6 +5,7 @@ import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 import { SettingsModel } from '../../models/settings.model'
 import { ScanSessionModel } from '../../models/scan-session.model'
 import { IpcProxy } from '../../services/ipc-proxy.service'
+import { Electron } from '../../services/electron.service'
 import { Storage } from '../../services/storage.service'
 
 @Component({
@@ -25,6 +26,7 @@ export class MainComponent {
 
     constructor(
         private ipcProxy: IpcProxy,
+        private electron: Electron,
         private storage: Storage,
     ) { }
 

@@ -11,8 +11,10 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 
 import { IpcProxy } from './services/ipc-proxy.service'
+import { Electron } from './services/electron.service'
 import { Storage } from './services/storage.service'
 import { EverConnectedService } from './services/ever-connected.service'
+import { HttpApi } from './services/http-api.service'
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
@@ -48,6 +50,8 @@ let localStorageServiceConfig = {
     ],
     providers: [
         IpcProxy,
+        Electron,
+        HttpApi,
         Storage,
         LocalStorageService,
         EverConnectedService,

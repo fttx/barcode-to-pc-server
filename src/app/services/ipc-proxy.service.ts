@@ -8,6 +8,10 @@ import { Storage } from './storage.service'
 declare var window: any;
 const ipcRenderer = window.require ? window.require('electron').ipcRenderer : null;
 
+/**
+ * This service is a temporary fix to window.require that interferes with angular-cli
+ * This service is used to call electron.ipcRenderer functions from angular
+ */
 @Injectable()
 export class IpcProxy {
 
@@ -72,10 +76,5 @@ export class IpcProxy {
     sendSettings(settings: SettingsModel) {
         if (!ipcRenderer) return;
         ipcRenderer.send('sendSettings', settings);
-    }
-
-    openUrl(url: string) {
-        if (!ipcRenderer) return;
-        ipcRenderer.send('openUrl', url);
     }
 }

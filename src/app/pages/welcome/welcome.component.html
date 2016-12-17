@@ -9,15 +9,15 @@
   <br />
 
   <div class="badges">
-    <img (click)="ipcProxy.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')"
+    <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')"
       class="playstore" alt="Get it on Google Play" src="assets/welcome/google-play-badge.png" />
 
-    <img (click)="ipcProxy.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')"
+    <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')"
       class="appstore" alt="Download on App Store" src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg"
     />
   </div>
 </div>
 
-<div class="help noselect" (click)="ipcProxy.openUrl('https://www.google.com')">
+<div class="help noselect" (click)="electron.openUrl('https://www.google.com')">
   <a>Help?</a>
 </div>
