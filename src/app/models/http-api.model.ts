@@ -1,4 +1,4 @@
-export interface HttpApiModel {
+export interface RemoteSettingsModel {
     serverVersion: string;
     appVersion: string;
 }

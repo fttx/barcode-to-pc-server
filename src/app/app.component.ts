@@ -1,7 +1,7 @@
 import { Component, ViewContainerRef } from '@angular/core';
 import { Electron } from './services/electron.service'
 import { HttpApi } from './services/http-api.service'
-import { HttpApiModel } from './models/http-api.model'
+import { RemoteSettingsModel } from './models/http-api.model'
 
 @Component({
     selector: 'app-root',
@@ -17,7 +17,7 @@ export class AppComponent {
     ) { }
 
     ngOnInit() {
-        this.httpApi.get().subscribe((data: HttpApiModel) => {
+        this.httpApi.getRemoteSettings().subscribe((data: RemoteSettingsModel) => {
             let version = this.electron.getVersion();
             // console.log('local: ' , version, ' remote:', data.serverVersion);
             if (version != data.serverVersion) {

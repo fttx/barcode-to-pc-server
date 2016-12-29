@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
 
@@ -13,7 +13,7 @@ import { Storage } from '../../services/storage.service'
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.scss'],
 })
-export class MainComponent {
+export class MainComponent implements OnInit {
     @ViewChild('settingsModal') public settingsModal: ModalDirective;
     @ViewChild('infoModal') public infoModal: ModalDirective;
 
