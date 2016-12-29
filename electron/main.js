@@ -107,6 +107,9 @@ express.ws('/', (ws, req) => {
             if (settings.enableOpenInBrowser) {
                 shell.openExternal(message.data.scannings[0].text);
             }
+        } else if (message.action == 'getVersion') {
+            let message = { "action": "getVersion", "data": { "version": app.getVersion() } };
+            ws.send(JSON.stringify(message));
         }
     });
 
