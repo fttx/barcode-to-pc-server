@@ -1,23 +1,69 @@
 <div class="parent noselect">
 
-  <h1>Welcome to Barcode to PC server</h1>
-  <br />
-  <h4>Please download and launch the app</h4>
+    <h1>Welcome to Barcode to PC server</h1>
+    <br />
+    <h4>Please download and launch the app</h4>
 
-  <br />
-  <br />
-  <br />
+    <br />
+    <br />
+    <br />
 
-  <div class="badges">
-    <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')"
-      class="playstore" alt="Get it on Google Play" src="assets/welcome/google-play-badge.png" />
+    <div class="badges">
+        <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="playstore" alt="Get it on Google Play"
+            src="assets/welcome/google-play-badge.png" />
 
-    <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')"
-      class="appstore" alt="Download on App Store" src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg"
-    />
-  </div>
+        <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="appstore" alt="Download on App Store"
+            src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg" />
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+    <p [hidden]="!showHint">If the app keeps scanning try to disable your firewall/antivirus</p>
 </div>
 
-<div class="help noselect" (click)="electron.openUrl('https://www.google.com')">
-  <a>Help?</a>
+<div class="help noselect" (click)="helpModal.show()">
+    <a>Help?</a>
+</div>
+
+
+<!-- Help -->
+<div bsModal #helpModal="bs-modal" class="modal fade noselect" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="helpModal.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Help</h4>
+            </div>
+            <div class="modal-body">
+
+
+                <h3>If the app doesn't find the computer</h3>
+                <div class="answer">
+                    Perhaps your firewall and/or antivirus is blocking the communication between the server and the app, try to temporaely disable it or try to add Barcode to PC to the exceptions list.<br><br>
+                    If you're not sure how to do it take a look here: <a (click)="electron.openUrl('https://support.microsoft.com/en-en/instantanswers/c9955ad9-1239-4cb2-988c-982f851617ed/turn-windows-firewall-on-or-off')">Turn Windows Firewall on or off</a>             
+                </div>
+                
+                <h3>Other problems</h3>
+                <div class="answer">
+                    If you have other problems                   
+                    <a (click)="electron.openUrl('mailto:filippo.tortomasi@gmail.com')">contact me</a>
+                </div>
+
+                <!--<div>
+                    <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
+                    <a (click)="electron.openUrl('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
+                </div>
+
+                <div>
+                    <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
+                    <a (click)="electron.openUrl('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
+                </div>-->
+
+
+            </div>
+        </div>
+    </div>
 </div>
