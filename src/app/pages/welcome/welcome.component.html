@@ -9,10 +9,10 @@
     <br />
 
     <div class="badges">
-        <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="playstore" alt="Get it on Google Play"
+        <img (click)="electron.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="playstore" alt="Get it on Google Play"
             src="assets/welcome/google-play-badge.png" />
 
-        <img (click)="electron.openUrl('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="appstore" alt="Download on App Store"
+        <img (click)="electron.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="appstore" alt="Download on App Store"
             src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg" />
     </div>
 
@@ -43,23 +43,23 @@
                 <h3>If the app doesn't find the computer</h3>
                 <div class="answer">
                     Perhaps your firewall and/or antivirus is blocking the communication between the server and the app, try to temporaely disable it or try to add Barcode to PC to the exceptions list.<br><br>
-                    If you're not sure how to do it take a look here: <a (click)="electron.openUrl('https://support.microsoft.com/en-en/instantanswers/c9955ad9-1239-4cb2-988c-982f851617ed/turn-windows-firewall-on-or-off')">Turn Windows Firewall on or off</a>             
+                    If you're not sure how to do it take a look here: <a (click)="electron.openExternal('https://support.microsoft.com/en-en/instantanswers/c9955ad9-1239-4cb2-988c-982f851617ed/turn-windows-firewall-on-or-off')">Turn Windows Firewall on or off</a>             
                 </div>
                 
                 <h3>Other problems</h3>
                 <div class="answer">
                     If you have other problems                   
-                    <a (click)="electron.openUrl('mailto:filippo.tortomasi@gmail.com')">contact me</a>
+                    <a (click)="electron.openExternal('mailto:filippo.tortomasi@gmail.com')">contact me</a>
                 </div>
 
                 <!--<div>
                     <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
-                    <a (click)="electron.openUrl('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
+                    <a (click)="electron.openExternal('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
                 </div>
 
                 <div>
                     <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github" />
-                    <a (click)="electron.openUrl('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
+                    <a (click)="electron.openExternal('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
                 </div>-->
 
 

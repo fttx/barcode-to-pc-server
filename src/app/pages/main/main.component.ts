@@ -26,7 +26,7 @@ export class MainComponent implements OnInit {
 
     constructor(
         private ipcProxy: IpcProxy,
-        private electron: Electron,
+        public electron: Electron,
         private storage: Storage,
     ) { }
 

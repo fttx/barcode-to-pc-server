@@ -80,8 +80,6 @@ ipcMain
         ipcClient = event.sender;
     }).on('sendSettings', (event, arg) => {
         settings = arg;
-    }).on('openUrl', (event, arg) => {
-        shell.openExternal(arg);
     });
 
 bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })

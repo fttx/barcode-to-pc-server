@@ -1,6 +1,6 @@
 <div class="scan-session">
   <div class="item" *ngFor="let scan of scanSession?.scannings; let i = index" [@addedJustNowState]="animateLast && i == 0 ? 'true' : 'false'">
-    <a *ngIf="isUrl(scan)" class="item-text" (click)="electron.openUrl(scan.text)">
+    <a *ngIf="isUrl(scan)" class="item-text" (click)="electron.openExternal(scan.text)">
         {{ scan.text }}
     </a>
     <div *ngIf="!isUrl(scan)" class="item-text">
