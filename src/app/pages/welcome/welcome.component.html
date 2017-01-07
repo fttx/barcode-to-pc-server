@@ -23,10 +23,13 @@
     <p [hidden]="!showHint">If the app keeps scanning try to disable your firewall/antivirus</p>
 </div>
 
-<div class="help noselect" (click)="helpModal.show()">
+<div class="help noselect fixed-bottom" (click)="helpModal.show()">
     <a>Help?</a>
 </div>
 
+<div class="address noselect fixed-bottom">
+    Server address: {{ ipcProxy.getAddress() }}
+</div>
 
 <!-- Help -->
 <div bsModal #helpModal="bs-modal" class="modal fade noselect" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -42,13 +45,14 @@
 
                 <h3>If the app doesn't find the computer</h3>
                 <div class="answer">
-                    Perhaps your firewall and/or antivirus is blocking the communication between the server and the app, try to temporaely disable it or try to add Barcode to PC to the exceptions list.<br><br>
-                    If you're not sure how to do it take a look here: <a (click)="electron.openExternal('https://support.microsoft.com/en-en/instantanswers/c9955ad9-1239-4cb2-988c-982f851617ed/turn-windows-firewall-on-or-off')">Turn Windows Firewall on or off</a>             
+                    Perhaps your firewall and/or antivirus is blocking the communication between the server and the app, try to temporaely disable
+                    it or try to add Barcode to PC to the exceptions list.<br><br> If you're not sure
+                    how to do it take a look here: <a (click)="electron.openExternal('https://support.microsoft.com/en-en/instantanswers/c9955ad9-1239-4cb2-988c-982f851617ed/turn-windows-firewall-on-or-off')">Turn Windows Firewall on or off</a>
                 </div>
-                
+
                 <h3>Other problems</h3>
                 <div class="answer">
-                    If you have other problems                   
+                    If you have other problems
                     <a (click)="electron.openExternal('mailto:filippo.tortomasi@gmail.com')">contact me</a>
                 </div>
 

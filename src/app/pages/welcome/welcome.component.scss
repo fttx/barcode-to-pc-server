@@ -21,12 +21,23 @@
     width: 250px;
 }
 
-.help {
+.fixed-bottom {
     position: absolute;
     bottom: 0;
+    padding: 5px;    
+}
+
+.help { 
     right: 0;
-    padding: 5px;
     cursor: pointer;
+}
+
+.address {
+    left: 0;
+    background-color: #eaeaea;
+    color: #7b7b7b;
+    border-radius: 0 9px 0 0;
+    font-size: 14px;
 }
 
 h3 {

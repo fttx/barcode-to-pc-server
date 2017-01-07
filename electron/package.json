@@ -10,7 +10,7 @@
     "email": "filippo.tortomasi@gmail.com.com",
     "url": "https://github.com/fttx"
   },
-  "scripts": {   
+  "scripts": {
     "preview": "./node_modules/.bin/build --dir",
     "dist": "rm -rf app/*.map app/*.js.gz && ./node_modules/.bin/build"
   },
@@ -27,6 +27,7 @@
   "main": "main.js",
   "private": true,
   "dependencies": {
+    "address": "^1.0.1",
     "bonjour": "^3.5.0",
     "express": "^4.14.0",
     "express-ws": "^2.0.0",

@@ -4,6 +4,7 @@ const express = require('express')();
 const ws = require('express-ws')(express);
 const robot = require("robotjs");
 const bonjour = require('bonjour')();
+const address = require('address');
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -26,7 +27,7 @@ function createWindow() {
     mainWindow.loadURL(`file://${__dirname}/app/index.html`)
 
     // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
+    mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -80,6 +81,8 @@ ipcMain
         ipcClient = event.sender;
     }).on('sendSettings', (event, arg) => {
         settings = arg;
+    }).on('getAddress', (event, arg) => {
+        event.returnValue = address.ip();
     });
 
 bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })

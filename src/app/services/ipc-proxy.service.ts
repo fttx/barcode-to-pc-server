@@ -77,4 +77,9 @@ export class IpcProxy {
         if (!ipcRenderer) return;
         ipcRenderer.send('sendSettings', settings);
     }
+
+    getAddress() {
+        if (!ipcRenderer) return;
+        return ipcRenderer.sendSync('getAddress');
+    }
 }
