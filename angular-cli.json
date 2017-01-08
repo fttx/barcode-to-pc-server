@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.18",
+    "version": "1.0.0-beta.24",
     "name": "demo"
   },
   "apps": [
@@ -21,7 +21,7 @@
         "styles/styles.scss"
       ],
       "scripts": [
-        "../node_modules/papaparse/papaparse.min.js"
+        "../node_modules/papaparse/papaparse.js"
       ],
       "environments": {
         "source": "environments/environment.ts",

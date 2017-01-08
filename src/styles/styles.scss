@@ -1,5 +1,7 @@
-@import "variables.scss";
-@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+@import 'variables.scss';
+$icon-font-path: '../../node_modules/bootstrap-sass/assets/fonts/bootstrap/'; // https://github.com/angular/angular-cli/issues/3537
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss';
+@import 'checkbox.scss';
 
 body {
 	font-family: sans-serif;

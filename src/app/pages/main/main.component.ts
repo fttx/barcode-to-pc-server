@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 
-import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
+import { ModalDirective } from 'ng2-bootstrap';
 
 import { SettingsModel } from '../../models/settings.model'
 import { ScanSessionModel } from '../../models/scan-session.model'
@@ -32,21 +32,12 @@ export class MainComponent implements OnInit {
 
     ngOnInit() {
         this.settingsModal.onHide.subscribe(() => {
-            this.storage.setSettings(this.settings);
+            this.storage.settings = this.settings;
             this.ipcProxy.sendSettings(this.settings);
         });
 
-        this.storage.getSettings().then(settings => {
-            if (settings) {
-                this.settings = settings;
-            }
-        });
-
-        this.storage.getScanSessions().then(scanSessions => {
-            if (this.scanSessions) {
-                this.scanSessions = scanSessions;
-            }
-        })
+        this.settings = this.storage.settings;
+        this.scanSessions = this.storage.scanSessions;
 
         this.ipcProxy.onPutScanSessions().subscribe(scanSessions => {
             this.scanSessions = scanSessions;
@@ -87,7 +78,7 @@ export class MainComponent implements OnInit {
 
     save() {
         console.log("SAVED")
-        this.storage.setScanSessions(this.scanSessions);
+        this.storage.scanSessions = this.scanSessions;
     }
 
 }

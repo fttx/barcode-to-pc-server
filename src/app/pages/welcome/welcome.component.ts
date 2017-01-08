@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { IpcProxy } from '../../services/ipc-proxy.service'
 import { Electron } from '../../services/electron.service'
 import { Storage } from '../../services/storage.service';
-import { ModalDirective } from 'ng2-bootstrap/ng2-bootstrap';
+import { ModalDirective } from 'ng2-bootstrap';
 
 
 @Component({
@@ -25,7 +25,7 @@ export class WelcomeComponent implements OnInit {
 
   ngOnInit() {
     this.ipcProxy.onClientConnect().subscribe(() => {
-      this.storage.setEverConnected(true);
+      this.storage.everConnected = true;
       this.router.navigate(['']);
     });
 

@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { ScanSessionModel } from '../models/scan-session.model'
 import { ScanModel } from '../models/scan.model'
 import { SettingsModel } from '../models/settings.model'
-import { LocalStorageService } from 'angular-2-local-storage';
-
-declare var window: any;
-const ipcRenderer = window.require ? window.require('electron').ipcRenderer : null;
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class Storage {
@@ -13,43 +10,53 @@ export class Storage {
     private static SETTINGS = "settings";
     private static EVER_CONNECTED = "ever_connected";
 
+    _scanSessions: ScanSessionModel[] = [];
+    _settings: SettingsModel = new SettingsModel();
+    _everConnected: boolean = false;
+
     constructor(
-        private storage: LocalStorageService,
+        private localStorage: CoolLocalStorage
     ) { }
 
-    setScanSessions(scanSessions: ScanSessionModel[]) {
-        return this.storage.set(Storage.SCAN_SESSIONS, scanSessions);
+    get scanSessions(): ScanSessionModel[] {
+        let ss = this.localStorage.getObject(Storage.SCAN_SESSIONS);
+        if (ss) {
+            this._scanSessions = ss;
+        }
+        return this._scanSessions;
     }
 
-    getScanSessions(): Promise<ScanSessionModel[]> {
-        return new Promise((resolve, reject) => {
-            let data = this.storage.get<ScanSessionModel>(Storage.SCAN_SESSIONS);
-            resolve(data);
-        });
+    set scanSessions(scanSessions: ScanSessionModel[]) {
+        this.localStorage.setObject(Storage.SCAN_SESSIONS, scanSessions);
+        this._scanSessions = scanSessions;
     }
 
-    setSettings(settings: SettingsModel) {
-        return this.storage.set(Storage.SETTINGS, settings);
+
+    get settings(): SettingsModel {
+        let s = this.localStorage.getObject(Storage.SETTINGS);
+        if (s) {
+            this._settings = s;
+        }
+        return this._settings;
     }
 
-    getSettings(): Promise<SettingsModel> {
-        return new Promise((resolve, reject) => {
-            let data = this.storage.get<SettingsModel>(Storage.SETTINGS);
-            if (data == null) {
-                data = new SettingsModel();
-            }
-            resolve(data);
-        });
+    set settings(settings: SettingsModel) {
+        this.localStorage.setObject(Storage.SETTINGS, settings);
+        this._settings = settings;
     }
 
-    setEverConnected(everConnected: boolean) {
-        return this.storage.set(Storage.EVER_CONNECTED, everConnected);
+
+    get everConnected(): boolean {
+        let ec = this.localStorage.getObject(Storage.EVER_CONNECTED);
+        if (ec) {
+            this._everConnected = ec;
+        }
+        return this._everConnected;
     }
 
-    getEverConnected(): Promise<boolean> {
-        return new Promise((resolve, reject) => {
-            let data = this.storage.get<boolean>(Storage.EVER_CONNECTED);
-            resolve(data);
-        });
+    set everConnected(everConnected: boolean) {
+        this.localStorage.setObject(Storage.EVER_CONNECTED, everConnected);
+        this._everConnected = everConnected;
     }
+
 }

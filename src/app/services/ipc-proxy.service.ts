@@ -22,10 +22,8 @@ export class IpcProxy {
         if (!ipcRenderer) return;
         ipcRenderer.send('connect');
 
-        this.storage.getSettings().then(settings => {
-            this.sendSettings(settings);
-            console.log("settings sent")
-        })
+        this.sendSettings(this.storage.settings);
+        console.log("settings sent")
     }
 
     onClientConnect(): Observable<boolean> {
