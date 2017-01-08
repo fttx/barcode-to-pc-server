@@ -15,15 +15,15 @@ export class EverConnectedService implements CanActivate {
 
   canActivate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.storage.getEverConnected().then(everConnected => {
-        //resolve(true);
-        //return;
-        if (!everConnected) {
-          this.router.navigate(['welcome']);
-        }
-        //resolve(false)
-        resolve(everConnected);
-      });
+      let everConnected = this.storage.everConnected;
+      //resolve(true);
+      //return;
+      if (!everConnected) {
+        this.router.navigate(['welcome']);
+      }
+      //resolve(false)
+      resolve(everConnected);
     });
+
   }
 }
