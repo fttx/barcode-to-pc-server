@@ -31,6 +31,6 @@ export class WelcomeComponent implements OnInit {
 
     setTimeout(() => {
       this.showHint = true;
-    }, 60000);
+    }, 30000);
   }
 }
