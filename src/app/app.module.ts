@@ -19,7 +19,8 @@ import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
 
-import { ModalModule } from 'ng2-bootstrap';
+import { ModalModule, TooltipModule } from 'ng2-bootstrap';
+
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 import { CoolStorageModule } from 'angular2-cool-storage';
@@ -44,6 +45,7 @@ const routes: Routes = [
         ClipboardModule,
         RouterModule.forRoot(routes, { useHash: true }),
         ModalModule.forRoot(),
+        TooltipModule.forRoot(),
         FormsModule,
         CoolStorageModule,
     ],

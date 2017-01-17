@@ -35,11 +35,22 @@
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">Enable realtime strokes</span>
                     </label>
+
+                    <button type="button" class="btn btn-info btn-xs"
+                            tooltip="If enabled once you scan a barcode it will be automatically typed on your computer" placement="bottom">
+                            ?
+                    </button>
                 </div>
 
 
                 <div class="form-group">
                     <label for="end-char">End character</label>
+
+                    <button type="button" class="btn btn-info btn-xs"
+                        tooltip="This character will be automatically typed after the barcode when Realtime strokes is enabled" placement="bottom">
+                        ?
+                    </button>
+                    
                     <select class="form-control" id="end-char" [(ngModel)]="settings && settings.endCharacter">
                         <option value="">Disabled</option>
                         <option selected value="enter">ENTER</option>
@@ -47,6 +58,7 @@
                     </select>
                 </div>
 
+                <br>
 
                 <div class="form-group">
                     <label class="custom-control custom-checkbox">
@@ -54,6 +66,11 @@
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">Automatically open URLs in browser</span>
                     </label>
+
+                    <button type="button" class="btn btn-info btn-xs"
+                            tooltip="If enabled once you scan a barcode that is an URL string then it will be automatically opened in the default browser" placement="bottom">
+                            ?
+                    </button>
                 </div>
 
 
@@ -61,6 +78,12 @@
 
                 <div class="form-group">
                     <label for="divider-charr">New line character</label>
+
+                    <button type="button" class="btn btn-info btn-xs"
+                            tooltip="This is the line end character that will be used to generate the CSV file" placement="bottom">
+                            ?
+                    </button>
+
                     <select class="form-control" id="divider-char" [(ngModel)]="settings && settings.newLineCharacter">
                         <option selected value="CRLF">\r\n</option>
                         <option value="LF">\n</option>
