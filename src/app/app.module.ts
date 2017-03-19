@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
-import { ClipboardModule } from 'angular2-clipboard';
+import { ClipboardModule } from 'ngx-clipboard';
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
@@ -23,7 +23,6 @@ import { ModalModule, TooltipModule } from 'ng2-bootstrap';
 
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 
-import { CoolStorageModule } from 'angular2-cool-storage';
 
 
 const routes: Routes = [
@@ -47,7 +46,6 @@ const routes: Routes = [
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
         FormsModule,
-        CoolStorageModule,
     ],
     providers: [
         IpcProxy,

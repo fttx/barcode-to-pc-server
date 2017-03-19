@@ -6,7 +6,7 @@
     <div *ngIf="!isUrl(scan)" class="item-text">
       {{ scan.text }}
     </div>
-    <button class="btn btn-sm btn-custom" type="button" xngClipboard [cbContent]="scan.text">
+    <button class="btn btn-sm btn-custom" type="button" ngxClipboard [cbContent]="scan.text">
         <img src="assets/icons/glyphicons-512-copy.png">
         Copy
     </button>
