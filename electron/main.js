@@ -1,10 +1,11 @@
 const electron = require('electron');
-const {shell} = require('electron')
+const { shell } = require('electron')
 const express = require('express')();
 const ws = require('express-ws')(express);
 const robot = require("robotjs");
 const bonjour = require('bonjour')();
 const address = require('address');
+const os = require('os');
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -39,7 +40,7 @@ function createWindow() {
             wsConnection.close();
         }
         bonjour.unpublishAll(() => {
-            bonjour.destroy()
+            //bonjour.destroy()
         });
     })
 }
@@ -85,7 +86,11 @@ ipcMain
         event.returnValue = address.ip();
     });
 
-bonjour.publish({ name: 'Barcode to PC server', type: 'http', port: port })
+var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: port })
+
+bonjourService.on('error', () => {
+    // showRestartDialog();
+});
 
 express.ws('/', (ws, req) => {
     wsConnection = ws;
@@ -123,5 +128,15 @@ express.ws('/', (ws, req) => {
     });
 
 });
+
+
+function getNumber() {
+    let hostname = os.hostname();
+    let result = '';
+    for (let i = 0; i < hostname.length; i++) {
+        result += hostname[i].charCodeAt(0);
+    }
+    return result.substring(0, 10);
+}
 
 express.listen(port, () => { });
