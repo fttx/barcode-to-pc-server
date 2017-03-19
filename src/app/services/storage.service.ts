@@ -19,7 +19,7 @@ export class Storage {
     ) { }
 
     get scanSessions(): ScanSessionModel[] {
-        let ss = this.localStorage.getObject(Storage.SCAN_SESSIONS);
+        let ss = JSON.parse(this.localStorage.getItem(Storage.SCAN_SESSIONS));
         if (ss) {
             this._scanSessions = ss;
         }
@@ -27,13 +27,13 @@ export class Storage {
     }
 
     set scanSessions(scanSessions: ScanSessionModel[]) {
-        this.localStorage.setObject(Storage.SCAN_SESSIONS, scanSessions);
+        this.localStorage.setItem(Storage.SCAN_SESSIONS, JSON.stringify(scanSessions));
         this._scanSessions = scanSessions;
     }
 
 
     get settings(): SettingsModel {
-        let s = this.localStorage.getObject(Storage.SETTINGS);
+        let s = JSON.parse(this.localStorage.getItem(Storage.SETTINGS));
         if (s) {
             this._settings = s;
         }
@@ -41,13 +41,13 @@ export class Storage {
     }
 
     set settings(settings: SettingsModel) {
-        this.localStorage.setObject(Storage.SETTINGS, settings);
+        this.localStorage.setItem(Storage.SETTINGS, JSON.stringify(settings));
         this._settings = settings;
     }
 
 
     get everConnected(): boolean {
-        let ec = this.localStorage.getObject(Storage.EVER_CONNECTED);
+        let ec = JSON.parse(this.localStorage.getItem(Storage.EVER_CONNECTED));
         if (ec) {
             this._everConnected = ec;
         }
@@ -55,7 +55,7 @@ export class Storage {
     }
 
     set everConnected(everConnected: boolean) {
-        this.localStorage.setObject(Storage.EVER_CONNECTED, everConnected);
+        this.localStorage.setItem(Storage.EVER_CONNECTED, JSON.stringify(everConnected));
         this._everConnected = everConnected;
     }
 
