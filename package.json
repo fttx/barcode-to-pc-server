@@ -17,7 +17,7 @@
     "pree2e": "webdriver-manager update --standalone false --gecko false",
     "e2e": "protractor",
     "build": "ng build",
-    "preview": "ng build --output-path=electron/app && cd electron && npm run preview",
+    "preview": "npm rebuild node-sass && ng build --output-path=electron/app && cd electron && npm run preview",
     "dist": "ng build --prod --output-path=electron/app && cd electron && npm run dist",
     "postinstall": "cd electron && npm install"
   },
