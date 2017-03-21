@@ -16,12 +16,9 @@
   },
   "build": {
     "compression": "maximum",
-    "appId": "io.barcode2pc",
+    "appId": "com.barcodetopc.server",
     "mac": {
       "category": "public.app-category.utilities"
-    },
-    "win": {
-      "iconUrl": "(windows-only) https link to icon"
     }
   },
   "main": "main.js",
@@ -29,12 +26,12 @@
   "dependencies": {
     "address": "^1.0.1",
     "bonjour": "^3.5.0",
-    "express": "^4.14.0",
-    "express-ws": "^2.0.0",
+    "express": "^4.15.2",
+    "express-ws": "^3.0.0",
     "robotjs": "^0.4.5"
   },
   "devDependencies": {
-    "electron": "^1.4.7",
-    "electron-builder": "^8.6.0"
+    "electron": "^1.6.2",
+    "electron-builder": "^16.0.1"
   }
 }
