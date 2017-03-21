@@ -7,7 +7,15 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Avvia programma",
+            "name": "Unix Debug",
+            "runtimeExecutable": "${workspaceRoot}/electron/node_modules/.bin/electron",
+            "program": "${workspaceRoot}/electron/main.js",
+            "outFiles": []
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Windows Debug",
             "runtimeExecutable": "${workspaceRoot}/electron/node_modules/.bin/electron.cmd",
             "program": "${workspaceRoot}\\electron/main.js",
             "outFiles": []
