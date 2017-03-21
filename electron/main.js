@@ -1,5 +1,5 @@
 const electron = require('electron');
-const { shell } = require('electron')
+const { dialog, shell } = require('electron');
 const express = require('express')();
 const ws = require('express-ws')(express);
 const robot = require("robotjs");
@@ -28,7 +28,7 @@ function createWindow() {
     mainWindow.loadURL(`file://${__dirname}/app/index.html`)
 
     // Open the DevTools.
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 
     // Emitted when the window is closed.
     mainWindow.on('closed', function () {
@@ -88,8 +88,14 @@ ipcMain
 
 var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: port })
 
-bonjourService.on('error', () => {
-    // showRestartDialog();
+bonjourService.on('error', err => { // err is never set?
+    dialog.showMessageBox(mainWindow, {
+        type: 'error',
+        title: 'Error',
+        message: 'Another instance of Barcode To PC is already running.'
+    }, response => {
+        app.quit();
+    });
 });
 
 express.ws('/', (ws, req) => {
