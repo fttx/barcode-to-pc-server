@@ -19,6 +19,14 @@
     "appId": "com.barcodetopc.server",
     "mac": {
       "category": "public.app-category.utilities"
+    },
+    "win": {
+      "target": "nsis",
+      "oneClick": false,
+      "perMachine ": true,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true,
+      "iconUrl": "https://barcodetopc.com/img/logo.png"
     }
   },
   "main": "main.js",
@@ -32,6 +40,7 @@
   },
   "devDependencies": {
     "electron": "^1.6.2",
-    "electron-builder": "^16.0.1"
+    "electron-builder": "^16.0.1",
+    "electron-builder-squirrel-windows": "^16.0.0"
   }
 }
