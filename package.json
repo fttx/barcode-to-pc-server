@@ -19,6 +19,7 @@
     "build": "ng build",
     "preview": "npm rebuild node-sass && ng build --output-path=electron/app && cd electron && npm run preview",
     "dist": "ng build --prod --output-path=electron/app && cd electron && npm run dist",
+    "win-dist": "ng build --prod --output-path=electron/app && cd electron && npm run win-dist",    
     "postinstall": "cd electron && npm install"
   },
   "private": true,

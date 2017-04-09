@@ -12,7 +12,8 @@
   },
   "scripts": {
     "preview": "./node_modules/.bin/build --dir",
-    "dist": "rm -rf app/*.map app/*.js.gz && ./node_modules/.bin/build"
+    "dist": "rm -rf app/*.map app/*.js.gz && ./node_modules/.bin/build",
+    "win-dist": "./node_modules/.bin/build"
   },
   "build": {
     "compression": "maximum",
@@ -21,12 +22,13 @@
       "category": "public.app-category.utilities"
     },
     "win": {
-      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
       "oneClick": false,
-      "perMachine ": true,
       "allowToChangeInstallationDirectory": true,
       "deleteAppDataOnUninstall": true,
-      "iconUrl": "https://barcodetopc.com/img/logo.png"
+      "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp"
     }
   },
   "main": "main.js",
@@ -36,6 +38,7 @@
     "bonjour": "^3.5.0",
     "express": "^4.15.2",
     "express-ws": "^3.0.0",
+    "mdns": "^2.3.3",
     "robotjs": "^0.4.5"
   },
   "devDependencies": {
