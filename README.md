@@ -16,7 +16,9 @@ https://barcodetopc.com/
   ```bash
   npm install
   # builds angular project in prod mode and generate app install files
-  npm run dist
+  npm run dist # macOS/linux
+  npm run win-dist # Windows x64
+  npm run win32-dist # Windows x32
   ```
 
 
