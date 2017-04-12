@@ -8,8 +8,9 @@ https://barcodetopc.com/
 ## Build 
 
 - Install required dependencies:
-  - robotjs: https://github.com/octalmage/robotjs#building
-  - electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+  * robotjs: https://github.com/octalmage/robotjs#building
+  * electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+  * mdns: https://github.com/agnat/node_mdns#installation
   
 - and finally build the project:
   ```bash
