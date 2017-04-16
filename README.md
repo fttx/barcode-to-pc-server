@@ -14,6 +14,8 @@ https://barcodetopc.com/
   
 - and finally build the project:
   ```bash
+  git clone https://github.com/fttx/barcode-to-pc-server/
+  cd barcode-to-pc-server
   npm install
   # builds angular project in prod mode and generate app install files
   npm run dist # macOS/linux
