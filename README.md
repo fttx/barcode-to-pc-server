@@ -20,6 +20,8 @@ https://barcodetopc.com/
   npm run win-dist # Windows x64
   npm run win32-dist # Windows x32
   ```
+  
+  The installer will be put in the electron/dist folder
 
 
 ## Run
@@ -27,8 +29,6 @@ https://barcodetopc.com/
 npm install
 # run webpack dev server
 npm start
-# run karma tests
-npm test
 # build angular project
 npm run build
 # generates the executable whitout the installer (install robotjs dependencies first!)
