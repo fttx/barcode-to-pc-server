@@ -3,7 +3,7 @@ const { dialog, shell } = require('electron');
 const express = require('express')();
 const ws = require('express-ws')(express);
 const robot = require("robotjs");
-var mdns = require('mdns');
+const bonjour = require('bonjour')();
 const address = require('address');
 const os = require('os');
 // Module to control application life.
@@ -16,7 +16,6 @@ const BrowserWindow = electron.BrowserWindow
 let mainWindow
 let wsConnection
 let ipcMain = electron.ipcMain
-let ad
 
 function createWindow() {
     // Create the browser window.
@@ -40,9 +39,9 @@ function createWindow() {
         if (wsConnection) {
             wsConnection.close();
         }
-        if (ad) {
-            ad.stop();
-        }
+        bonjour.unpublishAll(() => {
+            //bonjour.destroy()
+        });
     })
 }
 
@@ -87,12 +86,9 @@ ipcMain
         event.returnValue = address.ip();
     });
 
-try {
-    ad = mdns.createAdvertisement(mdns.tcp('http'), port, {
-        name: 'Barcode to PC server - ' + getNumber()
-    });
-    ad.start();
-} catch (ex) {
+var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: port })
+
+bonjourService.on('error', err => { // err is never set?
     dialog.showMessageBox(mainWindow, {
         type: 'error',
         title: 'Error',
@@ -100,7 +96,7 @@ try {
     }, response => {
         app.quit();
     });
-}
+});
 
 express.ws('/', (ws, req) => {
     wsConnection = ws;
