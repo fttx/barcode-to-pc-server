@@ -6,6 +6,7 @@ const robot = require("robotjs");
 const bonjour = require('bonjour')();
 const address = require('address');
 const os = require('os');
+const network = require('network');
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -97,6 +98,26 @@ bonjourService.on('error', err => { // err is never set?
         app.quit();
     });
 });
+
+let addresses = [];
+
+network.get_interfaces_list((err, networkInterfaces) => {
+    network.get_private_ip((err, defaultIp) => {
+        for (let key in networkInterfaces) {
+            let ip = networkInterfaces[key].ip_address;
+            let item = { "ip": ip };
+            if (ip == defaultIp) {
+                item.default = true;
+            }
+            addresses.push(item);
+        };
+
+        console.log(JSON.stringify(addresses));
+
+    });
+});
+
+
 
 express.ws('/', (ws, req) => {
     wsConnection = ws;
