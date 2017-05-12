@@ -17,6 +17,8 @@ https://barcodetopc.com/
   npm install
   ```
 
+  If you get errors related to cairo.h:  https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error
+
 ## Release 
   ```bash
   # build the angular project in prod mode and generate the app install files
