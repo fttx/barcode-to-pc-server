@@ -1,34 +1,24 @@
 <div class="parent noselect">
+    <h2>Welcome to Barcode to PC server</h2>
 
-    <h1>Welcome to Barcode to PC server</h1>
-    <br />
-    <h4>Please download and launch the app</h4>
+    <div class="text-left">
+        <h3>1) Install the app on your smartphone</h3>
+        <br>
+        <div class="badges">
+            <img (click)="electron.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" alt="Get it on Google Play"
+                src="assets/welcome/google-play-badge.png" />
 
-    <br />
-    <br />
-    <br />
+            <img (click)="electron.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" alt="Download on App Store"
+                src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg" />
+        </div>
 
-    <div class="badges">
-        <img (click)="electron.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="playstore" alt="Get it on Google Play"
-            src="assets/welcome/google-play-badge.png" />
-
-        <img (click)="electron.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" class="appstore" alt="Download on App Store"
-            src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg" />
+        <h3>2) Launch the app and scan this QR code to connect</h3>
+        <qr-code [value]="getQrCode()" [size]="240"></qr-code>
     </div>
-
-    <br />
-    <br />
-    <br />
-
-    <p [hidden]="!showHint">If the app doesn't find your computer try to disable your firewall and/or antivirus</p>
 </div>
 
 <div class="help noselect fixed-bottom" (click)="helpModal.show()">
     <a>Help?</a>
-</div>
-
-<div class="address noselect fixed-bottom">
-    Server address: {{ ipcProxy.getAddress() }}
 </div>
 
 <!-- Help -->

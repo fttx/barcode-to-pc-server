@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { ClipboardModule } from 'ngx-clipboard';
+import { QRCodeModule } from 'angular2-qrcode';
 
 import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
@@ -46,6 +47,7 @@ const routes: Routes = [
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
         FormsModule,
+        QRCodeModule
     ],
     providers: [
         IpcProxy,

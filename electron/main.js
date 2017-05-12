@@ -4,13 +4,12 @@ const express = require('express')();
 const ws = require('express-ws')(express);
 const robot = require("robotjs");
 const bonjour = require('bonjour')();
-const address = require('address');
 const os = require('os');
 const network = require('network');
 // Module to control application life.
-const app = electron.app
+const app = electron.app;
 // Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const BrowserWindow = electron.BrowserWindow;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -83,8 +82,25 @@ ipcMain
         ipcClient = event.sender;
     }).on('sendSettings', (event, arg) => {
         settings = arg;
-    }).on('getAddress', (event, arg) => {
-        event.returnValue = address.ip();
+    }).on('getAddresses', (event, arg) => {
+        network.get_interfaces_list((err, networkInterfaces) => {
+            let addresses = [];
+
+            for (let key in networkInterfaces) {
+                let ip = networkInterfaces[key].ip_address;
+                if (ip) {
+                    addresses.push(ip);
+                }
+            };
+
+            ipcClient.send('getAddresses', addresses);
+        });
+    }).on('getDefaultAddress', (event, arg) => {
+        network.get_private_ip((err, ip) => {
+            ipcClient.send('getDefaultAddress', ip);
+        });
+    }).on('getHostname', (event, arg) => {
+        ipcClient.send('getHostname', os.hostname());
     });
 
 var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: port })
@@ -96,24 +112,6 @@ bonjourService.on('error', err => { // err is never set?
         message: 'Another instance of Barcode To PC is already running.'
     }, response => {
         app.quit();
-    });
-});
-
-let addresses = [];
-
-network.get_interfaces_list((err, networkInterfaces) => {
-    network.get_private_ip((err, defaultIp) => {
-        for (let key in networkInterfaces) {
-            let ip = networkInterfaces[key].ip_address;
-            let item = { "ip": ip };
-            if (ip == defaultIp) {
-                item.default = true;
-            }
-            addresses.push(item);
-        };
-
-        console.log(JSON.stringify(addresses));
-
     });
 });
 

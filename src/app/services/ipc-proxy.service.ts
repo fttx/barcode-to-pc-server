@@ -1,9 +1,9 @@
 import { Injectable, NgZone, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs'
-import { ScanSessionModel } from '../models/scan-session.model'
-import { ScanModel } from '../models/scan.model'
-import { SettingsModel } from '../models/settings.model'
-import { Storage } from './storage.service'
+import { Observable } from 'rxjs';
+import { ScanSessionModel } from '../models/scan-session.model';
+import { ScanModel } from '../models/scan.model';
+import { SettingsModel } from '../models/settings.model';
+import { Storage } from './storage.service';
 
 declare var window: any;
 const ipcRenderer = window.require ? window.require('electron').ipcRenderer : null;
@@ -30,7 +30,7 @@ export class IpcProxy {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('onClientConnect', (event, scanSession) => {
-                this.ngZone.run(() => observer.next(scanSession))
+                this.ngZone.run(() => observer.next(scanSession));
             });
         });
     }
@@ -39,7 +39,7 @@ export class IpcProxy {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('putScan', (event, scanSession) => {
-                this.ngZone.run(() => observer.next(scanSession))
+                this.ngZone.run(() => observer.next(scanSession));
             });
         });
     }
@@ -48,7 +48,7 @@ export class IpcProxy {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('putScanSessions', (event, data) => {
-                this.ngZone.run(() => observer.next(data))
+                this.ngZone.run(() => observer.next(data));
             });
         });
     }
@@ -57,7 +57,7 @@ export class IpcProxy {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('deleteScan', (event, scanSession) => {
-                this.ngZone.run(() => observer.next(scanSession))
+                this.ngZone.run(() => observer.next(scanSession));
             });
         });
     }
@@ -66,7 +66,37 @@ export class IpcProxy {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
             ipcRenderer.on('deleteScanSession', (event, scanSession) => {
-                this.ngZone.run(() => observer.next(scanSession))
+                this.ngZone.run(() => observer.next(scanSession));
+            });
+        });
+    }
+
+    onGetAddresses(): Observable<any[]> {
+        return Observable.create(observer => {
+            if (!ipcRenderer) return;
+            ipcRenderer.send('getAddresses');
+            ipcRenderer.on('getAddresses', (event, addresses) => {
+                this.ngZone.run(() => observer.next(addresses));
+            });
+        });
+    }
+
+     onGetDefaultAddress(): Observable<any> {
+        return Observable.create(observer => {
+            if (!ipcRenderer) return;
+            ipcRenderer.send('getDefaultAddress');
+            ipcRenderer.on('getDefaultAddress', (event, address) => {
+                this.ngZone.run(() => observer.next(address));
+            });
+        });
+    }
+
+    onGetHostname(): Observable<any> {
+        return Observable.create(observer => {
+            if (!ipcRenderer) return;
+            ipcRenderer.send('getHostname');
+            ipcRenderer.on('getHostname', (event, hostname) => {
+                this.ngZone.run(() => observer.next(hostname));
             });
         });
     }
@@ -74,10 +104,5 @@ export class IpcProxy {
     sendSettings(settings: SettingsModel) {
         if (!ipcRenderer) return;
         ipcRenderer.send('sendSettings', settings);
-    }
-
-    getAddress() {
-        if (!ipcRenderer) return;
-        return ipcRenderer.sendSync('getAddress');
     }
 }

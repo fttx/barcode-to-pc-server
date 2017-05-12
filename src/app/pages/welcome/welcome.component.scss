@@ -13,12 +13,8 @@
     cursor: pointer;
 }
 
-.playstore {
-    width: 285px;
-}
-
-.appstore {
-    width: 250px;
+.badges img {
+    height: 50px;
 }
 
 .fixed-bottom {
@@ -32,18 +28,20 @@
     cursor: pointer;
 }
 
-.address {
-    left: 0;
-    background-color: #eaeaea;
-    color: #7b7b7b;
-    border-radius: 0 9px 0 0;
-    font-size: 14px;
-}
-
 h3 {
-    padding-top: 35px;
+    padding-top: 20px;
 }
 
 .answer {
     padding: 5px 0 0 10px;
+}
+
+
+h2 {
+    text-align: left;
+    margin-top: 0;
+}
+
+.badges, qr-code {
+    margin-left: 40px;
 }

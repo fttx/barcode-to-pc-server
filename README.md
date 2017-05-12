@@ -5,19 +5,21 @@
 https://barcodetopc.com/
 
 
-## Build 
-
-- Install required dependencies:
+## Setup
+  Install the required dependencies:
   * robotjs: https://github.com/octalmage/robotjs#building
   * electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
   * mdns: https://github.com/agnat/node_mdns#installation
-  
-- and finally build the project:
+
   ```bash
   git clone https://github.com/fttx/barcode-to-pc-server/
   cd barcode-to-pc-server
   npm install
-  # builds angular project in prod mode and generate app install files
+  ```
+
+## Release 
+  ```bash
+  # build the angular project in prod mode and generate the app install files
   npm run dist # macOS/linux
   npm run win-dist # Windows x64
   npm run win32-dist # Windows x32
@@ -27,12 +29,11 @@ https://barcodetopc.com/
 
 
 ## Run
-```bash
-npm install
-# run webpack dev server
-npm start
-# build angular project
-npm run build
-# generates the executable whitout the installer (install robotjs dependencies first!)
-npm run preview
-```
+  ```bash
+  # run webpack dev server
+  npm run browser
+  # build only the angular project
+  npm run build
+  # run the project without generating the executable
+  npm run electron
+  ```
