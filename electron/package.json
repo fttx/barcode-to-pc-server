@@ -38,6 +38,7 @@
     "bonjour": "^3.5.0",
     "express": "^4.15.2",
     "express-ws": "^3.0.0",
+    "mdns": "^2.3.3",
     "network": "^0.3.2",
     "robotjs": "^0.4.7"
   },

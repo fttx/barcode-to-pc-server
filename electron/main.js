@@ -13,9 +13,11 @@ const BrowserWindow = electron.BrowserWindow;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
-let wsConnection
-let ipcMain = electron.ipcMain
+let mainWindow;
+let wsConnection;
+let ipcMain = electron.ipcMain;
+
+let mdnsAd;
 
 function createWindow() {
     // Create the browser window.
@@ -42,7 +44,37 @@ function createWindow() {
         bonjour.unpublishAll(() => {
             //bonjour.destroy()
         });
+
+        if (mdnsAd) {
+            mdnsAd.stop();
+        }
     })
+
+
+    try {
+        var mdns = require('mdns');
+
+        mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), port, {
+            name: 'Barcode to PC server - ' + getNumber()
+        });
+        mdnsAd.start();
+    } catch (ex) {
+        dialog.showMessageBox(mainWindow, {
+            type: 'warning',
+            title: 'Error',
+            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again an reboot your system.',
+        });
+
+        var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: port })
+
+        bonjourService.on('error', err => { // err is never set?
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Error',
+                message: 'An error occured while announcing the server.'
+            });
+        });
+    }
 }
 
 // This method will be called when Electron has finished
@@ -102,19 +134,6 @@ ipcMain
     }).on('getHostname', (event, arg) => {
         ipcClient.send('getHostname', os.hostname());
     });
-
-var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: port })
-
-bonjourService.on('error', err => { // err is never set?
-    dialog.showMessageBox(mainWindow, {
-        type: 'error',
-        title: 'Error',
-        message: 'Another instance of Barcode To PC is already running.'
-    }, response => {
-        app.quit();
-    });
-});
-
 
 
 express.ws('/', (ws, req) => {
