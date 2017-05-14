@@ -43,7 +43,7 @@
     "robotjs": "^0.4.7"
   },
   "devDependencies": {
-    "electron": "^1.6.2",
-    "electron-builder": "^17.0.0"
+    "electron": "^1.6.7",
+    "electron-builder": "^17.5.0"
   }
 }
