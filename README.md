@@ -1,5 +1,4 @@
-
-# Barcode to PC server app
+# Barcode to PC server
 
 ## Download
 https://barcodetopc.com/
