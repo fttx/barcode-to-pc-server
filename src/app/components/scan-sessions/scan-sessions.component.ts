@@ -41,7 +41,7 @@ export class ScanSessionsComponent implements OnInit {
         content.push(Papa.unparse(this.scanSessions[index].scannings.map(x => { return { 'text': x.text } }), {
             quotes: this.settings.enableQuotes,
             delimiter: ",",
-            newline: this.settings.newLineCharacter.replace('CR', '\r').replace('CF', '\n')
+            newline: this.settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n')
         }));
         let file = new Blob(content, { type: 'text/csv;charset=utf-8' });
         saveAs(file, this.scanSessions[index].name + ".csv");
