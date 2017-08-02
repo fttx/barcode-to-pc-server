@@ -5,18 +5,21 @@ https://barcodetopc.com/
 
 
 ## Setup
-  Install the required dependencies:
-  * robotjs: https://github.com/octalmage/robotjs#building
-  * electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
-  * mdns: https://github.com/agnat/node_mdns#installation
+  1. Install the required dependencies:
+    * Node.js: https://nodejs.org
+    * RobotJS: https://github.com/octalmage/robotjs#building
+    * electron-builder: https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux
+    * node_mdns: https://github.com/agnat/node_mdns#installation
 
-  ```bash
-  git clone https://github.com/fttx/barcode-to-pc-server/
-  cd barcode-to-pc-server
-  npm install
-  ```
+  2. Clone the repository
+    ```bash
+    git clone https://github.com/fttx/barcode-to-pc-server/
+    cd barcode-to-pc-server
+    npm install
+    ```
 
   If you get errors related to cairo.h:  https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error
+
 
 ## Release 
   ```bash
