@@ -1,11 +1,14 @@
 # Barcode to PC server
 
-## Download
-Server: https://barcodetopc.com/#download-server
+## Useful links
+#### Downloads
+* Server: https://barcodetopc.com/#download-server
+* Android: https://play.google.com/store/apps/details?id=com.barcodetopc
+* iOS: https://itunes.apple.com/app/id1180168368
 
-Android: https://play.google.com/store/apps/details?id=com.barcodetopc
-
-iOS: https://itunes.apple.com/app/id1180168368
+#### Repositories
+* Server: https://github.com/fttx/barcode-to-pc-server
+* App: https://github.com/fttx/barcode-to-pc-app
 
 
 ## Setup
