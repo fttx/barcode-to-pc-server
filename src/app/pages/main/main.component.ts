@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 
 import { ModalDirective } from 'ng2-bootstrap';
+import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { SettingsModel } from '../../models/settings.model'
 import { ScanSessionModel } from '../../models/scan-session.model'
@@ -28,7 +29,14 @@ export class MainComponent implements OnInit {
         private ipcProxy: IpcProxy,
         public electron: Electron,
         private storage: Storage,
-    ) { }
+        private dragulaService: DragulaService,
+    ) {
+        dragulaService.drop.subscribe(value => {
+            if (value[1].id == 'key-barcode' && value[2].className.indexOf('keys-available') != -1) {
+                dragulaService.find('keys').drake.cancel(true)
+            }
+        });
+    }
 
     ngOnInit() {
         this.settingsModal.onHide.subscribe(() => {
