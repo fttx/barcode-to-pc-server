@@ -50,7 +50,7 @@
                             Available keys
                         </div>
                         <div class="col-md-9">
-                            <div [dragula]='"keys"' class="keys-container keys">
+                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"keys"' class="keys-container keys">
                                 <button type="button" class="btn btn-primary btn-xs">TAB</button>
                                 <button type="button" class="btn btn-primary btn-xs">CTRL</button>
                                 <button type="button" class="btn btn-primary btn-xs">ALT</button>
@@ -68,7 +68,7 @@
                             Typed string
                         </div>
                         <div class="col-md-9">
-                            <div [dragula]='"keys"' class="keys-container pattern">
+                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"keys"' class="keys-container pattern">
                                 <button type="button" class="btn btn-info btn-xs">BARCODE</button>
                                 <button type="button" class="btn btn-primary btn-xs">ENTER</button>
                             </div>
