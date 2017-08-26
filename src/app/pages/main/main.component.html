@@ -36,27 +36,61 @@
                         <span class="custom-control-description">Enable realtime strokes</span>
                     </label>
 
-                    <button type="button" class="btn btn-info btn-xs"
-                            tooltip="If enabled, once you scan a barcode it will be automatically typed on your computer" placement="bottom">
+                    <button type="button" class="btn btn-info btn-xs" tooltip="If enabled, once you scan a barcode it will be automatically typed on your computer"
+                        placement="bottom">
                             ?
                     </button>
                 </div>
 
 
+
                 <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Available keys
+                        </div>
+                        <div class="col-md-9">
+                            <div [dragula]='"keys"' class="keys-container keys">
+                                <button type="button" class="btn btn-primary btn-xs">TAB</button>
+                                <button type="button" class="btn btn-primary btn-xs">CTRL</button>
+                                <button type="button" class="btn btn-primary btn-xs">ALT</button>
+                                <button type="button" class="btn btn-primary btn-xs">SHIFT</button>
+                                <button type="button" class="btn btn-primary btn-xs">&uarr;</button>
+                                <button type="button" class="btn btn-primary btn-xs">&rarr;</button>
+                                <button type="button" class="btn btn-primary btn-xs">&darr;</button>
+                                <button type="button" class="btn btn-primary btn-xs">&larr;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3">
+                            Typed string
+                        </div>
+                        <div class="col-md-9">
+                            <div [dragula]='"keys"' class="keys-container pattern">
+                                <button type="button" class="btn btn-info btn-xs">BARCODE</button>
+                                <button type="button" class="btn btn-primary btn-xs">ENTER</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="form-group">
                     <label for="end-char">End character</label>
 
-                    <button type="button" class="btn btn-info btn-xs"
-                        tooltip="This character will be automatically typed after the barcode when Realtime strokes is enabled" placement="bottom">
+                    <button type="button" class="btn btn-info btn-xs" tooltip="This character will be automatically typed after the barcode when Realtime strokes is enabled"
+                        placement="bottom">
                         ?
                     </button>
-                    
+
                     <select class="form-control" id="end-char" [(ngModel)]="settings && settings.endCharacter">
                         <option value="">Disabled</option>
                         <option selected value="enter">ENTER</option>
                         <option value="tab">TAB</option>
                     </select>
-                </div>
+                </div> -->
 
                 <br>
 
@@ -67,8 +101,8 @@
                         <span class="custom-control-description">Automatically open URLs in browser</span>
                     </label>
 
-                    <button type="button" class="btn btn-info btn-xs"
-                            tooltip="If enabled, when you scan a barcode that is a valid URL string it will be automatically opened in your browser" placement="bottom">
+                    <button type="button" class="btn btn-info btn-xs" tooltip="If enabled, when you scan a barcode that is a valid URL string it will be automatically opened in your browser"
+                        placement="bottom">
                             ?
                     </button>
                 </div>
@@ -79,8 +113,8 @@
                 <div class="form-group">
                     <label for="divider-charr">New line character</label>
 
-                    <button type="button" class="btn btn-info btn-xs"
-                            tooltip="This is the line end character that will be used to generate the CSV file" placement="bottom">
+                    <button type="button" class="btn btn-info btn-xs" tooltip="This is the line end character that will be used to generate the CSV file"
+                        placement="bottom">
                             ?
                     </button>
 
@@ -128,8 +162,7 @@
                 <a (click)="electron.openExternal('https://barcodetopc.com')">barcodetopc.com</a>
 
                 <br />
-                <br />
-                This is an opensource project! Contribute on GitHub:
+                <br /> This is an opensource project! Contribute on GitHub:
 
 
                 <div>

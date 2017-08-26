@@ -19,7 +19,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles/styles.scss"
+        "styles/styles.scss",
+        "../node_modules/dragula/dist/dragula.css"
       ],
       "scripts": [
         "../node_modules/papaparse/papaparse.js"

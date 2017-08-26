@@ -21,6 +21,7 @@ import { ScanSessionComponent } from './components/scan-session/scan-session.com
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
 
 import { ModalModule, TooltipModule } from 'ng2-bootstrap';
+import { DragulaModule } from 'ng2-dragula'
 
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 
@@ -47,7 +48,8 @@ const routes: Routes = [
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
         FormsModule,
-        QRCodeModule
+        QRCodeModule,
+        DragulaModule
     ],
     providers: [
         IpcProxy,

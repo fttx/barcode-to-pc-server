@@ -50,8 +50,8 @@
 }
 
 .section-title {
-    font-size: 1.2em;
-    font-weight: bold;
+    font-size: 1.3em;
+    font-weight: 800;
     margin-top: 40px;
 }
 
@@ -61,4 +61,18 @@
 
 .info {
     text-align: center;
+}
+
+.keys-container {
+    border: 1px solid darkgrey;
+    line-height: 48px;
+    min-height: 48px;
+}
+
+.keys-container .btn {
+    margin: 0 5px;
+}
+
+label {
+    font-weight: normal;
 }
