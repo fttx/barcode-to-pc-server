@@ -9,7 +9,7 @@ import { StringComponentModel } from "app/models/string-component.model";
 export class StringComponentComponent implements OnInit {
   @Input() component: StringComponentModel;
 
-  private editMode = false;
+  public editMode = false;
 
   constructor() { }
 
