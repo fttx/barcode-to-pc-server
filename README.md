@@ -20,11 +20,11 @@
 
   2. Clone the repository
   
-    ```bash
-    git clone https://github.com/fttx/barcode-to-pc-server/
-    cd barcode-to-pc-server
-    npm install
-    ```
+      ```bash
+      git clone https://github.com/fttx/barcode-to-pc-server/
+      cd barcode-to-pc-server
+      npm install
+      ```
 
   If you get errors related to cairo.h:  https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error
 
