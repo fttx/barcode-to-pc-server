@@ -26,8 +26,8 @@
       npm install
       ```
 
-  If you get errors related to cairo.h:  https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error
-
+  * If you get errors related to cairo.h:  https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error
+  * If you get errors related to dns_sd.h: Install [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe) 
 
 ## Release 
   ```bash
