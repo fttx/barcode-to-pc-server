@@ -19,6 +19,7 @@
     * node_mdns: https://github.com/agnat/node_mdns#installation
 
   2. Clone the repository
+  
     ```bash
     git clone https://github.com/fttx/barcode-to-pc-server/
     cd barcode-to-pc-server
