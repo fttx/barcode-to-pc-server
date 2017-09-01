@@ -22,8 +22,8 @@ let mdnsAd;
 function createWindow() {
     // Create the browser window.
     mainWindow = new BrowserWindow({
-        width: 950, height: 600,
-        minWidth: 950, minHeight: 600
+        width: 1024, height: 720,
+        minWidth: 800, minHeight: 600
     })
 
     // and load the index.html of the app.
@@ -148,10 +148,17 @@ express.ws('/', (ws, req) => {
         ipcClient.send(message.action, message.data);
         if (message.action == 'putScan') {
             if (settings.enableRealtimeStrokes) {
-                robot.typeString(message.data.scannings[0].text);
-                if (settings.endCharacter) {
-                    robot.keyTap(settings.endCharacter);
-                }
+                settings.typedString.forEach((stringComponent) => {
+                    if (stringComponent.type == 'barcode') {
+                        robot.typeString(message.data.scannings[0].text);
+                    } else if (stringComponent.type == 'text') {
+                        robot.typeString(stringComponent.value);
+                    } else if (stringComponent.type == 'key') {
+                        robot.keyTap(stringComponent.value);
+                    } else if (stringComponent.type == 'variable') {
+                        robot.typeString(eval(stringComponent.value));
+                    }
+                });
             }
 
             if (settings.enableOpenInBrowser) {

@@ -47,18 +47,18 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-3">
-                            Available keys
+                            Available string components
+                            <button type="button" class="btn btn-info btn-xs" tooltip="Drag and drop the items from this box to the one below to create your custom typed string"
+                                placement="bottom">
+                                ?
+                            </button>
                         </div>
                         <div class="col-md-9">
-                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"keys"' class="keys-container keys-available">
-                                <button type="button" class="btn btn-primary btn-xs">TAB</button>
-                                <button type="button" class="btn btn-primary btn-xs">CTRL</button>
-                                <button type="button" class="btn btn-primary btn-xs">ALT</button>
-                                <button type="button" class="btn btn-primary btn-xs">SHIFT</button>
-                                <button type="button" class="btn btn-primary btn-xs">&uarr;</button>
-                                <button type="button" class="btn btn-primary btn-xs">&rarr;</button>
-                                <button type="button" class="btn btn-primary btn-xs">&darr;</button>
-                                <button type="button" class="btn btn-primary btn-xs">&larr;</button>
+                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='availableComponents' class="components-container components-available">
+                                <!-- <button *ngFor="let component of availableComponents" type="button" class="btn btn-primary btn-xs" attr.data-code="{{component.code}}"
+                                    [class.btn-info]="component.code=='BARCODE'" [class.btn-success]="component.isVariable" [class.btn-warning]="component.isText"
+                                    [innerHTML]="component.name"></button> -->
+                                <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
                             </div>
                         </div>
                     </div>
@@ -66,11 +66,18 @@
                     <div class="row">
                         <div class="col-md-3">
                             Typed string
+                            <button type="button" class="btn btn-info btn-xs" tooltip="This rappresents the template of the string that will be typed in your computer once you do a scan with your smartphone.  Drag and drop the items from the box above in order to compose your custom template"
+                                placement="bottom">
+                                ?
+                            </button>
                         </div>
                         <div class="col-md-9">
-                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"keys"' class="keys-container keys-typed">
-                                <button type="button" class="btn btn-info btn-xs" id="key-barcode">BARCODE</button>
-                                <button type="button" class="btn btn-primary btn-xs">ENTER</button>
+                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='settings.typedString' class="components-container components-typed">
+                                <!-- <button *ngFor="let component of settings.typedString" type="button" class="btn btn-primary btn-xs" attr.data-code="{{component.code}}" [class.btn-info]="component.code=='BARCODE'" [class.btn-success]="component.isVariable" [class.btn-warning]="component.isText"
+                                    [innerHTML]="component.name"></button> -->
+
+                                <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
+
                             </div>
                         </div>
                     </div>

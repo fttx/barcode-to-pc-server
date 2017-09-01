@@ -1,0 +1,19 @@
+<button 
+  type="button" 
+  class="btn btn-primary btn-xs" 
+  [class.btn-info]="component.type == 'barcode'" 
+  [class.btn-success]="component.type == 'variable'"
+  [class.btn-warning]="component.type == 'text'" (click)="component.type == 'text' ? editMode=true : false;">
+
+  <span [hidden]="editMode == true" [innerHTML]="component.name"></span>
+
+  <span [hidden]="editMode == false" class="custom-text-editor">
+    <input #newValue type="text" class=".input-xs" [value]="component.name" />
+    <button 
+      type="button" 
+      class="btn btn-primary btn-xs" 
+      (click)="component.name=newValue.value; component.value=newValue.value;editMode=false; $event.stopPropagation()">
+      Done
+    </button>
+  </span>
+</button>

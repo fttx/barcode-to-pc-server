@@ -19,6 +19,7 @@ import { HttpApi } from './services/http-api.service';
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
+import { StringComponentComponent } from './components/string-component/string-component.component';
 
 import { ModalModule, TooltipModule } from 'ng2-bootstrap';
 import { DragulaModule } from 'ng2-dragula'
@@ -64,7 +65,8 @@ const routes: Routes = [
         ScanSessionComponent,
         ScanSessionsComponent,
         CircleTextComponent,
-        WelcomeComponent
+        WelcomeComponent,
+        StringComponentComponent
     ],
     exports: [ // solo se si se si deve usare nel template
         CircleTextComponent,
