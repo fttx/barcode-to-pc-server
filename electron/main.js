@@ -14,7 +14,7 @@ const BrowserWindow = electron.BrowserWindow;
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
-let wsConnection;
+let wsConnections = [];
 let ipcMain = electron.ipcMain;
 
 let mdnsAd;
@@ -38,8 +38,8 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
-        if (wsConnection) {
-            wsConnection.close();
+        if (wsConnections) {
+            wsConnections.forEach(wsConnection => wsConnection.close());
         }
         bonjour.unpublishAll(() => {
             //bonjour.destroy()
@@ -135,11 +135,11 @@ ipcMain
         ipcClient.send('getHostname', os.hostname());
     });
 
-
 express.ws('/', (ws, req) => {
-    wsConnection = ws;
+    wsConnections.push(ws);
+    let deviceName = "unknown";
+    console.log("incoming connection")
 
-    console.log("incoming connection");
     ipcClient.send('onClientConnect', '');
 
     ws.on('message', (message) => {
@@ -164,9 +164,12 @@ express.ws('/', (ws, req) => {
             if (settings.enableOpenInBrowser) {
                 shell.openExternal(message.data.scannings[0].text);
             }
-        } else if (message.action == 'getVersion') {
-            let message = { "action": "getVersion", "data": { "version": app.getVersion() } };
-            ws.send(JSON.stringify(message));
+        } else if (message.action == 'helo') {
+            let response = { "action": "helo", "data": { "version": app.getVersion() } };
+            if (message.data && message.data.deviceName) {
+                deviceName = message.data.deviceName;
+            }
+            ws.send(JSON.stringify(response));
         }
     });
 

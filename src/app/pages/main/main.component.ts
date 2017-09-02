@@ -55,6 +55,7 @@ export class MainComponent implements OnInit {
             { name: 'TIME', value: 'new Date().toLocaleTimeString()', type: 'variable' },
             { name: 'DATE_TIME', value: 'new Date().toLocaleDateTimeString()', type: 'variable' },
             { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
+            { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
 
             { name: 'Custom text (click to edit)', value: 'Custom text', type: 'text' },
 
