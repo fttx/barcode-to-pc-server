@@ -27,7 +27,9 @@
     "build": "ng build --prod --output-path=dist && npm run build:main",
     "start": "electron ./dist",
     "dev": "npm run build:main && npm-run-all --parallel browser electron:dev",
-    "dist": "cross-env NODE_ENV=production ng build --prod --output-path=dist && tsc main.ts --outDir dist && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/ && build --project dist",
+    "prepare": "cross-env NODE_ENV=production ng build --prod --output-path=dist && tsc main.ts --outDir dist && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/",
+    "dist": "cross-env NODE_ENV=production npm run prepare && build --project dist",
+    "dist32": "cross-env NODE_ENV=production npm run prepare && build --ia32 --project dist",
     "fix-sass": "npm rebuild node-sass"
   },
   "private": true,
