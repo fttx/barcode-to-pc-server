@@ -1,6 +1,11 @@
 {
   "name": "barcode-to-pc-server",
   "description": "Barcode to PC server app",
+  "keywords": [
+    "barcode",
+    "app",
+    "remote"
+  ],
   "version": "1.1.0",
   "license": "MIT",
   "author": {
@@ -8,22 +13,40 @@
     "email": "filippo.tortomasi@gmail.com.com",
     "url": "https://github.com/fttx"
   },
+  "main": "main.js",
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
-    "browser": "ng serve",
-    "lint": "tslint \"src/**/*.ts\"",
+    "lint": "ng lint",
     "test": "ng test",
-    "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "protractor",
-    "build": "npm rebuild node-sass && ng build --output-path=electron/app",
-    "electron": "npm run build && cd electron && npm run electron",
-    "dist": "ng build --prod --output-path=electron/app && cd electron && npm run dist",
-    "win-dist": "ng build --prod --output-path=electron/app && cd electron && npm run win-dist",
-    "win32-dist": "ng build --prod --output-path=electron/app && cd electron && npm run win32-dist",
-    "postinstall": "cd electron && npm install"
+    "e2e": "ng e2e",
+    "browser": "ng serve",
+    "electron:run": "electron ./dist",
+    "electron:dev": "electron ./dist --dev",
+    "build:main": "tsc main.ts --outDir dist && copyfiles package.json dist && copyfiles node_modules dist",
+    "build": "ng build --prod --output-path=dist && npm run build:main",
+    "start": "electron ./dist",
+    "dev": "npm run build:main && npm-run-all --parallel browser electron:dev",
+    "dist": "ng build --prod --output-path=dist && tsc main.ts --outDir dist && copyfiles package.json dist && cd dist && npm install --prod && cd .. && ./node_modules/.bin/build --project dist",
+    "fix-sass": "npm rebuild node-sass"
   },
   "private": true,
+  "build": {
+    "compression": "maximum",
+    "appId": "com.barcodetopc.server",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "win": {
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "deleteAppDataOnUninstall": true,
+      "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp"
+    }
+  },
   "dependencies": {
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
@@ -42,7 +65,13 @@
     "ng2-bootstrap": "^1.1.16-11",
     "ng2-dragula": "^1.5.0",
     "ngx-clipboard": "^3.0.7",
-    "papaparse": "^4.1.2"
+    "papaparse": "^4.1.2",
+    "bonjour": "^3.5.0",
+    "express": "^4.15.2",
+    "express-ws": "^3.0.0",
+    "mdns": "^2.3.3",
+    "network": "^0.3.2",
+    "robotjs": "^0.4.7"
   },
   "devDependencies": {
     "@angular/cli": "1.3.2",
@@ -65,6 +94,12 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "~2.3.3"
+    "typescript": "~2.3.3",
+    "electron": "^1.6.7",
+    "electron-builder": "^19.27.3",
+    "electron-reload": "1.2.1",
+    "copyfiles": "1.2.0",
+    "cross-env": "5.0.5",
+    "npm-run-all": "^4.1.1"
   }
 }
