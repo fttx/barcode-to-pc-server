@@ -138,19 +138,21 @@ ipcMain
 express.ws('/', (ws, req) => {
     wsConnections.push(ws);
     let deviceName = "unknown";
-    console.log("incoming connection")
+    console.log("ws(incoming connection)")
 
     ipcClient.send('onClientConnect', '');
 
     ws.on('message', (message) => {
+        console.log('ws(message): ', message)
         if (!mainWindow) return;
         message = JSON.parse(message);
-        ipcClient.send(message.action, message.data);
         if (message.action == 'putScan') {
+            ipcClient.send(message.action, message.scan);
+
             if (settings.enableRealtimeStrokes) {
                 settings.typedString.forEach((stringComponent) => {
                     if (stringComponent.type == 'barcode') {
-                        robot.typeString(message.data.scannings[0].text);
+                        robot.typeString(message.scan.text);
                     } else if (stringComponent.type == 'text') {
                         robot.typeString(stringComponent.value);
                     } else if (stringComponent.type == 'key') {
@@ -174,11 +176,11 @@ express.ws('/', (ws, req) => {
     });
 
     ws.on('close', function close() {
-        console.log('disconnected');
+        console.log('ws(close)');
     });
 
     ws.on('error', function close() {
-        console.log('error');
+        console.log('ws(error)');
     });
 
 });

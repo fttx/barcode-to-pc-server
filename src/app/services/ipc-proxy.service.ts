@@ -35,11 +35,11 @@ export class IpcProxy {
         });
     }
 
-    onPutScan(): Observable<ScanSessionModel> {
+    onPutScan(): Observable<ScanModel> {
         return Observable.create(observer => {
             if (!ipcRenderer) return;
-            ipcRenderer.on('putScan', (event, scanSession) => {
-                this.ngZone.run(() => observer.next(scanSession));
+            ipcRenderer.on('putScan', (event, scan) => {
+                this.ngZone.run(() => observer.next(scan));
             });
         });
     }
