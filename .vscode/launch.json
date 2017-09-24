@@ -10,6 +10,9 @@
             "name": "Unix Debug",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
             "program": "${workspaceRoot}/dist/main.js",
+            "args": [
+                "--dev"
+            ],
             "outFiles": []
         },
         {
@@ -18,6 +21,9 @@
             "name": "Windows Debug",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
             "program": "${workspaceRoot}\\dist/main.js",
+            "args": [
+                "--dev"
+            ],
             "outFiles": []
         },
         {
