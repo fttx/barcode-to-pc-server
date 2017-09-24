@@ -44,16 +44,16 @@
 ## Run
   * If you're working on the angular project (src):
   ```bash
-  npm start # run electron with livereload and dev tools
+  npm start # run electron with dev tools and the webserver with livereload
   ```
 
   * If you want to open it on your browser without electron:
   ```bash
-  npm run browser # run the webserver only
+  npm run browser # run the webserver with livereload only
   ```
 
   * If you're working on the main.ts file:
   ```bash
-  npm run build # build the angular project
-  npm run build:main && npm run electron # compile the main.ts file and start electron
+  npm run watch # run the webserver with livereload and also watch the main.ts file
+  npm run electron-dev # run electron with dev tools
   ```
