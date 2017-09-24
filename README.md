@@ -32,20 +32,28 @@
 ## Release 
   ```bash
   # build the angular project in prod mode and generate the app install files
-  npm run dist # macOS/linux
-  npm run win-dist # Windows x64
-  npm run win32-dist # Windows x32
+  npm run dist # Windows x64/macOS/Linux
+  npm run dist32 # Windows x32
   ```
   
-  The installer will be put in the electron/dist folder
+  The installer will be put in the dist/dist/ folder.
+
+  If you get sass errors run `npm run fix-sass`
 
 
 ## Run
+  * If you're working on the angular project (src):
   ```bash
-  # run webpack dev server
-  npm run browser
-  # build only the angular project
-  npm run build
-  # run the project without generating the executable
-  npm run electron
+  npm start # run electron with livereload and dev tools
+  ```
+
+  * If you want to open it on your browser without electron:
+  ```bash
+  npm run browser # run the webserver only
+  ```
+
+  * If you're working on the main.ts file:
+  ```bash
+  npm run build # build the angular project
+  npm run build:main && npm run electron # compile the main.ts file and start electron
   ```
