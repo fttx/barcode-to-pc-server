@@ -1,7 +1,7 @@
 import { ScanModel } from './scan.model'
 
 export interface ScanSessionModel {
-    id: string;
+    id: number;
     name: string;
     date: Date;
     scannings: ScanModel[];

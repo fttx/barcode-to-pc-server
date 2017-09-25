@@ -53,6 +53,7 @@
     }
   },
   "dependencies": {
+    "@angular/animations": "^4.4.3",
     "@angular/common": "^4.2.4",
     "@angular/compiler": "^4.2.4",
     "@angular/core": "^4.2.4",

@@ -1,14 +1,17 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
 
 import { ModalDirective } from 'ng2-bootstrap';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { SettingsModel } from '../../models/settings.model'
 import { ScanSessionModel } from '../../models/scan-session.model'
-import { IpcProxy } from '../../services/ipc-proxy.service'
-import { Electron } from '../../services/electron.service'
 import { Storage } from '../../services/storage.service'
-import { StringComponentModel } from "app/models/string-component.model";
+import { StringComponentModel } from "../../models/string-component.model";
+
+import { ElectronService } from '../../services/electron.service';
+import { remote } from 'electron';
+import { ScanModel } from '../../models/scan.model';
+import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel } from '../../models/request.model';
 
 @Component({
     selector: 'app-main',
@@ -64,68 +67,93 @@ export class MainComponent implements OnInit {
     }
 
     constructor(
-        private ipcProxy: IpcProxy,
-        public electron: Electron,
         private storage: Storage,
         private dragulaService: DragulaService,
+        private electronService: ElectronService,
+        private ngZone: NgZone,
     ) {
-        dragulaService.drop.subscribe(value => {
+        if (this.electronService.isElectron()) {
+            this.electronService.ipcRenderer.on(requestModel.ACTION_SET_SCAN_SESSIONS, (e, request: requestModelSetScanSessions) => {
+                this.ngZone.run(() => {
+                    console.log(request);
+
+                    this.scanSessions = request.scanSessions;
+                    this.save();
+                });
+            })
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSION, (e, request: requestModelPutScanSession) => {
+                this.ngZone.run(() => {
+                    console.log(request);
+
+                    this.scanSessions.unshift(request.scanSessions);
+                    this.selectedScanSession = this.scanSessions[0];
+                    this.save();
+                });
+            })
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN, (e, request: requestModelPutScan) => {
+                this.ngZone.run(() => {
+
+                    this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
+
+                    console.log('putscan', request)
+                    let alredInIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
+                    console.log('alread in: ', alredInIndex)
+                    if (alredInIndex != -1) {
+                        this.scanSessions[alredInIndex].scannings.unshift(request.scan);
+                        this.selectedScanSession = this.scanSessions[alredInIndex];
+                    } else {
+                        // TODO: request a scansessions sync
+                    }
+                    this.save();
+                });
+            });
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN, (e, request: requestModelDeleteScan) => {
+                this.ngZone.run(() => {
+
+                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
+                    if (scanSessionIndex != -1) {
+                        let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
+                        this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
+                    }
+                    this.save();
+                });
+            });
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSession) => {
+                this.ngZone.run(() => {
+                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
+                    if (scanSessionIndex != -1) {
+                        this.scanSessions.splice(scanSessionIndex, 1);
+                        this.save();
+                    }
+                });
+            });
+        }
+        this.electronService.ipcRenderer.send('settings', this.settings);
+    }
+
+    ngOnInit() {
+        this.dragulaService.drop.subscribe(value => {
             if (value[3].className.indexOf('components-available') != -1) {
                 this.availableComponents = this.getAvailableComponents();
             }
         });
 
-        dragulaService.out.subscribe(value => {
+        this.dragulaService.out.subscribe(value => {
             if (value[3].className.indexOf('components-typed') != -1) {
-                dragulaService.find('components').drake.remove();
+                this.dragulaService.find('components').drake.remove();
             }
         });
-    }
 
-    ngOnInit() {
         this.settingsModal.onHide.subscribe(() => {
             this.storage.settings = this.settings;
-            this.ipcProxy.sendSettings(this.settings);
+            this.electronService.ipcRenderer.send('settings', this.settings);
         });
-
         this.settings = this.storage.settings;
         this.scanSessions = this.storage.scanSessions;
-
-        this.ipcProxy.onPutScanSessions().subscribe(scanSessions => {
-            this.scanSessions = scanSessions;
-            this.save();
-        });
-
-        this.ipcProxy.onPutScan().subscribe(scanSession => {
-            this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
-
-            let alredInIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
-            if (alredInIndex != -1) {
-                this.scanSessions[alredInIndex].scannings.unshift(scanSession.scannings[0]);
-                this.selectedScanSession = this.scanSessions[alredInIndex];
-            } else {
-                this.scanSessions.unshift(scanSession);
-                this.selectedScanSession = this.scanSessions[0];
-            }
-            this.save();
-        });
-
-        this.ipcProxy.onDeleteScan().subscribe((associatedScanSession: ScanSessionModel) => {
-            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == associatedScanSession.id);
-            if (scanSessionIndex != -1) {
-                let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == associatedScanSession.scannings[0].id);
-                this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
-            }
-            this.save();
-        });
-
-        this.ipcProxy.onDeleteScanSessions().subscribe((scanSession: ScanSessionModel) => {
-            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
-            if (scanSessionIndex != -1) {
-                this.scanSessions.splice(scanSessionIndex, 1);
-                this.save();
-            }
-        });
     }
 
     save() {

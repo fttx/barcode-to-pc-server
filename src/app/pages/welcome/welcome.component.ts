@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IpcProxy } from '../../services/ipc-proxy.service'
-import { Electron } from '../../services/electron.service'
 import { Storage } from '../../services/storage.service';
 import { ModalDirective } from 'ng2-bootstrap';
+import { ElectronService } from '../../services/electron.service';
 
 @Component({
   selector: 'app-welcome',
@@ -19,30 +18,31 @@ export class WelcomeComponent implements OnInit {
   public defaultAddress;
 
   constructor(
-    private ipcProxy: IpcProxy,
-    public electron: Electron,
     private storage: Storage,
     private router: Router,
-  ) { }
+    private electronService: ElectronService,
+  ) {
+    if (this.electronService.isElectron()) {
+      this.electronService.ipcRenderer.on('clientConnected', (e, clientAddress) => {
+        this.storage.everConnected = true;
+        this.router.navigate(['/scan-session']);
+      });
 
-  ngOnInit() {
-    this.ipcProxy.onClientConnect().subscribe(() => {
-      this.storage.everConnected = true;
-      this.router.navigate(['']);
-    });
+      this.electronService.ipcRenderer.on('addresses', (e, addresses) => {
+        this.addresses = addresses;
+      });
 
-    this.ipcProxy.onGetAddresses().subscribe(addresses => {
-      this.addresses = addresses;
-    });
+      this.electronService.ipcRenderer.on('defaultAddress', (e, defaultAddress) => {
+        this.defaultAddress = defaultAddress;
+      });
 
-    this.ipcProxy.onGetDefaultAddress().subscribe(address => {
-      this.defaultAddress = address;
-    });
-
-    this.ipcProxy.onGetHostname().subscribe(hostname => {
-      this.hostname = hostname;
-    });
+      this.electronService.ipcRenderer.on('hostname', (e, hostname) => {
+        this.hostname = hostname;
+      });
+    }
   }
+
+  ngOnInit() { }
 
   getQrCode() {
     const index = this.addresses.indexOf(this.defaultAddress);

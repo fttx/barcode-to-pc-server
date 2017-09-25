@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
 import { ScanSessionModel } from '../../models/scan-session.model'
-import { IpcProxy } from '../../services/ipc-proxy.service'
-import { Electron } from '../../services/electron.service'
+import { ElectronService } from '../../services/electron.service'
 
 @Component({
     selector: 'app-scan-session',
@@ -22,8 +21,7 @@ export class ScanSessionComponent implements OnInit {
     @Input() animateLast = false;
 
     constructor(
-        private ipcProxy: IpcProxy,
-        private electron: Electron,
+        private electronService: ElectronService,
     ) { }
 
     ngOnInit() { }

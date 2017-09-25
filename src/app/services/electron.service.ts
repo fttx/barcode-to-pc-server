@@ -1,31 +1,32 @@
 import { Injectable } from '@angular/core';
 
-declare var window: any;
-const shell = window.require ? window.require('electron').shell : null;
-const dialog = window.require ? window.require('electron').remote.dialog : null;
-const app = window.require ? window.require('electron').remote.app : null;
+// If you import a module but never use any of the imported values other than as TypeScript types,
+// the resulting javascript file will look as if you never imported the module at all.
+import { ipcRenderer, remote, shell } from 'electron';
 
-/**
- * This service is a temporary fix to window.require that interferes with angular-cli
- * This service is used to call electron functions from angular
- */
 @Injectable()
-export class Electron {
+export class ElectronService {
 
-  constructor() { }
+  ipcRenderer: typeof ipcRenderer;
+  dialog: typeof remote.dialog;
+  app: typeof remote.app;
+  shell: typeof shell;
 
-  openExternal(url: string) {
-    if (!shell) return;
-    shell.openExternal(url);
+  constructor() {
+    if (this.isElectron()) {
+      let electron = window.require('electron');
+      
+      this.ipcRenderer = electron.ipcRenderer;
+      this.dialog = electron.remote.dialog;
+      this.app = electron.remote.app;
+      this.shell = electron.shell;
+
+      this.ipcRenderer.send('ready'); // send the first message from the renderer
+    }
   }
 
-  showMessageBox(options: any, callback: any) {
-    if (!dialog) return;
-    dialog.showMessageBox(options, callback);
+  isElectron() {
+    return window && window.process && window.process.type;
   }
 
-  getVersion(): string {
-    if (!app) return;
-    return app.getVersion();
-  }
 }

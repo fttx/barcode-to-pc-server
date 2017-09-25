@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -11,8 +12,7 @@ import { AppComponent } from './app.component';
 import { MainComponent } from './pages/main/main.component';
 
 
-import { IpcProxy } from './services/ipc-proxy.service';
-import { Electron } from './services/electron.service';
+import { ElectronService } from './services/electron.service';
 import { Storage } from './services/storage.service';
 import { EverConnectedService } from './services/ever-connected.service';
 import { HttpApi } from './services/http-api.service';
@@ -27,25 +27,33 @@ import { DragulaModule } from 'ng2-dragula'
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 
 
-
 const routes: Routes = [
     {
         path: '',
-        component: MainComponent,
-        canActivate: [EverConnectedService]
+        redirectTo: '/scan-session',
+        pathMatch: 'full'
     },
     {
         path: 'welcome',
         component: WelcomeComponent
     },
+    {
+        path: 'scan-session',
+        component: MainComponent,
+        canActivate: [EverConnectedService]
+    },
 ];
+
 
 @NgModule({
     imports: [
         HttpModule,
         BrowserModule,
+        BrowserAnimationsModule,
         ClipboardModule,
-        RouterModule.forRoot(routes, { useHash: true }),
+        RouterModule.forRoot(routes, {
+            // enableTracing: true 
+        }),
         ModalModule.forRoot(),
         TooltipModule.forRoot(),
         FormsModule,
@@ -53,8 +61,7 @@ const routes: Routes = [
         DragulaModule
     ],
     providers: [
-        IpcProxy,
-        Electron,
+        ElectronService,
         HttpApi,
         Storage,
         EverConnectedService,

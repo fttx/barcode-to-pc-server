@@ -10,6 +10,7 @@ const PORT = 57891;
 const wss = new WebSocket.Server({ port: PORT });
 
 import * as b from 'bonjour'
+import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel } from './src/app/models/request.model';
 const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -118,11 +119,11 @@ let ipcClient;
 var settings;
 
 ipcMain
-    .on('connect', (event, arg) => {
-        ipcClient = event.sender;
-    }).on('sendSettings', (event, arg) => {
+    .on('ready', (event, arg) => { // the renderer will send a 'ready' message once is ready
+        ipcClient = event.sender; // save the renderer reference. TODO: what if there are more windows?
+    }).on('settings', (event, arg) => {
         settings = arg;
-    }).on('getAddresses', (event, arg) => {
+    }).on('getLocalAddresses', (event, arg) => {
         network.get_interfaces_list((err, networkInterfaces) => {
             let addresses = [];
 
@@ -132,15 +133,14 @@ ipcMain
                     addresses.push(ip);
                 }
             };
-
-            ipcClient.send('getAddresses', addresses);
+            ipcClient.send('localAddresses', addresses);
         });
-    }).on('getDefaultAddress', (event, arg) => {
+    }).on('getDefaultLocalAddress', (event, arg) => {
         network.get_private_ip((err, ip) => {
-            ipcClient.send('getDefaultAddress', ip);
+            ipcClient.send('defaultLocalAddress', ip);
         });
     }).on('getHostname', (event, arg) => {
-        ipcClient.send('getHostname', os.hostname());
+        ipcClient.send('hostname', os.hostname());
     });
 
 
@@ -149,39 +149,63 @@ wss.on('connection', (ws, req) => {
 
     let clientName = "unknown";
     // const clientAddress = req.connection.remoteAddress;
-    ipcClient.send('onClientConnect', '');
+    ipcClient.send('clientConnected', '');
 
     ws.on('message', messageData => {
         console.log('ws(message): ', messageData)
-        if (!mainWindow) return;
-        let messageObj = JSON.parse(messageData.toString());
-        if (messageObj.action == 'putScan') {
-            ipcClient.send(messageObj.action, messageObj.scan);
+        if (!mainWindow || !ipcClient) return;
+        let obj = JSON.parse(messageData.toString());
 
-            if (settings.enableRealtimeStrokes) {
-                settings.typedString.forEach((stringComponent) => {
-                    if (stringComponent.type == 'barcode') {
-                        robotjs.typeString(messageObj.scan.text);
-                    } else if (stringComponent.type == 'text') {
-                        robotjs.typeString(stringComponent.value);
-                    } else if (stringComponent.type == 'key') {
-                        robotjs.keyTap(stringComponent.value);
-                    } else if (stringComponent.type == 'variable') {
-                        robotjs.typeString(eval(stringComponent.value));
-                    }
-                });
-            }
+        switch (obj.action) {
+            case requestModel.ACTION_PUT_SCAN:
+                let request: requestModelPutScan = obj;
 
-            if (settings.enableOpenInBrowser) {
-                shell.openExternal(messageObj.data.scannings[0].text);
-            }
-        } else if (messageObj.action == 'helo') {
-            let response = { "action": "helo", "data": { "version": app.getVersion() } };
-            if (messageObj.data && messageObj.data.deviceName) {
-                clientName = messageObj.data.deviceName;
-            }
-            ws.send(JSON.stringify(response));
+                if (settings.enableRealtimeStrokes) {
+                    settings.typedString.forEach((stringComponent) => {
+                        if (stringComponent.type == 'barcode') {
+                            robotjs.typeString(request.scan.text);
+                        } else if (stringComponent.type == 'text') {
+                            robotjs.typeString(stringComponent.value);
+                        } else if (stringComponent.type == 'key') {
+                            robotjs.keyTap(stringComponent.value);
+                        } else if (stringComponent.type == 'variable') {
+                            robotjs.typeString(eval(stringComponent.value));
+                        }
+                    });
+                }
+
+                if (settings.enableOpenInBrowser) {
+                    shell.openExternal(request.scan.text);
+                }
+                break;
+
+            case requestModel.ACTION_SET_SCAN_SESSIONS:
+
+                break;
+
+            case requestModel.ACTION_PUT_SCAN_SESSION:
+
+                break;
+
+            case requestModel.ACTION_DELETE_SCAN_SESSION:
+
+                break;
+
+            case requestModel.ACTION_HELO:
+                let response = { "action": "helo", "data": { "version": app.getVersion() } }; // TODO: use a class to generate the object
+                if (obj.data && obj.data.deviceName) {
+                    clientName = obj.data.deviceName;
+                }
+                ws.send(JSON.stringify(response));
+                break;
+
+            default:
+                // ipcClient.send(messageObj.action, messageObj.data);
+                console.log('unhandled ws action: ', obj.action, obj);
+                break;
         }
+
+        ipcClient.send(obj.action, obj);
     });
 
     ws.on('close', () => {
