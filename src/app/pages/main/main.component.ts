@@ -57,8 +57,8 @@ export class MainComponent implements OnInit {
             { name: 'DATE', value: 'new Date().toLocaleDateString()', type: 'variable' },
             { name: 'TIME', value: 'new Date().toLocaleTimeString()', type: 'variable' },
             { name: 'DATE_TIME', value: 'new Date().toLocaleDateTimeString()', type: 'variable' },
-            { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
-            { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
+            // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
+            { name: 'DEVICE_NAME', value: 'clientName', type: 'variable' },
 
             { name: 'Custom text (click to edit)', value: 'Custom text', type: 'text' },
 
@@ -95,14 +95,16 @@ export class MainComponent implements OnInit {
             this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN, (e, request: requestModelPutScan) => {
                 this.ngZone.run(() => {
 
-                    this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
-
-                    console.log('putscan', request)
                     let alredInIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    console.log('alread in: ', alredInIndex)
                     if (alredInIndex != -1) {
-                        this.scanSessions[alredInIndex].scannings.unshift(request.scan);
-                        this.selectedScanSession = this.scanSessions[alredInIndex];
+                        if (request.scan.repeated) {
+                            // TODO: animate the already present scan
+                        } else {
+                            this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
+
+                            this.scanSessions[alredInIndex].scannings.unshift(request.scan);
+                            this.selectedScanSession = this.scanSessions[alredInIndex];
+                        }
                     } else {
                         // TODO: request a scansessions sync
                     }

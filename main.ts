@@ -10,7 +10,8 @@ const PORT = 57891;
 const wss = new WebSocket.Server({ port: PORT });
 
 import * as b from 'bonjour'
-import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel } from './src/app/models/request.model';
+import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
+import { responseModelHelo } from './src/app/models/response.model';
 const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -157,7 +158,8 @@ wss.on('connection', (ws, req) => {
         let obj = JSON.parse(messageData.toString());
 
         switch (obj.action) {
-            case requestModel.ACTION_PUT_SCAN:
+            case requestModel.ACTION_PUT_SCAN: {
+
                 let request: requestModelPutScan = obj;
 
                 if (settings.enableRealtimeStrokes) {
@@ -178,31 +180,43 @@ wss.on('connection', (ws, req) => {
                     shell.openExternal(request.scan.text);
                 }
                 break;
+            }
 
-            case requestModel.ACTION_SET_SCAN_SESSIONS:
+            case requestModel.ACTION_SET_SCAN_SESSIONS: {
 
-                break;
-
-            case requestModel.ACTION_PUT_SCAN_SESSION:
 
                 break;
+            }
 
-            case requestModel.ACTION_DELETE_SCAN_SESSION:
+            case requestModel.ACTION_PUT_SCAN_SESSION: {
 
                 break;
+            }
 
-            case requestModel.ACTION_HELO:
-                let response = { "action": "helo", "data": { "version": app.getVersion() } }; // TODO: use a class to generate the object
-                if (obj.data && obj.data.deviceName) {
-                    clientName = obj.data.deviceName;
+            case requestModel.ACTION_DELETE_SCAN_SESSION: {
+
+                break;
+            }
+
+            case requestModel.ACTION_HELO: {
+                let request: requestModelHelo = obj;
+                let response: responseModelHelo = new responseModelHelo();
+                response.fromObject({
+                    version: app.getVersion() 
+                });
+
+                if (request && request.clientName) {
+                    clientName = request.clientName;
                 }
                 ws.send(JSON.stringify(response));
                 break;
 
-            default:
+            }
+            default: {
                 // ipcClient.send(messageObj.action, messageObj.data);
                 console.log('unhandled ws action: ', obj.action, obj);
                 break;
+            }
         }
 
         ipcClient.send(obj.action, obj);

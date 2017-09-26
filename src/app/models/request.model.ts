@@ -21,10 +21,10 @@ export abstract class requestModel {
 
 export class requestModelHelo extends requestModel {
     action = 'helo';
-    deviceName: string;
+    clientName: string;
 
-    public fromObject(obj: ({ deviceName: string })) {
-        this.deviceName = obj.deviceName;
+    public fromObject(obj: ({ clientName: string })) {
+        this.clientName = obj.clientName;
         return this;
     }
 }
