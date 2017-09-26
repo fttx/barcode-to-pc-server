@@ -58,7 +58,7 @@ export class MainComponent implements OnInit {
             { name: 'TIME', value: 'new Date().toLocaleTimeString()', type: 'variable' },
             { name: 'DATE_TIME', value: 'new Date().toLocaleDateTimeString()', type: 'variable' },
             // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
-            { name: 'DEVICE_NAME', value: 'clientName', type: 'variable' },
+            { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
 
             { name: 'Custom text (click to edit)', value: 'Custom text', type: 'text' },
 
@@ -134,6 +134,8 @@ export class MainComponent implements OnInit {
                 });
             });
         }
+
+        this.settings = this.storage.settings;        
         this.electronService.ipcRenderer.send('settings', this.settings);
     }
 
@@ -154,7 +156,6 @@ export class MainComponent implements OnInit {
             this.storage.settings = this.settings;
             this.electronService.ipcRenderer.send('settings', this.settings);
         });
-        this.settings = this.storage.settings;
         this.scanSessions = this.storage.scanSessions;
     }
 

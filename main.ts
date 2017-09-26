@@ -148,7 +148,7 @@ ipcMain
 wss.on('connection', (ws, req) => {
     console.log("ws(incoming connection)")
 
-    let clientName = "unknown";
+    let deviceName = "unknown";
     // const clientAddress = req.connection.remoteAddress;
     ipcClient.send('clientConnected', '');
 
@@ -205,8 +205,8 @@ wss.on('connection', (ws, req) => {
                     version: app.getVersion() 
                 });
 
-                if (request && request.clientName) {
-                    clientName = request.clientName;
+                if (request && request.deviceName) {
+                    deviceName = request.deviceName;
                 }
                 ws.send(JSON.stringify(response));
                 break;
