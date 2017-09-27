@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '../../services/storage.service';
 import { ModalDirective } from 'ng2-bootstrap';
+import { UtilsService } from '../../services/utils.service';
 import { ElectronService } from '../../services/electron.service';
 
 @Component({
@@ -13,13 +14,12 @@ export class WelcomeComponent implements OnInit {
   @ViewChild('helpModal') public helpModal: ModalDirective;
   @ViewChild("qrCode") qrCode;
 
-  public addresses = [];
-  public hostname = '';
-  public defaultAddress;
+  public qrCodeUrl = '';
 
   constructor(
     private storage: Storage,
     private router: Router,
+    private utilsService: UtilsService,
     private electronService: ElectronService,
   ) {
     if (this.electronService.isElectron()) {
@@ -27,35 +27,10 @@ export class WelcomeComponent implements OnInit {
         this.storage.everConnected = true;
         this.router.navigate(['/scan-session']);
       });
-
-      this.electronService.ipcRenderer.on('addresses', (e, addresses) => {
-        this.addresses = addresses;
-      });
-
-      this.electronService.ipcRenderer.on('defaultAddress', (e, defaultAddress) => {
-        this.defaultAddress = defaultAddress;
-      });
-
-      this.electronService.ipcRenderer.on('hostname', (e, hostname) => {
-        this.hostname = hostname;
-      });
     }
-  }
 
+    this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
+  }
   ngOnInit() { }
-
-  getQrCode() {
-    const index = this.addresses.indexOf(this.defaultAddress);
-
-    if (index > -1) { // removes the defaultAddress from the addresses list
-      this.addresses.splice(index, 1);
-    }
-
-    if (this.defaultAddress) { // Adds the defaultAddress at very beginning of the list
-      this.addresses.unshift(this.defaultAddress);
-    }
-
-    return 'http://app.barcodetopc.com/?h=' + encodeURIComponent(this.hostname) + '&a=' + encodeURIComponent(this.addresses.join('-'));
-  }
 
 }

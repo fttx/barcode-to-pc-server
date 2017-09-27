@@ -164,6 +164,16 @@
             </div>
             <div class="modal-body info">
 
+                Use this QR Code to connect the app:
+                <button type="button" class="btn btn-info btn-xs" tooltip="Launch the app, open the Select server page, tap on the scan icon and scan this QR code"
+                    placement="bottom">
+                    ?
+                </button><br />
+                <qr-code [value]="qrCodeUrl" [size]="240"></qr-code>
+
+                <br />
+                <br />
+                <br />
 
                 Barcode to PC server v1.1.0
                 <a (click)="electron.openExternal('https://barcodetopc.com')">barcodetopc.com</a>

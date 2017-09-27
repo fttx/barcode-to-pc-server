@@ -9,6 +9,7 @@ import { Storage } from '../../services/storage.service'
 import { StringComponentModel } from "../../models/string-component.model";
 
 import { ElectronService } from '../../services/electron.service';
+import { UtilsService } from '../../services/utils.service';
 import { remote } from 'electron';
 import { ScanModel } from '../../models/scan.model';
 import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel } from '../../models/request.model';
@@ -26,6 +27,8 @@ export class MainComponent implements OnInit {
     public scanSessions: ScanSessionModel[] = [];
     public selectedScanSession: ScanSessionModel;
     public animateLast = false;
+
+    public qrCodeUrl = '';    
 
     public settings: SettingsModel = new SettingsModel();
 
@@ -71,6 +74,7 @@ export class MainComponent implements OnInit {
         private dragulaService: DragulaService,
         private electronService: ElectronService,
         private ngZone: NgZone,
+        private utilsService: UtilsService,
     ) {
         if (this.electronService.isElectron()) {
             this.electronService.ipcRenderer.on(requestModel.ACTION_SET_SCAN_SESSIONS, (e, request: requestModelSetScanSessions) => {
@@ -135,8 +139,10 @@ export class MainComponent implements OnInit {
             });
         }
 
-        this.settings = this.storage.settings;        
+        this.settings = this.storage.settings;
         this.electronService.ipcRenderer.send('settings', this.settings);
+
+        this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);        
     }
 
     ngOnInit() {
