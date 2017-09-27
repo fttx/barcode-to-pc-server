@@ -87,7 +87,21 @@ function createWindow() {
             });
         });
     }
+
+
+    const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+        // Someone tried to run a second instance, we should focus our window.
+        if (mainWindow) {
+            if (mainWindow.isMinimized()) mainWindow.restore()
+            mainWindow.focus()
+        }
+    })
+
+    if (isSecondInstance) {
+        app.quit()
+    }
 }
+
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
@@ -110,6 +124,14 @@ app.on('activate', function () {
         createWindow()
     }
 })
+
+app.setAboutPanelOptions({
+    applicationName: 'Barcode to PC',
+    applicationVersion: app.getVersion(),
+    credits: 'Filippo Tortomasi',
+});
+
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
@@ -202,7 +224,7 @@ wss.on('connection', (ws, req) => {
                 let request: requestModelHelo = obj;
                 let response: responseModelHelo = new responseModelHelo();
                 response.fromObject({
-                    version: app.getVersion() 
+                    version: app.getVersion()
                 });
 
                 if (request && request.deviceName) {

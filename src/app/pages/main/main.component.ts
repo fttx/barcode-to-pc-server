@@ -28,9 +28,10 @@ export class MainComponent implements OnInit {
     public selectedScanSession: ScanSessionModel;
     public animateLast = false;
 
-    public qrCodeUrl = '';    
+    public qrCodeUrl = '';
 
     public settings: SettingsModel = new SettingsModel();
+    public openAtLogin = false;
 
     public availableComponents: StringComponentModel[] = this.getAvailableComponents();
     private getAvailableComponents(): StringComponentModel[] {
@@ -79,8 +80,6 @@ export class MainComponent implements OnInit {
         if (this.electronService.isElectron()) {
             this.electronService.ipcRenderer.on(requestModel.ACTION_SET_SCAN_SESSIONS, (e, request: requestModelSetScanSessions) => {
                 this.ngZone.run(() => {
-                    console.log(request);
-
                     this.scanSessions = request.scanSessions;
                     this.save();
                 });
@@ -88,8 +87,6 @@ export class MainComponent implements OnInit {
 
             this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSION, (e, request: requestModelPutScanSession) => {
                 this.ngZone.run(() => {
-                    console.log(request);
-
                     this.scanSessions.unshift(request.scanSessions);
                     this.selectedScanSession = this.scanSessions[0];
                     this.save();
@@ -137,12 +134,12 @@ export class MainComponent implements OnInit {
                     }
                 });
             });
+            this.electronService.ipcRenderer.send('settings', this.settings);
+            this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
         }
 
         this.settings = this.storage.settings;
-        this.electronService.ipcRenderer.send('settings', this.settings);
-
-        this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);        
+        this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
     }
 
     ngOnInit() {
@@ -166,8 +163,15 @@ export class MainComponent implements OnInit {
     }
 
     save() {
-        console.log("SAVED")
         this.storage.scanSessions = this.scanSessions;
+    }
+
+    onOpenAtLoginClick(checked) {
+        this.setOpenAtLogin(checked);
+    }
+
+    setOpenAtLogin(openAtLogin) {
+        this.electronService.app.setLoginItemSettings({ openAtLogin: openAtLogin })
     }
 
 }
