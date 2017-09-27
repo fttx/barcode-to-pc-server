@@ -73,7 +73,7 @@ export class MainComponent implements OnInit {
     constructor(
         private storage: Storage,
         private dragulaService: DragulaService,
-        private electronService: ElectronService,
+        public electronService: ElectronService,
         private ngZone: NgZone,
         private utilsService: UtilsService,
     ) {

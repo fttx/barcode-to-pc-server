@@ -182,7 +182,7 @@
                 <br />
                 <br />
                 <br /> Barcode to PC server v1.1.0
-                <a (click)="electron.openExternal('https://barcodetopc.com')">barcodetopc.com</a>
+                <a (click)="electronService.shell.openExternal('https://barcodetopc.com')">barcodetopc.com</a>
 
                 <br />
                 <br /> This is an opensource project! Contribute on GitHub:
@@ -190,17 +190,17 @@
 
                 <div>
                     <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github icon" />
-                    <a (click)="electron.openExternal('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
+                    <a (click)="electronService.shell.openExternal('https://github.com/fttx/barcode-to-pc-server')">barcode-to-pc-server</a>
                 </div>
 
                 <div>
                     <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github icon" />
-                    <a (click)="electron.openExternal('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
+                    <a (click)="electronService.shell.openExternal('https://github.com/fttx/barcode-to-pc-app')">barcode-to-pc-app</a>
                 </div>
 
                 <div>
                     <img src="assets/icons/glyphicons-11-envelope.png" alt="email" class="icon" />
-                    <a (click)="electron.openExternal('mailto:filippo.tortomasi@gmail.com')">Contact me</a>
+                    <a (click)="electronService.shell.openExternal('mailto:filippo.tortomasi@gmail.com')">Contact me</a>
                 </div>
 
             </div>

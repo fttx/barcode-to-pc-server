@@ -20,7 +20,7 @@ export class WelcomeComponent implements OnInit {
     private storage: Storage,
     private router: Router,
     private utilsService: UtilsService,
-    private electronService: ElectronService,
+    public electronService: ElectronService,
   ) {
     if (this.electronService.isElectron()) {
       this.electronService.ipcRenderer.on('clientConnected', (e, clientAddress) => {
