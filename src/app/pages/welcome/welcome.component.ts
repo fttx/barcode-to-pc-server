@@ -27,9 +27,9 @@ export class WelcomeComponent implements OnInit {
         this.storage.everConnected = true;
         this.router.navigate(['/scan-session']);
       });
+      this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);    
     }
 
-    this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
   }
   ngOnInit() { }
 

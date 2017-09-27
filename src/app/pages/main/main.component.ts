@@ -136,10 +136,9 @@ export class MainComponent implements OnInit {
             });
             this.electronService.ipcRenderer.send('settings', this.settings);
             this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
+            this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
         }
-
         this.settings = this.storage.settings;
-        this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
     }
 
     ngOnInit() {
@@ -157,7 +156,9 @@ export class MainComponent implements OnInit {
 
         this.settingsModal.onHide.subscribe(() => {
             this.storage.settings = this.settings;
-            this.electronService.ipcRenderer.send('settings', this.settings);
+            if (this.electronService.isElectron()) {
+                this.electronService.ipcRenderer.send('settings', this.settings);
+            }
         });
         this.scanSessions = this.storage.scanSessions;
     }
@@ -171,7 +172,9 @@ export class MainComponent implements OnInit {
     }
 
     setOpenAtLogin(openAtLogin) {
-        this.electronService.app.setLoginItemSettings({ openAtLogin: openAtLogin })
+        if (this.electronService.isElectron()) {
+            this.electronService.app.setLoginItemSettings({ openAtLogin: openAtLogin })
+        }
     }
 
 }
