@@ -66,6 +66,8 @@ export class MainComponent implements OnInit {
 
             { name: 'Custom text (click to edit)', value: 'Custom text', type: 'text' },
 
+            { name: 'barcode.substr(start, end)', value: 'barcode.substr(start, end)', type: 'function' },
+            { name: 'barcode.replace(searchvalue, newvalue)', value: 'barcode.replace(searchvalue, newvalue)', type: 'function' },
             { name: 'BARCODE', value: 'BARCODE', type: 'barcode' },
         ];
     }

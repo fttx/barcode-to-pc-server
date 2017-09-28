@@ -12,6 +12,8 @@ const wss = new WebSocket.Server({ port: PORT });
 import * as b from 'bonjour'
 import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
 import { responseModelHelo } from './src/app/models/response.model';
+import { StringComponentModel } from 'app/models/string-component.model';
+import { SettingsModel } from 'app/models/settings.model';
 const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -131,6 +133,11 @@ app.setAboutPanelOptions({
     credits: 'Filippo Tortomasi',
 });
 
+// let platform = os.platform() + '_' + os.arch();
+// let version = app.getVersion();
+// autoUpdater.setFeedURL('http://download.barcodetopc.com:20126/update/' + platform + '/' + version);
+// autoUpdater.checkForUpdates()
+
 
 
 // In this file you can include the rest of your app's specific main process
@@ -139,7 +146,7 @@ app.setAboutPanelOptions({
 // In main process.
 
 let ipcClient;
-var settings;
+var settings: SettingsModel;
 
 ipcMain
     .on('ready', (event, arg) => { // the renderer will send a 'ready' message once is ready
@@ -183,23 +190,38 @@ wss.on('connection', (ws, req) => {
             case requestModel.ACTION_PUT_SCAN: {
 
                 let request: requestModelPutScan = obj;
+                let barcode = request.scan.text;
 
                 if (settings.enableRealtimeStrokes) {
-                    settings.typedString.forEach((stringComponent) => {
-                        if (stringComponent.type == 'barcode') {
-                            robotjs.typeString(request.scan.text);
-                        } else if (stringComponent.type == 'text') {
-                            robotjs.typeString(stringComponent.value);
-                        } else if (stringComponent.type == 'key') {
-                            robotjs.keyTap(stringComponent.value);
-                        } else if (stringComponent.type == 'variable') {
-                            robotjs.typeString(eval(stringComponent.value));
+                    settings.typedString.forEach((stringComponent: StringComponentModel) => {
+                        switch (stringComponent.type) {
+                            case 'barcode': {
+                                robotjs.typeString(barcode);
+                                break;
+                            }
+                            case 'text': {
+                                robotjs.typeString(stringComponent.value);
+                                break;
+                            }
+                            case 'key': {
+                                robotjs.keyTap(stringComponent.value);
+                                break;
+                            }
+                            case 'variable': {
+                                robotjs.typeString(eval(stringComponent.value));
+                                break;
+                            }
+                            case 'function': {
+                                // do checks to prevent injections
+                                robotjs.typeString(eval(barcode));
+                                break;
+                            }
                         }
                     });
                 }
 
                 if (settings.enableOpenInBrowser) {
-                    shell.openExternal(request.scan.text);
+                    shell.openExternal(barcode);
                 }
                 break;
             }
