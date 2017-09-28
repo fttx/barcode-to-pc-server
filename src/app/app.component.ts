@@ -2,6 +2,7 @@ import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import { HttpApi } from './services/http-api.service'
 import { RemoteSettingsModel } from './models/http-api.model'
 import { ElectronService } from './services/electron.service';
+import { ConfigService } from './services/config.service';
 
 @Component({
     selector: 'app-root',
@@ -32,7 +33,7 @@ export class AppComponent implements OnInit {
                         message: 'A new version of Barcode to PC is available', cancelId: 0
                     }, buttonIndex => {
                         if (buttonIndex === 1) {
-                            this.electronService.shell.openExternal('https://barcodetopc.com/#download');
+                            this.electronService.shell.openExternal(ConfigService.URL_DOWNLOAD);
                         }
                     });
                 }

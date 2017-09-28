@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ElectronService } from './electron.service';
+import { ConfigService } from './config.service';
 
 @Injectable()
 export class UtilsService {
@@ -29,7 +30,7 @@ export class UtilsService {
           localAddresses.unshift(defaultLocalAddress);
         }
         // this.ngZone.run(() => {
-        resolve('http://app.barcodetopc.com/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
+        resolve(ConfigService.CONNECT_URL_BASE + '/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
         // })
       });
     })

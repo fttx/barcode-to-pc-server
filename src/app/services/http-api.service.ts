@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs'
 import { RemoteSettingsModel } from '../models/http-api.model'
+import { ConfigService } from '../services/config.service'
 
 @Injectable()
 export class HttpApi {
-    public static API_URL = "https://barcodetopc.com/http-api.json"
     private data: RemoteSettingsModel;
 
     constructor(
@@ -13,7 +13,7 @@ export class HttpApi {
     ) { }
 
     getRemoteSettings(): Observable<RemoteSettingsModel> {
-        return this.http.get(HttpApi.API_URL)
+        return this.http.get(ConfigService.URL_API)
             .map(res => <RemoteSettingsModel>res.json())
             .catch(this.handleError);
     }

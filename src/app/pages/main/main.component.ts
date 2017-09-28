@@ -10,6 +10,7 @@ import { StringComponentModel } from "../../models/string-component.model";
 
 import { ElectronService } from '../../services/electron.service';
 import { UtilsService } from '../../services/utils.service';
+import { ConfigService } from '../../services/config.service';
 import { remote } from 'electron';
 import { ScanModel } from '../../models/scan.model';
 import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel } from '../../models/request.model';
@@ -177,6 +178,26 @@ export class MainComponent implements OnInit {
         if (this.electronService.isElectron()) {
             this.electronService.app.setLoginItemSettings({ openAtLogin: openAtLogin })
         }
+    }
+
+    getWebSiteUrl() {
+        return ConfigService.URL_WEBSITE;
+    }
+
+    getWebSiteName() {
+        return ConfigService.WEB_SITE_NAME;
+    }
+
+    getGitHubServer() {
+        return ConfigService.URL_GITHUB_SERVER;
+    }
+
+    getGitHubApp() {
+        return ConfigService.URL_GITHUB_APP;
+    }
+
+    getMail() {
+        return ConfigService.URL_MAIL;
     }
 
 }
