@@ -127,11 +127,13 @@ app.on('activate', function () {
     }
 })
 
-app.setAboutPanelOptions({
-    applicationName: 'Barcode to PC',
-    applicationVersion: app.getVersion(),
-    credits: 'Filippo Tortomasi',
-});
+if (app.setAboutPanelOptions) {
+    app.setAboutPanelOptions({
+        applicationName: 'Barcode to PC',
+        applicationVersion: app.getVersion(),
+        credits: 'Filippo Tortomasi',
+    });
+}
 
 // let platform = os.platform() + '_' + os.arch();
 // let version = app.getVersion();
