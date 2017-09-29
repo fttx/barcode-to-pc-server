@@ -7,11 +7,11 @@
         <div class="menu-item" (click)="infoModal.show()">Info</div>
     </div>
 
-    <div class="col-half left">
+    <div class="col-half left" #scanSessionsListElement>
         <app-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></app-scan-sessions>
     </div>
 
-    <div class="col-half right">
+    <div class="col-half right" #scanSessionListElement>
         <app-scan-session [scanSession]="selectedScanSession" [animateLast]="animateLast"></app-scan-session>
     </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core'; // SimpleChanges
 import { ScanSessionModel } from '../../models/scan-session.model'
 import { SettingsModel } from '../../models/settings.model'
 import { Storage } from '../../services/storage.service'
@@ -26,11 +26,11 @@ export class ScanSessionsComponent implements OnInit {
         this.settings = this.storage.settings;
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (changes['selectedScanSession']) {
-            // TODO scrollTop
-        }
-    }
+    // ngOnChanges(changes: SimpleChanges) {
+    //     if (changes['selectedScanSession']) {
+    //         // TODO scrollTop
+    //     }
+    // }
 
     onItemSelected(index) {
         this.onSelect.emit(this.scanSessions[index]);

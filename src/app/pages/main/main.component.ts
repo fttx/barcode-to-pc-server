@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit, NgZone, Inject, ViewChild, ElementRef } from '@angular/core';
 
 import { ModalDirective } from 'ng2-bootstrap';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
@@ -23,7 +23,8 @@ import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSess
 export class MainComponent implements OnInit {
     @ViewChild('settingsModal') public settingsModal: ModalDirective;
     @ViewChild('infoModal') public infoModal: ModalDirective;
-
+    @ViewChild('scanSessionsListElement', { read: ElementRef }) public scanSessionsListElement: ElementRef;
+    @ViewChild('scanSessionListElement', { read: ElementRef }) public scanSessionListElement: ElementRef;
 
     public scanSessions: ScanSessionModel[] = [];
     public selectedScanSession: ScanSessionModel;
@@ -92,6 +93,7 @@ export class MainComponent implements OnInit {
                 this.ngZone.run(() => {
                     this.scanSessions.unshift(request.scanSessions);
                     this.selectedScanSession = this.scanSessions[0];
+                    this.scanSessionsListElement.nativeElement.scrollTop = 0;
                     this.save();
                 });
             })
@@ -104,6 +106,7 @@ export class MainComponent implements OnInit {
                         if (request.scan.repeated) {
                             // TODO: animate the already present scan
                         } else {
+                            this.scanSessionListElement.nativeElement.scrollTop = 0;
                             this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
 
                             this.scanSessions[alredInIndex].scannings.unshift(request.scan);
