@@ -17,6 +17,7 @@ export abstract class requestModel {
     public static readonly ACTION_PUT_SCAN = 'putScan';
     public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
     public static readonly ACTION_DELETE_SCAN = 'deleteScan';
+    public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
 }
 
 export class requestModelHelo extends requestModel {
@@ -84,6 +85,20 @@ export class requestModelDeleteScan extends requestModel {
     public fromObject(obj: ({ scan: ScanModel, scanSessionId: number })) {
         this.scan = obj.scan;
         this.scanSessionId = obj.scanSessionId;
+        return this;
+    }
+}
+
+export class requestModelUpdateScanSession extends requestModel {
+    action = 'updateScanSession';
+    scanSessionId: number;
+    scanSessionName: string;
+    scanSessionDate: Date;
+
+    public fromObject(obj: ({ scanSessionId: number, scanSessionName: string, scanSessionDate: Date })) {
+        this.scanSessionId = obj.scanSessionId;
+        this.scanSessionName = obj.scanSessionName;
+        this.scanSessionDate = obj.scanSessionDate;
         return this;
     }
 }

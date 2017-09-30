@@ -258,6 +258,12 @@ wss.on('connection', (ws, req) => {
                 break;
 
             }
+
+            case requestModel.ACTION_UPDATE_SCAN_SESSION: {
+
+                break;
+            }
+
             default: {
                 // ipcClient.send(messageObj.action, messageObj.data);
                 console.log('unhandled ws action: ', obj.action, obj);

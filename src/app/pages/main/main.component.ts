@@ -13,7 +13,7 @@ import { UtilsService } from '../../services/utils.service';
 import { ConfigService } from '../../services/config.service';
 import { remote } from 'electron';
 import { ScanModel } from '../../models/scan.model';
-import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel } from '../../models/request.model';
+import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel, requestModelUpdateScanSession } from '../../models/request.model';
 
 @Component({
     selector: 'app-main',
@@ -140,6 +140,18 @@ export class MainComponent implements OnInit {
                     }
                 });
             });
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_UPDATE_SCAN_SESSION, (e, request: requestModelUpdateScanSession) => {
+                this.ngZone.run(() => {
+                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
+                    if (scanSessionIndex != -1) {
+                        this.scanSessions[scanSessionIndex].name = request.scanSessionName;
+                        this.scanSessions[scanSessionIndex].date = request.scanSessionDate;
+                        this.save();
+                    }
+                });
+            });
+
             this.electronService.ipcRenderer.send('settings', this.settings);
             this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
             this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
