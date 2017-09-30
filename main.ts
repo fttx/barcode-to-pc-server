@@ -76,7 +76,7 @@ function createWindow() {
         dialog.showMessageBox(mainWindow, {
             type: 'warning',
             title: 'Error',
-            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again an reboot your system.',
+            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again with an administrator account and reboot your system.',
         });
 
         var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: PORT })

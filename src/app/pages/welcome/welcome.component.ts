@@ -1,8 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Storage } from '../../services/storage.service';
-import { ModalDirective } from 'ng2-bootstrap';
 import { UtilsService } from '../../services/utils.service';
+import { ConfigService } from '../../services/config.service';
 import { ElectronService } from '../../services/electron.service';
 
 @Component({
@@ -11,7 +11,6 @@ import { ElectronService } from '../../services/electron.service';
   styleUrls: ['./welcome.component.scss']
 })
 export class WelcomeComponent implements OnInit {
-  @ViewChild('helpModal') public helpModal: ModalDirective;
   @ViewChild("qrCode") qrCode;
 
   public qrCodeUrl = '';
@@ -32,5 +31,9 @@ export class WelcomeComponent implements OnInit {
 
   }
   ngOnInit() { }
+
+  openFAQ() {
+    this.electronService.shell.openExternal(ConfigService.URL_FAQ);
+  }
 
 }
