@@ -1,4 +1,4 @@
-import { StringComponentModel } from "app/models/string-component.model";
+import { StringComponentModel } from "./string-component.model";
 
 export class SettingsModel {
     enableRealtimeStrokes: boolean = true;

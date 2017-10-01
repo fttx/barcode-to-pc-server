@@ -12,8 +12,8 @@ const wss = new WebSocket.Server({ port: PORT });
 import * as b from 'bonjour'
 import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
 import { responseModelHelo } from './src/app/models/response.model';
-import { StringComponentModel } from 'app/models/string-component.model';
-import { SettingsModel } from 'app/models/settings.model';
+import { StringComponentModel } from './src/app/models/string-component.model';
+import { SettingsModel } from './src/app/models/settings.model';
 const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
