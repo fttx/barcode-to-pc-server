@@ -11,7 +11,7 @@ const wss = new WebSocket.Server({ port: PORT });
 
 import * as b from 'bonjour'
 import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
-import { responseModelHelo } from './src/app/models/response.model';
+import { responseModelHelo, responseModelPong } from './src/app/models/response.model';
 import { StringComponentModel } from './src/app/models/string-component.model';
 import { SettingsModel } from './src/app/models/settings.model';
 const bonjour = b();
@@ -244,9 +244,15 @@ wss.on('connection', (ws, req) => {
                 break;
             }
 
+            case requestModel.ACTION_PING: {
+                ws.send(JSON.stringify(new responseModelPong()));
+                break;
+            }
+
+
             case requestModel.ACTION_HELO: {
                 let request: requestModelHelo = obj;
-                let response: responseModelHelo = new responseModelHelo();
+                let response = new responseModelHelo();
                 response.fromObject({
                     version: app.getVersion()
                 });
