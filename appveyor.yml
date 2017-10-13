@@ -1,0 +1,10 @@
+version: 1.0.{build}
+branches:
+  only:
+  - master
+init:
+- cmd: npm i
+install:
+- cmd: npm run dist
+build:
+  verbosity: minimal
