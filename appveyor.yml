@@ -10,8 +10,8 @@ install:
   - node --version
   - npm --version
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
-  - msiexec /i bonjourcore2.msi /qn
-  - del bonjourcore2.msi
+  - msiexec /i Bonjour64.msi /qn
+  - del Bonjour64.msi
   - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
