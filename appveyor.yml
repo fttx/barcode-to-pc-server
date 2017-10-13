@@ -16,10 +16,11 @@ install:
   - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
+  - set path=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%path%
   - npm install 
-  - npm install --no-save typescript@2.5
-  - echo %NODE_ENV%  
   - npm run tsc --version
+  - echo %NODE_ENV%  
+  
 
 build_script:
   - npm run dist
