@@ -7,10 +7,10 @@ branches:
   - master
 install:
   - ps: Install-Product node $env:nodejs_version
-  - cmd: npm install
   - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
   - msiexec /i bonjoursdksetup.msi /qn
   - del bonjoursdksetup.msi
+  - cmd: npm install 
 
 build_script:
   - cmd: npm run dist
