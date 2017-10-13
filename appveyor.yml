@@ -8,8 +8,8 @@ branches:
 install:
   - ps: Install-Product node $env:nodejs_version
   - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
-  - msiexec /i bonjoursdksetup.msi /qn
-  - del bonjoursdksetup.msi
+  - bonjoursdksetup.exe /quiet
+  - del bonjoursdksetup.exe
   - cmd: npm install 
 
 build_script:
