@@ -17,6 +17,7 @@ install:
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
   - set path=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%path%
+  - set path=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin\;%path%
   - set ECHO=ON 
   - echo %NODE_ENV%    
   - set NODE_ENV=production
