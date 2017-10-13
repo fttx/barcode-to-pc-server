@@ -1,6 +1,6 @@
 version: 1.0.{build}
 environment:
-  nodejs_version: "6"
+  nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 branches:
   only:
@@ -18,10 +18,10 @@ install:
   - del bonjoursdksetup.exe
   - set path=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%path%
   - set ECHO=ON 
+  - echo %NODE_ENV%    
   - set NODE_ENV=production
   - npm run tsc --version
-  - echo %NODE_ENV%  
-  - npm install --only=production
+  - npm install
 
   
 
