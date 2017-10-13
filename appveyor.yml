@@ -1,10 +1,14 @@
 version: 1.0.{build}
+environment:
+  nodejs_version: "8"
 branches:
   only:
   - master
 init:
-- cmd: npm i
+
 install:
-- cmd: npm run dist
+  - ps: Install-Product node $env:nodejs_version
+  - cmd: npm install
 build:
+  - cmd: npm run dist
   verbosity: minimal
