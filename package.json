@@ -35,7 +35,7 @@
     "dist": "cross-env NODE_ENV=production npm run prepare:dist && build --project dist",
     "dist32": "cross-env NODE_ENV=production npm run prepare:dist && build --ia32 --project dist",
     "fix-sass": "npm rebuild node-sass",
-    "postinstall": "npx electron-builder install-app-deps"
+    "postinstall": "build install-app-deps"
   },
   "private": true,
   "build": {
