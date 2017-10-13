@@ -1,12 +1,12 @@
 version: 1.0.{build}
 environment:
-  # nodejs_version: "8"
+  nodejs_version: "6"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 branches:
   only:
   - master
 install:
-  # - ps: Install-Product node $env:nodejs_version
+  - ps: Install-Product node $env:nodejs_version
   - node --version
   - npm --version
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
