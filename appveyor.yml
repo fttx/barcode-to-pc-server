@@ -5,8 +5,10 @@ environment:
 branches:
   only:
   - master
+image: Visual Studio 2015
 install:
   - ps: Install-Product node $env:nodejs_version
+  set path=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.2;%path%
   - node --version
   - npm --version
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
@@ -15,10 +17,12 @@ install:
   - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
-  - cmd: npm install 
-  - tsc --version
+  - npm install 
+  - npm install --no-save typescript@2.5
+  - echo %NODE_ENV%  
+  - npm run tsc --version
 
 build_script:
-  - cmd: npm run dist
+  - npm run dist
 build:  
   verbosity: minimal
