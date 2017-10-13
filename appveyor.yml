@@ -1,12 +1,17 @@
 version: 1.0.{build}
 environment:
   nodejs_version: "8"
+  BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 branches:
   only:
   - master
 install:
   - ps: Install-Product node $env:nodejs_version
   - cmd: npm install
+  - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
+  - msiexec /i bonjoursdksetup.msi /qn
+  - del bonjoursdksetup.msi
+
 build_script:
   - cmd: npm run dist
 build:  
