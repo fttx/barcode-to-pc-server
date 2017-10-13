@@ -4,11 +4,10 @@ environment:
 branches:
   only:
   - master
-init:
-
 install:
   - ps: Install-Product node $env:nodejs_version
   - cmd: npm install
-build:
+build_script:
   - cmd: npm run dist
+build:  
   verbosity: minimal
