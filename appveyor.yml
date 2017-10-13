@@ -19,8 +19,8 @@ install:
   - set path=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%path%
   - set path=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin\;%path%
   - set ECHO=ON 
-  - echo path
-  - echo %NODE_ENV%    
+  - echo "%path%"
+  - echo "%NODE_ENV%"
   - set NODE_ENV=production
   - npm run tsc --version
   - npm install
