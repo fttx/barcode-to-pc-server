@@ -71,6 +71,7 @@
     "network": "^0.3.2",
     "ng2-bootstrap": "^1.1.16-11",
     "ng2-dragula": "^1.5.0",
+    "ngx-bootstrap": "^1.9.3",
     "ngx-clipboard": "^3.0.7",
     "papaparse": "^4.1.2",
     "robotjs": "^0.4.7",
@@ -83,7 +84,6 @@
     "@angular/compiler-cli": "^4.2.4",
     "@angular/language-service": "^4.2.4",
     "@types/bonjour": "^3.5.5",
-    "@types/electron": "^1.6.10",
     "@types/express": "^4.0.37",
     "@types/file-saver": "0.0.0",
     "@types/jasmine": "~2.5.53",
@@ -108,6 +108,6 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.3.2",
-    "typescript": "~2.3.3"
+    "typescript": "2.5.2"
   }
 }

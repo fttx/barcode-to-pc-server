@@ -1,19 +1,22 @@
 version: 1.0.{build}
 environment:
-  nodejs_version: "8"
+  # nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 branches:
   only:
   - master
 install:
-  - ps: Install-Product node $env:nodejs_version
-  - appveyor DownloadFile https://www.samuelattard.com/files/bonjourcore2.msi
+  # - ps: Install-Product node $env:nodejs_version
+  - node --version
+  - npm --version
+  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
   - msiexec /i bonjourcore2.msi /qn
   - del bonjourcore2.msi
-  - appveyor DownloadFile https://www.samuelattard.com/files/bonjoursdksetup.exe
+  - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
   - cmd: npm install 
+  - tsc --version
 
 build_script:
   - cmd: npm run dist
