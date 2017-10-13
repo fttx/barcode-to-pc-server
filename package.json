@@ -31,11 +31,11 @@
     "build": "npm run ng build --prod --output-path=dist && npm run build:main && copyfiles package.json dist && copyfiles node_modules dist",
     "start": "npm run build:main && npm-run-all --parallel browser electron-dev",
     "watch": "npm-run-all --parallel build:main:watch browser:keep-dist",
-    "prepare:dist": "cross-env NODE_ENV=production npm run ng build --prod --output-path=dist && tsc main.ts --outDir dist && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/",
+    "prepare:dist": "cross-env NODE_ENV=production npm run electron-builder install-app-deps && npm run ng build --prod --output-path=dist && tsc main.ts --outDir dist && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/",
     "dist": "cross-env NODE_ENV=production npm run prepare:dist && build --project dist",
     "dist32": "cross-env NODE_ENV=production npm run prepare:dist && build --ia32 --project dist",
     "fix-sass": "npm rebuild node-sass",
-    "postinstall": "build install-app-deps"
+    "postinstall": ""
   },
   "private": true,
   "build": {
