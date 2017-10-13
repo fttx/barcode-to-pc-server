@@ -1,6 +1,6 @@
 import { Component, OnInit, NgZone, Inject, ViewChild, ElementRef } from '@angular/core';
 
-import { ModalDirective } from 'ng2-bootstrap';
+import { ModalDirective } from 'ngx-bootstrap';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 
 import { SettingsModel } from '../../models/settings.model'

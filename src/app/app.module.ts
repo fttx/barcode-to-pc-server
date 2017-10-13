@@ -22,7 +22,7 @@ import { ScanSessionComponent } from './components/scan-session/scan-session.com
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
 import { StringComponentComponent } from './components/string-component/string-component.component';
 
-import { ModalModule, TooltipModule } from 'ng2-bootstrap';
+import { ModalModule, TooltipModule } from 'ngx-bootstrap';
 import { DragulaModule } from 'ng2-dragula'
 
 import { WelcomeComponent } from './pages/welcome/welcome.component';

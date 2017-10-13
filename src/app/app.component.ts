@@ -12,7 +12,7 @@ import { ConfigService } from './services/config.service';
 export class AppComponent implements OnInit {
 
     constructor(
-        public viewContainerRef: ViewContainerRef, // required from ng2-bootstrap Modals
+        public viewContainerRef: ViewContainerRef, // required from ngx-bootstrap Modals
         private httpApi: HttpApi,
         public electronService: ElectronService,
     ) { }
