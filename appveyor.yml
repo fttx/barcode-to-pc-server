@@ -8,22 +8,27 @@ branches:
 image: Visual Studio 2015
 install:
   - ps: Install-Product node $env:nodejs_version
-  - node --version
-  - npm --version
+  - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
+ 
+ 
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
   - msiexec /i Bonjour64.msi /qn
   - del Bonjour64.msi
   - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
-  - set path=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%path%
-  - set path=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%path%
-  - set ECHO=ON 
-  - echo "%path%"
-  - echo "%NODE_ENV%"
-  - set NODE_ENV=production
-  - npm run tsc --version
+
+  - set NODE_ENV=production  
   - npm install
+
+  - set PATH=%APPDATA%\npm;%PATH%
+  - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
+  - set ECHO=ON 
+  - echo "%PATH%"
+  - echo "%NODE_ENV%"
+  - node --version
+  - npm --version
+  - npm run tsc --version
 
   
 
