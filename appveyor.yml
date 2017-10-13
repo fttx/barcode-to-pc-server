@@ -20,13 +20,13 @@ install:
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
 
-  - set NODE_ENV=production  
+  # - set NODE_ENV=production  
   - npm install
 
-  - set PATH=%APPDATA%\npm;%PATH%
-  - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
-  - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
-  - set PATH=%APPVEYOR_BUILD_FOLDER%;%PATH%
+  # - set PATH=%APPDATA%\npm;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%;%PATH%
   - set ECHO=ON 
   - echo "%PATH%"
   - echo "%NODE_ENV%"
