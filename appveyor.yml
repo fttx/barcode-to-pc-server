@@ -7,10 +7,10 @@ branches:
   - master
 install:
   - ps: Install-Product node $env:nodejs_version
-  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour.msi
-  - msiexec /i Bonjour.msi /qn
-  - del Bonjour.msi
-  - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
+  - appveyor DownloadFile https://www.samuelattard.com/files/bonjourcore2.msi
+  - msiexec /i bonjourcore2.msi /qn
+  - del bonjourcore2.msi
+  - appveyor DownloadFile https://www.samuelattard.com/files/bonjoursdksetup.exe
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
   - cmd: npm install 
