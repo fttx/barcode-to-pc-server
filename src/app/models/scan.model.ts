@@ -3,5 +3,6 @@ export class ScanModel {
     cancelled: boolean;
     repeated: boolean;
     text: string;
+    ack: boolean;
     id: number;
 }
