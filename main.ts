@@ -50,11 +50,12 @@ function createWindow() {
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
         mainWindow = null
-        wss.clients.forEach(client => {
-            // if (client.readyState === WebSocket.OPEN) {
-            client.close();
-            // }
-        });
+        // wss.clients.forEach(client => {
+        //     // if (client.readyState === WebSocket.OPEN) {
+        //     client.close();
+        //     // }
+        // });
+        wss.close();
         bonjour.unpublishAll(() => {
             //bonjour.destroy()
         });
@@ -62,6 +63,7 @@ function createWindow() {
         if (mdnsAd) {
             mdnsAd.stop();
         }
+        // app.quit(); 
     })
 
 
