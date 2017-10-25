@@ -113,7 +113,10 @@ export class MainComponent implements OnInit {
                     let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
                     if (scanSessionIndex != -1) { // scan alreadyexists
                         if (request.scan.repeated) {
-                            // TODO: animate the already present scan
+                            let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
+                            if (scanIndex == -1) {
+                                this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
+                            }
                         } else {
                             this.scanSessionListElement.nativeElement.scrollTop = 0;
                             this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
