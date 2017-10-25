@@ -84,7 +84,16 @@ export class MainComponent implements OnInit {
         if (this.electronService.isElectron()) {
             this.electronService.ipcRenderer.on(requestModel.ACTION_SET_SCAN_SESSIONS, (e, request: requestModelSetScanSessions) => {
                 this.ngZone.run(() => {
-                    this.scanSessions = request.scanSessions;
+                    request.scanSessions.forEach(scanSession => {
+                        let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
+                        if (scanSessionIndex != -1) {
+                            this.scanSessions[scanSessionIndex].scannings = scanSession.scannings;
+                        } else {
+                            this.scanSessions.unshift(scanSession);
+                            this.selectedScanSession = this.scanSessions[0];
+                            this.scanSessionsListElement.nativeElement.scrollTop = 0;
+                        }
+                    })
                     this.save();
                 });
             })
@@ -101,19 +110,20 @@ export class MainComponent implements OnInit {
             this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN, (e, request: requestModelPutScan) => {
                 this.ngZone.run(() => {
 
-                    let alredInIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    if (alredInIndex != -1) {
+                    let scanSessionIndex = UtilsService.findIndexFromBottom(this.scanSessions, x => x.id == request.scanSessionId);
+                    if (scanSessionIndex != -1) { // scan alreadyexists
                         if (request.scan.repeated) {
                             // TODO: animate the already present scan
                         } else {
                             this.scanSessionListElement.nativeElement.scrollTop = 0;
                             this.animateLast = true; setTimeout(() => this.animateLast = false, 500);
 
-                            this.scanSessions[alredInIndex].scannings.unshift(request.scan);
-                            this.selectedScanSession = this.scanSessions[alredInIndex];
+                            this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
+                            this.selectedScanSession = this.scanSessions[scanSessionIndex];
                         }
                     } else {
                         // TODO: request a scansessions sync
+                        console.log('Scan session already exists')
                     }
                     this.save();
                 });

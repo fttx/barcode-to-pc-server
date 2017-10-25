@@ -153,6 +153,10 @@ ipcMain
 
 
 function onReady() {
+    if (wss) {
+        return;
+    }
+    
     wss = new WebSocket.Server({ port: PORT });
 
     try {

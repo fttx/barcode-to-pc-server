@@ -65,4 +65,12 @@ export class UtilsService {
     })
   }
 
+  public static findIndexFromBottom<T>(array: ReadonlyArray<T>, predicate: (element: T, index: number) => boolean): number {
+    for (let i = (array.length - 1); i >= 0; i--) {
+      if (predicate(array[i], i)) {
+        return i;
+      }
+    }
+    return -1;
+  }
 }
