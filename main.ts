@@ -7,8 +7,7 @@ import * as path from 'path';
 
 import * as WebSocket from 'ws';
 const PORT = 57891;
-const wss = new WebSocket.Server({ port: PORT });
-
+let wss;
 import * as b from 'bonjour'
 import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
 import { responseModelHelo, responseModelPong, responseModelPutScanAck } from './src/app/models/response.model';
@@ -55,7 +54,9 @@ function createWindow() {
         //     client.close();
         //     // }
         // });
-        wss.close();
+        if (wss) {
+            wss.close();
+        }
         bonjour.unpublishAll(() => {
             //bonjour.destroy()
         });
@@ -65,34 +66,6 @@ function createWindow() {
         }
         // app.quit(); 
     })
-
-
-    try {
-        var mdns = require('mdns');
-
-        mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), PORT, {
-            name: 'Barcode to PC server - ' + getNumber()
-        });
-        mdnsAd.start();
-    } catch (ex) {
-        dialog.showMessageBox(mainWindow, {
-            type: 'warning',
-            title: 'Error',
-            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again with an administrator account and reboot your system.',
-        });
-
-        var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: PORT })
-
-        bonjourService.on('error', err => { // err is never set?
-            dialog.showMessageBox(mainWindow, {
-                type: 'error',
-                title: 'Error',
-                message: 'An error occured while announcing the server.'
-            });
-        });
-    }
-
-
     const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
         // Someone tried to run a second instance, we should focus our window.
         if (mainWindow) {
@@ -153,8 +126,9 @@ let ipcClient;
 var settings: SettingsModel;
 
 ipcMain
-    .on('ready', (event, arg) => { // the renderer will send a 'ready' message once is ready
+    .on('ready', (event, arg) => { // the renderer will send a 'ready' message once the angular finished loading
         ipcClient = event.sender; // save the renderer reference. TODO: what if there are more windows?
+        onReady();
     }).on('settings', (event, arg) => {
         settings = arg;
     }).on('getLocalAddresses', (event, arg) => {
@@ -178,125 +152,155 @@ ipcMain
     });
 
 
-wss.on('connection', (ws, req) => {
-    console.log("ws(incoming connection)")
+function onReady() {
+    wss = new WebSocket.Server({ port: PORT });
 
-    let deviceName = "unknown";
-    // const clientAddress = req.connection.remoteAddress;
-    ipcClient.send('clientConnected', '');
+    try {
+        var mdns = require('mdns');
 
-    ws.on('message', messageData => {
-        console.log('ws(message): ', messageData)
-        if (!mainWindow || !ipcClient) return;
-        let obj = JSON.parse(messageData.toString());
+        mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), PORT, {
+            name: 'Barcode to PC server - ' + getNumber()
+        });
+        mdnsAd.start();
+    } catch (ex) {
+        dialog.showMessageBox(mainWindow, {
+            type: 'warning',
+            title: 'Error',
+            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again with an administrator account and reboot your system.',
+        });
 
-        switch (obj.action) {
-            case requestModel.ACTION_PUT_SCAN: {
+        var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: PORT })
 
-                let request: requestModelPutScan = obj;
-                let barcode = request.scan.text;
+        bonjourService.on('error', err => { // err is never set?
+            dialog.showMessageBox(mainWindow, {
+                type: 'error',
+                title: 'Error',
+                message: 'An error occured while announcing the server.'
+            });
+        });
+    }
 
-                if (settings.enableRealtimeStrokes) {
-                    settings.typedString.forEach((stringComponent: StringComponentModel) => {
-                        switch (stringComponent.type) {
-                            case 'barcode': {
-                                robotjs.typeString(barcode);
-                                break;
+
+    wss.on('connection', (ws, req) => {
+        console.log("ws(incoming connection)")
+
+        let deviceName = "unknown";
+        // const clientAddress = req.connection.remoteAddress;
+        ipcClient.send('clientConnected', '');
+
+        ws.on('message', messageData => {
+            console.log('ws(message): ', messageData)
+            if (!mainWindow || !ipcClient) return;
+            let obj = JSON.parse(messageData.toString());
+
+            switch (obj.action) {
+                case requestModel.ACTION_PUT_SCAN: {
+
+                    let request: requestModelPutScan = obj;
+                    let barcode = request.scan.text;
+
+                    if (settings.enableRealtimeStrokes) {
+                        settings.typedString.forEach((stringComponent: StringComponentModel) => {
+                            switch (stringComponent.type) {
+                                case 'barcode': {
+                                    robotjs.typeString(barcode);
+                                    break;
+                                }
+                                case 'text': {
+                                    robotjs.typeString(stringComponent.value);
+                                    break;
+                                }
+                                case 'key': {
+                                    robotjs.keyTap(stringComponent.value);
+                                    break;
+                                }
+                                case 'variable': {
+                                    robotjs.typeString(eval(stringComponent.value));
+                                    break;
+                                }
+                                case 'function': {
+                                    // do checks to prevent injections
+                                    robotjs.typeString(eval(barcode));
+                                    break;
+                                }
                             }
-                            case 'text': {
-                                robotjs.typeString(stringComponent.value);
-                                break;
-                            }
-                            case 'key': {
-                                robotjs.keyTap(stringComponent.value);
-                                break;
-                            }
-                            case 'variable': {
-                                robotjs.typeString(eval(stringComponent.value));
-                                break;
-                            }
-                            case 'function': {
-                                // do checks to prevent injections
-                                robotjs.typeString(eval(barcode));
-                                break;
-                            }
-                        }
+                        });
+                    }
+
+                    if (settings.enableOpenInBrowser) {
+                        shell.openExternal(barcode);
+                    }
+
+                    // ACK
+                    let response = new responseModelPutScanAck();
+                    response.fromObject({
+                        scanId: request.scan.id,
+                        scanSessionId: request.scanSessionId
                     });
+                    ws.send(JSON.stringify(response));
+                    // END ACK
+
+                    break;
                 }
 
-                if (settings.enableOpenInBrowser) {
-                    shell.openExternal(barcode);
+                case requestModel.ACTION_SET_SCAN_SESSIONS: {
+
+
+                    break;
                 }
 
-                // ACK
-                let response = new responseModelPutScanAck();
-                response.fromObject({
-                    scanId: request.scan.id,
-                    scanSessionId: request.scanSessionId
-                });
-                ws.send(JSON.stringify(response));
-                // END ACK
-                
-                break;
-            }
+                case requestModel.ACTION_PUT_SCAN_SESSION: {
 
-            case requestModel.ACTION_SET_SCAN_SESSIONS: {
-
-
-                break;
-            }
-
-            case requestModel.ACTION_PUT_SCAN_SESSION: {
-
-                break;
-            }
-
-            case requestModel.ACTION_DELETE_SCAN_SESSION: {
-
-                break;
-            }
-
-            case requestModel.ACTION_PING: {
-                ws.send(JSON.stringify(new responseModelPong()));
-                break;
-            }
-
-
-            case requestModel.ACTION_HELO: {
-                let request: requestModelHelo = obj;
-                let response = new responseModelHelo();
-                response.fromObject({
-                    version: app.getVersion()
-                });
-
-                if (request && request.deviceName) {
-                    deviceName = request.deviceName;
+                    break;
                 }
-                ws.send(JSON.stringify(response));
-                break;
 
+                case requestModel.ACTION_DELETE_SCAN_SESSION: {
+
+                    break;
+                }
+
+                case requestModel.ACTION_PING: {
+                    ws.send(JSON.stringify(new responseModelPong()));
+                    break;
+                }
+
+
+                case requestModel.ACTION_HELO: {
+                    let request: requestModelHelo = obj;
+                    let response = new responseModelHelo();
+                    response.fromObject({
+                        version: app.getVersion()
+                    });
+
+                    if (request && request.deviceName) {
+                        deviceName = request.deviceName;
+                    }
+                    ws.send(JSON.stringify(response));
+                    break;
+
+                }
+
+                case requestModel.ACTION_UPDATE_SCAN_SESSION: {
+
+                    break;
+                }
+
+                default: {
+                    // ipcClient.send(messageObj.action, messageObj.data);
+                    console.log('unhandled ws action: ', obj.action, obj);
+                    break;
+                }
             }
 
-            case requestModel.ACTION_UPDATE_SCAN_SESSION: {
+            ipcClient.send(obj.action, obj);
+        });
 
-                break;
-            }
-
-            default: {
-                // ipcClient.send(messageObj.action, messageObj.data);
-                console.log('unhandled ws action: ', obj.action, obj);
-                break;
-            }
-        }
-
-        ipcClient.send(obj.action, obj);
+        ws.on('close', () => {
+            console.log('ws(close)');
+        });
     });
 
-    ws.on('close', () => {
-        console.log('ws(close)');
-    });
-});
-
+}
 
 function getNumber() {
     let hostname = os.hostname();
