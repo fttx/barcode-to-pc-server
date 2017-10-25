@@ -110,7 +110,7 @@ export class MainComponent implements OnInit {
             this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN, (e, request: requestModelPutScan) => {
                 this.ngZone.run(() => {
 
-                    let scanSessionIndex = UtilsService.findIndexFromBottom(this.scanSessions, x => x.id == request.scanSessionId);
+                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
                     if (scanSessionIndex != -1) { // scan alreadyexists
                         if (request.scan.repeated) {
                             // TODO: animate the already present scan
