@@ -51,6 +51,7 @@
     },
     "nsis": {
       "oneClick": false,
+      "perMachine": true,
       "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
       "shortcutName": "Barcode to PC"
     }
