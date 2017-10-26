@@ -97,7 +97,7 @@
     "copyfiles": "1.2.0",
     "cross-env": "5.0.5",
     "electron": "^1.7.6",
-    "electron-builder": "^19.27.3",
+    "electron-builder": "^19.41.0",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
     "karma": "~1.4.1",
