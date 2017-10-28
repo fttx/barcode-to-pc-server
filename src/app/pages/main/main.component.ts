@@ -165,11 +165,23 @@ export class MainComponent implements OnInit {
                 });
             });
 
+            this.getDefaultEOLCharacter();
             this.electronService.ipcRenderer.send('settings', this.settings);
             this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
             this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
         }
-        this.settings = this.storage.settings;
+        this.save();
+    }
+
+    getDefaultEOLCharacter() {
+        if (this.settings.newLineCharacter == null) {
+            this.electronService.ipcRenderer.on('defaultEOL', (e, defaultEOL) => {
+                this.ngZone.run(() => {
+                    this.settings.newLineCharacter = defaultEOL.replace('\r', 'CR').replace('\n', 'LF');
+                });
+            });
+            this.electronService.ipcRenderer.send('getDefaultEOL');
+        }
     }
 
     ngOnInit() {

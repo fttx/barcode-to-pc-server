@@ -7,6 +7,6 @@ export class SettingsModel {
         { name: 'BARCODE', value: 'barcode', type: 'barcode' },
         { name: 'ENTER', value: 'enter', type: 'key' }
     ];
-    newLineCharacter: string = 'CRLF';
+    newLineCharacter: string = null;
     enableQuotes: boolean = true;
 }

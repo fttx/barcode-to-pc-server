@@ -149,6 +149,8 @@ ipcMain
         });
     }).on('getHostname', (event, arg) => {
         ipcClient.send('hostname', os.hostname());
+    }).on('getDefaultEOL', (event, arg) => {
+        ipcClient.send('defaultEOL', os.EOL);
     });
 
 
