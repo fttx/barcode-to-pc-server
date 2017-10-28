@@ -42,7 +42,7 @@
   "build": {
     "compression": "maximum",
     "appId": "com.barcodetopc.server",
-    "productName": "Barcode to PC",
+    "productName": "Barcode to PC server",
     "mac": {
       "category": "public.app-category.utilities"
     },
@@ -53,7 +53,7 @@
       "oneClick": false,
       "perMachine": true,
       "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
-      "shortcutName": "Barcode to PC"
+      "shortcutName": "Barcode to PC server"
     }
   },
   "dependencies": {
