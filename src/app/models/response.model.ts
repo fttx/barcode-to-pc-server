@@ -5,6 +5,7 @@ export abstract class responseModel {
     public static readonly ACTION_HELO = 'helo';
     public static readonly ACTION_PONG = 'pong';
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
+    public static readonly ACTION_POPUP = 'action_popup';
 
 }
 
@@ -35,6 +36,18 @@ export class responseModelPutScanAck extends responseModel {
     public fromObject(obj: ({ scanSessionId: number, scanId: number })) {
         this.scanSessionId = obj.scanSessionId;
         this.scanId = obj.scanId;
+        return this;
+    }
+}
+
+export class responseModelPopup extends responseModel {
+    action = 'action_popup';
+    title: string;
+    message: string;
+
+    public fromObject(obj: ({ title: string, message: string })) {
+        this.title = obj.title;
+        this.message = obj.message;
         return this;
     }
 }
