@@ -13,7 +13,7 @@ export abstract class requestModel {
     public abstract fromObject(obj: any): requestModel;
     public static readonly ACTION_PING = 'ping';
     public static readonly ACTION_HELO = 'helo';
-    public static readonly ACTION_SET_SCAN_SESSIONS = 'setScanSessions';
+    public static readonly ACTION_PUT_SCAN_SESSIONS = 'putScanSessions';
     public static readonly ACTION_PUT_SCAN_SESSION = 'putScanSession';
     public static readonly ACTION_PUT_SCAN = 'putScan';
     public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
@@ -32,21 +32,29 @@ export class requestModelPing extends requestModel {
 export class requestModelHelo extends requestModel {
     action = 'helo';
     deviceName: string;
+    deviceId: string;
+    lastScanDate: number;
 
-    public fromObject(obj: ({ deviceName: string })) {
+    public fromObject(obj: ({ deviceName: string, deviceId: string, lastScanDate: number })) {
         this.deviceName = obj.deviceName;
+        this.deviceId = obj.deviceId;
+        this.lastScanDate = obj.lastScanDate;
         return this;
     }
 }
 
-export class requestModelSetScanSessions extends requestModel {
-    action = 'setScanSessions';
+export class requestModelPutScanSessions extends requestModel {
+    action = 'putScanSessions';
     scanSessions: ScanSessionModel[];
     sendKeystrokes: boolean;
+    lastScanDate: number;
+    deviceId: string
 
-    public fromObject(obj: ({ scanSessions: ScanSessionModel[], sendKeystrokes: boolean })) {
+    public fromObject(obj: ({ scanSessions: ScanSessionModel[], sendKeystrokes: boolean, lastScanDate: number, deviceId: string, })) {
         this.scanSessions = obj.scanSessions;
         this.sendKeystrokes = obj.sendKeystrokes;
+        this.lastScanDate = obj.lastScanDate;
+        this.deviceId = obj.deviceId;
         return this;
     }
 }
@@ -67,11 +75,17 @@ export class requestModelPutScan extends requestModel {
     scan: ScanModel;
     scanSessionId: number;
     sendKeystrokes: boolean;
+    lastScanDate: number;
+    newScanDate: number;
+    deviceId: string
 
-    public fromObject(obj: ({ scan: ScanModel, scanSessionId: number, sendKeystrokes: boolean })) {
+    public fromObject(obj: ({ scan: ScanModel, scanSessionId: number, sendKeystrokes: boolean, lastScanDate: number, newScanDate: number, deviceId: string, })) {
         this.scan = obj.scan;
         this.scanSessionId = obj.scanSessionId;
         this.sendKeystrokes = obj.sendKeystrokes;
+        this.lastScanDate = obj.lastScanDate;
+        this.newScanDate = obj.newScanDate;
+        this.deviceId = obj.deviceId;
         return this;
     }
 }

@@ -6,11 +6,12 @@ export abstract class responseModel {
     public static readonly ACTION_PONG = 'pong';
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
     public static readonly ACTION_POPUP = 'action_popup';
+    public static readonly ACTION_REQUEST_SYNC = 'requestSync';
 
 }
 
-export class responseModelHelo {
-    action: 'helo';
+export class responseModelHelo extends responseModel {
+    action = 'helo';
     version: string;
 
     public fromObject(obj: ({ version: string })) {
@@ -19,6 +20,13 @@ export class responseModelHelo {
     }
 }
 
+export class responseModelRequestSync extends responseModel {
+    action = 'requestSync';
+
+    public fromObject(obj: ({})) {
+        return this;
+    }
+}
 
 export class responseModelPong extends responseModel {
     action = 'pong';

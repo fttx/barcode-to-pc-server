@@ -13,7 +13,7 @@ import { UtilsService } from '../../services/utils.service';
 import { ConfigService } from '../../services/config.service';
 import { remote } from 'electron';
 import { ScanModel } from '../../models/scan.model';
-import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelSetScanSessions, requestModelPutScanSession, requestModel, requestModelUpdateScanSession } from '../../models/request.model';
+import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelPutScanSessions, requestModelPutScanSession, requestModel, requestModelUpdateScanSession, requestModelHelo } from '../../models/request.model';
 
 @Component({
     selector: 'app-main',
@@ -82,7 +82,17 @@ export class MainComponent implements OnInit {
         private utilsService: UtilsService,
     ) {
         if (this.electronService.isElectron()) {
-            this.electronService.ipcRenderer.on(requestModel.ACTION_SET_SCAN_SESSIONS, (e, request: requestModelSetScanSessions) => {
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
+                this.ngZone.run(() => {
+                    if (this.storage.getLastScanDate(request.deviceId) != request.lastScanDate) {
+                        //console.log('helo->lastScanDateMismatch detected')
+                        this.electronService.ipcRenderer.send('lastScanDateMismatch', request.deviceId);
+                    }
+                });
+            });
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
                 this.ngZone.run(() => {
                     request.scanSessions.forEach(scanSession => {
                         let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
@@ -94,6 +104,8 @@ export class MainComponent implements OnInit {
                             this.scanSessionsListElement.nativeElement.scrollTop = 0;
                         }
                     })
+                    //console.log('putScanSessions->settingNewLastScanDate')                    
+                    this.storage.setLastScanDate(request.deviceId, request.lastScanDate);
                     this.save();
                 });
             })
@@ -126,7 +138,15 @@ export class MainComponent implements OnInit {
                         }
                     } else {
                         // TODO: request a scansessions sync
-                        console.log('Scan session already exists')
+                        //console.log('Scan session already exists')
+                    }
+
+                    if (this.storage.getLastScanDate(request.deviceId) != request.lastScanDate) {
+                        //console.log('putScan->lastScanDateMismatch detected')
+                        this.electronService.ipcRenderer.send('lastScanDateMismatch', request.deviceId);
+                    } else {
+                        //console.log('putScan->settingNewLastScanDate')
+                        this.storage.setLastScanDate(request.deviceId, request.newScanDate);
                     }
                     this.save();
                 });

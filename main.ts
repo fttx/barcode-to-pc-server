@@ -8,9 +8,10 @@ import * as path from 'path';
 import * as WebSocket from 'ws';
 const PORT = 57891;
 let wss;
+let wsClients = [];
 import * as b from 'bonjour'
-import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelSetScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
-import { responseModelHelo, responseModelPong, responseModelPutScanAck } from './src/app/models/response.model';
+import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelPutScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
+import { responseModelHelo, responseModelPong, responseModelPutScanAck, responseModelRequestSync } from './src/app/models/response.model';
 import { StringComponentModel } from './src/app/models/string-component.model';
 import { SettingsModel } from './src/app/models/settings.model';
 const bonjour = b();
@@ -151,6 +152,11 @@ ipcMain
         ipcClient.send('hostname', os.hostname());
     }).on('getDefaultEOL', (event, arg) => {
         ipcClient.send('defaultEOL', os.EOL);
+    }).on('lastScanDateMismatch', (event, deviceId) => {
+        if (wsClients[deviceId] && wsClients[deviceId].OPEN == WebSocket.OPEN) {
+            //console.log('lastScanDateMismatch for device ' + deviceId + ' requesting sync')
+            wsClients[deviceId].send(JSON.stringify(new responseModelRequestSync()));
+        }
     });
 
 
@@ -158,7 +164,7 @@ function onReady() {
     if (wss) {
         return;
     }
-    
+
     wss = new WebSocket.Server({ port: PORT });
 
     try {
@@ -188,9 +194,10 @@ function onReady() {
 
 
     wss.on('connection', (ws, req) => {
-        console.log("ws(incoming connection)")
+        console.log("ws(incoming connection)", req.connection.remoteAddress)
 
         let deviceName = "unknown";
+        let deviceId;
         // const clientAddress = req.connection.remoteAddress;
         ipcClient.send('clientConnected', '');
 
@@ -249,7 +256,7 @@ function onReady() {
                     break;
                 }
 
-                case requestModel.ACTION_SET_SCAN_SESSIONS: {
+                case requestModel.ACTION_PUT_SCAN_SESSIONS: {
 
 
                     break;
@@ -281,6 +288,10 @@ function onReady() {
                     if (request && request.deviceName) {
                         deviceName = request.deviceName;
                     }
+
+                    if (request && request.deviceId) {
+                        wsClients[request.deviceId] = ws;
+                    }
                     ws.send(JSON.stringify(response));
                     break;
 
@@ -302,7 +313,10 @@ function onReady() {
         });
 
         ws.on('close', () => {
-            console.log('ws(close)');
+            console.log('ws(close)', req.connection.remoteAddress);
+            if (deviceId && wsClients[deviceId]) {
+                delete wsClients[deviceId];
+            }
         });
     });
 
