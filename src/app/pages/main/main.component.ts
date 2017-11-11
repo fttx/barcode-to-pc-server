@@ -190,7 +190,6 @@ export class MainComponent implements OnInit {
             this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
             this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
         }
-        this.save();
     }
 
     getDefaultEOLCharacter() {
@@ -218,16 +217,17 @@ export class MainComponent implements OnInit {
         });
 
         this.settingsModal.onHide.subscribe(() => {
-            this.storage.settings = this.settings;
+            this.storage.setSettings(this.settings);
             if (this.electronService.isElectron()) {
                 this.electronService.ipcRenderer.send('settings', this.settings);
             }
         });
-        this.scanSessions = this.storage.scanSessions;
+        this.scanSessions = this.storage.getScanSessions();
     }
 
     save() {
-        this.storage.scanSessions = this.scanSessions;
+        console.log('save()', this.scanSessions);
+        this.storage.setScanSessions(this.scanSessions);
     }
 
     onOpenAtLoginClick(checked) {
