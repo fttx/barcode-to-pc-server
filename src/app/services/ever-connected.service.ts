@@ -15,7 +15,7 @@ export class EverConnectedService implements CanActivate {
 
   canActivate(): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      let everConnected = this.storage.everConnected;
+      let everConnected = this.storage.getEverConnected();
       //resolve(true);
       //return;
       if (!everConnected) {

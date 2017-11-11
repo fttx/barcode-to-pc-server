@@ -23,10 +23,10 @@ export class WelcomeComponent implements OnInit {
   ) {
     if (this.electronService.isElectron()) {
       this.electronService.ipcRenderer.on('clientConnected', (e, clientAddress) => {
-        this.storage.everConnected = true;
+        this.storage.setEverConnected(true);
         this.router.navigate(['/scan-session']);
       });
-      this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);    
+      this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
     }
 
   }

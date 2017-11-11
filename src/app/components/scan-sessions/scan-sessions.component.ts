@@ -23,7 +23,7 @@ export class ScanSessionsComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        this.settings = this.storage.settings;
+        this.settings = this.storage.getSettings();
     }
 
     // ngOnChanges(changes: SimpleChanges) {
