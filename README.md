@@ -10,6 +10,10 @@
 * Server: https://github.com/fttx/barcode-to-pc-server
 * App: https://github.com/fttx/barcode-to-pc-app
 
+## Build status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/un8nkjy7755fh7io?svg=true)](https://ci.appveyor.com/project/fttx/barcode-to-pc-server)
+
 
 ## Setup
   1. Install the required dependencies:
