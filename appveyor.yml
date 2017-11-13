@@ -1,17 +1,16 @@
-version: 2.0.0-build-{build}
+version: 2.0.{build}
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 branches:
   only:
   - master
+clone_depth: 1
 image: Visual Studio 2015
-
 # init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 # on_finish:
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-
 install:
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
@@ -23,10 +22,11 @@ install:
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
 
+  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
+
   - npm cache verify
   - npm install
   - set NODE_ENV=production
-
   # - set PATH=%APPDATA%\npm;%PATH%
   # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
   # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
@@ -36,15 +36,21 @@ install:
   - echo "%NODE_ENV%"
   - node --version
   - npm --version
-  - npm run tsc --version
-  
+  - npm run tsc --version  
 build_script:
   - cmd: npm run prepare:dist
   - cmd: npm run dist32
   - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.x32.setup'}    
   - cmd: npm run dist64
   - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.x64.setup'}
-
 artifacts:
-  - path: 'dist\dist\*.exe'
+  - path: 'dist\dist\*.exe'  
 test: off
+deploy:
+- provider: GitHub
+  tag: v$(version)
+  auth_token:
+    secure: 1aaQUm1vZb+DUTppOejiZbc07k92qIPzefxX2EahroIRkOFKN7QNZEF4HhU9kKGP
+  artifact: '*.exe'
+  draft: true
+  force_update: true
