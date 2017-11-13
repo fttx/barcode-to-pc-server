@@ -40,10 +40,10 @@ install:
   
 build_script:
   - cmd: npm run prepare:dist
-  - set BUILD_ARCH=x32
   - cmd: npm run dist32
-  - set BUILD_ARCH=x64  
+  - dir .\dist\dist\*-setup.exe | Rename-Item -NewName { $_.Name -replace '.setup', '.x32.setup'}    
   - cmd: npm run dist64
+  - dir .\dist\dist\*-setup.exe | Rename-Item -NewName { $_.Name -replace '.setup', '.x64.setup'}
 
 artifacts:
   - path: 'dist\dist\*.exe'
