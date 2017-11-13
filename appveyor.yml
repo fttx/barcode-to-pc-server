@@ -25,7 +25,7 @@ install:
 
   - set NODE_ENV=production  
   - npm cache verify
-  - npm install
+  - npm install --dev
 
   # - set PATH=%APPDATA%\npm;%PATH%
   # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%

@@ -18,7 +18,6 @@
   "scripts": {
     "ng": "ng",
     "tsc": "tsc",
-    "electron-builder": "electron-builder",
     "lint": "ng lint",
     "test": "ng test",
     "e2e": "ng e2e",
