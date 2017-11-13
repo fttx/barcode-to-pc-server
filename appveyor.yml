@@ -1,5 +1,4 @@
-version: 2.0.0
-# .{build}
+version: 2.0.0 # .{build}
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
@@ -7,12 +6,15 @@ branches:
   only:
   - master
 image: Visual Studio 2015
-init:
- - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
+# init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+
 install:
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
- 
  
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
   - msiexec /i Bonjour64.msi /qn
@@ -36,14 +38,11 @@ install:
   - npm --version
   # - npm run tsc --version
   
-
 build_script:
+  - set BUILD_ARCH=x32
   - cmd: npm run dist32
-  # - npm run dist64
+  # - set BUILD_ARCH=x64  
+  # - cmd: npm run dist64
 
 artifacts:
-  - path: 'dist\dist\barcode-to-pc-server.win.x32.v{version}.setup.exe'
-  - path: 'dist\dist\barcode-to-pc-server.win.x64.v{version}.setup.exe'
-
-on_finish:
-  - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+  - path: 'dist\dist\*.exe'

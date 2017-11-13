@@ -55,7 +55,7 @@
       "perMachine": true,
       "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
       "shortcutName": "Barcode to PC server",
-      "artifactName": "${name}.${os}.${arch}.${version}.setup.${ext}"
+      "artifactName": "${name}.${os}.${env.BUILD_ARCH}.${version}.setup.${ext}"
     }
   },
   "dependencies": {
