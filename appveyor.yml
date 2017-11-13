@@ -1,4 +1,5 @@
-version: 1.0.{build}
+version: 2.0.0
+# .{build}
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
@@ -40,8 +41,9 @@ build_script:
   - cmd: npm run dist32
   # - npm run dist64
 
-# artifacts:
-#   - path: 'dist\dist\.exe'
+artifacts:
+  - path: 'dist\dist\barcode-to-pc-server.win.x32.v{version}.setup.exe'
+  - path: 'dist\dist\barcode-to-pc-server.win.x64.v{version}.setup.exe'
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
