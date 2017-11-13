@@ -41,9 +41,9 @@ install:
 build_script:
   - cmd: npm run prepare:dist
   - cmd: npm run dist32
-  - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace 'win.setup', '.x32.setup'}    
+  - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.x32.setup'}    
   - cmd: npm run dist64
-  - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace 'win.setup', '.x64.setup'}
+  - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.x64.setup'}
 
 artifacts:
   - path: 'dist\dist\*.exe'
