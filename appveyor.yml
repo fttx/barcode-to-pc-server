@@ -23,6 +23,8 @@ install:
   - del bonjoursdksetup.exe
 
   - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
+  - git config --global user.email "filippo.tortomasi@gmail.com"
+  - git config --global user.name "Filippo Tortomasi"
 
   - npm cache verify
   - npm install
