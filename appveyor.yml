@@ -33,7 +33,7 @@ install:
   - node --version
   - npm --version
   # - npm run tsc --version
-  - npm cache clean
+  - npm cache clean --force
   
 
 build_script:
