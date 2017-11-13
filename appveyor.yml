@@ -37,10 +37,11 @@ install:
   
 
 build_script:
-  - npm run dist32
+  - cmd: npm run dist32
   # - npm run dist64
-build:  
-  verbosity: minimal
+
+# artifacts:
+#   - path: 'dist\dist\.exe'
 
 on_finish:
   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
