@@ -39,7 +39,6 @@ install:
   - npm run tsc --version
   
 build_script:
-  - cmd: npm run prepare:dist
   - cmd: npm run dist32
   - dir .\dist\dist\*-setup.exe | Rename-Item -NewName { $_.Name -replace '.setup', '.x32.setup'}    
   - cmd: npm run dist64
