@@ -32,12 +32,13 @@ install:
   - echo "%NODE_ENV%"
   - node --version
   - npm --version
-  - npm run tsc --version
-
+  # - npm run tsc --version
+  - npm cache clean
   
 
 build_script:
-  - npm run dist
+  - npm run dist32
+  # - npm run dist64
 build:  
   verbosity: minimal
 
