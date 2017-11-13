@@ -23,7 +23,7 @@ install:
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
 
-  # - set NODE_ENV=production  
+  - set NODE_ENV=production  
   - npm cache verify
   - npm install
 
@@ -36,13 +36,14 @@ install:
   - echo "%NODE_ENV%"
   - node --version
   - npm --version
-  # - npm run tsc --version
+  - npm run tsc --version
   
 build_script:
+  - cmd: npm run prepare:dist
   - set BUILD_ARCH=x32
   - cmd: npm run dist32
-  # - set BUILD_ARCH=x64  
-  # - cmd: npm run dist64
+  - set BUILD_ARCH=x64  
+  - cmd: npm run dist64
 
 artifacts:
   - path: 'dist\dist\*.exe'
