@@ -24,7 +24,7 @@ install:
   - del bonjoursdksetup.exe
 
   - npm cache verify
-  - ps: npm install
+  - npm install
   - set NODE_ENV=production
 
   # - set PATH=%APPDATA%\npm;%PATH%
