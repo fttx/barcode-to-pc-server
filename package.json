@@ -18,6 +18,7 @@
   "scripts": {
     "ng": "ng",
     "tsc": "tsc",
+    "cross-env": "cross-env",
     "electron-builder": "electron-builder",
     "lint": "ng lint",
     "test": "ng test",
