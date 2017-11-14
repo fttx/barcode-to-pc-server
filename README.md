@@ -42,7 +42,7 @@
   npm run publish-ml  # build the angular project in prod mode, generate the app installer for macOS, Linux and uploads them to GitHub releases
   ```
   
-  To sign the installers follow the electron-builder [code-signing tutorial](https://www.electron.build/code-signing). TL;DR: set CSC_LINK and CSC_KEY_PASSWORD enviroment variables.
+  To sign the installers follow the electron-builder [code-signing tutorial](https://www.electron.build/code-signing). TL;DR: set CSC_LINK and CSC_KEY_PASSWORD environment variables.
 
   The installer will be put in the dist/dist/ folder.
 
