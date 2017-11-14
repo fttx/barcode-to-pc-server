@@ -37,8 +37,9 @@
     "prepare:dist": "electron-builder install-app-deps && ng build --prod --output-path=dist && tsc --project tsconfig.electron.json && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/",
     "dist": "npm run prepare:dist && build --project dist",
     "fix-sass": "npm rebuild node-sass",
-    "publish": "npm run prepare:dist && build -mwl --project dist -p always",
+    "publish": "npm run prepare:dist && build --project dist -p always",
     "publish-win": "npm run prepare:dist && build --win --ia32 --x64 --project dist -p always",
+    "publish-ml": "npm run prepare:dist && build -ml --project dist -p always",
     "postinstall": ""
   },
   "private": true,
