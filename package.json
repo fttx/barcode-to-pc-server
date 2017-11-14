@@ -35,7 +35,7 @@
     "dist32": "build --ia32 --project dist",
     "dist64": "build --x64 --project dist",
     "fix-sass": "npm rebuild node-sass",
-    "publish": "build --win -p always",
+    "publish": "build --win --project dist -p always",
     "postinstall": ""
   },
   "private": true,
