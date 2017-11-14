@@ -57,6 +57,6 @@ deploy:
   tag: v$(appveyor_build_version)
   auth_token:
     secure: 1aaQUm1vZb+DUTppOejiZbc07k92qIPzefxX2EahroIRkOFKN7QNZEF4HhU9kKGP
-  artifact: '*.setup.exe'
+  artifact: /.*\.exe/
   draft: true
   force_update: true
