@@ -56,7 +56,7 @@ deploy:
 - provider: GitHub
   tag: v$(appveyor_build_version)
   auth_token:
-    secure: 1aaQUm1vZb+DUTppOejiZbc07k92qIPzefxX2EahroIRkOFKN7QNZEF4HhU9kKGP
+    secure: GzD/7kXmzv/E8XkqTqa4Re1lzQXESliuPBgZ8V9DLhVc856q17H2KsfKmlRkrv7d
   artifact: /.*\.exe/
   draft: true
   force_update: true
