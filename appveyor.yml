@@ -41,7 +41,7 @@ install:
   - npm --version
   - npm run tsc --version  
 build_script:
-  - cmd: npm run publish
+  - cmd: npm run publish-win
 artifacts:
   - path: '.\dist\dist\*.exe'
 test: off

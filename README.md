@@ -32,12 +32,13 @@
 
   * If you get errors related to cairo.h:  https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error
   * If you get errors related to dns_sd.h: Install [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe) 
+  * If you get the error `dyld: Library not loaded: /usr/local/opt/glib/lib/libglib-2.0.0.dylib` run `brew install glib`
 
 ## Release 
   ```bash
-  # build the angular project in prod mode and generate the app install files
-  npm run dist # Windows x64/macOS/Linux
-  npm run dist32 # Windows x32
+  npm run dist # build the angular project in prod mode and generate the app install files for the current platform, works with Windows/macOS/Linux
+  npm run publish # build the angular project in prod mode and generate the app installer for all platforms and uploads them to GitHub releases
+  npm run publish-win  # build the angular project in prod mode, generate the app installer for Windows x32, for Windows x64 and uploads them to GitHub releases
   ```
   
   The installer will be put in the dist/dist/ folder.
