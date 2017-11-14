@@ -47,7 +47,10 @@ build_script:
   - cmd: npm run dist64
   - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.win.x64.setup'}
 artifacts:
-  - path: '.\dist\dist\*.setup.exe' 
+  - path: '.\dist\dist\barcode-to-pc-server.v$(appveyor_build_version).win.x64.setup.exe'
+    name: 'barcode-to-pc-server.v$(appveyor_build_version).win.x64.setup.exe'
+  - path: '.\dist\dist\barcode-to-pc-server.v$(appveyor_build_version).win.x32.setup.exe'
+    name: 'barcode-to-pc-server.v$(appveyor_build_version).win.x32.setup.exe'
 test: off
 deploy:
 - provider: GitHub
