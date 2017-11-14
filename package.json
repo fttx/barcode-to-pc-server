@@ -21,6 +21,7 @@
     "lint": "ng lint",
     "test": "ng test",
     "e2e": "ng e2e",
+    "cross-env": "cross-env",
     "browser": "ng serve",
     "browser:keep-dist": "ng serve --delete-output-path=false",
     "electron": "electron ./dist",
@@ -31,11 +32,10 @@
     "start": " build:main && npm-run-all --parallel browser electron-dev",
     "watch": "npm-run-all --parallel build:main:watch browser:keep-dist",
     "prepare:dist": "electron-builder install-app-deps && ng build --prod --output-path=dist && tsc --project tsconfig.electron.json && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/",
-    "dist": "npm run prepare:dist && build --project dist",
-    "dist32": "build --ia32 --project dist",
-    "dist64": "build --x64 --project dist",
+    "dist": "npm run prepare:dist && npm run cross-env BUILD_ARCH=\"\" && build --project dist",
+    "pub-win32": "build --ia32 --project dist -p always",
+    "pub-win64": "build --x64 --project dist -p always",
     "fix-sass": "npm rebuild node-sass",
-    "publish": "build --win --project dist -p always",
     "postinstall": ""
   },
   "private": true,
@@ -54,7 +54,7 @@
       "perMachine": true,
       "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
       "shortcutName": "Barcode to PC server",
-      "artifactName": "${name}.v${version}.${os}.setup.${ext}"
+      "artifactName": "${name}.v${version}.${os}.${env.BUILD_ARCH}setup.${ext}"
     }
   },
   "dependencies": {
@@ -98,6 +98,7 @@
     "@types/ws": "^3.2.0",
     "codelyzer": "~2.0.0",
     "copyfiles": "1.2.0",
+    "cross-env": "^5.1.1",
     "electron": "^1.7.6",
     "electron-builder": "^19.41.0",
     "electron-log": "^2.2.11",
