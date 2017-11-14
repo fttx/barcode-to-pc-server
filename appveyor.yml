@@ -41,23 +41,7 @@ install:
   - npm --version
   - npm run tsc --version  
 build_script:
-  - cmd: npm run prepare:dist
-  - cmd: npm run dist32
-  - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.win.x32.setup'}    
-  - cmd: npm run dist64
-  - ps: dir .\dist\dist\*.setup.exe | Rename-Item -NewName { $_.Name -replace '.win.setup', '.win.x64.setup'}
   - cmd: npm run publish
 artifacts:
-  - path: '.\dist\dist\barcode-to-pc-server.v$(appveyor_build_version).win.x64.setup.exe'
-    name: 'barcode-to-pc-server.v$(appveyor_build_version).win.x64.setup.exe'
-  - path: '.\dist\dist\barcode-to-pc-server.v$(appveyor_build_version).win.x32.setup.exe'
-    name: 'barcode-to-pc-server.v$(appveyor_build_version).win.x32.setup.exe'
+  - path: '.\dist\dist\*.exe'
 test: off
-deploy:
-- provider: GitHub
-  tag: v$(appveyor_build_version)
-  auth_token:
-    secure: GzD/7kXmzv/E8XkqTqa4Re1lzQXESliuPBgZ8V9DLhVc856q17H2KsfKmlRkrv7d
-  artifact: /.*\.exe/
-  draft: true
-  force_update: true

@@ -13,6 +13,10 @@
     "email": "filippo.tortomasi@gmail.com.com",
     "url": "https://github.com/fttx"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fttx/barcode-to-pc-server.git"
+  },
   "main": "main.js",
   "angular-cli": {},
   "scripts": {
@@ -31,11 +35,9 @@
     "start": " build:main && npm-run-all --parallel browser electron-dev",
     "watch": "npm-run-all --parallel build:main:watch browser:keep-dist",
     "prepare:dist": "electron-builder install-app-deps && ng build --prod --output-path=dist && tsc --project tsconfig.electron.json && copyfiles package.json dist && cd dist && npm install --prod && cd .. && copyfiles -f electron-resources/* dist/build/",
-    "dist": "npm run prepare:dist && build --project dist",
-    "dist32": "build --ia32 --project dist",
-    "dist64": "build --x64 --project dist",
+    "dist": "npm run prepare:dist && build",
     "fix-sass": "npm rebuild node-sass",
-    "publish": "build --win --project dist -p always",
+    "publish": "npm run prepare:dist && build --win --ia32 --x64 --project dist -p always",
     "postinstall": ""
   },
   "private": true,
@@ -47,6 +49,7 @@
       "category": "public.app-category.utilities"
     },
     "win": {
+      "target": "nsis-web",
       "icon": "build/icon.ico"
     },
     "nsis": {
@@ -99,7 +102,7 @@
     "codelyzer": "~2.0.0",
     "copyfiles": "1.2.0",
     "electron": "^1.7.6",
-    "electron-builder": "^19.41.0",
+    "electron-builder": "^19.45.4",
     "electron-log": "^2.2.11",
     "jasmine-core": "~2.6.2",
     "jasmine-spec-reporter": "~4.1.0",
