@@ -39,6 +39,8 @@
     "fix-sass": "npm rebuild node-sass",
     "publish": "npm run prepare:dist && build --project dist -p always",
     "publish-win": "npm run prepare:dist && build --win --ia32 --x64 --project dist -p always",
+    "publish-mac": "npm run prepare:dist && build -m --project dist -p always",
+    "publish-linux": "npm run prepare:dist && build -l --project dist -p always",
     "publish-ml": "npm run prepare:dist && build -ml --project dist -p always",
     "postinstall": ""
   },
