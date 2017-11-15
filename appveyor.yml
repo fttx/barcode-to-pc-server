@@ -43,5 +43,5 @@ install:
 build_script:
   - cmd: npm run publish-win
 artifacts:
-  - path: '.\dist\dist\*.exe'
+  - path: /.*\.exe/
 test: off
