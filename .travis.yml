@@ -8,7 +8,7 @@ install:
   - npm install
 
 script:
-  - npm run publish-m
+  - npm run publish-mac
 
 deploy:
   provider: pages
