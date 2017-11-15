@@ -1,0 +1,18 @@
+<div class="scan-session">
+  <div class="item" *ngFor="let scan of scanSession?.scannings; let i = index" [@addedJustNowState]="animateLast && i == 0 ? 'true' : 'false'">
+    <a *ngIf="isUrl(scan)" class="item-text" (click)="electronService.shell.openExternal(scan.text)">
+        {{ scan.text }}
+    </a>
+    <div *ngIf="!isUrl(scan)" class="item-text">
+      {{ scan.text }}
+    </div>
+    <button class="btn btn-sm btn-custom" type="button" ngxClipboard [cbContent]="scan.text">
+        <img src="assets/icons/glyphicons-512-copy.png">
+        Copy
+    </button>
+  </div>
+
+  <div class="empty noselect" *ngIf="!scanSession">
+    Please select a scan session
+  </div>
+</div>

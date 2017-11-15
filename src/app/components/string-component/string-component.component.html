@@ -1,0 +1,21 @@
+<button
+  type="button"
+  class="btn btn-xs"
+  [class.btn-primary]="component.type == 'key'"
+  [class.btn-success]="component.type == 'variable'"
+  [class.btn-warning]="component.type == 'text'"
+  [class.btn-info]="component.type == 'barcode' || component.type == 'function'"
+  (click)="(component.type == 'text' || component.type == 'function') ? editMode=true : false;">
+
+  <span [hidden]="editMode == true" [innerHTML]="component.name"></span>
+
+  <span [hidden]="editMode == false" class="custom-text-editor">
+    <input [(ngModel)]="value" type="text" class=".input-xs" />
+    <button 
+      type="button" 
+      class="btn btn-primary btn-xs" 
+      (click)="onComponentClicked($event)">
+      Done
+    </button>
+  </span>
+</button>

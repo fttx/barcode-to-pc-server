@@ -1,0 +1,48 @@
+version: 2.0.{build}
+environment:
+  nodejs_version: "8"
+  BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
+branches:
+  only:
+  - master
+clone_depth: 1
+image: Visual Studio 2015
+# init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
+ 
+  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
+  - msiexec /i Bonjour64.msi /qn
+  - del Bonjour64.msi
+  - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
+  - bonjoursdksetup.exe /quiet
+  - del bonjoursdksetup.exe
+
+  - git config --global user.email "filippo.tortomasi@gmail.com"
+  - git config --global user.name "Filippo Tortomasi"
+  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
+ 
+
+  - npm cache verify
+  - npm install
+  - set NODE_ENV=production
+  # - set PATH=%APPDATA%\npm;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%;%PATH%
+  - set ECHO=ON 
+  - echo "%PATH%"
+  - echo "%NODE_ENV%"
+  - node --version
+  - npm --version
+  - npm run tsc --version  
+build_script:
+  - cmd: npm run publish-win
+artifacts:
+  - path: /dist\\dist\\nsis-web\.*\.exe/
+  - path: /dist\\dist\\nsis-web\.*\.7z/
+test: off

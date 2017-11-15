@@ -1,0 +1,25 @@
+.item {
+    padding: 0;
+    padding-left: 14px;
+    border-bottom: 1px solid #d0d0d0;
+    line-height: 41px;
+}
+
+.empty {
+    width: 230px;
+    margin: 0 auto;
+    margin-top: 295px;
+    text-align: center;
+    background: rgba(183, 28, 28, 0.4);
+    border-radius: 5px;
+}
+
+.btn {
+    float: right;
+    margin-top: 3px;
+    margin-right: 10px;
+}
+
+.item-text {
+    display: inline-block;
+}

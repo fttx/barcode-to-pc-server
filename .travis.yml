@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+  - "8"
+os:
+  - osx
+
+install:
+  - npm install
+
+script:
+  - npm run publish-mac
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: $GH_TOKEN # Set in travis-ci.org dashboard
+  on:
+    branch: master

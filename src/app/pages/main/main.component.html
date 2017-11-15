@@ -1,0 +1,209 @@
+<div class="parent">
+    <div class="bar noselect">
+        <div class="menu-item">
+            <img class="logo" src="assets/logo.png" alt="logo" />
+        </div>
+        <div class="menu-item" (click)="settingsModal.show()">Settings</div>
+        <div class="menu-item" (click)="infoModal.show()">Info</div>
+    </div>
+
+    <div class="col-half left" #scanSessionsListElement>
+        <app-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></app-scan-sessions>
+    </div>
+
+    <div class="col-half right" #scanSessionListElement>
+        <app-scan-session [scanSession]="selectedScanSession" [animateLast]="animateLast"></app-scan-session>
+    </div>
+</div>
+
+
+<!-- Settings -->
+<div bsModal #settingsModal="bs-modal" class="modal fade noselect" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="settingsModal.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Settings</h4>
+            </div>
+            <div class="modal-body">
+                <h1 class="section-title" style="margin-top: 20px;">General</h1>
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="openAtLogin" (change)="onOpenAtLoginClick($event.target.checked)">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Run on start up</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableRealtimeStrokes" >
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Enable realtime strokes (keyboard emulation)</span>
+                    </label>
+
+                    <button type="button" class="btn btn-info btn-xs" tooltip="If enabled, once you scan a barcode it will be automatically typed on your computer"
+                        placement="bottom">
+                            ?
+                    </button>
+                </div>
+
+
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            Available string components
+                            <button type="button" class="btn btn-info btn-xs" tooltip="Drag and drop the items from this box to the one below to create your custom typed string"
+                                placement="bottom">
+                                ?
+                            </button>
+                        </div>
+                        <div class="col-md-9">
+                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='availableComponents' class="components-container components-available">
+                                <!-- <button *ngFor="let component of availableComponents" type="button" class="btn btn-primary btn-xs" attr.data-code="{{component.code}}"
+                                    [class.btn-info]="component.code=='BARCODE'" [class.btn-success]="component.isVariable" [class.btn-warning]="component.isText"
+                                    [innerHTML]="component.name"></button> -->
+                                <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-3">
+                            Typed string
+                            <button type="button" class="btn btn-info btn-xs" tooltip="This rappresents the template of the string that will be typed in your computer once you do a scan with your smartphone.  Drag and drop the items from the box above in order to compose your custom template"
+                                placement="bottom">
+                                ?
+                            </button>
+                        </div>
+                        <div class="col-md-9">
+                            <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='settings.typedString' class="components-container components-typed">
+                                <!-- <button *ngFor="let component of settings.typedString" type="button" class="btn btn-primary btn-xs" attr.data-code="{{component.code}}" [class.btn-info]="component.code=='BARCODE'" [class.btn-success]="component.isVariable" [class.btn-warning]="component.isText"
+                                    [innerHTML]="component.name"></button> -->
+
+                                <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <!-- <div class="form-group">
+                    <label for="end-char">End character</label>
+
+                    <button type="button" class="btn btn-info btn-xs" tooltip="This character will be automatically typed after the barcode when Realtime strokes is enabled"
+                        placement="bottom">
+                        ?
+                    </button>
+
+                    <select class="form-control" id="end-char" [(ngModel)]="settings && settings.endCharacter">
+                        <option value="">Disabled</option>
+                        <option selected value="enter">ENTER</option>
+                        <option value="tab">TAB</option>
+                    </select>
+                </div> -->
+
+                <br>
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableOpenInBrowser" >
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Automatically open URLs in browser</span>
+                    </label>
+
+                    <button type="button" class="btn btn-info btn-xs" tooltip="If enabled, when you scan a barcode that is a valid URL string it will be automatically opened in your browser"
+                        placement="bottom">
+                            ?
+                    </button>
+                </div>
+
+
+                <h1 class="section-title">CSV Settings</h1>
+
+                <div class="form-group">
+                    <label for="divider-charr">New line character</label>
+
+                    <button type="button" class="btn btn-info btn-xs" tooltip="This is the line end character that will be used to generate the CSV file"
+                        placement="bottom">
+                            ?
+                    </button>
+
+                    <select class="form-control" id="divider-char" [(ngModel)]="settings && settings.newLineCharacter">
+                        <option selected value="CRLF">\r\n</option>
+                        <option value="LF">\n</option>
+                        <option value="CR">\r</option>
+                    </select>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableQuotes" >
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Enable quotes</span>
+                    </label>
+                </div>
+
+                <br />
+
+                <button type="submit" class="btn btn-primary" (click)="settingsModal.hide()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- Info -->
+<div bsModal #infoModal="bs-modal" class="modal fade noselect" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" (click)="infoModal.hide()" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Info</h4>
+            </div>
+            <div class="modal-body info">
+
+                Use this QR Code to connect the app:
+                <button type="button" class="btn btn-info btn-xs" tooltip="Launch the app, open the Select server page, tap on the scan icon and scan this QR code"
+                    placement="bottom">
+                    ?
+                </button><br />
+                <qr-code [value]="qrCodeUrl" [size]="240"></qr-code>
+
+                <br />
+                <br />
+                <br /> Barcode to PC server v1.1.0
+                <a (click)="electronService.shell.openExternal(getWebSiteUrl())">{{ getWebSiteName() }}</a>
+
+                <br />
+                <br /> This is an opensource project! Contribute on GitHub:
+
+
+                <div>
+                    <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github icon" />
+                    <a (click)="electronService.shell.openExternal(getGitHubServer())">barcode-to-pc-server</a>
+                </div>
+
+                <div>
+                    <img src="assets/icons/GitHub-Mark-32px.png" alt="github" class="github icon" />
+                    <a (click)="electronService.shell.openExternal(getGitHubApp())">barcode-to-pc-app</a>
+                </div>
+
+                <div>
+                    <img src="assets/icons/glyphicons-11-envelope.png" alt="email" class="icon" />
+                    <a (click)="electronService.shell.openExternal(getMail())">Contact me</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

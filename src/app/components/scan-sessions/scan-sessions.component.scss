@@ -1,0 +1,104 @@
+@import "../../../styles/variables.scss";
+
+.item * {
+    font-size: 15px;
+}
+
+.item {
+    cursor: pointer;
+    padding: 5px 0 !important;
+    height: 78px;
+}
+
+.item p, .item h2 {
+    padding: 0; margin: 0;
+}
+
+.item:hover {
+    background: #f5f5f5;
+}
+
+.icon {
+    display: block;
+    float: left;
+    padding: 0 10px !important;
+    padding-top: 3px !important;    
+}
+
+
+h2 {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 16px;
+}
+
+p {
+    color: darkgrey;
+    line-height: 16px;
+}
+
+.selected {
+    background: $brand-selected !important;
+    color: white;
+}
+
+.selected {
+    h2 {
+        font-weight: 400;
+    }
+
+    p {
+        color: white; 
+    }
+
+    img {
+        filter: none !important;
+    }
+
+    .btn {
+        background-color: #fff;
+        border-color: #fff;
+    }
+}
+/*
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+    border: 0;
+    padding: 0;
+}*/
+
+.row {
+    margin: 0;
+    padding: 0;
+}
+
+.export {
+    line-height: 67px;
+    vertical-align: middle;
+}
+
+
+.scan {
+    padding-top: 5px !important;
+}
+
+
+.desaturate-img {
+    filter: none;
+    -webkit-filter: grayscale(100%);
+    -moz-filter:    grayscale(100%);
+    -ms-filter:     grayscale(100%);
+    opacity: .3;
+    max-height: 45%;
+    max-width: 55%;
+    margin: 150px 0 40px 0;
+}
+
+.empty {
+    opacity: .6;
+    color: black;
+    width: 100%;
+    text-align: center;
+    padding: 0 35px;
+}
