@@ -43,5 +43,6 @@ install:
 build_script:
   - cmd: npm run publish-win
 artifacts:
-  - path: /.*\.exe/
+  - path: /dist\\dist\\nsis-web\.*\.exe/
+  - path: /dist\\dist\\nsis-web\.*\.7z/
 test: off
