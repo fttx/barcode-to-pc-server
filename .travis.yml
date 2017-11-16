@@ -3,8 +3,11 @@ node_js:
   - "8"
 os:
   - osx
+# osx_image: xcode9.1
 install:
   - npm install
+  - brew reinstall gettext
+  - brew unlink gettext && brew link gettext --force
 script:
   - rm -rf electron-resources/license*
   - npm run publish-ml
