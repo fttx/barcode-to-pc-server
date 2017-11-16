@@ -1,4 +1,7 @@
 language: node_js
+branches:
+  only:
+  - /^v[0-9]+.[0-9]+.[0-9]+$/
 node_js:
   - "8"
 os:
@@ -14,10 +17,9 @@ install:
 script:
   - rm -rf electron-resources/license*
   - npm run publish-ml
-deploy:
-  provider: pages
-  skip_cleanup: true
-  github_token: $GH_TOKEN
-  on:
-    tags: true
-    branch: master
+# deploy:
+#   provider: pages
+#   skip_cleanup: true
+#   github_token: $GH_TOKEN
+#   on:
+#     tags: true
