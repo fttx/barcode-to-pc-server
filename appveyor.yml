@@ -1,4 +1,4 @@
-version: {build} # doesn't matter because gets overwritten later on with the package.json value
+version: v{build} # doesn't matter because gets overwritten later on with the package.json value
 branches:
   only:
   - master
