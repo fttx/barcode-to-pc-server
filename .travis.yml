@@ -17,9 +17,3 @@ install:
 script:
   - rm -rf electron-resources/license*
   - npm run publish-ml
-# deploy:
-#   provider: pages
-#   skip_cleanup: true
-#   github_token: $GH_TOKEN
-#   on:
-#     tags: true

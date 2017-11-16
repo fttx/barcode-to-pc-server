@@ -26,16 +26,16 @@ export class AppComponent implements OnInit {
                 // console.log('local: ' , version, ' remote:', data.serverVersion);
                 if (version != data.serverVersion) {
 
-                    this.electronService.dialog.showMessageBox({
-                        type: 'warning',
-                        buttons: ['Cancel', 'Download'],
-                        defaultId: 1, title: 'Update',
-                        message: 'A new version of Barcode to PC is available', cancelId: 0
-                    }, buttonIndex => {
-                        if (buttonIndex === 1) {
-                            this.electronService.shell.openExternal(ConfigService.URL_DOWNLOAD);
-                        }
-                    });
+                //     this.electronService.dialog.showMessageBox({
+                //         type: 'warning',
+                //         buttons: ['Cancel', 'Download'],
+                //         defaultId: 1, title: 'Update',
+                //         message: 'A new version of Barcode to PC is available', cancelId: 0
+                //     }, buttonIndex => {
+                //         if (buttonIndex === 1) {
+                //             this.electronService.shell.openExternal(ConfigService.URL_DOWNLOAD);
+                //         }
+                //     });
                 }
             }
         });

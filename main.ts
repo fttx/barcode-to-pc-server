@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
+import { autoUpdater } from "electron-updater"
 
 import * as robotjs from 'robotjs'
 import * as network from 'network';
@@ -31,11 +32,15 @@ function createWindow() {
     })
 
     if (developmentMode) {
+        console.log('dev mode on')
         mainWindow.webContents.on('did-fail-load', () => {
             setTimeout(() => mainWindow.reload(), 2000);
         })
         mainWindow.loadURL('http://localhost:4200');
         mainWindow.webContents.openDevTools();
+        const log = require("electron-log")
+        log.transports.file.level = "info"
+        autoUpdater.logger = log
     } else {
         // and load the index.html of the app.
         mainWindow.loadURL('file://' + __dirname + '/index.html');
@@ -78,6 +83,7 @@ function createWindow() {
     if (isSecondInstance) {
         app.quit()
     }
+
 }
 
 
@@ -110,13 +116,6 @@ if (app.setAboutPanelOptions) {
         credits: 'Filippo Tortomasi',
     });
 }
-
-// let platform = os.platform() + '_' + os.arch();
-// let version = app.getVersion();
-// autoUpdater.setFeedURL('http://download.barcodetopc.com:20126/update/' + platform + '/' + version);
-// autoUpdater.checkForUpdates()
-
-
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
@@ -320,6 +319,30 @@ function onReady() {
         });
     });
 
+
+    autoUpdater.on('checking-for-update', () => {
+        console.log('Checking for update...');
+    })
+    autoUpdater.on('update-available', (info) => {
+        console.log('Update available.');
+    })
+    autoUpdater.on('update-not-available', (info) => {
+        console.log('Update not available.');
+    })
+    autoUpdater.on('error', (err) => {
+        console.log('Error in auto-updater. ' + err);
+    })
+    autoUpdater.on('download-progress', (progressObj) => {
+        let log_message = "Download speed: " + progressObj.bytesPerSecond;
+        log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+        log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+        console.log(log_message);
+    })
+    autoUpdater.on('update-downloaded', (info) => {
+        console.log('Update downloaded');
+    });
+
+    autoUpdater.checkForUpdatesAndNotify().then(result => console.log(result));
 }
 
 function getNumber() {

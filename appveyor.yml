@@ -1,4 +1,4 @@
-version: 0.0.{build} # doesn't matter because gets overwritten later on with the package.json value
+version: {build} # doesn't matter because gets overwritten later on with the package.json value
 branches:
   only:
   - master
@@ -45,7 +45,7 @@ install:
   - npm run tsc --version  
 build_script:
   - cmd: npm run publish-win
-artifacts:
-  - path: /dist\\dist\\nsis-web\.*\.exe/
-  - path: /dist\\dist\\nsis-web\.*\.7z/
+# artifacts:
+#   - path: /dist\\dist\\nsis-web\.*\.exe/
+#   - path: /dist\\dist\\nsis-web\.*\.7z/
 test: off

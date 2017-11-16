@@ -240,6 +240,10 @@ export class MainComponent implements OnInit {
         }
     }
 
+    getVersion() {
+        return this.electronService.app.getVersion();
+    }
+
     getWebSiteUrl() {
         return ConfigService.URL_WEBSITE;
     }
