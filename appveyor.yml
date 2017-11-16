@@ -1,12 +1,13 @@
 version: 0.0.{build} # doesn't matter because gets overwritten later on with the package.json value
-skip_non_tags: true
-environment:
-  nodejs_version: "8"
-  BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 branches:
   only:
   - master
+  - /^v[0-9]+.[0-9]+.[0-9]+$/
+skip_non_tags: true
 clone_depth: 1
+environment:
+  nodejs_version: "8"
+  BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
 image: Visual Studio 2015
 # init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
