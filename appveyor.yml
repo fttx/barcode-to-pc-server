@@ -1,4 +1,5 @@
-version: 2.0.{build}
+version: 0.0.{build} # doesn't matter because gets overwritten later on with the package.json value
+skip_non_tags: true
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
@@ -24,8 +25,9 @@ install:
 
   - git config --global user.email "filippo.tortomasi@gmail.com"
   - git config --global user.name "Filippo Tortomasi"
-  - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%'
- 
+  # - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%' # update the version field in the package.json
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
+  - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
   - npm cache verify
   - npm install
