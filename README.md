@@ -13,7 +13,7 @@
 ## Build status
 
 [![Build status](https://ci.appveyor.com/api/projects/status/un8nkjy7755fh7io?svg=true)](https://ci.appveyor.com/project/fttx/barcode-to-pc-server)
-[![Build Status](https://travis-ci.org/fttx/barcode-to-pc-server.svg?branch=master)](https://travis-ci.org/fttx/barcode-to-pc-server)
+[![Build Status](https://travis-ci.org/fttx/barcode-to-pc-server.svg)](https://travis-ci.org/fttx/barcode-to-pc-server)
 
 ## Setup
   1. Install the required dependencies:
