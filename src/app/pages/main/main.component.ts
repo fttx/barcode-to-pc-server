@@ -223,6 +223,7 @@ export class MainComponent implements OnInit {
             }
         });
         this.scanSessions = this.storage.getScanSessions();
+        this.settings = this.storage.getSettings();
     }
 
     save() {
