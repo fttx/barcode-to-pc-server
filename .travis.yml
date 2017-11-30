@@ -16,4 +16,6 @@ install:
 
 script:
   - rm -rf electron-resources/license*
+  - chmod +x macos-signing.sh
+  - ./macos-signing.sh
   - npm run publish-ml
