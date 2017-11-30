@@ -15,8 +15,12 @@ security unlock-keychain -p travis $KEY_CHAIN
 security set-keychain-settings -t 3600 -u $KEY_CHAIN
 
 # Add certificates to keychain and allow codesign to access them
-security import ./InstallerAndExecutableCertificates.encr.p12 -k ~/Library/Keychains/ios-build.keychain -P $KEY_PASSWORD -T /usr/bin/codesign
+security import ./InstallerAndExecutableCertificates.encr.p12 -k ~/Library/Keychains/$KEY_CHAIN -P $KEY_PASSWORD -T /usr/bin/codesign
 
-security set-key-partition-list -S apple-tool:,apple: -s -k travis ios-build.keychain
+echo "Add keychain to keychain-list"
+security list-keychains -s $KEY_CHAIN
+
+echo "Settting key partition list"
+security set-key-partition-list -S apple-tool:,apple: -s -k travis $KEY_CHAIN
 
 exit 0;
