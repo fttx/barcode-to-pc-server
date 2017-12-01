@@ -227,12 +227,17 @@ function onReady() {
                                     break;
                                 }
                                 case 'variable': {
-                                    robotjs.typeString(eval(stringComponent.value));
+                                    let typedString = 'unknown';
+                                    if (stringComponent.value == 'deviceName') {
+                                        typedString = deviceName;
+                                    }
+                                    robotjs.typeString(typedString);
                                     break;
                                 }
                                 case 'function': {
-                                    // do checks to prevent injections
-                                    robotjs.typeString(eval(barcode));
+                                    let typedString = stringComponent.value.replace('barcode', '"' + barcode + '"');
+                                    console.log('function: ', typedString)
+                                    robotjs.typeString(eval(typedString));
                                     break;
                                 }
                             }
