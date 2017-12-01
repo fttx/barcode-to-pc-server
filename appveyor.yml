@@ -8,6 +8,8 @@ clone_depth: 1
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
+  BONJOUR_SDK_DOWNLOAD:
+    secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
 image: Visual Studio 2015
 # init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -20,7 +22,7 @@ install:
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
   - msiexec /i Bonjour64.msi /qn
   - del Bonjour64.msi
-  - appveyor DownloadFile https://barcodetopc.com/download/bonjoursdksetup.exe
+  - appveyor DownloadFile %BONJOUR_SDK_DOWNLOAD%
   - bonjoursdksetup.exe /quiet
   - del bonjoursdksetup.exe
 
