@@ -2,12 +2,26 @@ export abstract class responseModel {
     readonly action: string;
     public abstract fromObject(obj: any): responseModel;
 
+    public static readonly ACTION_GET_VERSION = 'getVersion';
     public static readonly ACTION_HELO = 'helo';
     public static readonly ACTION_PONG = 'pong';
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
     public static readonly ACTION_POPUP = 'action_popup';
     public static readonly ACTION_REQUEST_SYNC = 'requestSync';
 
+}
+
+/**
+ * @deprecated
+ */
+export class responseModelGetVersion extends responseModel {
+    action = 'getVersion';
+    version: string;
+
+    public fromObject(obj: ({ version: string })) {
+        this.version = obj.version;
+        return this;
+    }
 }
 
 export class responseModelHelo extends responseModel {
