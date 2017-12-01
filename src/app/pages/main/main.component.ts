@@ -186,7 +186,6 @@ export class MainComponent implements OnInit {
             });
 
             this.getDefaultEOLCharacter();
-            this.electronService.ipcRenderer.send('settings', this.settings);
             this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
             this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
         }
@@ -224,6 +223,9 @@ export class MainComponent implements OnInit {
         });
         this.scanSessions = this.storage.getScanSessions();
         this.settings = this.storage.getSettings();
+        if (this.electronService.isElectron()) {
+            this.electronService.ipcRenderer.send('settings', this.settings);            
+        }
     }
 
     save() {

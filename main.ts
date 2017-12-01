@@ -130,6 +130,7 @@ ipcMain
         ipcClient = event.sender; // save the renderer reference. TODO: what if there are more windows?
         onReady();
     }).on('settings', (event, arg) => {
+        console.log('settings received', arg)
         settings = arg;
     }).on('getLocalAddresses', (event, arg) => {
         network.get_interfaces_list((err, networkInterfaces) => {
@@ -236,7 +237,6 @@ function onReady() {
                                 }
                                 case 'function': {
                                     let typedString = stringComponent.value.replace('barcode', '"' + barcode + '"');
-                                    console.log('function: ', typedString)
                                     robotjs.typeString(eval(typedString));
                                     break;
                                 }
