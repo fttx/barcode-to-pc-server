@@ -74,9 +74,9 @@ npm run electron-dev # run electron with dev tools or press F5 if you're using V
 
 The server implements [electron-update](https://www.electron.build/auto-update).
 
-To publish an updated:
+To publish an update:
 
-1. Increase the version number in the package.json
+1. Increase the version number of the package.json
 2. Commit & push the changes
 3. Add a tag and name it `v<new version number>`
 4. Push the tag
