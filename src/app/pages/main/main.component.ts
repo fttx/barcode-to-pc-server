@@ -185,20 +185,8 @@ export class MainComponent implements OnInit {
                 });
             });
 
-            this.getDefaultEOLCharacter();
             this.openAtLogin = this.electronService.app.getLoginItemSettings().openAtLogin;
             this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
-        }
-    }
-
-    getDefaultEOLCharacter() {
-        if (this.settings.newLineCharacter == null) {
-            this.electronService.ipcRenderer.on('defaultEOL', (e, defaultEOL) => {
-                this.ngZone.run(() => {
-                    this.settings.newLineCharacter = defaultEOL.replace('\r', 'CR').replace('\n', 'LF');
-                });
-            });
-            this.electronService.ipcRenderer.send('getDefaultEOL');
         }
     }
 
@@ -224,7 +212,7 @@ export class MainComponent implements OnInit {
         this.scanSessions = this.storage.getScanSessions();
         this.settings = this.storage.getSettings();
         if (this.electronService.isElectron()) {
-            this.electronService.ipcRenderer.send('settings', this.settings);            
+            this.electronService.ipcRenderer.send('settings', this.settings);
         }
     }
 

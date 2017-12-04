@@ -1,4 +1,5 @@
 import { StringComponentModel } from "./string-component.model";
+import * as os from 'os';
 
 export class SettingsModel {
     enableRealtimeStrokes: boolean = true;
@@ -7,6 +8,6 @@ export class SettingsModel {
         { name: 'BARCODE', value: 'barcode', type: 'barcode' },
         { name: 'ENTER', value: 'enter', type: 'key' }
     ];
-    newLineCharacter: string = null;
+    newLineCharacter: string = os.EOL.replace('\r', 'CR').replace('\n', 'LF');;
     enableQuotes: boolean = true;
 }

@@ -150,8 +150,6 @@ ipcMain
         });
     }).on('getHostname', (event, arg) => {
         ipcClient.send('hostname', os.hostname());
-    }).on('getDefaultEOL', (event, arg) => {
-        ipcClient.send('defaultEOL', os.EOL);
     }).on('lastScanDateMismatch', (event, deviceId) => {
         if (wsClients[deviceId] && wsClients[deviceId].OPEN == WebSocket.OPEN) {
             //console.log('lastScanDateMismatch for device ' + deviceId + ' requesting sync')
