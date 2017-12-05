@@ -42,7 +42,7 @@
     "publish-mac": "npm run prepare:dist && build -m --project dist -p always",
     "publish-linux": "npm run prepare:dist && build -l --project dist -p always",
     "publish-ml": "npm run prepare:dist && build -ml --project dist -p always",
-    "postinstall": ""
+    "postinstall": "electron-builder install-app-deps"
   },
   "private": true,
   "build": {
