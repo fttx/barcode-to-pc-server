@@ -226,11 +226,34 @@ function onReady() {
                                     break;
                                 }
                                 case 'variable': {
-                                    let typedString = 'unknown';
-                                    if (stringComponent.value == 'deviceName') {
-                                        typedString = deviceName;
+                                    let typedValue = 'unknown';
+                                    switch (stringComponent.value) {
+                                        case 'deviceName': {
+                                            typedValue = deviceName;
+                                            break;
+                                        }
+
+                                        case 'timestamp': {
+                                            typedValue = (request.scan.date * 1000) + ' ';
+                                            break;
+                                        }
+
+                                        case 'date': {
+                                            typedValue = new Date(request.scan.date).toLocaleDateString();
+                                            break;
+                                        }
+
+                                        case 'time': {
+                                            typedValue = new Date(request.scan.date).toLocaleTimeString();
+                                            break;
+                                        }
+
+                                        case 'date_time': {
+                                            typedValue = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
+                                            break;
+                                        }
                                     }
-                                    robotjs.typeString(typedString);
+                                    robotjs.typeString(typedValue);
                                     break;
                                 }
                                 case 'function': {

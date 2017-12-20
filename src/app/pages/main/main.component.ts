@@ -59,10 +59,10 @@ export class MainComponent implements OnInit {
             { name: 'RIGHT_SHIFT', value: 'right_shift', type: 'key' },
             { name: 'SPACE', value: 'space', type: 'key' },
 
-            { name: 'TIMESTAMP', value: 'Date.now()', type: 'variable' },
-            { name: 'DATE', value: 'new Date().toLocaleDateString()', type: 'variable' },
-            { name: 'TIME', value: 'new Date().toLocaleTimeString()', type: 'variable' },
-            { name: 'DATE_TIME', value: 'new Date().toLocaleDateTimeString()', type: 'variable' },
+            { name: 'TIMESTAMP', value: 'timestamp', type: 'variable' },
+            { name: 'DATE', value: 'date', type: 'variable' },
+            { name: 'TIME', value: 'time', type: 'variable' },
+            { name: 'DATE_TIME', value: 'date_time', type: 'variable' },
             // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
             { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
 

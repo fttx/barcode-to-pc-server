@@ -5,4 +5,5 @@ export class ScanModel {
     text: string;
     ack: boolean;
     id: number;
+    date: number;
 }
