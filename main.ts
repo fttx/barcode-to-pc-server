@@ -379,6 +379,13 @@ function onReady() {
                 delete wsClients[deviceId];
             }
         });
+
+        wss.on('error', (err) => {
+            console.log('ws(error): ', err, req.connection.remoteAddress);
+            if (deviceId && wsClients[deviceId]) {
+                delete wsClients[deviceId];
+            }
+        });
     });
 
 
