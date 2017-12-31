@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, shell, Tray, Menu, nativeImage } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, shell, Tray, Menu, nativeImage, MenuItemConstructorOptions } from 'electron';
 import { autoUpdater } from "electron-updater"
 
 import * as robotjs from 'robotjs'
@@ -47,39 +47,8 @@ function createWindow() {
         mainWindow.loadURL('file://' + __dirname + '/index.html');
     }
 
-
-    // tray
-    let menuItems = [
-        // { label: 'Enable realtime ', type: 'radio', checked: false },        
-        { label: 'Exit', role: 'quit' },
-    ];
-    if (process.platform == 'darwin') {
-        tray = new Tray(__dirname + '/assets/tray/macos/iconTemplate.png');
-        tray.setPressedImage(nativeImage.createFromPath(__dirname + '/assets/tray/macos/iconHighlight.png'));
-        menuItems.unshift({ label: 'Hide', role: 'hide' });
-        menuItems.unshift({ label: 'Show', role: 'unhide' });
-    }
-    else if (process.platform.indexOf('win') != -1) {
-        tray = new Tray(__dirname + '/assets/tray/windows/icon.ico');
-    } else {
-        tray = new Tray(__dirname + '/assets/tray/default.png');
-    }
-
-    tray.on('click', (event, bounds) => {
-        mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-    });
-    const contextMenu = Menu.buildFromTemplate(menuItems);
-    tray.setContextMenu(contextMenu); // https://github.com/electron/electron/blob/master/docs/api/tray.md
-    // end tray
-
-    tray.setToolTip(app.getName() + ' is running');
-    
-
-    // Open the DevTools.
-    // mainWindow.webContents.openDevTools()
-
     // Emitted when the window is closed.
-    mainWindow.on('closed', function () {
+    mainWindow.on('closed', () => {
         // Dereference the window object, usually you would store windows
         // in an array if your app supports multi windows, this is the time
         // when you should delete the corresponding element.
@@ -99,19 +68,19 @@ function createWindow() {
         if (mdnsAd) {
             mdnsAd.stop();
         }
-        // app.quit(); 
+        app.quit();
     })
+
     const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
         // Someone tried to run a second instance, we should focus our window.
-        if (mainWindow) {
-            if (mainWindow.isMinimized()) mainWindow.restore()
-            mainWindow.focus()
-        }
+        bringWindowUp();
     })
 
     if (isSecondInstance) {
-        app.quit()
+        app.quit();
     }
+
+
 
 }
 
@@ -155,12 +124,50 @@ let ipcClient;
 var settings: SettingsModel;
 
 ipcMain
-    .on('ready', (event, arg) => { // the renderer will send a 'ready' message once the angular finished loading
+    .on('pageLoad', (event, arg) => { // the renderer will send a 'ready' message once the angular finished loading
         ipcClient = event.sender; // save the renderer reference. TODO: what if there are more windows?
         onReady();
     }).on('settings', (event, arg) => {
         console.log('settings received', arg)
         settings = arg;
+        // tray
+        if (settings.enableTray) {
+            if (tray == null) {
+                console.log('creating tray')
+                let menuItems: MenuItemConstructorOptions[] = [
+                    // { label: 'Enable realtime ', type: 'radio', checked: false },        
+                    { label: 'Exit', role: 'quit' },
+                ];
+                if (process.platform == 'darwin') {
+                    tray = new Tray(__dirname + '/assets/tray/macos/iconTemplate.png');
+                    tray.setPressedImage(nativeImage.createFromPath(__dirname + '/assets/tray/macos/iconHighlight.png'));
+                    menuItems.unshift({ label: 'Hide', role: 'hide' });
+                    menuItems.unshift({
+                        label: 'Show', click: () => {
+                            bringWindowUp();
+                        }
+                    });
+                }
+                else if (process.platform.indexOf('win') != -1) {
+                    tray = new Tray(__dirname + '/assets/tray/windows/icon.ico');
+                } else {
+                    tray = new Tray(__dirname + '/assets/tray/default.png');
+                }
+
+                tray.on('click', (event, bounds) => {
+                    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+                });
+                const contextMenu = Menu.buildFromTemplate(menuItems);
+                tray.setContextMenu(contextMenu); // https://github.com/electron/electron/blob/master/docs/api/tray.md
+                tray.setToolTip(app.getName() + ' is running');
+            }
+        } else {
+            if (tray != null) {
+                tray.destroy();
+                tray = null;
+            }
+        }
+        // end tray
     }).on('getLocalAddresses', (event, arg) => {
         network.get_interfaces_list((err, networkInterfaces) => {
             let addresses = [];
@@ -407,4 +414,12 @@ function getNumber() {
         result += hostname[i].charCodeAt(0);
     }
     return result.substring(0, 10);
+}
+
+function bringWindowUp() {
+    if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.show();
+        mainWindow.focus();
+    }
 }

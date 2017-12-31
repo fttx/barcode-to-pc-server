@@ -39,6 +39,14 @@
 
                 <div class="form-group">
                     <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableTray" (change)="onOpenAtLoginClick($event.target.checked)">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Enable tray icon</span>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" [(ngModel)]="settings && settings.enableRealtimeStrokes" >
                         <span class="custom-control-indicator"></span>
                         <span class="custom-control-description">Enable realtime strokes (keyboard emulation)</span>

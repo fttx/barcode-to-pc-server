@@ -211,9 +211,9 @@ export class MainComponent implements OnInit {
         });
         this.scanSessions = this.storage.getScanSessions();
         this.settings = this.storage.getSettings();
-        if (this.electronService.isElectron()) {
-            this.electronService.ipcRenderer.send('settings', this.settings);
-        }
+        // if (this.electronService.isElectron()) {
+        //     this.electronService.ipcRenderer.send('settings', this.settings);
+        // }
     }
 
     save() {
