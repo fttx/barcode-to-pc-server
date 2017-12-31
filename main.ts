@@ -47,9 +47,17 @@ function createWindow() {
         mainWindow.loadURL('file://' + __dirname + '/index.html');
     }
 
+
+    // tray
+    let menuItems = [
+        // { label: 'Enable realtime ', type: 'radio', checked: false },        
+        { label: 'Exit', role: 'quit' },
+    ];
     if (process.platform == 'darwin') {
         tray = new Tray(__dirname + '/assets/tray/macos/iconTemplate.png');
         tray.setPressedImage(nativeImage.createFromPath(__dirname + '/assets/tray/macos/iconHighlight.png'));
+        menuItems.unshift({ label: 'Hide', role: 'hide' });
+        menuItems.unshift({ label: 'Show', role: 'unhide' });
     }
     else if (process.platform.indexOf('win') != -1) {
         tray = new Tray(__dirname + '/assets/tray/windows/icon.ico');
@@ -60,14 +68,12 @@ function createWindow() {
     tray.on('click', (event, bounds) => {
         mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
     });
-    tray.setToolTip(app.getName() + ' is running');
-    const contextMenu = Menu.buildFromTemplate([
-        // { label: 'Enable realtime ', type: 'radio', checked: false },
-        { label: 'Hide', role: 'hide' },
-        { label: 'Show', role: 'unhide' },
-        { label: 'Exit', role: 'quit' },
-    ]);
+    const contextMenu = Menu.buildFromTemplate(menuItems);
     tray.setContextMenu(contextMenu); // https://github.com/electron/electron/blob/master/docs/api/tray.md
+    // end tray
+
+    tray.setToolTip(app.getName() + ' is running');
+    
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
