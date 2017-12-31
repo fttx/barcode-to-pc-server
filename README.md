@@ -55,6 +55,8 @@
 * If you're working on the angular project (src):
 
 ```bash
+# run npm build before
+
 npm start # run electron with dev tools and the webserver with livereload
 ```
 

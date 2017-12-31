@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, dialog, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, dialog, shell, Tray, Menu, nativeImage } from 'electron';
 import { autoUpdater } from "electron-updater"
 
 import * as robotjs from 'robotjs'
@@ -19,7 +19,8 @@ const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow;
+let mainWindow: BrowserWindow;
+let tray: Tray = null;
 
 let mdnsAd;
 let developmentMode = process.argv.slice(1).some(val => val === '--dev');
@@ -45,6 +46,28 @@ function createWindow() {
         // and load the index.html of the app.
         mainWindow.loadURL('file://' + __dirname + '/index.html');
     }
+
+    if (process.platform == 'darwin') {
+        tray = new Tray(__dirname + '/assets/tray/macos/iconTemplate.png');
+        tray.setPressedImage(nativeImage.createFromPath(__dirname + '/assets/tray/macos/iconHighlight.png'));
+    }
+    else if (process.platform.indexOf('win') != -1) {
+        tray = new Tray(__dirname + '/assets/tray/windows/icon.ico');
+    } else {
+        tray = new Tray(__dirname + '/assets/tray/default.png');
+    }
+
+    tray.on('click', (event, bounds) => {
+        mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+    });
+    tray.setToolTip(app.getName() + ' is running');
+    const contextMenu = Menu.buildFromTemplate([
+        // { label: 'Enable realtime ', type: 'radio', checked: false },
+        { label: 'Hide', role: 'hide' },
+        { label: 'Show', role: 'unhide' },
+        { label: 'Exit', role: 'quit' },
+    ]);
+    tray.setContextMenu(contextMenu); // https://github.com/electron/electron/blob/master/docs/api/tray.md
 
     // Open the DevTools.
     // mainWindow.webContents.openDevTools()
