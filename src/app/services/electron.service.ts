@@ -25,8 +25,8 @@ export class ElectronService {
       this.app = electron.remote.app;
       this.shell = electron.shell;
 
-      this.ipcRenderer.send('settings', this.storage.getSettings());
       this.ipcRenderer.send('pageLoad'); // send the first message from the renderer
+      this.ipcRenderer.send('settings', this.storage.getSettings());
     }
   }
 
