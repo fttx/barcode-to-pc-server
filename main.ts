@@ -23,7 +23,7 @@ let mainWindow: BrowserWindow;
 let tray: Tray = null;
 
 let mdnsAd;
-let developmentMode = process.argv.slice(1).some(val => val === '--dev');
+let developmentMode = false; //process.argv.slice(1).some(val => val === '--dev');
 
 function createWindow() {
     // Create the browser window.
@@ -126,6 +126,7 @@ var settings: SettingsModel;
 ipcMain
     .on('pageLoad', (event, arg) => { // the renderer will send a 'ready' message once the angular finished loading
         ipcClient = event.sender; // save the renderer reference. TODO: what if there are more windows?
+        console.log('ipcClient')
         onReady();
     }).on('settings', (event, arg) => {
         console.log('settings received', arg)
@@ -178,14 +179,14 @@ ipcMain
                     addresses.push(ip);
                 }
             };
-            ipcClient.send('localAddresses', addresses);
+            event.sender.send('localAddresses', addresses);
         });
     }).on('getDefaultLocalAddress', (event, arg) => {
         network.get_private_ip((err, ip) => {
-            ipcClient.send('defaultLocalAddress', ip);
+            event.sender.send('defaultLocalAddress', ip);
         });
     }).on('getHostname', (event, arg) => {
-        ipcClient.send('hostname', os.hostname());
+        event.sender.send('hostname', os.hostname());
     }).on('lastScanDateMismatch', (event, deviceId) => {
         if (wsClients[deviceId] && wsClients[deviceId].OPEN == WebSocket.OPEN) {
             //console.log('lastScanDateMismatch for device ' + deviceId + ' requesting sync')
