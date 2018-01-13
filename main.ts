@@ -19,6 +19,7 @@ const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
+let APP_NAME = 'Barcode to PC server';
 let mainWindow: BrowserWindow;
 let tray: Tray = null;
 
@@ -80,6 +81,56 @@ function createWindow() {
         app.quit();
     }
 
+    if (process.platform === 'darwin') {
+        let template: MenuItemConstructorOptions[] = [
+            {
+                label: APP_NAME,
+                submenu: [
+                    { role: 'about' },
+                    { type: 'separator' },
+                    { role: 'services', submenu: [] },
+                    { type: 'separator' },
+                    { role: 'hide' },
+                    { role: 'hideothers' },
+                    { role: 'unhide' },
+                    { type: 'separator' },
+                    { role: 'quit' }
+                ]
+            },
+            {
+                label: 'View',
+                submenu: [
+                    { role: 'resetzoom' },
+                    { role: 'zoomin' },
+                    { role: 'zoomout' },
+                    { type: 'separator' },
+                    { role: 'togglefullscreen' }
+                ]
+            },
+            {
+                role: 'window',
+                submenu: [
+                    { role: 'minimize' },
+                    { role: 'close' },
+                    { role: 'minimize' },
+                    { role: 'zoom' },
+                    { type: 'separator' },
+                    { role: 'front' }
+                ]
+            },
+            {
+                role: 'help',
+                submenu: [
+                    // {
+                    //     label: 'Info',
+                    //     click() { require('electron').shell.openExternal('https://electronjs.org') }
+                    // }
+                ]
+            }
+        ]
+        const menu = Menu.buildFromTemplate(template)
+        Menu.setApplicationMenu(menu)
+    }
 
 
 }
@@ -109,7 +160,7 @@ app.on('activate', function () {
 
 if (app.setAboutPanelOptions) {
     app.setAboutPanelOptions({
-        applicationName: 'Barcode to PC',
+        applicationName: APP_NAME,
         applicationVersion: app.getVersion(),
         credits: 'Filippo Tortomasi',
     });
@@ -206,17 +257,17 @@ function onReady() {
         var mdns = require('mdns');
 
         mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), PORT, {
-            name: 'Barcode to PC server - ' + getNumber()
+            name: APP_NAME + ' - ' + getNumber()
         });
         mdnsAd.start();
     } catch (ex) {
         dialog.showMessageBox(mainWindow, {
             type: 'warning',
             title: 'Error',
-            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install Barcode to PC server again with an administrator account and reboot your system.',
+            message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install ' + APP_NAME + ' again with an administrator account and reboot your system.',
         });
 
-        var bonjourService = bonjour.publish({ name: 'Barcode to PC server - ' + getNumber(), type: 'http', port: PORT })
+        var bonjourService = bonjour.publish({ name: APP_NAME + ' - ' + getNumber(), type: 'http', port: PORT })
 
         bonjourService.on('error', err => { // err is never set?
             dialog.showMessageBox(mainWindow, {
