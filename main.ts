@@ -25,6 +25,7 @@ let tray: Tray = null;
 
 let mdnsAd;
 let developmentMode = false; //process.argv.slice(1).some(val => val === '--dev');
+app.setName(APP_NAME);
 
 function createWindow() {
     // Create the browser window.
