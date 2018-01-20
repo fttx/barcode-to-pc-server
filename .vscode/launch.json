@@ -9,7 +9,7 @@
             "request": "launch",
             "name": "Unix Debug",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
-            "program": "${workspaceRoot}/dist/main.js",
+            "program": "${workspaceRoot}/dist/electron/main.js",
             "args": [
                 "--dev"
             ],
@@ -20,7 +20,7 @@
             "request": "launch",
             "name": "Windows Debug",
             "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
-            "program": "${workspaceRoot}\\dist/main.js",
+            "program": "${workspaceRoot}\\dist/electron/main.js",
             "args": [
                 "--dev"
             ],

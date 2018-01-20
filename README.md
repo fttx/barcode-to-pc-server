@@ -66,10 +66,10 @@ npm start # run electron with dev tools and the webserver with livereload
 npm run browser # run the webserver with livereload only
 ```
 
-* If you're working on the main.ts file:
+* If you're working on the electron/main.ts file:
 
 ```bash
-npm run watch # run the webserver with livereload and also watch the main.ts file
+npm run watch # run the webserver with livereload and also watch the electron/main.ts file
 npm run electron-dev # run electron with dev tools or press F5 if you're using VSCode to start debugging
 ```
 

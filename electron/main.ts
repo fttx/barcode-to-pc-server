@@ -11,10 +11,10 @@ const PORT = 57891;
 let wss;
 let wsClients = [];
 import * as b from 'bonjour'
-import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelPutScanSessions, requestModelPutScan, requestModel, requestModelHelo } from './src/app/models/request.model';
-import { responseModelHelo, responseModelPong, responseModelPutScanAck, responseModelRequestSync } from './src/app/models/response.model';
-import { StringComponentModel } from './src/app/models/string-component.model';
-import { SettingsModel } from './src/app/models/settings.model';
+import { requestModelDeleteScanSession, requestModelPutScanSession, requestModelPutScanSessions, requestModelPutScan, requestModel, requestModelHelo } from '../src/app/models/request.model';
+import { responseModelHelo, responseModelPong, responseModelPutScanAck, responseModelRequestSync } from '../src/app/models/response.model';
+import { StringComponentModel } from '../src/app/models/string-component.model';
+import { SettingsModel } from '../src/app/models/settings.model';
 const bonjour = b();
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -24,7 +24,7 @@ let mainWindow: BrowserWindow;
 let tray: Tray = null;
 
 let mdnsAd;
-let developmentMode = false; //process.argv.slice(1).some(val => val === '--dev');
+let developmentMode = process.argv.slice(1).some(val => val === '--dev');
 app.setName(APP_NAME);
 
 function createWindow() {
@@ -45,8 +45,7 @@ function createWindow() {
         log.transports.file.level = "info"
         autoUpdater.logger = log
     } else {
-        // and load the index.html of the app.
-        mainWindow.loadURL('file://' + __dirname + '/index.html');
+        mainWindow.loadURL('file://' + __dirname + '/../index.html');
     }
 
     // Emitted when the window is closed.
@@ -192,19 +191,18 @@ ipcMain
                     { label: 'Exit', role: 'quit' },
                 ];
                 if (process.platform == 'darwin') {
-                    tray = new Tray(__dirname + '/assets/tray/macos/iconTemplate.png');
-                    tray.setPressedImage(nativeImage.createFromPath(__dirname + '/assets/tray/macos/iconHighlight.png'));
+                    tray = new Tray(nativeImage.createFromPath(__dirname + '/../assets/tray/macos/iconTemplate.png'));
+                    tray.setPressedImage(nativeImage.createFromPath(__dirname + '/../assets/tray/macos/iconHighlight.png'));
                     menuItems.unshift({ label: 'Hide', role: 'hide' });
                     menuItems.unshift({
                         label: 'Show', click: () => {
                             bringWindowUp();
                         }
                     });
-                }
-                else if (process.platform.indexOf('win') != -1) {
-                    tray = new Tray(__dirname + '/assets/tray/windows/icon.ico');
+                } else if (process.platform.indexOf('win') != -1) {
+                    tray = new Tray(nativeImage.createFromPath(__dirname + '/../assets/tray/windows/icon.ico'));
                 } else {
-                    tray = new Tray(__dirname + '/assets/tray/default.png');
+                    tray = new Tray(nativeImage.createFromPath(__dirname + '/../assets/tray/default.png'));
                 }
 
                 tray.on('click', (event, bounds) => {

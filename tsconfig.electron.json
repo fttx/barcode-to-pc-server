@@ -2,6 +2,7 @@
     "compileOnSave": false,
     "compilerOptions": {
       "outDir": "./dist/",
+      "baseUrl": "electron",
       "sourceMap": true,
       "declaration": false,
       "moduleResolution": "node",
@@ -17,7 +18,7 @@
       ]
     },
     "files": [
-      "main.ts"
+      "electron/main.ts"
     ],
     "exclude": [
       "src",
