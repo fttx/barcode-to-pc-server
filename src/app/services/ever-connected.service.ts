@@ -19,7 +19,7 @@ export class EverConnectedService implements CanActivate {
       //resolve(true);
       //return;
       if (!everConnected) {
-        this.router.navigate(['welcome']);
+        this.router.navigate(['/welcome']);
       }
       //resolve(false)
       resolve(everConnected);

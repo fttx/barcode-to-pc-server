@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
@@ -16,7 +15,6 @@ import { ElectronService } from './services/electron.service';
 import { Storage } from './services/storage.service';
 import { EverConnectedService } from './services/ever-connected.service';
 import { UtilsService } from './services/utils.service';
-import { HttpApi } from './services/http-api.service';
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { CircleTextComponent } from './components/circle-text/circle-text.component';
@@ -50,7 +48,6 @@ const routes: Routes = [
     imports: [
         HttpModule,
         BrowserModule,
-        BrowserAnimationsModule,
         ClipboardModule,
         RouterModule.forRoot(routes, {
             // enableTracing: true 
@@ -63,7 +60,6 @@ const routes: Routes = [
     ],
     providers: [
         ElectronService,
-        HttpApi,
         Storage,
         EverConnectedService,
         UtilsService,
