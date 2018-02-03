@@ -2,6 +2,7 @@ import { settings } from 'cluster';
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as WebSocket from 'ws';
+import * as _path from 'path';
 
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -58,8 +59,8 @@ export class UiHandler implements Handler {
                     { label: 'Exit', role: 'quit' },
                 ];
                 if (process.platform == 'darwin') {
-                    this.tray = new Tray(nativeImage.createFromPath(__dirname + '/../assets/tray/macos/iconTemplate.png'));
-                    this.tray.setPressedImage(nativeImage.createFromPath(__dirname + '/../assets/tray/macos/iconHighlight.png'));
+                    this.tray = new Tray(nativeImage.createFromPath(_path.join(__dirname, '/../../assets/tray/macos/iconTemplate.png')));
+                    this.tray.setPressedImage(nativeImage.createFromPath(_path.join(__dirname, '/../../assets/tray/macos/iconHighlight.png')));
                     menuItems.unshift({ label: 'Hide', role: 'hide' });
                     menuItems.unshift({
                         label: 'Show', click: () => {
@@ -67,9 +68,9 @@ export class UiHandler implements Handler {
                         }
                     });
                 } else if (process.platform.indexOf('win') != -1) {
-                    this.tray = new Tray(nativeImage.createFromPath(__dirname + '/../assets/tray/windows/icon.ico'));
+                    this.tray = new Tray(nativeImage.createFromPath((_path.join(__dirname, '/../../assets/tray/windows/icon.ico'))));
                 } else {
-                    this.tray = new Tray(nativeImage.createFromPath(__dirname + '/../assets/tray/default.png'));
+                    this.tray = new Tray(nativeImage.createFromPath((_path.join(__dirname, '/../../assets/tray/default.png'))));
                 }
 
                 this.tray.on('click', (event, bounds) => {
@@ -108,7 +109,7 @@ export class UiHandler implements Handler {
             log.transports.file.level = "info"
             autoUpdater.logger = log
         } else {
-            this.mainWindow.loadURL('file://' + __dirname + '/../index.html');
+            this.mainWindow.loadURL(_path.join('file://', __dirname, '/../../index.html'));
         }
 
         // Emitted when the window is closed.
