@@ -1,19 +1,24 @@
-import { Component, OnInit, NgZone, Inject, ViewChild, ElementRef } from '@angular/core';
-
-import { ModalDirective } from 'ngx-bootstrap';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
+import { ModalDirective } from 'ngx-bootstrap';
 
-import { SettingsModel } from '../../models/settings.model'
-import { ScanSessionModel } from '../../models/scan-session.model'
-import { Storage } from '../../services/storage.service'
-import { StringComponentModel } from "../../models/string-component.model";
-
-import { ElectronService } from '../../services/electron.service';
-import { UtilsService } from '../../services/utils.service';
+import {
+    requestModel,
+    requestModelDeleteScan,
+    requestModelDeleteScanSession,
+    requestModelHelo,
+    requestModelPutScan,
+    requestModelPutScanSession,
+    requestModelPutScanSessions,
+    requestModelUpdateScanSession,
+} from '../../models/request.model';
+import { ScanSessionModel } from '../../models/scan-session.model';
+import { SettingsModel } from '../../models/settings.model';
+import { StringComponentModel } from '../../models/string-component.model';
 import { ConfigService } from '../../services/config.service';
-import { remote } from 'electron';
-import { ScanModel } from '../../models/scan.model';
-import { requestModelPutScan, requestModelDeleteScan, requestModelDeleteScanSession, requestModelPutScanSessions, requestModelPutScanSession, requestModel, requestModelUpdateScanSession, requestModelHelo } from '../../models/request.model';
+import { ElectronService } from '../../services/electron.service';
+import { Storage } from '../../services/storage.service';
+import { UtilsService } from '../../services/utils.service';
 
 @Component({
     selector: 'app-main',
@@ -182,6 +187,13 @@ export class MainComponent implements OnInit {
                         this.scanSessions[scanSessionIndex].date = request.scanSessionDate;
                         this.save();
                     }
+                });
+            });
+
+            this.electronService.ipcRenderer.on(requestModel.ACTION_CLEAR_SCAN_SESSIONS, (e, request: requestModelDeleteScanSession) => {
+                this.ngZone.run(() => {
+                    let scanSessionIndex = this.scanSessions = [];
+                    this.save();
                 });
             });
 

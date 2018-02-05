@@ -1,5 +1,5 @@
-import { ScanSessionModel } from "./scan-session.model";
-import { ScanModel } from "./scan.model";
+import { ScanSessionModel } from './scan-session.model';
+import { ScanModel } from './scan.model';
 
 export abstract class requestModel {
     // protected _action: string;
@@ -11,7 +11,7 @@ export abstract class requestModel {
     // i can't put all the fromObject(s) here as static methods because the overload won't work
     // it is because when typescript gets compiled to js the obj type is lost and the methods result all with the same signature
     public abstract fromObject(obj: any): requestModel;
-    public static readonly ACTION_GET_VERSION = 'getVersion';    
+    public static readonly ACTION_GET_VERSION = 'getVersion';
     public static readonly ACTION_PING = 'ping';
     public static readonly ACTION_HELO = 'helo';
     public static readonly ACTION_PUT_SCAN_SESSIONS = 'putScanSessions';
@@ -20,6 +20,7 @@ export abstract class requestModel {
     public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
     public static readonly ACTION_DELETE_SCAN = 'deleteScan';
     public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
+    public static readonly ACTION_CLEAR_SCAN_SESSIONS = 'clearScanSessions';
 }
 
 /**
@@ -27,7 +28,7 @@ export abstract class requestModel {
  */
 export class requestModelGetVersion extends requestModel {
     action = 'getVersion';
-    
+
     public fromObject(obj: ({})) {
         return this;
     }
@@ -134,6 +135,13 @@ export class requestModelUpdateScanSession extends requestModel {
         this.scanSessionId = obj.scanSessionId;
         this.scanSessionName = obj.scanSessionName;
         this.scanSessionDate = obj.scanSessionDate;
+        return this;
+    }
+}
+
+export class requestModelClearScanSessions extends requestModel {
+    action = 'clearScanSessions';
+    public fromObject(obj: ({})) {
         return this;
     }
 }
