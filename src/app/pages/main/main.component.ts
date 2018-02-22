@@ -244,7 +244,11 @@ export class MainComponent implements OnInit {
     }
 
     getVersion() {
-        return this.electronService.app.getVersion();
+        if (this.electronService.isElectron()) {
+            return this.electronService.app.getVersion();
+        } else {
+            return 'dev mode'
+        }
     }
 
     getWebSiteUrl() {

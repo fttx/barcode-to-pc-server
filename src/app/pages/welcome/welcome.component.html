@@ -14,6 +14,12 @@
 
         <h3>2) Launch the app and scan this QR code to connect</h3>
         <qr-code [value]="qrCodeUrl" [size]="240"></qr-code>
+
+        <div *ngIf="!electronService.isElectron()">
+            <br>
+            <button (click)="openMainPage()">Skip</button>
+        </div>
+
     </div>
 </div>
 
