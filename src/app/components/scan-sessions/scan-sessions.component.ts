@@ -1,9 +1,10 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core'; // SimpleChanges
-import { ScanSessionModel } from '../../models/scan-session.model'
-import { SettingsModel } from '../../models/settings.model'
-import { Storage } from '../../services/storage.service'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { saveAs } from 'file-saver';
 import * as Papa from 'papaparse';
+
+import { ScanSessionModel } from '../../models/scan-session.model';
+import { SettingsModel } from '../../models/settings.model';
+import { Storage } from '../../services/storage.service';
 
 @Component({
     selector: 'app-scan-sessions',
@@ -13,9 +14,9 @@ import * as Papa from 'papaparse';
 
 export class ScanSessionsComponent implements OnInit {
     @Input() scanSessions: ScanSessionModel[] = []
-    @Input() selectedScanSession: ScanSessionModel;
-    @Output() onSelect = new EventEmitter();
-
+    @Output() selectedScanSessionChange: EventEmitter<ScanSessionModel> = new EventEmitter<ScanSessionModel>();
+    @Input() selectedScanSession: ScanSessionModel = null;
+    
     private settings: SettingsModel = new SettingsModel();;
 
     constructor(
@@ -27,13 +28,15 @@ export class ScanSessionsComponent implements OnInit {
     }
 
     // ngOnChanges(changes: SimpleChanges) {
-    //     if (changes['selectedScanSession']) {
-    //         // TODO scrollTop
+    //     if (changes['scanSessions'] == null) {
+    //         this.selectedScanSession = null;
+    //         this.onSelect.emit(null);
     //     }
     // }
 
-    onItemSelected(index) {
-        this.onSelect.emit(this.scanSessions[index]);
+    onScanSessionClick(scanSession) {
+        this.selectedScanSession = scanSession;
+        this.selectedScanSessionChange.emit(scanSession);
     }
 
     export(index) {

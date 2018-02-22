@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, trigger, state, style, transition, animate } from '@angular/core';
-import { ScanSessionModel } from '../../models/scan-session.model'
-import { ElectronService } from '../../services/electron.service'
+import { animate, Component, Input, OnInit, state, style, transition, trigger } from '@angular/core';
+
+import { ScanSessionModel } from '../../models/scan-session.model';
+import { ElectronService } from '../../services/electron.service';
 
 @Component({
     selector: 'app-scan-session',

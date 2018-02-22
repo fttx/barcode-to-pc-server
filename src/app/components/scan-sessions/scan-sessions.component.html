@@ -1,5 +1,5 @@
 <div class="scan-sessions noselect">
-	<div class="item row" *ngFor="let scanSession of scanSessions; let i = index;" (click)="onItemSelected(i);" [id]="scanSession.date"
+	<div class="item row" *ngFor="let scanSession of scanSessions; let i = index;" (click)="onScanSessionClick(scanSession);" [id]="scanSession.date"
 		[class.selected]="scanSession == selectedScanSession">
 		<div class="col-sm-9 scan">
 			<div class="icon">

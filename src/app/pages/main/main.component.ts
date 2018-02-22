@@ -173,6 +173,7 @@ export class MainComponent implements OnInit {
                 this.ngZone.run(() => {
                     let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
                     if (scanSessionIndex != -1) {
+                        this.selectedScanSession = null;
                         this.scanSessions.splice(scanSessionIndex, 1);
                         this.save();
                     }

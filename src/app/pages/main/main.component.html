@@ -8,7 +8,7 @@
     </div>
 
     <div class="col-half left" #scanSessionsListElement>
-        <app-scan-sessions [scanSessions]="scanSessions" [selectedScanSession]="selectedScanSession" (onSelect)="selectedScanSession = $event"></app-scan-sessions>
+        <app-scan-sessions [scanSessions]="scanSessions" [(selectedScanSession)]="selectedScanSession"></app-scan-sessions>
     </div>
 
     <div class="col-half right" #scanSessionListElement>
