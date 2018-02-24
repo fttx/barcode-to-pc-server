@@ -103,12 +103,12 @@ export class requestModelPutScan extends requestModel {
     }
 }
 
-export class requestModelDeleteScanSession extends requestModel {
+export class requestModelDeleteScanSessions extends requestModel {
     action = 'deleteScanSession';
-    scanSessionId: number;
+    scanSessionIds: number[];
 
-    public fromObject(obj: ({ scanSessionId: number })) {
-        this.scanSessionId = obj.scanSessionId;
+    public fromObject(obj: ({ scanSessionIds: number[] })) {
+        this.scanSessionIds = obj.scanSessionIds;
         return this;
     }
 }

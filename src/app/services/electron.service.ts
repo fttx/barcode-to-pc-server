@@ -13,6 +13,7 @@ export class ElectronService {
   dialog: typeof remote.dialog;
   app: typeof remote.app;
   shell: typeof shell;
+  process: typeof process;
 
   constructor(
     private storage: Storage
@@ -24,6 +25,7 @@ export class ElectronService {
       this.dialog = electron.remote.dialog;
       this.app = electron.remote.app;
       this.shell = electron.shell;
+      this.process = electron.remote.process;
 
       this.ipcRenderer.send('pageLoad'); // send the first message from the renderer
       this.ipcRenderer.send('settings', this.storage.getSettings());
@@ -32,6 +34,10 @@ export class ElectronService {
 
   isElectron() {
     return window && window.process && window.process.type;
+  }
+
+  isDev() {
+    return !this.isElectron || (this.process && this.process.argv.indexOf('--dev') != -1);
   }
 
 }

@@ -5,12 +5,13 @@ import { ModalDirective } from 'ngx-bootstrap';
 import {
     requestModel,
     requestModelDeleteScan,
-    requestModelDeleteScanSession,
+    requestModelDeleteScanSessions,
     requestModelHelo,
     requestModelPutScan,
     requestModelPutScanSession,
     requestModelPutScanSessions,
     requestModelUpdateScanSession,
+    requestModelClearScanSessions,
 } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
 import { SettingsModel } from '../../models/settings.model';
@@ -169,14 +170,13 @@ export class MainComponent implements OnInit {
                 });
             });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSession) => {
+            this.electronService.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSessions) => {
                 this.ngZone.run(() => {
-                    let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-                    if (scanSessionIndex != -1) {
+                    if (this.selectedScanSession && request.scanSessionIds.findIndex(x => x == this.selectedScanSession.id) != -1) {
                         this.selectedScanSession = null;
-                        this.scanSessions.splice(scanSessionIndex, 1);
-                        this.save();
                     }
+                    this.scanSessions = this.scanSessions.filter(x => request.scanSessionIds.indexOf(x.id) < 0);
+                    this.save();
                 });
             });
 
@@ -191,7 +191,7 @@ export class MainComponent implements OnInit {
                 });
             });
 
-            this.electronService.ipcRenderer.on(requestModel.ACTION_CLEAR_SCAN_SESSIONS, (e, request: requestModelDeleteScanSession) => {
+            this.electronService.ipcRenderer.on(requestModel.ACTION_CLEAR_SCAN_SESSIONS, (e, request: requestModelClearScanSessions) => {
                 this.ngZone.run(() => {
                     let scanSessionIndex = this.scanSessions = [];
                     this.save();
