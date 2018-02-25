@@ -23,10 +23,10 @@ import { UtilsService } from '../../services/utils.service';
 
 @Component({
     selector: 'app-main',
-    templateUrl: './main.html',
-    styleUrls: ['./main.scss'],
+    templateUrl: './main.component.html',
+    styleUrls: ['./main.component.scss'],
 })
-export class MainPage implements OnInit {
+export class MainComponent implements OnInit {
     @ViewChild('settingsModal') public settingsModal: ModalDirective;
     @ViewChild('infoModal') public infoModal: ModalDirective;
     @ViewChild('scanSessionsListElement', { read: ElementRef }) public scanSessionsListElement: ElementRef;
