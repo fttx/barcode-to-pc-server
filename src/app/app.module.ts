@@ -14,8 +14,8 @@ import { CircleTextComponent } from './components/circle-text/circle-text.compon
 import { ScanSessionComponent } from './components/scan-session/scan-session.component';
 import { ScanSessionsComponent } from './components/scan-sessions/scan-sessions.component';
 import { StringComponentComponent } from './components/string-component/string-component.component';
-import { MainComponent } from './pages/main/main.component';
-import { WelcomeComponent } from './pages/welcome/welcome.component';
+import { MainPage } from './pages/main/main';
+import { WelcomePage } from './pages/welcome/welcome';
 import { ElectronService } from './services/electron.service';
 import { EverConnectedService } from './services/ever-connected.service';
 import { Storage } from './services/storage.service';
@@ -30,11 +30,11 @@ const routes: Routes = [
     },
     {
         path: 'welcome',
-        component: WelcomeComponent
+        component: WelcomePage
     },
     {
         path: 'scan-session',
-        component: MainComponent,
+        component: MainPage,
         canActivate: [EverConnectedService]
     },
 ];
@@ -63,11 +63,11 @@ const routes: Routes = [
     ],
     declarations: [
         AppComponent,
-        MainComponent,
+        MainPage,
         ScanSessionComponent,
         ScanSessionsComponent,
         CircleTextComponent,
-        WelcomeComponent,
+        WelcomePage,
         StringComponentComponent
     ],
     exports: [ // solo se si se si deve usare nel template

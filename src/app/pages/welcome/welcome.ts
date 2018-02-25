@@ -7,10 +7,10 @@ import { ElectronService } from '../../services/electron.service';
 
 @Component({
   selector: 'app-welcome',
-  templateUrl: './welcome.component.html',
-  styleUrls: ['./welcome.component.scss']
+  templateUrl: './welcome.html',
+  styleUrls: ['./welcome.scss']
 })
-export class WelcomeComponent implements OnInit {
+export class WelcomePage implements OnInit {
   @ViewChild("qrCode") qrCode;
 
   public qrCodeUrl = '';
