@@ -1,0 +1,97 @@
+<!--
+  Generated template for the HomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="secondary">
+    <ion-title>{{ getTitle() }}</ion-title>
+
+    <ion-buttons end>
+     <button ion-button icon-start solid color="secondary" (click)="onClearAllClick()">
+        <ion-icon name="trash"></ion-icon>
+        Clear all
+      </button>
+      
+      <button ion-button icon-start solid color="secondary" (click)="onSettingsClick()">
+        <ion-icon name="settings"></ion-icon>
+        Settings
+      </button>
+
+      <button ion-button icon-start solid color="secondary" (click)="onMainMenuPopoverClick()">
+        <ion-icon name="md-more"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="main-container">
+  <ion-split-pane when="xs">
+    <!--  our side menu  -->
+    <ion-menu [content]="scanSessionsContainer">
+      <ion-content class="child-container">
+        <ion-list class="scan-sessions-list">
+          <ion-item *ngFor="let scanSession of scanSessions; let i = index;" [color]="getItemBackgroundColor(scanSession)" [id]="scanSession.date"
+            (click)="onScanSessionClick(scanSession);">
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col no-lines ion-item>
+                  <ion-avatar item-left>
+                    <circle-text [value]="scanSession.name" [checked]="scanSession.selected">{{ scanSession.name }}</circle-text>
+                  </ion-avatar>
+                  <h2>{{ scanSession.name }}</h2>
+                  <p>Created: {{ scanSession.date }}</p>
+                  <p>Number of scannings: {{ scanSession.scannings.length }}</p>
+                </ion-col>
+
+                <ion-col col-auto>
+                  <button clear ion-button color="dark" (click)="onScanSessionContextMenuClick($event, scanSession)">
+                    <ion-icon name="md-more"></ion-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </ion-list>
+
+        <div *ngIf="!scanSessions || !scanSessions.length" text-center>
+          <img src="assets/logo.jpg" alt="logo" class="desaturate-img" />
+          <br /> Scan sessions list is empty
+          <br /> Open the app and click on the camera button to start scanning
+        </div>
+      </ion-content>
+    </ion-menu>
+
+    <!-- the main content -->
+    <ion-content main #scanSessionsContainer>
+      <ion-list class="child-container scans-list">
+        <div *ngIf="selectedScanSession">
+          <!-- <button ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" (click)="onItemClicked(scan, i)" (press)="onItemPressed(scan, i)" -->
+
+          <ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" [color]="scan.repeated ? 'light' : 'default'"
+            [ngClass]="canAnimate(i) ? 'scan-text-animate' : ''">
+            <ion-grid no-padding>
+              <ion-row>
+                <ion-col no-lines ion-item>
+                  <input type="text" [value]="scan.text" />
+                </ion-col>
+                <ion-col col-auto>
+                  <button ion-button clear color="dark" ngxClipboard [cbContent]="scan.text">
+                    <ion-icon name="copy"></ion-icon>
+                  </button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </ion-item>
+        </div>
+
+        <div class="empty" *ngIf="!selectedScanSession" text-center>
+          Please select a scan session
+        </div>
+      </ion-list>
+    </ion-content>
+  </ion-split-pane>
+</ion-content>

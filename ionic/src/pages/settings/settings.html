@@ -1,0 +1,113 @@
+<!--
+  Generated template for the SettingsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar color="secondary">
+
+    <ion-title>Settings</ion-title>
+
+
+
+    <ion-buttons end>
+      <button ion-button icon-end solid color="secondary" (click)="onApplyClick()">
+        Apply
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-grid fixed>
+    <ion-list>
+
+      <ion-item-divider>
+        General
+      </ion-item-divider>
+
+      <ion-item no-lines>
+        <ion-label>Run on startup</ion-label>
+        <ion-checkbox [(ngModel)]="openAtLogin"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines>
+        <ion-label>Enable tray icon</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.enableTray"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines>
+        <ion-label>Automatically open URLs in browser</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.enableOpenInBrowser"></ion-checkbox>
+      </ion-item>
+
+      <ion-item-divider>
+        Keyboard emulation
+      </ion-item-divider>
+
+      <ion-item no-lines>
+        <ion-label>Enable keyboard emulation</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines text-wrap>
+        Available Custom variables
+        <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='availableComponents' class="components-container components-available">
+          <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
+        </div>
+      </ion-item>
+
+      <ion-item no-lines text-wrap>
+        Typed string
+        <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='settings.typedString' class="components-container components-typed">
+          <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
+        </div>
+      </ion-item>
+
+
+      <ion-item-divider>
+        CSV Settings
+      </ion-item-divider>
+
+
+      <ion-item no-lines>
+        <ion-label>Enable quotes</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.enableQuotes"></ion-checkbox>
+      </ion-item>
+
+      <!-- <ion-item no-lines>
+        <ion-select [(ngModel)]="settings && settings.newLineCharacter" interface="popover" no-padding>
+          <ion-option selected value="CRLF">New Line character: \\r\\n</ion-option>
+          <ion-option value="LF">New Line character: \\n</ion-option>
+          <ion-option value="CR">New Line character: \\r</ion-option>
+        </ion-select>
+      </ion-item> -->
+
+
+      <ion-item no-lines>
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col col-md-2>
+              New Line character
+            </ion-col>
+            <ion-col col-md-10>
+              <select [(ngModel)]="settings && settings.newLineCharacter" interface="popover">
+                <option selected value="CRLF">\\r\\n</option>
+                <option value="LF">\\n</option>
+                <option value="CR">\\r</option>
+              </select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+
+    </ion-list>
+  </ion-grid>
+</ion-content>

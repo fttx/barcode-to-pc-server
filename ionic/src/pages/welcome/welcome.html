@@ -1,0 +1,39 @@
+<!--
+  Generated template for the WelcomePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-content padding text-center>
+  <div class="parent noselect" text-left>
+    <h2>Welcome to Barcode to PC server</h2>
+
+    <div class="text-left">
+      <h3>1) Install the app on your smartphone</h3>
+      <br>
+      <div class="badges">
+        <img (click)="electronProvider.shell.openExternal('https://play.google.com/store/apps/details?id=com.barcodetopc')" alt="Get it on Google Play"
+          src="assets/welcome/google-play-badge.png" />
+
+        <img (click)="electronProvider.shell.openExternal('https://itunes.apple.com/app/id1180168368')" alt="Download on App Store"
+          src="assets/welcome/Download_on_the_App_Store_Badge_US-UK_135x40.svg" />
+      </div>
+
+      <h3>2) Launch the app and scan this QR code to connect</h3>
+      <qr-code [value]="qrCodeUrl" [size]="240"></qr-code>
+
+      <div *ngIf="electronProvider.isDev()">
+        <br>
+        <button ion-button (click)="onSkipClick()">Skip</button>
+      </div>
+
+    </div>
+
+
+    <div class="help noselect fixed-bottom">
+      <a (click)="onHelpClick()">Help?</a>
+    </div>
+  </div>
+
+</ion-content>

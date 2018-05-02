@@ -1,0 +1,29 @@
+string-component {
+    input {
+        color: black ;
+        margin: 3.65px 0;
+        height: 20px;
+        font-weight: normal
+    }
+
+    .main-button {
+        height: 26px !important;
+        font-size: 14px !important;
+    }
+
+    .custom-text-editor button {
+        margin-top: 5px;
+        height: 19px;
+        vertical-align: top;
+    }
+
+    .custom-text-editor {
+        font-size: 12px;
+        padding: 0;
+        margin: 0;
+        height: 27.3px;
+        line-height: 27.3px;
+    }
+  
+    
+}
