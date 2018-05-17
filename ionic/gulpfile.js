@@ -2,6 +2,7 @@ const gulp = require('gulp')
 const config = require('@ionic/app-scripts/dist/util/config')
 const ionic = require('@ionic/app-scripts')
 const { exec, execSync, spawn } = require('child_process');
+const electronBuilder = require('../node_modules/electron-builder')
 
 gulp.task('serve', ['electron:assets'], () => {
   exec('cd ../ && ./node_modules/.bin/tsc -w -p electron/tsconfig.json'); // usare npx o importare tsc
@@ -14,7 +15,7 @@ gulp.task('serve', ['electron:assets'], () => {
   });
 })
 
-gulp.task('dist', ['electron:assets'], done => {
+gulp.task('dist', ['electron:assets'], () => {
   return Promise.all([ // promises are executed asynchronously
     new Promise((resolve, reject) => {
       gulp.src(['../electron/electron-resources/**/*'])
@@ -23,36 +24,32 @@ gulp.task('dist', ['electron:assets'], done => {
         .on('end', resolve)
     }),
     new Promise((resolve, reject) => {
-      execSync('cd ../ && ./node_modules/.bin/tsc -p electron/tsconfig.json');
-      gulp.
-        src(['../package.json']).pipe(gulp.dest('../dist/')).on('end', () => {
-          execSync('cd ../dist && npm install --prod');
+      execSync('./node_modules/.bin/tsc -p electron/tsconfig.json', { cwd: '../', stdio: "inherit", shell: true })
+      gulp.src(['../package.json'])
+        .pipe(gulp.dest('../dist/'))
+        .on('end', () => {
+          execSync('cd dist && npm install --prod --ignore-scripts', { cwd: '../', stdio: "inherit", shell: true })
           resolve();
         })
-        .on('error', reject)
+        .on('error', reject);
     }),
     new Promise((resolve, reject) => {
-      let buildContext = config.generateContext({ isProd: true });
-      ionic.build(buildContext).then(() => {
-        gulp
-          .src(['./platforms/browser/www/**/*'])
-          .pipe(gulp.dest('../dist/ionic/www/'))
-          .on('error', reject)
-          .on('end', resolve)
-      }).catch(() => {
-        console.log('Error building ionic: ', err)
-        reject();
-      });
+      execSync('ionic cordova build browser --prod', { stdio: "inherit", shell: true })
+      gulp
+        .src(['./platforms/browser/www/**/*'])
+        .pipe(gulp.dest('../dist/ionic/www/'))
+        .on('error', reject)
+        .on('end', resolve)
     }),
   ]).then(() => { // after the promises above are resolved:
     console.log('building electron...')
-    spawn("../node_modules/.bin/electron-builder", [], { cwd: '../dist', stdio: "inherit", shell: true });
+    electronBuilder.build({ projectDir: '../dist' });
   })
   // a similar behavior can be achieved by creating multiple gulp.task which do not return anything
 })
 
 gulp.task('electron:assets', () => {
   return gulp // when this task is used as dependency from another task it will wait for this task to complete
-      .src(['../electron/src/assets/**/*'])
-      .pipe(gulp.dest('../dist/electron/src/assets/'))
+    .src(['../electron/src/assets/**/*'])
+    .pipe(gulp.dest('../dist/electron/src/assets/'))
 });
