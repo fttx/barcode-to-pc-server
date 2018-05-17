@@ -3,13 +3,14 @@ const config = require('@ionic/app-scripts/dist/util/config')
 const ionic = require('@ionic/app-scripts')
 const { exec, execSync, spawn } = require('child_process');
 const electronBuilder = require('../node_modules/electron-builder')
+const typescript = require('../node_modules/typescript')
 
 gulp.task('serve', ['electron:assets'], () => {
-  exec('cd ../ && ./node_modules/.bin/tsc -w -p electron/tsconfig.json'); // usare npx o importare tsc
+  exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true })
   let buildContext = config.generateContext();
   ionic.addArgv('--nobrowser')
   ionic.serve(buildContext).then(() => {
-    exec('cd .. && ./node_modules/.bin/electron dist/electron/src/main.js --dev')
+    exec('npm run electron:dev', { cwd: '../', stdio: "inherit", shell: true })
   }).catch(() => {
     console.log('Error starting watch ionic: ', err)
   });
@@ -24,7 +25,7 @@ gulp.task('dist', ['electron:assets'], () => {
         .on('end', resolve)
     }),
     new Promise((resolve, reject) => {
-      execSync('./node_modules/.bin/tsc -p electron/tsconfig.json', { cwd: '../', stdio: "inherit", shell: true })
+      execSync('npm run tsc:electron', { cwd: '../', stdio: "inherit", shell: true })
       gulp.src(['../package.json'])
         .pipe(gulp.dest('../dist/'))
         .on('end', () => {
@@ -34,12 +35,17 @@ gulp.task('dist', ['electron:assets'], () => {
         .on('error', reject);
     }),
     new Promise((resolve, reject) => {
-      execSync('ionic cordova build browser --prod', { stdio: "inherit", shell: true })
-      gulp
-        .src(['./platforms/browser/www/**/*'])
-        .pipe(gulp.dest('../dist/ionic/www/'))
-        .on('error', reject)
-        .on('end', resolve)
+      let buildContext = config.generateContext({
+        isProd: true,
+        platform: 'browser',
+      });
+      ionic.build(buildContext).then(() => {
+        gulp
+          .src(['./platforms/browser/www/**/*'])
+          .pipe(gulp.dest('../dist/ionic/www/'))
+          .on('error', reject)
+          .on('end', resolve)
+      })
     }),
   ]).then(() => { // after the promises above are resolved:
     console.log('building electron...')

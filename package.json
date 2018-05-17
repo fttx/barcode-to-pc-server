@@ -22,7 +22,10 @@
     "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i",
     "start": "npx gulp --cwd ./ionic/ serve",
     "dist": "npx gulp --cwd ./ionic/ dist",
-    "electron:dist": "tsc -p electron/tsconfig.json && npx copyfiles package.json dist && npx copyfiles -f ./electron/electron-resources/* ./dist/build/ && cd dist && npm install --prod && npx electron-builder"
+    "tsc": "tsc",
+    "tsc:electron": "tsc -p electron/tsconfig.json",
+    "tsc:watch-electron": "tsc -w -p electron/tsconfig.json",
+    "electron:dev":"npx electron dist/electron/src/main.js --dev"
   },
   "private": true,
   "build": {
