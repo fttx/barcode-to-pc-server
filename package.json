@@ -19,13 +19,13 @@
   },
   "main": "electron/src/main.js",
   "scripts": {
-    "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i",
+    "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i && ionic cordova platform add browser",
     "start": "npx gulp --cwd ./ionic/ serve",
     "dist": "npx gulp --cwd ./ionic/ dist",
     "tsc": "tsc",
     "tsc:electron": "tsc -p electron/tsconfig.json",
     "tsc:watch-electron": "tsc -w -p electron/tsconfig.json",
-    "electron:dev":"npx electron dist/electron/src/main.js --dev"
+    "electron:dev": "npx electron dist/electron/src/main.js --dev"
   },
   "private": true,
   "build": {
