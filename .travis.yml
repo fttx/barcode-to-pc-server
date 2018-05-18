@@ -13,6 +13,8 @@ before_install:
   - brew reinstall gettext
   - brew unlink gettext && brew link gettext --force
 install:
+  - npm i -g cordova
+  - npm i -g ionic
   - npm install
 
 script:

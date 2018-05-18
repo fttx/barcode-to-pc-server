@@ -19,7 +19,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
  
-  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
+  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron/electron-resources/Bonjour64.msi?raw=true
   - msiexec /i Bonjour64.msi /qn
   - del Bonjour64.msi
   - appveyor DownloadFile %BONJOUR_SDK_DOWNLOAD%
@@ -46,6 +46,8 @@ install:
   - npm --version
   - npm run tsc --version  
 build_script:
+  - cmd: npm i -g cordova
+  - cmd: npm i -g ionic
   - cmd: npm run publish
 # artifacts:
 #   - path: /dist\\dist\\nsis-web\.*\.exe/
