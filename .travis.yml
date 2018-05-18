@@ -12,10 +12,10 @@ before_install:
   # - brew update
   - brew reinstall gettext
   - brew unlink gettext && brew link gettext --force
-install:
   - sudo npm i -g cordova
   - sudo npm i -g ionic
-  - npm install
+install:
+  - sudo npm install
 
 script:
   - rm -rf electron/electron-resources/license*
