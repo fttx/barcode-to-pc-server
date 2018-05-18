@@ -6,7 +6,7 @@
     "app",
     "remote"
   ],
-  "version": "2.0.0",
+  "version": "3.0.0",
   "license": "MIT",
   "author": {
     "name": "Filippo Tortomasi",
@@ -22,6 +22,7 @@
     "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i && ionic cordova platform add browser",
     "start": "npx gulp --cwd ./ionic/ serve",
     "dist": "npx gulp --cwd ./ionic/ dist",
+    "publish": "npx gulp --cwd ./ionic/ publish",
     "tsc": "tsc",
     "tsc:electron": "tsc -p electron/tsconfig.json",
     "tsc:watch-electron": "tsc -w -p electron/tsconfig.json",

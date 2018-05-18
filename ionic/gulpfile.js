@@ -16,7 +16,7 @@ gulp.task('serve', ['electron:assets'], () => {
   });
 })
 
-gulp.task('dist', ['electron:assets'], () => {
+gulp.task('build', ['electron:assets'], () => {
   return Promise.all([ // promises are executed asynchronously
     new Promise((resolve, reject) => {
       gulp.src(['../electron/electron-resources/**/*'])
@@ -47,11 +47,15 @@ gulp.task('dist', ['electron:assets'], () => {
           .on('end', resolve)
       })
     }),
-  ]).then(() => { // after the promises above are resolved:
-    console.log('building electron...')
-    electronBuilder.build({ projectDir: '../dist' });
-  })
-  // a similar behavior can be achieved by creating multiple gulp.task which do not return anything
+  ])  // a similar behavior can be achieved by creating multiple gulp.task which do not return anything
+})
+
+gulp.task('dist', ['electron:assets', 'build'], () => {
+  return electronBuilder.build({ projectDir: '../dist' }); 
+})
+
+gulp.task('publish', ['electron:assets', 'build'], () => {
+  return electronBuilder.build({ projectDir: '../dist', publish: 'always' }); 
 })
 
 gulp.task('electron:assets', () => {

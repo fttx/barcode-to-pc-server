@@ -1,0 +1,53 @@
+version: v{build} # doesn't matter because gets overwritten later on with the package.json value
+branches:
+  only:
+  - master
+  - /^v[0-9]+.[0-9]+.[0-9]+$/
+skip_non_tags: true
+clone_depth: 1
+environment:
+  nodejs_version: "8"
+  BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
+  BONJOUR_SDK_DOWNLOAD:
+    secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
+image: Visual Studio 2015
+# init:
+#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+# on_finish:
+#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
+install:
+  - ps: Install-Product node $env:nodejs_version
+  - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
+ 
+  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron-resources/Bonjour64.msi?raw=true
+  - msiexec /i Bonjour64.msi /qn
+  - del Bonjour64.msi
+  - appveyor DownloadFile %BONJOUR_SDK_DOWNLOAD%
+  - bonjoursdksetup.exe /quiet
+  - del bonjoursdksetup.exe
+
+  - git config --global user.email "filippo.tortomasi@gmail.com"
+  - git config --global user.name "Filippo Tortomasi"
+  # - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%' # update the version field in the package.json
+  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
+  - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
+
+  - npm cache verify
+  - npm install
+  - set NODE_ENV=production
+  # - set PATH=%APPDATA%\npm;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
+  # - set PATH=%APPVEYOR_BUILD_FOLDER%;%PATH%
+  - set ECHO=ON 
+  - echo "%PATH%"
+  - echo "%NODE_ENV%"
+  - node --version
+  - npm --version
+  - npm run tsc --version  
+build_script:
+  - cmd: npm run publish
+# artifacts:
+#   - path: /dist\\dist\\nsis-web\.*\.exe/
+#   - path: /dist\\dist\\nsis-web\.*\.7z/
+test: off
