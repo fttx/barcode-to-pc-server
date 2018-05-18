@@ -50,10 +50,10 @@
   "dependencies": {
     "bonjour": "^3.5.0",
     "electron-updater": "^2.20.1",
-    "mdns": "^2.3.4",
+    "mdns": "^2.4.0",
     "network": "^0.4.1",
     "requirejs": "^2.3.5",
-    "robotjs": "^0.4.7",
+    "robotjs": "^0.5.1",
     "rxjs": "^5.5.6",
     "systemjs": "^0.21.0",
     "ws": "^4.1.0"
