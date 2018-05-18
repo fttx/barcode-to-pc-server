@@ -15,7 +15,7 @@ before_install:
   - sudo npm i -g cordova
   - sudo npm i -g ionic
 install:
-  - sudo npm install
+  - sudo npm install --unsafe-perm
 
 script:
   - rm -rf electron/electron-resources/license*

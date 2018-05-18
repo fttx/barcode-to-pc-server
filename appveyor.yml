@@ -35,7 +35,7 @@ install:
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
   - npm cache verify
-  - npm install
+  - npm install --unsafe-perm
   - set NODE_ENV=production
   # - set PATH=%APPDATA%\npm;%PATH%
   # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
