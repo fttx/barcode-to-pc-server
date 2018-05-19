@@ -13,7 +13,6 @@ before_install:
   - brew reinstall gettext
   - brew unlink gettext && brew link gettext --force
   - npm config set unsafe-perm=true
-  - sudo npm install -g ionic cordova
 install:
   - npm install
 
