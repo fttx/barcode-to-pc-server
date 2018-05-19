@@ -63,7 +63,6 @@
     "@types/bonjour": "^3.5.5",
     "@types/electron": "^1.6.10",
     "@types/mdns": "0.0.32",
-    "copyfiles": "^1.2.0",
     "electron": "^1.8.2",
     "electron-builder": "^20.2.0",
     "electron-log": "^2.2.14",
