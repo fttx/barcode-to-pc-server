@@ -25,7 +25,6 @@
     * RobotJS: <https://github.com/octalmage/robotjs#building>
     * electron-builder: <https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux>
     * node_mdns: <https://github.com/agnat/node_mdns#installation>
-    * ionic: <https://ionicframework.com/docs/intro/installation/>
 2. Clone the repository
     ```bash
     git clone https://github.com/fttx/barcode-to-pc-server/
