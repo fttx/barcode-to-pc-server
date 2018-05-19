@@ -1,6 +1,6 @@
 #!/bin/sh
 
-curl $CSC_LINK -o certificate.p12
+curl $CSC_LINK -o certificate.p12 -L
 
 # openssl aes-256-cbc -k "$OPENSSL_PASSWORD" -in InstallerAndExecutableCertificates.encr.p12 -d -a -out InstallerAndExecutableCertificates.encr.p12
 
