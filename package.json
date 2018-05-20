@@ -21,9 +21,11 @@
   "scripts": {
     "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i && ionic cordova platform add browser",
     "start": "npx gulp --cwd ./ionic/ serve",
+    "test": "npx gulp --cwd ./ionic/ test",
     "dist": "npx gulp --cwd ./ionic/ dist",
     "publish": "npx gulp --cwd ./ionic/ publish",
     "tsc": "tsc",
+    "mocha": "mocha",
     "tsc:electron": "tsc -p electron/tsconfig.json",
     "tsc:watch-electron": "tsc -w -p electron/tsconfig.json",
     "electron:dev": "npx electron dist/electron/src/main.js --dev"
@@ -67,7 +69,9 @@
     "electron-builder": "^20.13.4",
     "electron-log": "^2.2.14",
     "gulp": "^3.9.1",
+    "mocha": "^5.2.0",
     "npx": "^10.2.0",
+    "spectron": "^3.8.0",
     "typescript": "^2.7.2"
   }
 }

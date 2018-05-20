@@ -4,6 +4,7 @@ const ionic = require('@ionic/app-scripts')
 const { exec, execSync, spawn } = require('child_process');
 const electronBuilder = require('../node_modules/electron-builder')
 const typescript = require('../node_modules/typescript')
+const mocha = require('../node_modules/mocha')
 
 gulp.task('serve', ['electron:assets'], () => {
   exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true })
@@ -28,10 +29,7 @@ gulp.task('build', ['electron:assets'], () => {
       execSync('npm run tsc:electron', { cwd: '../', stdio: "inherit", shell: true })
       gulp.src(['../package.json'])
         .pipe(gulp.dest('../dist/'))
-        .on('end', () => {
-          execSync('cd dist && npm install --prod --ignore-scripts', { cwd: '../', stdio: "inherit", shell: true })
-          resolve();
-        })
+        .on('end', resolve)
         .on('error', reject);
     }),
     new Promise((resolve, reject) => {
@@ -50,12 +48,18 @@ gulp.task('build', ['electron:assets'], () => {
   ])  // a similar behavior can be achieved by creating multiple gulp.task which do not return anything
 })
 
-gulp.task('dist', ['electron:assets', 'build'], () => {
-  return electronBuilder.build({ projectDir: '../dist' }); 
+gulp.task('dist', ['build', 'dist:install-prod'], () => {
+  return electronBuilder.build({ projectDir: '../dist' });
 })
 
-gulp.task('publish', ['electron:assets', 'build'], () => {
-  return electronBuilder.build({ projectDir: '../dist', publish: 'always' }); 
+gulp.task('publish', ['build', 'dist:install-prod'], () => {
+  return electronBuilder.build({ projectDir: '../dist', publish: 'always' });
+})
+
+gulp.task('test', ['build'], () => {
+  execSync('npm run tsc:electron', { cwd: '../', stdio: "inherit", shell: true }) // this way i'm sure that it's compiled before launching mocha
+  exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true }) // start watching for future changes
+  return execSync('npm run mocha', { cwd: '../', stdio: "inherit", shell: true })
 })
 
 gulp.task('electron:assets', () => {
@@ -63,3 +67,7 @@ gulp.task('electron:assets', () => {
     .src(['../electron/src/assets/**/*'])
     .pipe(gulp.dest('../dist/electron/src/assets/'))
 });
+
+gulp.task('dist:install-prod', () => {
+  return execSync('npm install --prod --ignore-scripts', { cwd: '../dist', stdio: "inherit", shell: true })
+})
