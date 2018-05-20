@@ -1,6 +1,7 @@
 #!/bin/sh
 
-curl $CSC_LINK -o certificate.p12 -L
+curl $CSC_DOWNLOAD_URL -o ~/certificate.p12 -L
+CSC_LINK=~/certificate.p12
 
 # openssl aes-256-cbc -k "$OPENSSL_PASSWORD" -in InstallerAndExecutableCertificates.encr.p12 -d -a -out InstallerAndExecutableCertificates.encr.p12
 
@@ -14,7 +15,7 @@ security unlock-keychain -p travis $KEY_CHAIN_NAME
 security set-keychain-settings -t 3600 -u $KEY_CHAIN_NAME
 
 # Add certificates to keychain and allow codesign to access them
-security import certificate.p12 -k ~/Library/Keychains/$KEY_CHAIN_NAME -P $CSC_KEY_PASSWORD
+security import ~/certificate.p12 -k ~/Library/Keychains/$KEY_CHAIN_NAME -P $CSC_KEY_PASSWORD
 
 echo "Add keychain to keychain-list"
 security list-keychains -s $KEY_CHAIN_NAME
