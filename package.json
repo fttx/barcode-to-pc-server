@@ -67,7 +67,7 @@
     "electron-builder": "^20.13.4",
     "electron-log": "^2.2.14",
     "gulp": "^3.9.1",
-    "npx": "^9.7.1",
+    "npx": "^10.2.0",
     "typescript": "^2.7.2"
   }
 }
