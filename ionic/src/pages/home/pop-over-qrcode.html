@@ -1,0 +1,30 @@
+<ion-header>
+    <ion-navbar color="secondary">
+        <ion-title>QR code app pairing</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-start solid color="secondary" (click)="close()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding text-center>
+    <p>
+        <qr-code class="qr-code-element" [value]="qrCodeUrl" [size]="240"></qr-code>
+    </p>
+
+    <div style="margin: 20px; font-size: 1.3em">
+        In order to pair the app:
+        <ol text-left>
+            <li>Launch the app</li>
+            <li>Open the
+                <i>Select server</i> page</li>
+            <li>Tap on the scan icon
+                <ion-icon style="margin-left: 6px; font-size: .9em" name="qr-scanner"></ion-icon>
+            </li>
+            <li>Scan the QR code above</li>
+        </ol>
+    </div>
+</ion-content>

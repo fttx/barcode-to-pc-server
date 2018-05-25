@@ -9,7 +9,13 @@
     "build": "ionic-app-scripts build",
     "lint": "ionic-app-scripts lint",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
+    "ionic:serve": "ionic-app-scripts serve",
+    "test": "karma start ./test-config/karma.conf.js",
+    "test-ci": "karma start ./test-config/karma.conf.js --single-run",
+    "test-coverage": "karma start ./test-config/karma.conf.js --coverage",
+    "e2e": "npm run e2e-update && npm run e2e-test",
+    "e2e-test": "protractor ./test-config/protractor.conf.js",
+    "e2e-update": "webdriver-manager update --standalone false --gecko false"
   },
   "dependencies": {
     "@angular/common": "5.0.3",
@@ -43,12 +49,30 @@
     "papaparse": "^4.4.0",
     "rxjs": "5.5.2",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.18"
+    "zone.js": "^0.8.26"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.1.8",
+    "@types/jasmine": "^2.8.7",
+    "@types/node": "^10.1.2",
+    "angular2-template-loader": "^0.6.2",
     "cordova": "^8.0.0",
+    "html-loader": "^0.5.5",
     "ionic": "^3.20.0",
+    "istanbul-instrumenter-loader": "^3.0.1",
+    "jasmine": "^3.1.0",
+    "jasmine-spec-reporter": "^4.2.1",
+    "karma": "^2.0.2",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage-istanbul-reporter": "^2.0.0",
+    "karma-jasmine": "^1.1.2",
+    "karma-jasmine-html-reporter": "^1.1.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-webpack": "^3.0.0",
+    "null-loader": "^0.1.1",
+    "protractor": "^5.3.2",
+    "ts-loader": "^3.5.0",
+    "ts-node": "^6.0.3",
     "typescript": "2.4.2"
   },
   "description": "An Ionic project",

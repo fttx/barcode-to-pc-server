@@ -10,17 +10,17 @@
     <ion-title>{{ getTitle() }}</ion-title>
 
     <ion-buttons end>
-     <button ion-button icon-start solid color="secondary" (click)="onClearAllClick()">
+     <button ion-button icon-start solid color="secondary" class="clear-all-button" (click)="onClearAllClick()">
         <ion-icon name="trash"></ion-icon>
         Clear all
       </button>
       
-      <button ion-button icon-start solid color="secondary" (click)="onSettingsClick()">
+      <button ion-button icon-start solid color="secondary" class="settings-button" (click)="onSettingsClick()">
         <ion-icon name="settings"></ion-icon>
         Settings
       </button>
 
-      <button ion-button icon-start solid color="secondary" (click)="onMainMenuPopoverClick()">
+      <button ion-button icon-start solid color="secondary" class="pop-over-button" (click)="onMainMenuPopoverClick()">
         <ion-icon name="md-more"></ion-icon>
       </button>
     </ion-buttons>

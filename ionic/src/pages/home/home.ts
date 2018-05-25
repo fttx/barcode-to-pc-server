@@ -1,4 +1,5 @@
 import { Component, NgZone, ViewChild } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { saveAs } from 'file-saver';
 import {
   Content,
@@ -61,6 +62,7 @@ export class HomePage {
     public popoverCtrl: PopoverController,
     private toastCtrl: ToastController,
     public events: Events,
+    public title: Title,
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
@@ -78,7 +80,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad HomePage');
+    this.title.setTitle('Barcode To PC');
 
     if (this.electronProvider.isElectron()) {
 
@@ -312,7 +314,7 @@ export class ScanSessionContextMenuPopover {
   template: `
     <ion-list>
       <ion-list-header>More</ion-list-header>
-      <button ion-item (click)="onShowPairQrCodeClick()">Pair the app with QR code</button>
+      <button ion-item (click)="onShowPairQrCodeClick()" class="show-pair-qr-code-button">Pair the app with QR code</button>
       <button ion-item (click)="onInfoClick()">Info</button>
     </ion-list>
   `
@@ -339,35 +341,7 @@ export class MainMenuPopover {
 }
 
 @Component({
-  template: `
-  <ion-header>
-    <ion-navbar color="secondary">
-      <ion-title>QR code app pairing</ion-title>
-
-      <ion-buttons end>
-        <button ion-button icon-start solid color="secondary" (click)="close()">
-          <ion-icon name="close"></ion-icon>
-        </button>
-      </ion-buttons>
-    </ion-navbar>
-  </ion-header>
-
-  <ion-content padding text-center>
-    <p>
-      <qr-code [value]="qrCodeUrl" [size]="240"></qr-code>
-    </p>
-
-    <div  style="margin: 20px; font-size: 1.3em">
-      In order to pair the app:
-      <ol text-left>
-        <li>Launch the app</li>
-        <li>Open the <i>Select server</i> page</li>
-        <li>Tap on the scan icon <ion-icon style="margin-left: 6px; font-size: .9em" name="qr-scanner"></ion-icon></li>
-        <li>Scan the QR code above</li>
-      </ol>
-    </div>
-  </ion-content>
-  `
+  templateUrl: 'pop-over-qrcode.html'
 })
 export class QrCodePairingModal {
   public qrCodeUrl = '';
