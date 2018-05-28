@@ -32,7 +32,7 @@ describe('Application launch', function () {
     })
 
     it('has the correct window title', function () {
-        this.app.client.getTitle().then((title) => {
+        return this.app.client.getTitle().then((title) => {
             assert.equal(title, 'Barcode To PC server')
         });
     })

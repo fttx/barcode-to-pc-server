@@ -58,7 +58,6 @@ gulp.task('publish', ['build', 'dist:install-prod'], () => {
 
 gulp.task('test', ['build'], () => {
   execSync('npm run tsc:electron', { cwd: '../', stdio: "inherit", shell: true }) // this way i'm sure that it's compiled before launching mocha
-  exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true }) // start watching for future changes
   return execSync('npm run mocha', { cwd: '../', stdio: "inherit", shell: true })
 })
 
