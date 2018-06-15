@@ -1,5 +1,6 @@
 import { shell } from 'electron';
 import * as robotjs from 'robotjs';
+import { isNumeric } from 'rxjs/util/isNumeric';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo, requestModelPutScan } from '../../../ionic/src/models/request.model';
@@ -32,58 +33,69 @@ export class ScansHandler implements Handler {
                 let barcode = request.scan.text;
 
                 if (this.settingsHandler.enableRealtimeStrokes) {
-                    this.settingsHandler.typedString.forEach((stringComponent: StringComponentModel) => {
-                        switch (stringComponent.type) {
-                            case 'barcode': {
-                                robotjs.typeString(barcode);
-                                break;
-                            }
-                            case 'text': {
-                                robotjs.typeString(stringComponent.value);
-                                break;
-                            }
-                            case 'key': {
-                                robotjs.keyTap(stringComponent.value);
-                                break;
-                            }
-                            case 'variable': {
-                                let typedValue = 'unknown';
-                                switch (stringComponent.value) {
-                                    case 'deviceName': {
-                                        typedValue = this.deviceName;
-                                        break;
-                                    }
-
-                                    case 'timestamp': {
-                                        typedValue = (request.scan.date * 1000) + ' ';
-                                        break;
-                                    }
-
-                                    case 'date': {
-                                        typedValue = new Date(request.scan.date).toLocaleDateString();
-                                        break;
-                                    }
-
-                                    case 'time': {
-                                        typedValue = new Date(request.scan.date).toLocaleTimeString();
-                                        break;
-                                    }
-
-                                    case 'date_time': {
-                                        typedValue = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
-                                        break;
-                                    }
+                    (async () => {
+                        for (let stringComponent of this.settingsHandler.typedString) {
+                            switch (stringComponent.type) {
+                                case 'barcode': {
+                                    robotjs.typeString(barcode);
+                                    break;
                                 }
-                                robotjs.typeString(typedValue);
-                                break;
-                            }
-                            case 'function': {
-                                let typedString = stringComponent.value.replace('barcode', '"' + barcode + '"');
-                                robotjs.typeString(eval(typedString));
-                                break;
+                                case 'text': {
+                                    robotjs.typeString(stringComponent.value);
+                                    break;
+                                }
+                                case 'key': {
+                                    robotjs.keyTap(stringComponent.value);
+                                    break;
+                                }
+                                case 'variable': {
+                                    let typedValue = 'unknown';
+                                    switch (stringComponent.value) {
+                                        case 'deviceName': {
+                                            typedValue = this.deviceName;
+                                            break;
+                                        }
+
+                                        case 'timestamp': {
+                                            typedValue = (request.scan.date * 1000) + ' ';
+                                            break;
+                                        }
+
+                                        case 'date': {
+                                            typedValue = new Date(request.scan.date).toLocaleDateString();
+                                            break;
+                                        }
+
+                                        case 'time': {
+                                            typedValue = new Date(request.scan.date).toLocaleTimeString();
+                                            break;
+                                        }
+
+                                        case 'date_time': {
+                                            typedValue = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
+                                            break;
+                                        }
+                                    }
+                                    robotjs.typeString(typedValue);
+                                    break;
+                                }
+                                case 'function': {
+                                    let typedString = stringComponent.value.replace('barcode', '"' + barcode + '"');
+                                    robotjs.typeString(eval(typedString));
+                                    break;
+                                }
+
+                                case 'delay': {
+                                    if (isNumeric(stringComponent.value)) {
+                                        await new Promise((resolve) => {
+                                            setTimeout(resolve, parseInt(stringComponent.value))
+                                        })
+                                    }
+                                    break;
+                                }
                             }
                         }
-                    });
+                    })();
                 }
 
                 if (this.settingsHandler.enableOpenInBrowser) {

@@ -17,12 +17,12 @@ export class StringComponent {
   @Input() component: StringComponentModel;
 
   public editMode = false;
-  public value = '';
+  public inputValue = '';
 
   constructor() { }
 
   ngOnInit() {
-    this.value = this.component.name;
+    // this.value = this.component.name;
   }
 
   onComponentClicked(event) {
@@ -32,10 +32,17 @@ export class StringComponent {
     //   this.component.name = this.value;
     //   this.component.value = this.value;
     // } else {
-    this.component.name = this.value;
-    this.component.value = this.value;
+    // this.component.value = this.inputValue;
     // }
     this.editMode = false;
+  }
+
+
+  displayedName() {
+    if (this.component.editable && this.component.value && this.component.value.length) {
+      return this.component.value;
+    }
+    return this.component.name;
   }
 
   getVariableColor() {
@@ -54,6 +61,6 @@ export class StringComponent {
     // if (this.customVariable.type == 'text') {
     //   return 'danger'
     // }
-    return 'block-' + this.component.type // sass variable name: block-barcode: #...
+    return 'string-component-' + this.component.type // sass variable name: string-component-barcode: #... in variables.scss file
   }
 }

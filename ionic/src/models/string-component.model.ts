@@ -1,5 +1,6 @@
-export interface StringComponentModel {
+export class StringComponentModel {
     name: string;
     value: string;
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode';
+    editable?: boolean = false;
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay';
 }

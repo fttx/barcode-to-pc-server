@@ -2,12 +2,12 @@
   ion-button small  
   class="main-button"
   [color]="getVariableColor()"
-  (click)="(component.type == 'text' || component.type == 'function') ? editMode=true : false;">
+  (click)="component.editable ? editMode=true : false;">
 
-  <span [hidden]="editMode == true" [innerHTML]="component.name"></span>
+  <span [hidden]="editMode == true" [innerHTML]="displayedName()"></span>
 
   <span [hidden]="editMode == false" class="custom-text-editor">
-    <input [(ngModel)]="value" type="text" />
+    <input [(ngModel)]="component.value" type="text" />
     <button ion-button small color="primary"
       (click)="onComponentClicked($event)">
       Done

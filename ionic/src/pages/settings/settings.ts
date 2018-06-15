@@ -57,11 +57,12 @@ export class SettingsPage {
       { name: 'DATE_TIME', value: 'date_time', type: 'variable' },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
+      { name: 'delay milliseconds', value: '', type: 'delay', editable: true },
 
-      { name: 'Custom text (click to edit)', value: 'Custom text', type: 'text' },
+      { name: 'Custom text (click to edit)', value: '', type: 'text', editable: true },
 
-      { name: 'barcode.substr(start, end)', value: 'barcode.substr(start, end)', type: 'function' },
-      { name: 'barcode.replace(searchvalue, newvalue)', value: 'barcode.replace(searchvalue, newvalue)', type: 'function' },
+      { name: 'barcode.substr(start, end)', value: 'barcode.substr(start, end)', type: 'function', editable: true },
+      { name: 'barcode.replace(searchvalue, newvalue)', value: 'barcode.replace(searchvalue, newvalue)', type: 'function', editable: true },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode' },
     ];
   }
