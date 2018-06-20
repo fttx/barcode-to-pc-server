@@ -6,6 +6,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { StorageProvider } from '../../providers/storage/storage';
+import { ConfigProvider } from '../../providers/config/config';
 
 /**
  * Generated class for the SettingsPage page.
@@ -24,7 +25,7 @@ export class SettingsPage {
   public unsavedSettingsAlert: Alert;
   public settings: SettingsModel = new SettingsModel();
   public availableComponents: StringComponentModel[] = this.getAvailableComponents();
-  public openAtLogin = false;
+  public openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
 
   private lastSavedSettings: string;
 
@@ -78,6 +79,10 @@ export class SettingsPage {
   ) {
   }
 
+  public getAppName() {
+    return ConfigProvider.APP_NAME;
+  }
+
   ionViewDidLoad() {
     this.dragulaService.drop.subscribe(value => {
       if (value[3].className.indexOf('components-available') != -1) {
@@ -94,7 +99,16 @@ export class SettingsPage {
     this.settings = this.storageProvider.getSettings();
 
     if (this.electronProvider.isElectron()) {
-      this.openAtLogin = this.electronProvider.app.getLoginItemSettings().openAtLogin;
+      let openAtLogin = this.electronProvider.app.getLoginItemSettings().openAtLogin;
+      let openAsHidden = this.electronProvider.app.getLoginItemSettings().openAsHidden;
+
+      if (openAsHidden) {
+        this.openAutomatically = 'minimized';
+      } else if (openAtLogin) {
+        this.openAutomatically = 'yes';
+      } else {
+        this.openAutomatically = 'no';
+      }
     }
 
     this.lastSavedSettings = JSON.stringify(this.settings);
@@ -112,7 +126,12 @@ export class SettingsPage {
 
   apply() {
     this.storageProvider.setSettings(this.settings);
-    this.setOpenAtLogin(this.openAtLogin);
+    if (this.electronProvider.isElectron()) {
+      this.electronProvider.app.setLoginItemSettings({
+        openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
+        openAsHidden: this.openAutomatically == 'minimized'
+      })
+    }
     this.lastSavedSettings = JSON.stringify(this.settings);
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.send('settings', this.settings);
@@ -145,12 +164,6 @@ export class SettingsPage {
         ]
       });
       this.unsavedSettingsAlert.present();
-    }
-  }
-
-  private setOpenAtLogin(openAtLogin) {
-    if (this.electronProvider.isElectron()) {
-      this.electronProvider.app.setLoginItemSettings({ openAtLogin: openAtLogin })
     }
   }
 

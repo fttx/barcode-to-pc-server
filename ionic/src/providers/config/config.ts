@@ -22,6 +22,8 @@ export class ConfigProvider {
 
   public static CONNECT_URL_BASE = 'http://app.barcodetopc.com';
 
+  public static APP_NAME = "Barcode To PC";
+
   constructor() { }
 
 }

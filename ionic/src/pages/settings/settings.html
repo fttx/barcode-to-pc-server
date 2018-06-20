@@ -33,8 +33,21 @@
       </ion-item-divider>
 
       <ion-item no-lines>
-        <ion-label>Run on startup</ion-label>
-        <ion-checkbox [(ngModel)]="openAtLogin"></ion-checkbox>
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col>
+              Open
+              <i>{{ getAppName() }}</i> automatically after you log into the computer
+            </ion-col>
+            <ion-col>
+              <select [(ngModel)]="openAutomatically" interface="popover">
+                <option value="no">No</option>
+                <option selected value="yes">Yes</option>
+                <option value="minimized">Minimized</option>
+              </select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
 
       <ion-item no-lines>

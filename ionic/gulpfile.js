@@ -33,17 +33,26 @@ gulp.task('build', ['electron:assets'], () => {
         .on('error', reject);
     }),
     new Promise((resolve, reject) => {
-      let buildContext = config.generateContext({
-        isProd: true,
-        platform: 'browser',
-      });
-      ionic.build(buildContext).then(() => {
-        gulp
-          .src(['./platforms/browser/www/**/*'])
-          .pipe(gulp.dest('../dist/ionic/www/'))
-          .on('error', reject)
-          .on('end', resolve)
-      })
+      // ionic.build doesn't add the platform if it isn't installed first.
+      // let buildContext = config.generateContext({
+      //   isProd: true,
+      //   platform: 'browser',
+      // });
+      // ionic.build(buildContext).then(() => {
+      //   gulp
+      //     .src(['./platforms/browser/www/**/*'])
+      //     .pipe(gulp.dest('../dist/ionic/www/'))
+      //     .on('error', reject)
+      //     .on('end', resolve)
+      // })
+
+      // exec is less cross-platoform but at least works
+      execSync('ionic cordova build browser --prod', { stdio: "inherit", shell: true })
+      gulp
+        .src(['./platforms/browser/www/**/*'])
+        .pipe(gulp.dest('../dist/ionic/www/'))
+        .on('error', reject)
+        .on('end', resolve)
     }),
   ])  // a similar behavior can be achieved by creating multiple gulp.task which do not return anything
 })
