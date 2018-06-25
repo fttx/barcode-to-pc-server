@@ -5,6 +5,7 @@ const { exec, execSync, spawn } = require('child_process');
 const electronBuilder = require('../node_modules/electron-builder')
 const typescript = require('../node_modules/typescript')
 const mocha = require('../node_modules/mocha')
+const  fs = require('fs');
 
 gulp.task('serve', ['electron:assets'], () => {
   exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true })
@@ -77,5 +78,8 @@ gulp.task('electron:assets', () => {
 });
 
 gulp.task('dist:install-prod', () => {
+  if (!fs.existsSync('../dist')) {
+    fs.mkdirSync('../dist');
+  }
   return execSync('npm install --prod --ignore-scripts', { cwd: '../dist', stdio: "inherit", shell: true })
 })
