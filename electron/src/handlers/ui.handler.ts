@@ -104,7 +104,7 @@ export class UiHandler implements Handler {
             this.mainWindow.webContents.on('did-fail-load', () => {
                 setTimeout(() => this.mainWindow.reload(), 2000);
             })
-            this.mainWindow.loadURL('http://localhost:8100/');
+            this.mainWindow.loadURL('http://localhost:8200/');
             this.mainWindow.webContents.openDevTools();
             const log = require("electron-log")
             log.transports.file.level = "info"
@@ -114,7 +114,7 @@ export class UiHandler implements Handler {
             this.mainWindow.webContents.on('did-fail-load', () => {
                 setTimeout(() => this.mainWindow.reload(), 2000);
             })
-            this.mainWindow.loadURL('http://localhost:8100/');
+            this.mainWindow.loadURL('http://localhost:8200/');
         } else {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));

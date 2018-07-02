@@ -11,6 +11,8 @@ gulp.task('serve', ['electron:assets'], () => {
   exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true })
   let buildContext = config.generateContext();
   ionic.addArgv('--nobrowser')
+  ionic.addArgv('--port')
+  ionic.addArgv('8200')  
   ionic.serve(buildContext).then(() => {
     exec('npm run electron:dev', { cwd: '../', stdio: "inherit", shell: true })
   }).catch(() => {
