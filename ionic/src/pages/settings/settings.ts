@@ -124,6 +124,12 @@ export class SettingsPage {
     this.apply();
   }
 
+  onRestoreDefaultSettingsClick() {
+    this.settings = new SettingsModel();
+    this.openAutomatically = 'no'
+    this.apply();
+  }
+
   apply() {
     this.storageProvider.setSettings(this.settings);
     if (this.electronProvider.isElectron()) {
