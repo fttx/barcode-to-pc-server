@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ToastController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
 import { ConfigProvider } from '../../providers/config/config';
 import { ElectronProvider } from '../../providers/electron/electron';
+import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { HomePage } from '../home/home';
 
@@ -25,17 +26,14 @@ export class WelcomePage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public electronProvider: ElectronProvider,
-    private toastCtrl: ToastController,
+    private lastToast: LastToastProvider,
     private utilsService: UtilsProvider,
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
         this.navCtrl.setRoot(HomePage);
 
-        this.toastCtrl.create({
-          message: 'A connection was successfully established with ' + request.deviceName,
-          duration: 6000
-        }).present();
+        this.lastToast.present('A connection was successfully established with ' + request.deviceName);
       });
     }
     this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);

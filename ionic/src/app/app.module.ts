@@ -18,6 +18,7 @@ import { ElectronProvider } from '../providers/electron/electron';
 import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
+import { LastToastProvider } from '../providers/last-toast/last-toast';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { MyApp } from './app.component';
     ElectronProvider,
     StorageProvider,
     UtilsProvider,
-    ConfigProvider
+    ConfigProvider,
+    LastToastProvider
   ]
 })
 export class AppModule { }

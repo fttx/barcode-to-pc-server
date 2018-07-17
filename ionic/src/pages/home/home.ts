@@ -8,7 +8,6 @@ import {
   NavController,
   NavParams,
   PopoverController,
-  ToastController,
   ViewController,
 } from 'ionic-angular';
 import * as Papa from 'papaparse';
@@ -31,6 +30,7 @@ import { StorageProvider } from '../../providers/storage/storage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
+import { LastToastProvider } from '../../providers/last-toast/last-toast';
 
 /**
  * Generated class for the HomePage page.
@@ -60,7 +60,7 @@ export class HomePage {
     public ngZone: NgZone,
     public storageProvider: StorageProvider,
     public popoverCtrl: PopoverController,
-    private toastCtrl: ToastController,
+    private lastToast: LastToastProvider,
     public events: Events,
     public title: Title,
   ) {
@@ -92,11 +92,7 @@ export class HomePage {
           }
         });
 
-
-        this.toastCtrl.create({
-          message: 'A connection was successfully established with ' + request.deviceName,
-          duration: 6000
-        }).present();
+        this.lastToast.present('A connection was successfully established with ' + request.deviceName)
       });
 
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
