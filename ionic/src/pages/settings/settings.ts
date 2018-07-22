@@ -1,6 +1,6 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { Alert, AlertController, Navbar, NavController, NavParams } from 'ionic-angular';
-import { DragulaService } from 'ng2-dragula';
+import { DragulaService } from "ng2-dragula";
 
 import { SettingsModel } from '../../models/settings.model';
 import { StringComponentModel } from '../../models/string-component.model';
@@ -77,6 +77,19 @@ export class SettingsPage {
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
   ) {
+    this.dragulaService.createGroup('dragula-group', {
+      copy: (el, source) => {
+        return source.id === 'left';
+      },
+      accepts: (el, target, source, sibling) => {
+        // To avoid dragging from right to left container
+        return target.id !== 'left';
+      },
+      copyItem: (item: StringComponentModel) => {
+        return JSON.parse(JSON.stringify(item));
+      },
+      removeOnSpill: true
+    });
   }
 
   public getAppName() {
@@ -84,18 +97,6 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    this.dragulaService.drop.subscribe(value => {
-      if (value[3].className.indexOf('components-available') != -1) {
-        this.availableComponents = this.getAvailableComponents();
-      }
-    });
-
-    this.dragulaService.out.subscribe(value => {
-      if (value[3].className.indexOf('components-typed') != -1) {
-        this.dragulaService.find('components').drake.remove();
-      }
-    });
-
     this.settings = this.storageProvider.getSettings();
 
     if (this.electronProvider.isElectron()) {

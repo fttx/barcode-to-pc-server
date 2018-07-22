@@ -1,20 +1,16 @@
-import { HomePage } from '../pages/home/home';
+import { ErrorHandler } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
+import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
-import { IonicModule, Platform } from 'ionic-angular';
-import { PlatformMock, SplashScreenMock, StatusBarMock } from '../../test-config/mocks-ionic';
-
-import { ErrorHandler, NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { IonicStorageModule } from '@ionic/storage';
 import { QRCodeModule } from 'angular2-qrcode';
-import { IonicApp, IonicErrorHandler,  } from 'ionic-angular';
-import { DragulaModule } from 'ng2-dragula/ng2-dragula';
+import { IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { DragulaModule } from 'ng2-dragula';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ComponentsModule } from '../components/components.module';
-import { MainMenuPopover, QrCodePairingModal, ScanSessionContextMenuPopover } from '../pages/home/home';
+import { HomePage, MainMenuPopover, QrCodePairingModal, ScanSessionContextMenuPopover } from '../pages/home/home';
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
@@ -24,8 +20,7 @@ import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
 
-import {} from 'jasmine';
-
+import { } from 'jasmine';
 
 describe('MyApp Component', () => {
   let fixture;
@@ -48,6 +43,7 @@ describe('MyApp Component', () => {
         IonicStorageModule.forRoot(),
         QRCodeModule,
         ClipboardModule,
+        DragulaModule.forRoot(),
         IonicModule.forRoot(MyApp,
           {
             // mode: 'wp',
@@ -58,7 +54,6 @@ describe('MyApp Component', () => {
             // pageTransition: 'wp-transition',
           }),
         ComponentsModule,
-        DragulaModule,
       ],
       providers: [
         StatusBar,

@@ -76,18 +76,17 @@
 
       <ion-item no-lines text-wrap>
         Available Custom variables
-        <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='availableComponents' class="components-container components-available">
+        <div id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents' class="components-container">
           <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
         </div>
       </ion-item>
 
       <ion-item no-lines text-wrap>
         Typed string
-        <div [dragulaOptions]="{direction: 'horizontal'}" [dragula]='"components"' [dragulaModel]='settings.typedString' class="components-container components-typed">
+        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.typedString' class="components-container">
           <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
         </div>
       </ion-item>
-
 
       <ion-item-divider>
         CSV Settings
