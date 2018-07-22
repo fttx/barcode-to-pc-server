@@ -77,6 +77,7 @@ export class SettingsPage {
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
   ) {
+    this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
       copy: (el, source) => {
         return source.id === 'left';
