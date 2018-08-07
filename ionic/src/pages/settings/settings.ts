@@ -7,6 +7,8 @@ import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { StorageProvider } from '../../providers/storage/storage';
 import { ConfigProvider } from '../../providers/config/config';
+import { requestModel } from '../../models/request.model';
+import { responseModel } from '../../models/response.model';
 
 /**
  * Generated class for the SettingsPage page.
@@ -58,6 +60,7 @@ export class SettingsPage {
       { name: 'DATE_TIME', value: 'date_time', type: 'variable' },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
+      { name: 'QUANTITY', value: 'quantity', type: 'variable' },
       { name: 'delay milliseconds', value: '', type: 'delay', editable: true },
 
       { name: 'Custom text (click to edit)', value: '', type: 'text', editable: true },

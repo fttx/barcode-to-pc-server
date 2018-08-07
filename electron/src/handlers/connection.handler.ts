@@ -6,10 +6,12 @@ import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelHelo, responseModelPong, responseModelRequestSync } from '../../../ionic/src/models/response.model';
+import { responseModelHelo, responseModelPong, responseModelRequestSync, responseModel } from '../../../ionic/src/models/response.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { UiHandler } from './ui.handler';
+import { SettingsHandler } from './settings.handler';
+import { SettingsModel } from '../../../ionic/src/models/settings.model';
 
 const bonjour = b();
 
@@ -20,7 +22,7 @@ export class ConnectionHandler implements Handler {
     private wsClients: WebSocket[] = [];
 
     private static instance: ConnectionHandler;
-    private constructor(uiHandler: UiHandler) {
+    private constructor(uiHandler: UiHandler, settingsHandler: SettingsHandler) {
         this.uiHandler = uiHandler;
         ipcMain
             .on('lastScanDateMismatch', (event, deviceId) => {
@@ -49,12 +51,17 @@ export class ConnectionHandler implements Handler {
                 event.sender.send('hostname', os.hostname());
             })
 
-
+        settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {
+            let quantityEnabled = settings.typedString.findIndex(x => x.value == 'quantity') != -1;
+            this.wsClients.forEach(ws => {
+                ws.send(responseModel.ACTION_ENABLE_QUANTITY, quantityEnabled);
+            })
+        });
     }
 
-    static getInstance(uiHandler: UiHandler) {
+    static getInstance(uiHandler: UiHandler, settingsHandler: SettingsHandler) {
         if (!ConnectionHandler.instance) {
-            ConnectionHandler.instance = new ConnectionHandler(uiHandler);
+            ConnectionHandler.instance = new ConnectionHandler(uiHandler, settingsHandler);
         }
         return ConnectionHandler.instance;
     }

@@ -11,9 +11,9 @@ import { UpdateHandler } from './handlers/update.handler';
 
 let wss = null;
 const settingsHandler = SettingsHandler.getInstance();
-const scanHandler = ScansHandler.getInstance(settingsHandler);
 const uiHandler = UiHandler.getInstance(settingsHandler);
-const connectionHandler = ConnectionHandler.getInstance(uiHandler);
+const scanHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
+const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandler);
 const updateHandler = UpdateHandler.getInstance();
 
 ipcMain
@@ -64,7 +64,7 @@ ipcMain
         // })
 
         app.on('window-all-closed', () => { // TODO: test on windows
-           closeServer();
+            closeServer();
         });
         updateHandler.checkUpdates();
     })

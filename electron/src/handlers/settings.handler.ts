@@ -8,7 +8,7 @@ import { StringComponentModel } from '../../../ionic/src/models/string-component
 
 
 export class SettingsHandler implements Handler {
-    public onSettingsChanged: Subject<SettingsModel> = new Subject<SettingsModel>();
+    public onSettingsChanged: Subject<SettingsModel> = new Subject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
     private settings: SettingsModel;
 
     private static instance: SettingsHandler;
@@ -26,7 +26,7 @@ export class SettingsHandler implements Handler {
         }
         return SettingsHandler.instance;
     }
-    
+
     get enableRealtimeStrokes(): boolean {
         return this.settings.enableRealtimeStrokes
     }

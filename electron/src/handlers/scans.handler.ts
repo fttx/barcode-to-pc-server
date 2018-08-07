@@ -1,4 +1,4 @@
-import { shell } from 'electron';
+import { shell, dialog } from 'electron';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as WebSocket from 'ws';
@@ -8,6 +8,7 @@ import { responseModelPutScanAck } from '../../../ionic/src/models/response.mode
 import { StringComponentModel } from '../../../ionic/src/models/string-component.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
+import { UiHandler } from './ui.handler';
 
 export class ScansHandler implements Handler {
     private deviceName = "unknown";
@@ -15,12 +16,13 @@ export class ScansHandler implements Handler {
     private static instance: ScansHandler;
     private constructor(
         private settingsHandler: SettingsHandler,
+        private uiHandler: UiHandler,
     ) {
 
     }
-    static getInstance(settingsHandler: SettingsHandler) {
+    static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler) {
         if (!ScansHandler.instance) {
-            ScansHandler.instance = new ScansHandler(settingsHandler);
+            ScansHandler.instance = new ScansHandler(settingsHandler, uiHandler);
         }
         return ScansHandler.instance;
     }
@@ -73,6 +75,20 @@ export class ScansHandler implements Handler {
 
                                         case 'date_time': {
                                             typedValue = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
+                                            break;
+                                        }
+
+                                        case 'quantity': {
+                                            if (request.scan.quantity && isNumeric(request.scan.quantity)) {
+                                                typedValue = new Date(request.scan.quantity).toString();
+                                            } else {
+                                                // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
+                                                dialog.showMessageBox(this.uiHandler.mainWindow, {
+                                                    type: 'error',
+                                                    title: 'Invalid quantity',
+                                                    message: 'Please enable quantity in the app and make you sure to enter a numeric value',
+                                                });
+                                            }
                                             break;
                                         }
                                     }

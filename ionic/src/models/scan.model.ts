@@ -6,5 +6,5 @@ export class ScanModel {
     ack: boolean;
     id: number;
     date: number;
-
+    quantity: number;
 }
