@@ -9,6 +9,12 @@
 * Auto reconnect when the IP address changes
 * Minimizzation to tray icon support
 * Buttton to delete scan sessions from the server
+* Support for CODE 32
+* Settings to enable/disable scan formats
+* Added a way to enter bacodes manually (by typing it)
+* Added OTG support (Open a scan session, type the barcode and press the ENTER key)
+* Repeat barcodes
+* Archive barcodes
 
 ### Fixed
 
