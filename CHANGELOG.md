@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+### Added
+
+* Option to clear the server data
+* Delay string componet
+* Auto reconnect when the IP address changes
+* Minimizzation to tray icon support
+* Buttton to delete scan sessions from the server
+
+### Fixed
+
+* DATE, DATE_TIME, etc. variable 'unknown' issue
+* Scan session name sync issue
+* Minor UI enachments
+
+<!-- ### Security -->
+
+
+
 <!-- ## [x.0.0] - 2019-mm-dd
 
 ### Added
@@ -24,7 +42,7 @@
 * Landscape mode
 * Tap to send the barcodes again
 * Added an option to send a barcode manually (keyboard)
-* Added run on startup option
+* Run on startup option
 
 ### Changed
 
