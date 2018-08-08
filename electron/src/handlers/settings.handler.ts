@@ -36,6 +36,9 @@ export class SettingsHandler implements Handler {
     get typedString(): StringComponentModel[] {
         return this.settings.typedString
     }
+    get quantityEnabled(): boolean {
+        return this.settings.typedString.findIndex(x => x.value == 'quantity') != -1;
+    }
     get newLineCharacter(): string {
         return this.settings.newLineCharacter
     }

@@ -80,7 +80,7 @@ export class ScansHandler implements Handler {
 
                                         case 'quantity': {
                                             if (request.scan.quantity && isNumeric(request.scan.quantity)) {
-                                                typedValue = new Date(request.scan.quantity).toString();
+                                                typedValue = request.scan.quantity + '';
                                             } else {
                                                 // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
                                                 dialog.showMessageBox(this.uiHandler.mainWindow, {

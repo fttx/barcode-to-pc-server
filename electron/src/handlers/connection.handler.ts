@@ -6,7 +6,7 @@ import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelHelo, responseModelPong, responseModelRequestSync, responseModel } from '../../../ionic/src/models/response.model';
+import { responseModelHelo, responseModelPong, responseModelRequestSync, responseModel, responseModelEnableQuantity } from '../../../ionic/src/models/response.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { UiHandler } from './ui.handler';
@@ -17,12 +17,15 @@ const bonjour = b();
 
 export class ConnectionHandler implements Handler {
     private fallBackBonjour: b.Service;
-    private uiHandler: UiHandler;
     private mdnsAd: mdns.Advertisement;
-    private wsClients: WebSocket[] = [];
+    private wsClients = {};
 
     private static instance: ConnectionHandler;
-    private constructor(uiHandler: UiHandler, settingsHandler: SettingsHandler) {
+
+    constructor(
+        public uiHandler: UiHandler,
+        public settingsHandler: SettingsHandler
+    ) {
         this.uiHandler = uiHandler;
         ipcMain
             .on('lastScanDateMismatch', (event, deviceId) => {
@@ -51,11 +54,14 @@ export class ConnectionHandler implements Handler {
                 event.sender.send('hostname', os.hostname());
             })
 
+        // send enableQuantity to already connected clients
         settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {
-            let quantityEnabled = settings.typedString.findIndex(x => x.value == 'quantity') != -1;
-            this.wsClients.forEach(ws => {
-                ws.send(responseModel.ACTION_ENABLE_QUANTITY, quantityEnabled);
-            })
+            for (let deviceId in this.wsClients) {
+                let ws = this.wsClients[deviceId];
+                ws.send(JSON.stringify(new responseModelEnableQuantity().fromObject({
+                    enable: this.settingsHandler.quantityEnabled
+                })));
+            }
         });
     }
 
@@ -68,17 +74,17 @@ export class ConnectionHandler implements Handler {
 
     announceServer() {
         try {
-            this.mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), Config.PORT, {
-                name: Config.APP_NAME + ' - ' + this.getServerUniqueNumber()
-            });
+            this.mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), Config.PORT);
+
             this.mdnsAd.start();
         } catch (ex) {
+            console.log('node_mdns error, faillback to bonjour')
             dialog.showMessageBox(this.uiHandler.mainWindow, {
                 type: 'warning',
                 title: 'Error',
                 message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.',
             });
-            this.fallBackBonjour = bonjour.publish({ name: Config.APP_NAME + ' - ' + this.getServerUniqueNumber(), type: 'http', port: Config.PORT })
+            this.fallBackBonjour = bonjour.publish({ name: Config.APP_NAME, type: 'http', port: Config.PORT })
             this.fallBackBonjour.on('error', err => { // err is never set?
                 dialog.showMessageBox(this.uiHandler.mainWindow, {
                     type: 'error',
@@ -110,7 +116,8 @@ export class ConnectionHandler implements Handler {
                 let request: requestModelHelo = message;
                 let response = new responseModelHelo();
                 response.fromObject({
-                    version: app.getVersion()
+                    version: app.getVersion(),
+                    quantityEnabled: this.settingsHandler.quantityEnabled
                 });
 
                 if (request && request.deviceId) {
@@ -136,15 +143,5 @@ export class ConnectionHandler implements Handler {
     //         delete this.wsClients[this.deviceId];
     //     }
     // }
-
-    private getServerUniqueNumber() {
-        let hostname = os.hostname();
-        let result = '';
-        for (let i = 0; i < hostname.length; i++) {
-            result += hostname[i].charCodeAt(0);
-        }
-        return result.substring(0, 10);
-    }
-
 }
 

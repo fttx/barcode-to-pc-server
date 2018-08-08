@@ -27,9 +27,11 @@ export class responseModelGetVersion extends responseModel {
 export class responseModelHelo extends responseModel {
     action = 'helo';
     version: string;
+    quantityEnabled: boolean;
 
-    public fromObject(obj: ({ version: string })) {
+    public fromObject(obj: ({ version: string, quantityEnabled: boolean })) {
         this.version = obj.version;
+        this.quantityEnabled = obj.quantityEnabled;
         return this;
     }
 }
