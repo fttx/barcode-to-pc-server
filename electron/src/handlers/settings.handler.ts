@@ -48,6 +48,12 @@ export class SettingsHandler implements Handler {
     get enableTray(): boolean {
         return this.settings.enableTray
     }
+    get csvPath(): string {
+        return this.settings.csvPath
+    }
+    get appendCSVEnabled(): boolean {
+        return this.settings.appendCSVEnabled
+    }
 
     onWsMessage(ws: WebSocket, message: any) {
         throw new Error("Method not implemented.");

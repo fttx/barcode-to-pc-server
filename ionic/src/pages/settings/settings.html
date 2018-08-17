@@ -65,24 +65,24 @@
         <ion-checkbox [(ngModel)]="settings && settings.enableOpenInBrowser"></ion-checkbox>
       </ion-item>
 
-      <ion-item-divider>
-        Keyboard emulation
-      </ion-item-divider>
-
       <ion-item no-lines>
         <ion-label>Enable keyboard emulation</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
       </ion-item>
 
+      <ion-item-divider>
+        Output settings
+      </ion-item-divider>
+
       <ion-item no-lines text-wrap>
-        Available Custom variables
+        Available components
         <div id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents' class="components-container">
           <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
         </div>
       </ion-item>
 
       <ion-item no-lines text-wrap>
-        Typed string
+        Output
         <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.typedString' class="components-container">
           <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
         </div>
@@ -91,6 +91,24 @@
       <ion-item-divider>
         CSV Settings
       </ion-item-divider>
+
+      <ion-item no-lines>
+        <ion-label>Append scans to a .csv file</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.appendCSVEnabled"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines [hidden]="!settings || !settings.appendCSVEnabled" class="csv-select-path-form">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <input [(ngModel)]="settings && settings.csvPath" class="components-container csv-path" type="text" placeholder="Select the file path" />
+            </ion-col>
+            <ion-col>
+              <button ion-button small color="light" (click)="onSelectCSVPathClick()">Select</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
 
 
       <ion-item no-lines>
@@ -105,7 +123,6 @@
           <ion-option value="CR">New Line character: \\r</ion-option>
         </ion-select>
       </ion-item> -->
-
 
       <ion-item no-lines>
         <ion-grid no-padding>

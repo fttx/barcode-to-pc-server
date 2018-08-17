@@ -11,4 +11,6 @@ export class SettingsModel {
     newLineCharacter: string = os.release().toLowerCase().indexOf('windows') == -1 ? 'LF' : 'CRLF';
     enableQuotes: boolean = true;
     enableTray: boolean = true;
+    appendCSVEnabled: boolean = false;
+    csvPath: string;
 }

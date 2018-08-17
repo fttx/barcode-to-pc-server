@@ -178,6 +178,28 @@ export class SettingsPage {
     }
   }
 
+  onSelectCSVPathClick() {
+    let defaultPath = this.settings.csvPath;
+    if (!defaultPath) {
+      defaultPath = this.electronProvider.app.getPath('desktop')
+    }
+    
+    let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
+      title: 'Select the CSV file path',
+      buttonLabel: 'Select',
+      defaultPath: defaultPath,
+      filters: [
+        { name: 'Text files', extensions: ['txt', 'csv', 'log'] },
+        { name: 'All Files', extensions: ['*'] }
+      ],
+      properties: ['openFile', 'createDirectory', 'promptToCreate',]
+    });
+
+    if (filePaths && filePaths.length) {
+      this.settings.csvPath = filePaths[0];
+    }
+  }
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     console.log('esc');

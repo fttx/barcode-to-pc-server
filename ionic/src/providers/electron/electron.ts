@@ -21,6 +21,7 @@ export class ElectronProvider {
   app: typeof remote.app;
   shell: typeof shell;
   process: typeof process;
+  remote: typeof remote;
 
   constructor(
     private storageProvider: StorageProvider
@@ -34,6 +35,7 @@ export class ElectronProvider {
       this.app = electron.remote.app;
       this.shell = electron.shell;
       this.process = electron.remote.process;
+      this.remote = electron.remote;
     }
   }
 

@@ -1,11 +1,11 @@
-import { shell, dialog } from 'electron';
+import { dialog, shell } from 'electron';
+import * as fs from 'fs';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo, requestModelPutScan } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
-import { StringComponentModel } from '../../../ionic/src/models/string-component.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
@@ -34,85 +34,88 @@ export class ScansHandler implements Handler {
                 let request: requestModelPutScan = message;
                 let barcode = request.scan.text;
 
-                if (this.settingsHandler.enableRealtimeStrokes) {
-                    (async () => {
-                        for (let stringComponent of this.settingsHandler.typedString) {
-                            switch (stringComponent.type) {
-                                case 'barcode': {
-                                    robotjs.typeString(barcode);
-                                    break;
-                                }
-                                case 'text': {
-                                    robotjs.typeString(stringComponent.value);
-                                    break;
-                                }
-                                case 'key': {
-                                    robotjs.keyTap(stringComponent.value);
-                                    break;
-                                }
-                                case 'variable': {
-                                    let typedValue = 'unknown';
-                                    switch (stringComponent.value) {
-                                        case 'deviceName': {
-                                            typedValue = this.deviceName;
-                                            break;
-                                        }
+                (async () => {
+                    for (let stringComponent of this.settingsHandler.typedString) {
+                        let outputString;
 
-                                        case 'timestamp': {
-                                            typedValue = (request.scan.date * 1000) + ' ';
-                                            break;
-                                        }
-
-                                        case 'date': {
-                                            typedValue = new Date(request.scan.date).toLocaleDateString();
-                                            break;
-                                        }
-
-                                        case 'time': {
-                                            typedValue = new Date(request.scan.date).toLocaleTimeString();
-                                            break;
-                                        }
-
-                                        case 'date_time': {
-                                            typedValue = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
-                                            break;
-                                        }
-
-                                        case 'quantity': {
-                                            if (request.scan.quantity && isNumeric(request.scan.quantity)) {
-                                                typedValue = request.scan.quantity + '';
-                                            } else {
-                                                // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
-                                                dialog.showMessageBox(this.uiHandler.mainWindow, {
-                                                    type: 'error',
-                                                    title: 'Invalid quantity',
-                                                    message: 'Please enable quantity in the app and make you sure to enter a numeric value',
-                                                });
-                                            }
-                                            break;
-                                        }
+                        switch (stringComponent.type) {
+                            case 'barcode': {
+                                outputString = barcode;
+                                break;
+                            }
+                            case 'text': {
+                                outputString = stringComponent.value;
+                                break;
+                            }
+                            case 'key': {
+                                robotjs.keyTap(stringComponent.value);
+                                break;
+                            }
+                            case 'variable': {
+                                switch (stringComponent.value) {
+                                    case 'deviceName': {
+                                        outputString = this.deviceName;
+                                        break;
                                     }
-                                    robotjs.typeString(typedValue);
-                                    break;
-                                }
-                                case 'function': {
-                                    let typedString = stringComponent.value.replace('barcode', '"' + barcode + '"');
-                                    robotjs.typeString(eval(typedString));
-                                    break;
-                                }
 
-                                case 'delay': {
-                                    if (isNumeric(stringComponent.value)) {
-                                        await new Promise((resolve) => {
-                                            setTimeout(resolve, parseInt(stringComponent.value))
-                                        })
+                                    case 'timestamp': {
+                                        outputString = (request.scan.date * 1000) + ' ';
+                                        break;
                                     }
-                                    break;
+
+                                    case 'date': {
+                                        outputString = new Date(request.scan.date).toLocaleDateString();
+                                        break;
+                                    }
+
+                                    case 'time': {
+                                        outputString = new Date(request.scan.date).toLocaleTimeString();
+                                        break;
+                                    }
+
+                                    case 'date_time': {
+                                        outputString = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
+                                        break;
+                                    }
+
+                                    case 'quantity': {
+                                        if (request.scan.quantity && isNumeric(request.scan.quantity)) {
+                                            outputString = request.scan.quantity + '';
+                                        } else {
+                                            // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
+                                            dialog.showMessageBox(this.uiHandler.mainWindow, {
+                                                type: 'error',
+                                                title: 'Invalid quantity',
+                                                message: 'Please enable quantity in the app and make you sure to enter a numeric value',
+                                            });
+                                        }
+                                        break;
+                                    }
                                 }
+                                break;
+                            }
+                            case 'function': {
+                                let functionCode = stringComponent.value.replace('barcode', '"' + barcode + '"');
+                                outputString = eval(functionCode);
+                                break;
+                            }
+
+                            case 'delay': {
+                                if (isNumeric(stringComponent.value)) {
+                                    await new Promise((resolve) => {
+                                        setTimeout(resolve, parseInt(stringComponent.value))
+                                    })
+                                }
+                                break;
                             }
                         }
-                    })();
-                }
+
+                        if (outputString) {
+                            this.outputString(outputString);
+                        }
+                    }
+                    this.appendNewLineCharacterToCSVFile();
+                })();
 
                 if (this.settingsHandler.enableOpenInBrowser) {
                     shell.openExternal(barcode);
@@ -156,6 +159,22 @@ export class ScansHandler implements Handler {
                 }
                 break;
             }
+        }
+    }
+
+    outputString(string) {
+        if (this.settingsHandler.enableRealtimeStrokes) {
+            robotjs.typeString(string);
+        }
+
+        if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
+            fs.appendFileSync(this.settingsHandler.csvPath, string);
+        }
+    }
+
+    appendNewLineCharacterToCSVFile() {
+        if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
+            fs.appendFileSync(this.settingsHandler.csvPath, this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n'));
         }
     }
 
