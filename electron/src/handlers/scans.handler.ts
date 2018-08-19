@@ -79,14 +79,14 @@ export class ScansHandler implements Handler {
                                     }
 
                                     case 'quantity': {
-                                        if (request.scan.quantity && isNumeric(request.scan.quantity)) {
+                                        if (request.scan.quantity) {
                                             outputString = request.scan.quantity + '';
                                         } else {
                                             // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
                                             dialog.showMessageBox(this.uiHandler.mainWindow, {
                                                 type: 'error',
                                                 title: 'Invalid quantity',
-                                                message: 'Please enable quantity in the app and make you sure to enter a numeric value',
+                                                message: 'Please make you sure to enter a quantity in the app',
                                             });
                                         }
                                         break;
