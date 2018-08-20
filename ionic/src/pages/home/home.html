@@ -10,11 +10,11 @@
     <ion-title>{{ getTitle() }}</ion-title>
 
     <ion-buttons end>
-     <button ion-button icon-start solid color="secondary" class="clear-all-button" (click)="onClearAllClick()">
+      <button ion-button icon-start solid color="secondary" class="clear-all-button" (click)="onClearAllClick()">
         <ion-icon name="trash"></ion-icon>
         Clear all
       </button>
-      
+
       <button ion-button icon-start solid color="secondary" class="settings-button" (click)="onSettingsClick()">
         <ion-icon name="settings"></ion-icon>
         Settings
@@ -29,7 +29,7 @@
 </ion-header>
 
 <ion-content class="main-container">
-  <ion-split-pane when="xs">
+  <ion-split-pane when="xs" class="with-status-bar">
     <!--  our side menu  -->
     <ion-menu [content]="scanSessionsContainer">
       <ion-content class="child-container">
@@ -94,4 +94,17 @@
       </ion-list>
     </ion-content>
   </ion-split-pane>
+
+
+  <status-bar text-right>
+    <button ion-button clear small color="dark">
+      Scan sessions: {{ scanSessions.length }}
+    </button>
+
+    <button ion-button clear small color="dark" (click)="connectedClientsClick($event)">
+      <ion-icon name="phone-portrait"></ion-icon>
+      Connected clients: 0
+    </button>
+  </status-bar>
+
 </ion-content>

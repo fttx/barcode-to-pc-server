@@ -253,6 +253,31 @@ export class HomePage {
     this.scanSessions = [];
     this.save();
   }
+
+  connectedClientsClick(event) {
+    event.stopPropagation()
+    let popover = this.popoverCtrl.create(ConnectedClientsPopover);
+    popover.present({
+      ev: event
+    });
+  }
+}
+
+// ConnectedClientsPopover
+@Component({
+  template: `
+    <ion-list>
+      <ion-list-header>Connected clients</ion-list-header>
+      <button ion-item>Filippo's iPhone</button>
+      <button ion-item>MOTO-G5-CRISO</button>
+    </ion-list>
+  `
+})
+export class ConnectedClientsPopover {
+  constructor(
+  ) {
+  }
+
 }
 
 

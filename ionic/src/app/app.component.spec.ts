@@ -10,7 +10,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { ComponentsModule } from '../components/components.module';
-import { HomePage, MainMenuPopover, QrCodePairingModal, ScanSessionContextMenuPopover } from '../pages/home/home';
+import { HomePage, MainMenuPopover, QrCodePairingModal, ScanSessionContextMenuPopover, ConnectedClientsPopover } from '../pages/home/home';
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
@@ -34,6 +34,7 @@ describe('MyApp Component', () => {
         WelcomePage,
         InfoPage,
         ScanSessionContextMenuPopover,
+        ConnectedClientsPopover,
         QrCodePairingModal,
         MainMenuPopover,
         SettingsPage,

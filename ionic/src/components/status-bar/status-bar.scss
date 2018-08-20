@@ -1,0 +1,31 @@
+status-bar {
+    position: absolute;
+    bottom: 0;
+    background-color: map-get($colors, status-bar);
+    width: 100%;
+    height: 22px;
+    padding: 0;
+    margin: 0;
+    line-height: 15px;
+    vertical-align: top;
+
+    .button {
+        padding: 0;
+        margin: 0;
+        height: 22px;
+    }
+
+    .button-inner {
+        margin: 0;
+        height: 22px;
+        line-height: 22px;
+        vertical-align: middle;
+        font-weight: normal;
+        padding: 0 15px;
+        text-transform: none;
+    }
+
+    .icon {
+        padding-right: 5px;
+    }
+}
