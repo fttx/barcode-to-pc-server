@@ -19,6 +19,7 @@ import { LastToastProvider } from '../providers/last-toast/last-toast';
 import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
+import { DevicesProvider } from '../providers/devices/devices';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { MyApp } from './app.component';
     StorageProvider,
     UtilsProvider,
     ConfigProvider,
-    LastToastProvider
+    LastToastProvider,
+    DevicesProvider
   ]
 })
 export class AppModule { }

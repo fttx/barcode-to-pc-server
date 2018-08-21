@@ -9,6 +9,7 @@ import {
   NavParams,
   PopoverController,
   ViewController,
+  Popover,
 } from 'ionic-angular';
 import * as Papa from 'papaparse';
 
@@ -31,6 +32,8 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
+import { DeviceModel } from '../../models/device.model';
+import { DevicesProvider } from '../../providers/devices/devices';
 
 /**
  * Generated class for the HomePage page.
@@ -47,7 +50,11 @@ export class HomePage {
   public animateLast: boolean = false;
   public scanSessions: ScanSessionModel[] = [];
   public selectedScanSession: ScanSessionModel = null;
+  public connectedDevices: DeviceModel[] = [];
+
   @ViewChild('scanSessionsContainer') scanSessionsContainer: Content;
+
+  private connectedClientPopover: Popover = null;
 
   onScanSessionClick(scanSession) {
     this.selectedScanSession = scanSession;
@@ -63,6 +70,7 @@ export class HomePage {
     private lastToast: LastToastProvider,
     public events: Events,
     public title: Title,
+    public devicesProvider: DevicesProvider,
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
@@ -77,6 +85,14 @@ export class HomePage {
         this.save();
       }
     })
+
+    this.devicesProvider.onConnectedDevicesListChange.subscribe((devices: DeviceModel[]) => {
+      this.connectedDevices = devices;
+      if (this.connectedClientPopover) {
+        this.connectedClientPopover.dismiss();
+      }
+      console.log('@@@', this.connectedDevices)
+    });
   }
 
   ionViewDidLoad() {
@@ -256,9 +272,23 @@ export class HomePage {
 
   connectedClientsClick(event) {
     event.stopPropagation()
-    let popover = this.popoverCtrl.create(ConnectedClientsPopover);
-    popover.present({
-      ev: event
+
+    if (this.connectedClientPopover) {
+      this.connectedClientPopover.dismiss();
+      return;
+    }
+
+    if (this.connectedDevices.length == 0) {
+      return;
+    }
+
+    this.connectedClientPopover = this.popoverCtrl.create(ConnectedClientsPopover, { 'connectedDevices': this.connectedDevices });
+    this.connectedClientPopover.onDidDismiss((data, role) => {
+      this.connectedClientPopover = null;
+    });
+    this.connectedClientPopover.present({
+      ev: event,
+      animate: false,
     });
   }
 }
@@ -267,15 +297,25 @@ export class HomePage {
 @Component({
   template: `
     <ion-list>
-      <ion-list-header>Connected clients</ion-list-header>
-      <button ion-item>Filippo's iPhone</button>
-      <button ion-item>MOTO-G5-CRISO</button>
+      <ion-list-header>
+        Connected devices
+      </ion-list-header>
+      <ion-item no-padding *ngFor="let connectedDevice of connectedDevices; let i = index;">
+        <ion-avatar item-start text-center padding-vertical>
+          <ion-icon name="phone-portrait"></ion-icon>
+        </ion-avatar>
+        <h2>{{ connectedDevice.name }}</h2>
+        <!-- p>{{ connectedDevice.name }}</p -->
+      </ion-item>
     </ion-list>
   `
 })
 export class ConnectedClientsPopover {
+  public connectedDevices: DeviceModel[] = [];
   constructor(
+    public navParams: NavParams,
   ) {
+    this.connectedDevices = this.navParams.get('connectedDevices');
   }
 
 }

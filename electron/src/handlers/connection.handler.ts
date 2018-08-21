@@ -16,9 +16,11 @@ import { SettingsModel } from '../../../ionic/src/models/settings.model';
 const bonjour = b();
 
 export class ConnectionHandler implements Handler {
+
     private fallBackBonjour: b.Service;
     private mdnsAd: mdns.Advertisement;
     private wsClients = {};
+    private ipcClient;
 
     private static instance: ConnectionHandler;
 
@@ -130,18 +132,42 @@ export class ConnectionHandler implements Handler {
     }
 
     onWsClose(ws: WebSocket) {
-        // this.removeClient();
+        if (this.ipcClient) {
+            this.findDeviceIdByWs(ws).then(deviceId => {
+                // console.log('@@@ close', deviceId)
+                this.ipcClient.send('wsClose', { deviceId: deviceId })
+            });
+        }
+        this.removeClient(ws);
     }
 
     onWsError(ws: WebSocket, err: Error) {
-        // this.removeClient();
+        if (this.ipcClient) {
+            this.findDeviceIdByWs(ws).then(deviceId => {
+                this.ipcClient.send('wsError', { deviceId: deviceId, err: err })
+            });
+        }
+        this.removeClient(ws);
     }
 
-    // TODO: invece di accedere a wsClients con l'indice cercare ws
-    // private removeClient(ws: WebSocket) {
-    //     if (this.deviceId && this.wsClients[this.deviceId]) {
-    //         delete this.wsClients[this.deviceId];
-    //     }
-    // }
+    setIpcClient(ipcClient) {
+        this.ipcClient = ipcClient;
+    }
+
+    private findDeviceIdByWs(ws) {
+        return new Promise((resolve, reject) => {
+            Object.keys(this.wsClients).forEach((key) => {
+                if (this.wsClients[key] == ws) {
+                    resolve(key);
+                }
+            });
+        })
+    }
+
+    private removeClient(ws: WebSocket) {
+        Object.keys(this.wsClients).forEach((key) => {
+            delete this.wsClients[key];
+        });
+    }
 }
 

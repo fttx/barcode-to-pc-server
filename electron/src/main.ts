@@ -22,15 +22,16 @@ ipcMain
             return;
         }
 
+        let ipcClient = event.sender;
+        
         wss = new WebSocket.Server({ port: Config.PORT });
         connectionHandler.announceServer();
-        let ipcClient = event.sender;
+        connectionHandler.setIpcClient(ipcClient);
 
         // wss events should be registered immediately
         wss.on('connection', (ws, req) => {
             console.log("ws(incoming connection)", req.connection.remoteAddress)
             // const clientAddress = req.connection.remoteAddress;
-            ipcClient.send('clientConnected', '');
 
             ws.on('message', message => {
                 console.log('ws(message): ', message)
@@ -45,7 +46,7 @@ ipcMain
                 scanHandler.onWsMessage(ws, messageObj);
                 connectionHandler.onWsMessage(ws, messageObj);
 
-                ipcClient.send(messageObj.action, messageObj);
+                ipcClient.send(messageObj.action, messageObj); // forward ws messages to ipc
             });
 
             ws.on('close', () => {
