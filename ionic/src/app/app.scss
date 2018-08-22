@@ -15,3 +15,8 @@
 .with-status-bar {
     height: calc(100% - 22px);
 }
+
+.popper-tooltip {
+    background-color: white;
+    z-index: 1000;
+}

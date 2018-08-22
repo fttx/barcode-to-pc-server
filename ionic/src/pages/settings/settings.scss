@@ -1,25 +1,28 @@
 page-settings {
-
     .components-container {
         border: 1px solid darkgrey;
         line-height: 26px;
         min-height: 26px;
     }
-    
     ion-item-divider {
         font-weight: bold !important;
         font-size: 1.4em !important;
         color: black !important;
     }
-
     .csv-path {
         width: 100%;
         margin-top: 4px;
-        padding-left:5px;
+        padding-left: 5px;
     }
-
     .csv-select-path-form * {
         padding-top: 0;
         margin-top: 0;
+    }
+    .help-button {
+        margin: 0;
+        vertical-align: middle;
+        height: 15px;
+        width: 20px;
+        font-size: .7em;
     }
 }

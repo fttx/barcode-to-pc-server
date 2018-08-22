@@ -7,19 +7,26 @@ import { QRCodeModule } from 'angular2-qrcode';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { DragulaModule } from 'ng2-dragula';
 import { ClipboardModule } from 'ngx-clipboard';
+import { NgxPopperModule, Triggers } from 'ngx-popper';
 
 import { ComponentsModule } from '../components/components.module';
-import { HomePage, MainMenuPopover, QrCodePairingModal, ScanSessionContextMenuPopover, ConnectedClientsPopover } from '../pages/home/home';
+import {
+  ConnectedClientsPopover,
+  HomePage,
+  MainMenuPopover,
+  QrCodePairingModal,
+  ScanSessionContextMenuPopover,
+} from '../pages/home/home';
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { ConfigProvider } from '../providers/config/config';
+import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { LastToastProvider } from '../providers/last-toast/last-toast';
 import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
-import { DevicesProvider } from '../providers/devices/devices';
 
 @NgModule({
   declarations: [
@@ -37,7 +44,14 @@ import { DevicesProvider } from '../providers/devices/devices';
     BrowserModule,
     IonicStorageModule.forRoot(),
     QRCodeModule,
-    ClipboardModule,
+    ClipboardModule, 
+    NgxPopperModule.forRoot({
+      trigger: Triggers.HOVER,
+      hideOnClickOutside: true,
+      hideOnMouseLeave: true,
+      placement: 'right',
+      applyClass: 'popper-tooltip'
+    }),
     IonicModule.forRoot(MyApp,
       {
         // mode: 'wp',
