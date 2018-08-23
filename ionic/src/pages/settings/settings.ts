@@ -53,6 +53,7 @@ export class SettingsPage {
       { name: 'SHIFT', value: 'shift', type: 'key' },
       { name: 'RIGHT_SHIFT', value: 'right_shift', type: 'key' },
       { name: 'SPACE', value: 'space', type: 'key' },
+      { name: 'Other key (click to edit)', value: '', type: 'key', editable: true },
 
       { name: 'TIMESTAMP', value: 'timestamp', type: 'variable' },
       { name: 'DATE', value: 'date', type: 'variable' },
