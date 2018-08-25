@@ -8,7 +8,6 @@
 
   <ion-navbar color="secondary">
     <ion-title>{{ getTitle() }}</ion-title>
-
     <ion-buttons end>
       <button ion-button icon-start solid color="secondary" class="clear-all-button" (click)="onClearAllClick()">
         <ion-icon name="trash"></ion-icon>
@@ -34,8 +33,8 @@
     <ion-menu [content]="scanSessionsContainer">
       <ion-content class="child-container">
         <ion-list class="scan-sessions-list">
-          <ion-item *ngFor="let scanSession of scanSessions; let i = index;" [color]="getItemBackgroundColor(scanSession)" [id]="scanSession.date"
-            (click)="onScanSessionClick(scanSession);">
+          <ion-item *ngFor="let scanSession of filteredScanSessions(); let i = index;" [color]="getItemBackgroundColor(scanSession)"
+            [id]="scanSession.date" (click)="onScanSessionClick(scanSession);">
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
@@ -108,7 +107,20 @@
   </ion-split-pane>
 
 
+  <div class="search-bar-container">
+    <ion-searchbar #searchbar [hidden]="hideSearchBar" [(ngModel)]="searchTerms" (ionCancel)="onSearchCancel($event)" (ionInput)="onSearch($event)">
+    </ion-searchbar>
+
+    <button [hidden]="hideSearchBar" ion-button solid color="secondary" (click)="onSearchCancel($event)">
+      <ion-icon name="close"></ion-icon>
+    </button>
+  </div>
+
   <status-bar text-right>
+    <button [hidden]="hideSearchBar || searchTerms.length == 0" ion-button clear small color="dark">
+      Search results: {{ filteredScanSessions().length }}
+    </button>
+
     <button ion-button clear small color="dark">
       Scan sessions: {{ scanSessions.length }}
     </button>

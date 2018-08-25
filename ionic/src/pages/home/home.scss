@@ -77,4 +77,17 @@ page-home {
     .scan-text {
         width: 100%;
     }
+
+    .search-bar-container button {
+        position: absolute;
+        right: 0;
+        top: 0px;
+    }
+
+    ion-searchbar{
+        width: 400px;
+        position: absolute;
+        right: 49px;
+        top: -7px; 
+    }
 }

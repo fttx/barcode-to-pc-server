@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
+import { Component, NgZone, ViewChild, HostListener } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { saveAs } from 'file-saver';
 import {
@@ -10,6 +10,7 @@ import {
   PopoverController,
   ViewController,
   Popover,
+  Searchbar,
 } from 'ionic-angular';
 import * as Papa from 'papaparse';
 
@@ -51,8 +52,11 @@ export class HomePage {
   public scanSessions: ScanSessionModel[] = [];
   public selectedScanSession: ScanSessionModel = null;
   public connectedDevices: DeviceModel[] = [];
+  public hideSearchBar = true;
+  public searchTerms = ''
 
   @ViewChild('scanSessionsContainer') scanSessionsContainer: Content;
+  @ViewChild('searchbar') searchbar: Searchbar;
 
   private connectedClientPopover: Popover = null;
 
@@ -93,6 +97,40 @@ export class HomePage {
       }
       console.log('@@@', this.connectedDevices)
     });
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    console.log(event)
+    if (event.keyCode == 70 && event.ctrlKey == true) {
+      this.hideSearchBar = false;
+      setTimeout(() => {
+        this.searchbar.setFocus();
+      }, 250)
+    }
+
+    if (event.keyCode == 27) {
+      this.onSearchCancel(null);
+    }
+  }
+
+  onSearch(event) {
+    this.selectedScanSession = null;
+  }
+
+  onSearchCancel(event) {
+    this.hideSearchBar = true;
+    this.selectedScanSession = null;
+    this.searchTerms = '';
+  }
+
+  filteredScanSessions() {
+    let searchTerms = this.searchTerms.toLowerCase();
+    return this.scanSessions.filter(scanSession =>
+      scanSession.name.toLowerCase().indexOf(searchTerms) > -1
+      ||
+      scanSession.scannings.findIndex(scan => scan.text.toLowerCase().indexOf(searchTerms) > -1) > -1
+    )
   }
 
   ionViewDidLoad() {

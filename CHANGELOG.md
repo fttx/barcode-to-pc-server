@@ -17,6 +17,7 @@
 * OTG support (Open a scan session, type the barcode and press the ENTER key)
 * Repeat barcodes
 * Archive barcodes
+* Search option
 
 ### Fixed
 
