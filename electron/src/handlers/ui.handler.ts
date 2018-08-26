@@ -1,5 +1,5 @@
 import { settings } from 'cluster';
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron';
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray, MenuItem, Accelerator, globalShortcut } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as WebSocket from 'ws';
 import * as _path from 'path';
@@ -12,6 +12,7 @@ export class UiHandler implements Handler {
     public tray: Tray = null;
     public mainWindow: BrowserWindow; // Keep a global reference of the window object, if you don't, the window will be closed automatically when the JavaScript object is garbage collected.
     private settingsHandler: SettingsHandler;
+    private ipcClient;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
@@ -157,6 +158,15 @@ export class UiHandler implements Handler {
                     ]
                 },
                 {
+                    label: 'Edit',
+                    submenu: [
+                        {
+                            label: 'Find',
+                            accelerator: 'CommandOrControl+f'
+                        }
+                    ]
+                },
+                {
                     label: 'View',
                     submenu: [
                         { role: 'resetzoom' },
@@ -190,6 +200,10 @@ export class UiHandler implements Handler {
             const menu = Menu.buildFromTemplate(template)
             Menu.setApplicationMenu(menu)
         }
+
+        globalShortcut.register('CommandOrControl+f', () => {
+            this.ipcClient.send('CommandOrControl+f')
+        })
     }
 
     onWsMessage(ws: WebSocket, message: any) {
@@ -202,4 +216,7 @@ export class UiHandler implements Handler {
         throw new Error("Method not implemented.");
     }
 
+    setIpcClient(ipcClient) {
+        this.ipcClient = ipcClient;
+    }
 }

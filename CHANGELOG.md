@@ -7,6 +7,7 @@
 * Option to clear the server data
 * Quantity output component
 * Delay output componet
+* Other key output componet (to press keys like F1, DEL, etc.)
 * Append to CSV file option
 * Auto reconnect when the IP address changes
 * Minimizzation to tray icon support

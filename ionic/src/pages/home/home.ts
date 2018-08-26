@@ -97,17 +97,21 @@ export class HomePage {
       }
       console.log('@@@', this.connectedDevices)
     });
-  }
 
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    console.log(event)
-    if (event.keyCode == 70 && event.ctrlKey == true) {
+    this.electronProvider.ipcRenderer.on('CommandOrControl+f', (e, data: {}) => {
       this.hideSearchBar = false;
       setTimeout(() => {
         this.searchbar.setFocus();
       }, 250)
-    }
+    });
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    // console.log(event)
+    // if (event.keyCode == 70 && event.ctrlKey == true) { // ctrl+f, doesn't work on macos + karabiner
+    
+    // }
 
     if (event.keyCode == 27) {
       this.onSearchCancel(null);

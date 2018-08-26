@@ -27,6 +27,7 @@ ipcMain
         wss = new WebSocket.Server({ port: Config.PORT });
         connectionHandler.announceServer();
         connectionHandler.setIpcClient(ipcClient);
+        uiHandler.setIpcClient(ipcClient);
 
         // wss events should be registered immediately
         wss.on('connection', (ws, req) => {
