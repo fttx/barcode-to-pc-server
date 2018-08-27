@@ -4,13 +4,12 @@ const electronBuilder = require('../node_modules/electron-builder')
 const typescript = require('../node_modules/typescript')
 const mocha = require('../node_modules/mocha')
 const fs = require('fs');
+const ionicConfig = require('@ionic/app-scripts/dist/util/config')
+const ionic = require('@ionic/app-scripts')
 
-gulp.task('serve', ['electron:assets', 'ionic:install'], () => {
-  const config = require('@ionic/app-scripts/dist/util/config')
-  const ionic = require('@ionic/app-scripts')
-
+gulp.task('serve', ['electron:assets'], () => {
   exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true })
-  let buildContext = config.generateContext();
+  let buildContext = ionicConfig.generateContext();
   ionic.addArgv('--nobrowser')
   ionic.addArgv('--port')
   ionic.addArgv('8200')
@@ -40,31 +39,27 @@ gulp.task('electron:tsc', ['mkdir'], () => {
   })
 });
 
-gulp.task('ionic:install', () => {
-  return new Promise((resolve, reject) => {
-    if (!fs.existsSync('node_modules')) {
-      console.log('@@@ npm install')
-      execSync('npm i', { stdio: "inherit", shell: true })
-      console.log('@@@ npm installed')
-      setTimeout(() => {
+// gulp.task('ionic:install', () => {
+//   return new Promise((resolve, reject) => {
+//     if (!fs.existsSync('node_modules')) {
+//       console.log('@@@ npm install')
+//       execSync('npm i', { stdio: "inherit", shell: true })
+//       console.log('@@@ npm installed')
+//       setTimeout(() => {
 
-        resolve();
-      }, 5000)
-    }
-  })
-})
+//         resolve();
+//       }, 5000)
+//     }
+//   })
+// })
 
-gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
+gulp.task('ionic:build', ['mkdir'], () => {
   return new Promise((resolve, reject) => {
     // exec is less cross-platoform but at least works
     // execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
 
-
-    const config = require('@ionic/app-scripts/dist/util/config')
-    const ionic = require('@ionic/app-scripts')
-
     // ionic.build doesn't add the platform if it isn't installed first.
-    let buildContext = config.generateContext({
+    let buildContext = ionicConfig.generateContext({
       isProd: true,
       platform: 'browser',
     });
