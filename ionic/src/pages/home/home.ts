@@ -95,7 +95,7 @@ export class HomePage {
       if (this.connectedClientPopover) {
         this.connectedClientPopover.dismiss();
       }
-      console.log('@@@', this.connectedDevices)
+      // console.log('@@@', this.connectedDevices)
     });
 
     this.electronProvider.ipcRenderer.on('CommandOrControl+f', (e, data: {}) => {
