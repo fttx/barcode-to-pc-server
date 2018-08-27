@@ -42,29 +42,32 @@ gulp.task('electron:tsc', ['mkdir'], () => {
 
 gulp.task('ionic:install', ['mkdir'], () => {
   return new Promise((resolve, reject) => {
-    // ionic.build doesn't add the platform if it isn't installed first.
-    // let buildContext = config.generateContext({
-    //   isProd: true,
-    //   platform: 'browser',
-    // });
-    // ionic.build(buildContext).then(() => {
-    //   gulp
-    //     .src(['./platforms/browser/www/**/*'])
-    //     .pipe(gulp.dest('../dist/ionic/www/'))
-    //     .on('error', reject)
-    //     .on('end', resolve)
-    // })
 
-    if (!fs.existsSync('node_modules') || !fs.existsSync('platforms/browser')) {
-      execSync('npm i && npm run ionic:add-browser', { stdio: "inherit", shell: true })
+
+    if (!fs.existsSync('node_modules')) {
+      console.log('@@@ npm install!!')
+      execSync('npm i', { stdio: "inherit", shell: true })
     }
     // exec is less cross-platoform but at least works
-    execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
-    gulp
-      .src(['./platforms/browser/www/**/*'])
-      .pipe(gulp.dest('../dist/ionic/www/'))
-      .on('error', reject)
-      .on('end', resolve)
+    // execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
+
+
+    const config = require('@ionic/app-scripts/dist/util/config')
+    const ionic = require('@ionic/app-scripts')
+
+    // ionic.build doesn't add the platform if it isn't installed first.
+    let buildContext = config.generateContext({
+      isProd: true,
+      platform: 'browser',
+    });
+    ionic.build(buildContext).then(() => {
+      gulp
+        // .src(['./platforms/browser/www/**/*'])
+        .src(['./www/**/*'])
+        .pipe(gulp.dest('../dist/ionic/www/'))
+        .on('error', reject)
+        .on('end', resolve)
+    })
   })
 });
 
