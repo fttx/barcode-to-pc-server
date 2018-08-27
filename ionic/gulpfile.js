@@ -5,7 +5,7 @@ const typescript = require('../node_modules/typescript')
 const mocha = require('../node_modules/mocha')
 const fs = require('fs');
 
-gulp.task('serve', ['electron:assets'], () => {
+gulp.task('serve', ['electron:assets', 'ionic:install'], () => {
   const config = require('@ionic/app-scripts/dist/util/config')
   const ionic = require('@ionic/app-scripts')
 
@@ -40,14 +40,19 @@ gulp.task('electron:tsc', ['mkdir'], () => {
   })
 });
 
-gulp.task('ionic:install', ['mkdir'], () => {
+gulp.task('ionic:install', () => {
   return new Promise((resolve, reject) => {
-
-
     if (!fs.existsSync('node_modules')) {
-      console.log('@@@ npm install!!')
+      console.log('@@@ npm install')
       execSync('npm i', { stdio: "inherit", shell: true })
+      console.log('@@@ npm installed')
+      resolve();
     }
+  })
+})
+
+gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
+  return new Promise((resolve, reject) => {
     // exec is less cross-platoform but at least works
     // execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
 
@@ -78,7 +83,7 @@ gulp.task('electron:assets', ['mkdir'], () => {
 });
 
 
-gulp.task('build', ['electron:resources', 'electron:tsc', 'ionic:install', 'electron:assets']);
+gulp.task('build', ['electron:resources', 'electron:tsc', 'ionic:build', 'electron:assets']);
 
 gulp.task('dist', ['build'], () => {
   return electronBuilder.build({ projectDir: '../dist' });
