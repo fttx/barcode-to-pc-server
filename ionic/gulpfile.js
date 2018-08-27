@@ -46,7 +46,10 @@ gulp.task('ionic:install', () => {
       console.log('@@@ npm install')
       execSync('npm i', { stdio: "inherit", shell: true })
       console.log('@@@ npm installed')
-      resolve();
+      setTimeout(() => {
+
+        resolve();
+      }, 5000)
     }
   })
 })
