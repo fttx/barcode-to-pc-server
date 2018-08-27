@@ -56,10 +56,10 @@ gulp.task('ionic:install', ['mkdir'], () => {
     // })
 
     if (!fs.existsSync('node_modules') || !fs.existsSync('platforms/browser')) {
-      execSync('npm i && ionic cordova platform add browser', { stdio: "inherit", shell: true })
+      execSync('npm i && npm run ionic:add-browser', { stdio: "inherit", shell: true })
     }
     // exec is less cross-platoform but at least works
-    execSync('ionic cordova build browser --prod', { stdio: "inherit", shell: true })
+    execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
     gulp
       .src(['./platforms/browser/www/**/*'])
       .pipe(gulp.dest('../dist/ionic/www/'))
