@@ -19,7 +19,7 @@
   },
   "main": "electron/src/main.js",
   "scripts": {
-    "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i && ionic cordova platform add browser",
+    "postinstall": "npx electron-builder install-app-deps && cd ionic && npm i && npm run ionic:add-browser",
     "start": "npx gulp --cwd ./ionic/ serve",
     "test": "npx gulp --cwd ./ionic/ test",
     "dist": "npx gulp --cwd ./ionic/ dist",
@@ -52,7 +52,7 @@
   },
   "dependencies": {
     "bonjour": "^3.5.0",
-    "electron-updater": "^2.21.10",
+    "electron-updater": "^3.1.1",
     "mdns": "^2.4.0",
     "network": "^0.4.1",
     "requirejs": "^2.3.5",
@@ -66,7 +66,7 @@
     "@types/electron": "^1.6.10",
     "@types/mdns": "0.0.32",
     "electron": "^1.8.2",
-    "electron-builder": "^20.13.4",
+    "electron-builder": "^20.28.2",
     "electron-log": "^2.2.14",
     "gulp": "^3.9.1",
     "mocha": "^5.2.0",
