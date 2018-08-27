@@ -10,6 +10,8 @@ environment:
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
   BONJOUR_SDK_DOWNLOAD:
     secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
+  CERTIFICATE_DOWNLOAD:
+    secure: 1uWToJLKf6uUn0/fsVHbrc3lRWTNOmtHhBTGUj/INODqPtCb0s1TJICTpUiwpzWRL27o6pvHUKP9VwlYx1wy3A==
 image: Visual Studio 2015
 # init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
@@ -32,6 +34,7 @@ install:
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
+  - curl -fsSL -o C:\Certificates.p12 %CERTIFICATE_DOWNLOAD% 
   - npm cache verify
   - npm install --unsafe-perm
   - cd ionic
