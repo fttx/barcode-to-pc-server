@@ -20,4 +20,4 @@ script:
   - rm -rf electron/electron-resources/license*
   - chmod +x macos-signing.sh
   - ./macos-signing.sh
-  - travis_wait 40 npm run publish
+  - npm run publish
