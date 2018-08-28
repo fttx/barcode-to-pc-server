@@ -4,10 +4,11 @@ const electronBuilder = require('../node_modules/electron-builder')
 const typescript = require('../node_modules/typescript')
 const mocha = require('../node_modules/mocha')
 const fs = require('fs');
-const ionicConfig = require('@ionic/app-scripts/dist/util/config')
-const ionic = require('@ionic/app-scripts')
 
 gulp.task('serve', ['electron:assets', 'ionic:install'], () => {
+  const ionicConfig = require('@ionic/app-scripts/dist/util/config')
+  const ionic = require('@ionic/app-scripts')
+
   exec('npm run tsc:watch-electron', { cwd: '../', stdio: "inherit", shell: true })
   let buildContext = ionicConfig.generateContext();
   ionic.addArgv('--nobrowser')
@@ -40,15 +41,23 @@ gulp.task('electron:tsc', ['mkdir'], () => {
 });
 
 gulp.task('ionic:install', () => {
+  console.log('ionic:install start')
   return new Promise((resolve, reject) => {
     if (!fs.existsSync('node_modules')) {
+      console.log('node_modules does not exists, installing ionic')
       execSync('npm i', { stdio: "inherit", shell: true })
-      resolve();
+      console.log('ionic installed')
+    } else {
+      console.log('ionic already installed')
     }
+    resolve();
   })
 })
 
 gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
+  const ionicConfig = require('@ionic/app-scripts/dist/util/config')
+  const ionic = require('@ionic/app-scripts')
+
   return new Promise((resolve, reject) => {
     // exec is less cross-platoform but at least works
     // execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
