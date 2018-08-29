@@ -67,6 +67,7 @@ ipcMain
 
         app.on('window-all-closed', () => { // TODO: test on windows
             closeServer();
+            app.quit(); // TODO: keep the server running (this can't be done at the moment because the scannings are saved in the browserWindow localStorage)
         });
         updateHandler.checkUpdates();
     })
