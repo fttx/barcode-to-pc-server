@@ -66,8 +66,7 @@ export class SettingsPage {
 
       { name: 'Custom text (click to edit)', value: '', type: 'text', editable: true },
 
-      { name: 'barcode.substr(start, end)', value: 'barcode.substr(start, end)', type: 'function', editable: true },
-      { name: 'barcode.replace(searchvalue, newvalue)', value: 'barcode.replace(searchvalue, newvalue)', type: 'function', editable: true },
+      { name: 'Custom function', value: '', type: 'function', editable: true },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode' },
     ];
   }
@@ -184,7 +183,7 @@ export class SettingsPage {
     if (!defaultPath) {
       defaultPath = this.electronProvider.app.getPath('desktop')
     }
-    
+
     let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
       title: 'Select the CSV file path',
       buttonLabel: 'Select',

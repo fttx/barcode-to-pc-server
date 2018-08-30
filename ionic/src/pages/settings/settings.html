@@ -81,9 +81,19 @@
 
       <ion-item no-lines text-wrap>
         Available components
-        <button ion-button small color="light" popperPlacement="bottom-start" popper="To edit the emulated keyboard output drag & drop one element from the <br><b>Available components</b> box to the <b>Output</b> box by keeping pressed your mouse button.<br>If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full list is avaialable at http://robotjs.io/docs/syntax#keyboard" class="help-button">
+        <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content" class="help-button">
           ?
         </button>
+        <popper-content #popper1Content>
+          To edit the emulated keyboard output drag & drop one element from the <br><b>Available components</b> box to the
+          <b>Output</b> box by keeping pressed your mouse button.
+          <br> If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full list
+          is avaialable
+          <a (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">here</a>. If you want
+          to apply a custom function like a character replacement<br> or transform the barcode to uppercase, you can use
+          the <b>CUSTOM FUNCTION</b> component with the following syntax:<br> <i>barcode.replace('a', 'b')</i>. The full
+          list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
+        </popper-content>
         <div id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents' class="components-container">
           <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
         </div>
@@ -91,7 +101,8 @@
 
       <ion-item no-lines text-wrap>
         Output
-        <button ion-button small color="light" popperPlacement="right-start" popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button." class="help-button">
+        <button ion-button small color="light" popperPlacement="right-start" popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button."
+          class="help-button">
           ?
         </button>
         <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.typedString' class="components-container">

@@ -46,9 +46,9 @@ import { MyApp } from './app.component';
     QRCodeModule,
     ClipboardModule, 
     NgxPopperModule.forRoot({
-      trigger: Triggers.HOVER,
+      trigger: Triggers.CLICK,
       hideOnClickOutside: true,
-      hideOnMouseLeave: true,
+      hideOnMouseLeave: false,
       placement: 'right',
       applyClass: 'popper-tooltip'
     }),
