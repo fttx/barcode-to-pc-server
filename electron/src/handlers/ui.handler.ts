@@ -159,13 +159,17 @@ export class UiHandler implements Handler {
                 {
                     label: 'Edit',
                     submenu: [
+                        { role: "copy" },
+                        { role: "paste" },
+                        { role: "selectAll" },
+                        { type: 'separator' },
                         {
                             label: 'Find',
                             accelerator: process.platform === 'darwin' ? 'Cmd+F' : 'Ctrl+F',
                             click: () => {
                                 this.ipcClient.send('find');
                             }
-                        }
+                        },
                     ]
                 },
                 {
