@@ -1,8 +1,7 @@
-import { settings } from 'cluster';
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray, MenuItem, Accelerator, globalShortcut } from 'electron';
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import * as WebSocket from 'ws';
 import * as _path from 'path';
+import * as WebSocket from 'ws';
 
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -162,7 +161,10 @@ export class UiHandler implements Handler {
                     submenu: [
                         {
                             label: 'Find',
-                            accelerator: 'CommandOrControl+f'
+                            accelerator: 'CommandOrControl+f',
+                            click: () => {
+                                this.ipcClient.send('CommandOrControl+f')
+                            }
                         }
                     ]
                 },
@@ -200,10 +202,6 @@ export class UiHandler implements Handler {
             const menu = Menu.buildFromTemplate(template)
             Menu.setApplicationMenu(menu)
         }
-
-        globalShortcut.register('CommandOrControl+f', () => {
-            this.ipcClient.send('CommandOrControl+f')
-        })
     }
 
     onWsMessage(ws: WebSocket, message: any) {
