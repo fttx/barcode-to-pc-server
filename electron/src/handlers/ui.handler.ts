@@ -159,6 +159,7 @@ export class UiHandler implements Handler {
                 {
                     label: 'Edit',
                     submenu: [
+                        { role: "cut" },
                         { role: "copy" },
                         { role: "paste" },
                         { role: "selectAll" },
