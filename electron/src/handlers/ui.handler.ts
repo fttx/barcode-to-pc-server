@@ -161,9 +161,9 @@ export class UiHandler implements Handler {
                     submenu: [
                         {
                             label: 'Find',
-                            accelerator: 'CommandOrControl+f',
+                            accelerator: process.platform === 'darwin' ? 'Cmd+F' : 'Ctrl+F',
                             click: () => {
-                                this.ipcClient.send('CommandOrControl+f')
+                                this.ipcClient.send('find');
                             }
                         }
                     ]
