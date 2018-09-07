@@ -26,7 +26,7 @@ export class UiHandler implements Handler {
         });
         app.on('window-all-closed', () => {  // Quit when all windows are closed.            
             // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode To PC needs the browser windows to perform operation on the localStorage this is not allowed
-                this.quit()
+            this.quit()
             // }
         })
         // app.on('activate', () => {
@@ -59,7 +59,6 @@ export class UiHandler implements Handler {
                     // { label: 'Enable realtime ', type: 'radio', checked: false },        
                     {
                         label: 'Exit', click: () => {
-                            this.isQuitting = true;
                             console.log('tray->Exit')
                             this.quit();
                         }
@@ -151,7 +150,6 @@ export class UiHandler implements Handler {
                         { type: 'separator' },
                         {
                             label: 'Quit ' + Config.APP_NAME, click: (menuItem, browserWindow, event) => {
-                                this.isQuitting = true;
                                 this.quit();
                             }
                         }
@@ -215,7 +213,7 @@ export class UiHandler implements Handler {
             this.mainWindow.hide();
         });
 
-        this.mainWindow.on('close', (event) => {
+        this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
             console.log('close->isQuitting=', this.isQuitting)
             if (!this.isQuitting) {
                 event.preventDefault();
@@ -237,6 +235,10 @@ export class UiHandler implements Handler {
             // });
             // this.quit();
         })
+
+        if (this.mainWindow.isVisible()) {
+            app.dock.show();
+        }
         console.log('main window created')
     }
 
