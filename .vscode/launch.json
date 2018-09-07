@@ -1,38 +1,39 @@
 {
-    // Use IntelliSense to learn about possible Node.js debug attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
             "type": "node",
             "request": "launch",
-            "name": "Unix Debug",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron",
-            "program": "${workspaceRoot}/dist/electron/src/main.js",
-            "args": [
+            "name": "Electron: Main",
+            "protocol": "inspector",
+            "outputCapture": "std",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "runtimeArgs": [
+                "--remote-debugging-port=9223",
+                "./dist/electron/src/main.js",
                 "--dev"
             ],
-            "outFiles": []
+            "windows": {
+                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+            }
         },
         {
-            "type": "node",
-            "request": "launch",
-            "name": "Windows Debug",
-            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
-            "program": "${workspaceRoot}\\dist/electron/src/main.js",
-            "args": [
-                "--dev"
-            ],
-            "outFiles": []
-        },
-        {
-            "type": "node",
+            "name": "Electron: Renderer",
+            "type": "chrome",
             "request": "attach",
-            "name": "Collega a processo",
-            "address": "localhost",
-            "port": 5858,
-            "outFiles": []
+            "port": 9223,
+            "webRoot": "${workspaceFolder}",
+            "timeout": 3000,
+            "url":"http://localhost:8200/",
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Electron: All",
+            "configurations": [
+                "Electron: Main",
+                "Electron: Renderer"
+            ]
         }
     ]
 }
