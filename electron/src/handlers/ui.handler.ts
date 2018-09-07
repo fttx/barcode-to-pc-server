@@ -54,18 +54,16 @@ export class UiHandler implements Handler {
     private updateTray() {
         if (this.settingsHandler.enableTray) {
             if (this.tray == null) {
-                // console.log('creating tray')
                 let menuItems: MenuItemConstructorOptions[] = [
                     // { label: 'Enable realtime ', type: 'radio', checked: false },        
                     {
                         label: 'Exit', click: () => {
-                            console.log('tray->Exit')
                             this.quit();
                         }
                     },
                 ];
                 if (process.platform == 'darwin') {
-                    console.log(_path.join(__dirname, '/../assets/tray/macos/iconTemplate.png'))
+                    // console.log(_path.join(__dirname, '/../assets/tray/macos/iconTemplate.png'))
                     this.tray = new Tray(nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconTemplate.png')));
                     this.tray.setPressedImage(nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconHighlight.png')));
                     menuItems.unshift({ label: 'Hide', role: 'hide' });
@@ -210,7 +208,6 @@ export class UiHandler implements Handler {
         }
 
         this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
-            console.log('close->isQuitting=', this.isQuitting)
             if (!this.isQuitting) {
                 event.preventDefault();
                 this.mainWindow.hide();
@@ -223,7 +220,6 @@ export class UiHandler implements Handler {
 
         // Emitted when the window is closed.
         this.mainWindow.on('closed', () => {
-            console.log('closed')
             // Dereference the window object, usually you would store windows  in an array if your app supports multi windows, this is the time when you should delete the corresponding element.
             this.mainWindow = null
             // wss.clients.forEach(client => {
@@ -239,7 +235,6 @@ export class UiHandler implements Handler {
                 app.dock.show();
             }
         }
-        console.log('main window created')
     }
 
     onWsMessage(ws: WebSocket, message: any) {
