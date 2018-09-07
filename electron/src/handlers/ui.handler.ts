@@ -207,12 +207,6 @@ export class UiHandler implements Handler {
             Menu.setApplicationMenu(menu)
         }
 
-        this.mainWindow.on('minimize', (event) => {
-            console.log('minimize')
-            event.preventDefault();
-            this.mainWindow.hide();
-        });
-
         this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
             console.log('close->isQuitting=', this.isQuitting)
             if (!this.isQuitting) {
