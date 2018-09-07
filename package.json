@@ -36,7 +36,10 @@
     "appId": "com.barcodetopc.server",
     "productName": "Barcode to PC server",
     "mac": {
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "extendInfo": {
+        "LSUIElement": 1
+      }
     },
     "win": {
       "target": "nsis-web",

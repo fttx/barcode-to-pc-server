@@ -12,6 +12,7 @@ export class UiHandler implements Handler {
     public mainWindow: BrowserWindow; // Keep a global reference of the window object, if you don't, the window will be closed automatically when the JavaScript object is garbage collected.
     private settingsHandler: SettingsHandler;
     private ipcClient;
+    private isQuitting = false;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
@@ -20,19 +21,19 @@ export class UiHandler implements Handler {
             this.updateTray();
         });
 
-        app.on('ready', () => {
+        app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
             this.createWindow();
-        }); // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
+        });
         app.on('window-all-closed', () => {  // Quit when all windows are closed.            
-            if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q
+            // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode To PC needs the browser windows to perform operation on the localStorage this is not allowed
                 app.quit()
-            }
+            // }
         })
-        app.on('activate', () => {
-            if (this.mainWindow === null) { // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other windows open.
-                this.createWindow()
-            }
-        })
+        // app.on('activate', () => {
+        //     if (this.mainWindow === null) { // On OS X it's common to re-create a window in the app when the dock icon is clicked and there are no other windows open, but since the app will quit when there aren't active windows this event will never occour.
+        //         this.createWindow()
+        //     }
+        // })
         app.setName(Config.APP_NAME);
         if (app.setAboutPanelOptions) {
             app.setAboutPanelOptions({
@@ -56,7 +57,14 @@ export class UiHandler implements Handler {
                 // console.log('creating tray')
                 let menuItems: MenuItemConstructorOptions[] = [
                     // { label: 'Enable realtime ', type: 'radio', checked: false },        
-                    { label: 'Exit', role: 'quit' },
+                    { label: 'Enable realtime ', type: 'radio', checked: false },        
+                    {
+                        label: 'Exit', click: () => {
+                            this.isQuitting = true;
+                            console.log('tray->Exit')
+                            app.quit();
+                        }
+                    },
                 ];
                 if (process.platform == 'darwin') {
                     console.log(_path.join(__dirname, '/../assets/tray/macos/iconTemplate.png'))
@@ -94,6 +102,7 @@ export class UiHandler implements Handler {
             if (this.mainWindow.isMinimized()) this.mainWindow.restore();
             this.mainWindow.show();
             this.mainWindow.focus();
+            app.dock.show();
         }
     }
 
@@ -109,7 +118,7 @@ export class UiHandler implements Handler {
             const log = require("electron-log")
             log.transports.file.level = "info"
             autoUpdater.logger = log
-        } else if (Config.IS_DEV_MODE) {
+        } else if (Config.IS_TEST_MODE) {
             console.log('test mode on')
             this.mainWindow.webContents.on('did-fail-load', () => {
                 setTimeout(() => this.mainWindow.reload(), 2000);
@@ -119,18 +128,6 @@ export class UiHandler implements Handler {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         }
-
-        // Emitted when the window is closed.
-        this.mainWindow.on('closed', () => {
-            // Dereference the window object, usually you would store windows  in an array if your app supports multi windows, this is the time when you should delete the corresponding element.
-            this.mainWindow = null
-            // wss.clients.forEach(client => {
-            //     // if (client.readyState === WebSocket.OPEN) {
-            //     client.close();
-            //     // }
-            // });
-            // app.quit();
-        })
 
         const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
             this.bringWindowUp(); // Someone tried to run a second instance, we should focus our window.
@@ -153,7 +150,12 @@ export class UiHandler implements Handler {
                         { role: 'hideothers' },
                         { role: 'unhide' },
                         { type: 'separator' },
-                        { role: 'quit' }
+                        {
+                            label: 'Quit ' + Config.APP_NAME, click: (menuItem, browserWindow, event) => {
+                                this.isQuitting = true;
+                                app.quit();
+                            }
+                        }
                     ]
                 },
                 {
@@ -207,6 +209,36 @@ export class UiHandler implements Handler {
             const menu = Menu.buildFromTemplate(template)
             Menu.setApplicationMenu(menu)
         }
+
+        this.mainWindow.on('minimize', (event) => {
+            console.log('minimize')
+            event.preventDefault();
+            this.mainWindow.hide();
+        });
+
+        this.mainWindow.on('close', (event) => {
+            console.log('close->isQuitting=', this.isQuitting)
+            if (!this.isQuitting) {
+                event.preventDefault();
+                this.mainWindow.hide();
+                app.dock.hide();
+            }
+            return false;
+        });
+
+        // Emitted when the window is closed.
+        this.mainWindow.on('closed', () => {
+            console.log('closed')
+            // Dereference the window object, usually you would store windows  in an array if your app supports multi windows, this is the time when you should delete the corresponding element.
+            this.mainWindow = null
+            // wss.clients.forEach(client => {
+            //     // if (client.readyState === WebSocket.OPEN) {
+            //     client.close();
+            //     // }
+            // });
+            // app.quit();
+        })
+        console.log('main window created')
     }
 
     onWsMessage(ws: WebSocket, message: any) {
