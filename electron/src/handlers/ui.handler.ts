@@ -100,7 +100,9 @@ export class UiHandler implements Handler {
             if (this.mainWindow.isMinimized()) this.mainWindow.restore();
             this.mainWindow.show();
             this.mainWindow.focus();
-            app.dock.show();
+            if (app.dock != null ) {
+                app.dock.show();
+            }
         }
     }
 
@@ -212,7 +214,9 @@ export class UiHandler implements Handler {
             if (!this.isQuitting) {
                 event.preventDefault();
                 this.mainWindow.hide();
-                app.dock.hide();
+                if (app.dock != null ) {
+                    app.dock.hide();
+                }
             }
             return false;
         });
@@ -231,7 +235,9 @@ export class UiHandler implements Handler {
         })
 
         if (this.mainWindow.isVisible()) {
-            app.dock.show();
+            if (app.dock != null ) {
+                app.dock.show();
+            }
         }
         console.log('main window created')
     }
