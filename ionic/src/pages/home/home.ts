@@ -336,6 +336,10 @@ export class HomePage {
       animate: false,
     });
   }
+
+  public getLocaleDate(date) {
+    return new Date(date).toLocaleString();
+  }
 }
 
 // ConnectedClientsPopover

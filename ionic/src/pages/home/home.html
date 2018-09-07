@@ -34,7 +34,7 @@
       <ion-content class="child-container">
         <ion-list class="scan-sessions-list">
           <ion-item *ngFor="let scanSession of filteredScanSessions(); let i = index;" [color]="getItemBackgroundColor(scanSession)"
-            [id]="scanSession.date" (click)="onScanSessionClick(scanSession);">
+            [id]="scanSession.id" (click)="onScanSessionClick(scanSession);">
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
@@ -42,7 +42,7 @@
                     <circle-text [value]="scanSession.name" [checked]="scanSession.selected">{{ scanSession.name }}</circle-text>
                   </ion-avatar>
                   <h2>{{ scanSession.name }}</h2>
-                  <p>Created: {{ scanSession.date }}</p>
+                  <p>Created: {{ getLocaleDate(scanSession.date) }}</p>
                   <p>Number of scannings: {{ scanSession.scannings.length }}</p>
                 </ion-col>
 

@@ -129,9 +129,9 @@ export class requestModelUpdateScanSession extends requestModel {
     action = 'updateScanSession';
     scanSessionId: number;
     scanSessionName: string;
-    scanSessionDate: Date;
+    scanSessionDate: number;
 
-    public fromObject(obj: ({ scanSessionId: number, scanSessionName: string, scanSessionDate: Date })) {
+    public fromObject(obj: ({ scanSessionId: number, scanSessionName: string, scanSessionDate: number })) {
         this.scanSessionId = obj.scanSessionId;
         this.scanSessionName = obj.scanSessionName;
         this.scanSessionDate = obj.scanSessionDate;
