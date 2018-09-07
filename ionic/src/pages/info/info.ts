@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { ElectronProvider } from '../../providers/electron/electron';
-import { ConfigProvider } from '../../providers/config/config';
+import { Config } from '../../../../electron/src/config';
 
 /**
  * Generated class for the InfoPage page.
@@ -44,23 +44,23 @@ export class InfoPage {
   }
 
   getWebSiteUrl() {
-    return ConfigProvider.URL_WEBSITE;
+    return Config.URL_WEBSITE;
   }
 
   getWebSiteName() {
-    return ConfigProvider.WEB_SITE_NAME;
+    return Config.WEB_SITE_NAME;
   }
 
   getGitHubServer() {
-    return ConfigProvider.URL_GITHUB_SERVER;
+    return Config.URL_GITHUB_SERVER;
   }
 
   getGitHubApp() {
-    return ConfigProvider.URL_GITHUB_APP;
+    return Config.URL_GITHUB_APP;
   }
 
   getMail() {
-    return ConfigProvider.URL_MAIL;
+    return Config.URL_MAIL;
   }
 
 }

@@ -20,7 +20,6 @@ import {
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
-import { ConfigProvider } from '../providers/config/config';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { LastToastProvider } from '../providers/last-toast/last-toast';
@@ -83,7 +82,6 @@ import { MyApp } from './app.component';
     ElectronProvider,
     StorageProvider,
     UtilsProvider,
-    ConfigProvider,
     LastToastProvider,
     DevicesProvider
   ]

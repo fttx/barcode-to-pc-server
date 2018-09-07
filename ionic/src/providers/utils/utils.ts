@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import { ConfigProvider } from '../config/config';
 import { ElectronProvider } from '../electron/electron';
+import { Config } from '../../../../electron/src/config';
+
 
 /*
   Generated class for the UtilsProvider provider.
@@ -19,7 +20,7 @@ export class UtilsProvider {
   getQrCodeUrl(): Promise<string> {
     return new Promise((resolve, reject) => {
       if (!this.electronProvider.isElectron()) {
-        resolve(ConfigProvider.CONNECT_URL_BASE + '/?h=' + encodeURIComponent('DEBUG_HOSTNAME') + '&a=' + encodeURIComponent(['127.0.0.1', 'localhost'].join('-')));
+        resolve(Config.URL_PAIR + '/?h=' + encodeURIComponent('DEBUG_HOSTNAME') + '&a=' + encodeURIComponent(['127.0.0.1', 'localhost'].join('-')));
         return;
       }
 
@@ -36,7 +37,7 @@ export class UtilsProvider {
           localAddresses.unshift(defaultLocalAddress);
         }
         // this.ngZone.run(() => {
-        resolve(ConfigProvider.CONNECT_URL_BASE + '/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
+        resolve(Config.URL_PAIR + '/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
         // })
       });
     })

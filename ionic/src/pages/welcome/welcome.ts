@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
-import { ConfigProvider } from '../../providers/config/config';
+import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -48,6 +48,6 @@ export class WelcomePage {
   }
 
   onHelpClick() {
-    this.electronProvider.shell.openExternal(ConfigProvider.URL_FAQ_APP_DOESNT_FIND_COMPUTER);
+    this.electronProvider.shell.openExternal(Config.URL_FAQ_APP_DOESNT_FIND_COMPUTER);
   }
 }

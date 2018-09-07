@@ -1,4 +1,4 @@
-import { Component, NgZone, ViewChild, HostListener } from '@angular/core';
+import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { saveAs } from 'file-saver';
 import {
@@ -7,13 +7,15 @@ import {
   ModalController,
   NavController,
   NavParams,
-  PopoverController,
-  ViewController,
   Popover,
+  PopoverController,
   Searchbar,
+  ViewController,
 } from 'ionic-angular';
 import * as Papa from 'papaparse';
 
+import { Config } from '../../../../electron/src/config';
+import { DeviceModel } from '../../models/device.model';
 import {
   requestModel,
   requestModelClearScanSessions,
@@ -27,14 +29,13 @@ import {
 } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
 import { ScanModel } from '../../models/scan.model';
+import { DevicesProvider } from '../../providers/devices/devices';
 import { ElectronProvider } from '../../providers/electron/electron';
+import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { StorageProvider } from '../../providers/storage/storage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-import { LastToastProvider } from '../../providers/last-toast/last-toast';
-import { DeviceModel } from '../../models/device.model';
-import { DevicesProvider } from '../../providers/devices/devices';
 
 /**
  * Generated class for the HomePage page.
@@ -140,7 +141,7 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.title.setTitle('Barcode To PC');
+    this.title.setTitle(Config.APP_NAME);
 
     if (this.electronProvider.isElectron()) {
 
@@ -283,7 +284,7 @@ export class HomePage {
     if (this.selectedScanSession) {
       return this.selectedScanSession.name;
     }
-    return 'Barcode to PC'
+    return Config.APP_NAME;
   }
 
   private randomScan() {

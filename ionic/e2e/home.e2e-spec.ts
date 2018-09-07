@@ -13,9 +13,9 @@ describe('Home', () => {
         page.browseToPage();
     });
 
-    it('should have a title saying Barcode To PC', () => {
+    it('should have a title saying Barcode to PC server', () => {
         page.getTitle().then(title => {
-            expect(title).toEqual('Barcode To PC');
+            expect(title).toEqual('Barcode to PC server');
         });
     });
 

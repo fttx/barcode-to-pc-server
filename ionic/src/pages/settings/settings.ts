@@ -6,9 +6,9 @@ import { SettingsModel } from '../../models/settings.model';
 import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { StorageProvider } from '../../providers/storage/storage';
-import { ConfigProvider } from '../../providers/config/config';
 import { requestModel } from '../../models/request.model';
 import { responseModel } from '../../models/response.model';
+import { Config } from '../../../../electron/src/config';
 
 /**
  * Generated class for the SettingsPage page.
@@ -97,7 +97,7 @@ export class SettingsPage {
   }
 
   public getAppName() {
-    return ConfigProvider.APP_NAME;
+    return Config.APP_NAME;
   }
 
   ionViewDidLoad() {

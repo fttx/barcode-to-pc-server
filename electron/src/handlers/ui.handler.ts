@@ -25,7 +25,7 @@ export class UiHandler implements Handler {
             this.createWindow();
         });
         app.on('window-all-closed', () => {  // Quit when all windows are closed.            
-            // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode To PC needs the browser windows to perform operation on the localStorage this is not allowed
+            // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode to PC needs the browser windows to perform operation on the localStorage this is not allowed
             this.quit()
             // }
         })
