@@ -26,7 +26,7 @@ export class UiHandler implements Handler {
         });
         app.on('window-all-closed', () => {  // Quit when all windows are closed.            
             // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode To PC needs the browser windows to perform operation on the localStorage this is not allowed
-                app.quit()
+                this.quit()
             // }
         })
         // app.on('activate', () => {
@@ -57,12 +57,11 @@ export class UiHandler implements Handler {
                 // console.log('creating tray')
                 let menuItems: MenuItemConstructorOptions[] = [
                     // { label: 'Enable realtime ', type: 'radio', checked: false },        
-                    { label: 'Enable realtime ', type: 'radio', checked: false },        
                     {
                         label: 'Exit', click: () => {
                             this.isQuitting = true;
                             console.log('tray->Exit')
-                            app.quit();
+                            this.quit();
                         }
                     },
                 ];
@@ -134,7 +133,7 @@ export class UiHandler implements Handler {
         })
 
         if (isSecondInstance) {
-            app.quit();
+            this.quit();
         }
 
         if (process.platform === 'darwin') {
@@ -153,7 +152,7 @@ export class UiHandler implements Handler {
                         {
                             label: 'Quit ' + Config.APP_NAME, click: (menuItem, browserWindow, event) => {
                                 this.isQuitting = true;
-                                app.quit();
+                                this.quit();
                             }
                         }
                     ]
@@ -236,7 +235,7 @@ export class UiHandler implements Handler {
             //     client.close();
             //     // }
             // });
-            // app.quit();
+            // this.quit();
         })
         console.log('main window created')
     }
@@ -253,5 +252,10 @@ export class UiHandler implements Handler {
 
     setIpcClient(ipcClient) {
         this.ipcClient = ipcClient;
+    }
+
+    private quit() {
+        this.isQuitting = true;
+        app.quit();
     }
 }
