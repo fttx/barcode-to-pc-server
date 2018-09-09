@@ -6,7 +6,7 @@ import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelEnableQuantity, responseModelHelo, responseModelPong, responseModelRequestScanSessionUpdate } from '../../../ionic/src/models/response.model';
+import { responseModelEnableQuantity, responseModelHelo, responseModelPong } from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -49,12 +49,6 @@ export class ConnectionHandler implements Handler {
             }).on('getHostname', (event, arg) => {
                 event.sender.send('hostname', os.hostname());
             })
-            .on('requestScanSessionUpdate', (event, data: ({ response: responseModelRequestScanSessionUpdate, deviceId: string })) => {
-                let ws = this.wsClients[data.deviceId];
-                console.log('sending update request...', data.response)
-                ws.send(data.response);
-            });
-
         // send enableQuantity to already connected clients
         settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {
             for (let deviceId in this.wsClients) {
