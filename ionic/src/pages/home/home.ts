@@ -148,7 +148,7 @@ export class HomePage {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
         this.ngZone.run(() => {
           if (this.storageProvider.getLastScanDate(request.deviceId) != request.lastScanDate) {
-            //console.log('helo->lastScanDateMismatch detected')
+            // console.log('helo->lastScanDateMismatch detected')
             this.electronProvider.ipcRenderer.send('lastScanDateMismatch', request.deviceId);
           }
         });
@@ -163,7 +163,7 @@ export class HomePage {
             if (scanSessionIndex != -1) {
               this.scanSessions[scanSessionIndex].scannings = scanSession.scannings;
             } else {
-              this.scanSessions.push(scanSession);
+              this.scanSessions.unshift(scanSession);
               this.selectedScanSession = this.scanSessions[0];
               this.scanSessionsContainer.scrollToTop();
             }
