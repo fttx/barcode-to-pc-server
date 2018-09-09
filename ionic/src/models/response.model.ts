@@ -7,15 +7,15 @@ export abstract class responseModel {
     public static readonly ACTION_PONG = 'pong';
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
     public static readonly ACTION_POPUP = 'action_popup';
-    public static readonly ACTION_REQUEST_SYNC = 'requestSync';
     public static readonly ACTION_ENABLE_QUANTITY = 'enableQuantity'
+    public static ACTION_REQUEST_SCAN_SESSION_UPDATE = 'requestScanSessionUpdate';
 }
 
 /**
  * @deprecated
  */
 export class responseModelGetVersion extends responseModel {
-    action = 'getVersion';
+    action = responseModel.ACTION_GET_VERSION;
     version: string;
 
     public fromObject(obj: ({ version: string })) {
@@ -25,7 +25,7 @@ export class responseModelGetVersion extends responseModel {
 }
 
 export class responseModelHelo extends responseModel {
-    action = 'helo';
+    action = responseModel.ACTION_HELO;
     version: string;
     quantityEnabled: boolean;
 
@@ -36,16 +36,8 @@ export class responseModelHelo extends responseModel {
     }
 }
 
-export class responseModelRequestSync extends responseModel {
-    action = 'requestSync';
-
-    public fromObject(obj: ({})) {
-        return this;
-    }
-}
-
 export class responseModelPong extends responseModel {
-    action = 'pong';
+    action = responseModel.ACTION_PONG;
 
     public fromObject(obj: ({})) {
         return this;
@@ -53,7 +45,7 @@ export class responseModelPong extends responseModel {
 }
 
 export class responseModelPutScanAck extends responseModel {
-    action = 'putScanAck';
+    action = responseModel.ACTION_PUT_SCAN_ACK;
     scanSessionId: number;
     scanId: number;
 
@@ -65,7 +57,7 @@ export class responseModelPutScanAck extends responseModel {
 }
 
 export class responseModelPopup extends responseModel {
-    action = 'action_popup';
+    action = responseModel.ACTION_POPUP;
     title: string;
     message: string;
 

@@ -15,7 +15,6 @@ export class StorageProvider {
   private static SCAN_SESSIONS = "scan_sessions";
   private static SETTINGS = "settings";
   private static EVER_CONNECTED = "ever_connected";
-  private static LAST_SCAN_DATE = "last_scan_date";
 
   constructor(
     public storage: Storage
@@ -46,20 +45,5 @@ export class StorageProvider {
 
   setEverConnected(everConnected: boolean) {
     localStorage.setItem(StorageProvider.EVER_CONNECTED, JSON.stringify(everConnected));
-  }
-
-  getLastScanDate(deviceId: string): number {
-    let lsd = localStorage.getItem(StorageProvider.LAST_SCAN_DATE + '_' + deviceId);
-    console.log(lsd)
-    if (!lsd) {
-      return 0;
-    }
-    return JSON.parse(lsd);
-  }
-
-  setLastScanDate(deviceId: string, lastScanDate: number) {
-    if (deviceId && lastScanDate) {
-      localStorage.setItem(StorageProvider.LAST_SCAN_DATE + '_' + deviceId, JSON.stringify(lastScanDate));
-    }
   }
 }

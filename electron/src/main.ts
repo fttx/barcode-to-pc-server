@@ -12,7 +12,7 @@ import { UpdateHandler } from './handlers/update.handler';
 let wss = null;
 const settingsHandler = SettingsHandler.getInstance();
 const uiHandler = UiHandler.getInstance(settingsHandler);
-const scanHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
+const scansHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
 const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandler);
 const updateHandler = UpdateHandler.getInstance();
 
@@ -44,7 +44,7 @@ ipcMain
 
                 let messageObj = JSON.parse(message.toString());
 
-                scanHandler.onWsMessage(ws, messageObj);
+                scansHandler.onWsMessage(ws, messageObj);
                 connectionHandler.onWsMessage(ws, messageObj);
 
                 ipcClient.send(messageObj.action, messageObj); // forward ws messages to ipc

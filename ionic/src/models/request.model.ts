@@ -15,8 +15,6 @@ export abstract class requestModel {
     public static readonly ACTION_PING = 'ping';
     public static readonly ACTION_HELO = 'helo';
     public static readonly ACTION_PUT_SCAN_SESSIONS = 'putScanSessions';
-    public static readonly ACTION_PUT_SCAN_SESSION = 'putScanSession';
-    public static readonly ACTION_PUT_SCAN = 'putScan';
     public static readonly ACTION_DELETE_SCAN_SESSION = 'deleteScanSession';
     public static readonly ACTION_DELETE_SCAN = 'deleteScan';
     public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
@@ -27,7 +25,7 @@ export abstract class requestModel {
  * @deprecated
  */
 export class requestModelGetVersion extends requestModel {
-    action = 'getVersion';
+    action = requestModel.ACTION_GET_VERSION;
 
     public fromObject(obj: ({})) {
         return this;
@@ -35,7 +33,7 @@ export class requestModelGetVersion extends requestModel {
 }
 
 export class requestModelPing extends requestModel {
-    action = 'ping';
+    action = requestModel.ACTION_PING;
 
     public fromObject(obj: ({})) {
         return this;
@@ -43,68 +41,33 @@ export class requestModelPing extends requestModel {
 }
 
 export class requestModelHelo extends requestModel {
-    action = 'helo';
+    action = requestModel.ACTION_HELO;
     deviceName: string;
     deviceId: string;
-    lastScanDate: number;
 
-    public fromObject(obj: ({ deviceName: string, deviceId: string, lastScanDate: number })) {
+    public fromObject(obj: ({ deviceName: string, deviceId: string })) {
         this.deviceName = obj.deviceName;
         this.deviceId = obj.deviceId;
-        this.lastScanDate = obj.lastScanDate;
         return this;
     }
 }
 
 export class requestModelPutScanSessions extends requestModel {
-    action = 'putScanSessions';
+    action = requestModel.ACTION_PUT_SCAN_SESSIONS;
     scanSessions: ScanSessionModel[];
     sendKeystrokes: boolean;
-    lastScanDate: number;
     deviceId: string
 
-    public fromObject(obj: ({ scanSessions: ScanSessionModel[], sendKeystrokes: boolean, lastScanDate: number, deviceId: string, })) {
+    public fromObject(obj: ({ scanSessions: ScanSessionModel[], sendKeystrokes: boolean, deviceId: string, })) {
         this.scanSessions = obj.scanSessions;
         this.sendKeystrokes = obj.sendKeystrokes;
-        this.lastScanDate = obj.lastScanDate;
-        this.deviceId = obj.deviceId;
-        return this;
-    }
-}
-
-export class requestModelPutScanSession extends requestModel {
-    action = 'putScanSession';
-    scanSessions: ScanSessionModel;
-    sendKeystrokes: boolean;
-
-    public fromObject(obj: ({ scanSession: ScanSessionModel })) {
-        this.scanSessions = obj.scanSession;
-        return this;
-    }
-}
-
-export class requestModelPutScan extends requestModel {
-    action = 'putScan';
-    scan: ScanModel;
-    scanSessionId: number;
-    sendKeystrokes: boolean;
-    lastScanDate: number;
-    newScanDate: number;
-    deviceId: string
-
-    public fromObject(obj: ({ scan: ScanModel, scanSessionId: number, sendKeystrokes: boolean, lastScanDate: number, newScanDate: number, deviceId: string, })) {
-        this.scan = obj.scan;
-        this.scanSessionId = obj.scanSessionId;
-        this.sendKeystrokes = obj.sendKeystrokes;
-        this.lastScanDate = obj.lastScanDate;
-        this.newScanDate = obj.newScanDate;
         this.deviceId = obj.deviceId;
         return this;
     }
 }
 
 export class requestModelDeleteScanSessions extends requestModel {
-    action = 'deleteScanSession';
+    action = requestModel.ACTION_DELETE_SCAN_SESSION;
     scanSessionIds: number[];
 
     public fromObject(obj: ({ scanSessionIds: number[] })) {
@@ -114,7 +77,7 @@ export class requestModelDeleteScanSessions extends requestModel {
 }
 
 export class requestModelDeleteScan extends requestModel {
-    action = 'deleteScan';
+    action = requestModel.ACTION_DELETE_SCAN;
     scan: ScanModel;
     scanSessionId: number
 
@@ -126,7 +89,7 @@ export class requestModelDeleteScan extends requestModel {
 }
 
 export class requestModelUpdateScanSession extends requestModel {
-    action = 'updateScanSession';
+    action = requestModel.ACTION_UPDATE_SCAN_SESSION;
     scanSessionId: number;
     scanSessionName: string;
     scanSessionDate: number;
@@ -140,7 +103,7 @@ export class requestModelUpdateScanSession extends requestModel {
 }
 
 export class requestModelClearScanSessions extends requestModel {
-    action = 'clearScanSessions';
+    action = requestModel.ACTION_CLEAR_SCAN_SESSIONS;
     public fromObject(obj: ({})) {
         return this;
     }

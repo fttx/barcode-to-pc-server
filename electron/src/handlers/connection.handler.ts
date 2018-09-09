@@ -6,12 +6,12 @@ import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelHelo, responseModelPong, responseModelRequestSync, responseModel, responseModelEnableQuantity } from '../../../ionic/src/models/response.model';
+import { responseModelEnableQuantity, responseModelHelo, responseModelPong, responseModelRequestScanSessionUpdate } from '../../../ionic/src/models/response.model';
+import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
-import { UiHandler } from './ui.handler';
 import { SettingsHandler } from './settings.handler';
-import { SettingsModel } from '../../../ionic/src/models/settings.model';
+import { UiHandler } from './ui.handler';
 
 const bonjour = b();
 
@@ -30,12 +30,6 @@ export class ConnectionHandler implements Handler {
     ) {
         this.uiHandler = uiHandler;
         ipcMain
-            .on('lastScanDateMismatch', (event, deviceId) => {
-                if (this.wsClients[deviceId] && this.wsClients[deviceId].OPEN == WebSocket.OPEN) {
-                    //console.log('lastScanDateMismatch for device ' + deviceId + ' requesting sync')
-                    this.wsClients[deviceId].send(JSON.stringify(new responseModelRequestSync()));
-                }
-            })
             .on('getLocalAddresses', (event, arg) => {
                 network.get_interfaces_list((err, networkInterfaces) => {
                     let addresses = [];
@@ -55,6 +49,11 @@ export class ConnectionHandler implements Handler {
             }).on('getHostname', (event, arg) => {
                 event.sender.send('hostname', os.hostname());
             })
+            .on('requestScanSessionUpdate', (event, data: ({ response: responseModelRequestScanSessionUpdate, deviceId: string })) => {
+                let ws = this.wsClients[data.deviceId];
+                console.log('sending update request...', data.response)
+                ws.send(data.response);
+            });
 
         // send enableQuantity to already connected clients
         settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {

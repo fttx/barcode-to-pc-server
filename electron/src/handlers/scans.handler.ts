@@ -4,7 +4,7 @@ import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as WebSocket from 'ws';
 
-import { requestModel, requestModelHelo, requestModelPutScan } from '../../../ionic/src/models/request.model';
+import { requestModel, requestModelHelo, requestModelPutScanSessions } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
@@ -20,6 +20,7 @@ export class ScansHandler implements Handler {
     ) {
 
     }
+
     static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler) {
         if (!ScansHandler.instance) {
             ScansHandler.instance = new ScansHandler(settingsHandler, uiHandler);
@@ -30,9 +31,18 @@ export class ScansHandler implements Handler {
     onWsMessage(ws: WebSocket, message: any) {
         console.log('message', message)
         switch (message.action) {
-            case requestModel.ACTION_PUT_SCAN: {
-                let request: requestModelPutScan = message;
-                let barcode = request.scan.text;
+            case requestModel.ACTION_PUT_SCAN_SESSIONS: {
+                let request: requestModelPutScanSessions = message;
+                if (request.scanSessions.length == 0 ||
+                    (request.scanSessions.length == 1 && request.scanSessions[0].scannings && request.scanSessions[0].scannings.length != 1) ||
+                    request.scanSessions.length > 1
+                ) {
+                    return;
+                }
+
+                let scanSession = request.scanSessions[0];
+                let scan = scanSession.scannings[0];
+                let barcode = scan.text;
 
                 (async () => {
                     for (let stringComponent of this.settingsHandler.typedString) {
@@ -59,28 +69,28 @@ export class ScansHandler implements Handler {
                                     }
 
                                     case 'timestamp': {
-                                        outputString = (request.scan.date * 1000) + ' ';
+                                        outputString = (scan.date * 1000) + ' ';
                                         break;
                                     }
 
                                     case 'date': {
-                                        outputString = new Date(request.scan.date).toLocaleDateString();
+                                        outputString = new Date(scan.date).toLocaleDateString();
                                         break;
                                     }
 
                                     case 'time': {
-                                        outputString = new Date(request.scan.date).toLocaleTimeString();
+                                        outputString = new Date(scan.date).toLocaleTimeString();
                                         break;
                                     }
 
                                     case 'date_time': {
-                                        outputString = new Date(request.scan.date).toLocaleTimeString() + ' ' + new Date(request.scan.date).toLocaleDateString();
+                                        outputString = new Date(scan.date).toLocaleTimeString() + ' ' + new Date(scan.date).toLocaleDateString();
                                         break;
                                     }
 
                                     case 'quantity': {
-                                        if (request.scan.quantity) {
-                                            outputString = request.scan.quantity + '';
+                                        if (scan.quantity) {
+                                            outputString = scan.quantity + '';
                                         } else {
                                             // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
                                             dialog.showMessageBox(this.uiHandler.mainWindow, {
@@ -124,31 +134,11 @@ export class ScansHandler implements Handler {
                 // ACK
                 let response = new responseModelPutScanAck();
                 response.fromObject({
-                    scanId: request.scan.id,
-                    scanSessionId: request.scanSessionId
+                    scanId: scan.id,
+                    scanSessionId: scanSession.id
                 });
                 ws.send(JSON.stringify(response));
                 // END ACK
-                break;
-            }
-
-            case requestModel.ACTION_PUT_SCAN_SESSIONS: {
-
-                break;
-            }
-
-            case requestModel.ACTION_PUT_SCAN_SESSION: {
-
-                break;
-            }
-
-            case requestModel.ACTION_DELETE_SCAN_SESSION: {
-
-                break;
-            }
-
-            case requestModel.ACTION_UPDATE_SCAN_SESSION: {
-
                 break;
             }
 

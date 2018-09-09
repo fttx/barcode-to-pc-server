@@ -22,8 +22,6 @@ import {
   requestModelDeleteScan,
   requestModelDeleteScanSessions,
   requestModelHelo,
-  requestModelPutScan,
-  requestModelPutScanSession,
   requestModelPutScanSessions,
   requestModelUpdateScanSession,
 } from '../../models/request.model';
@@ -147,74 +145,62 @@ export class HomePage {
 
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
         this.ngZone.run(() => {
-          if (this.storageProvider.getLastScanDate(request.deviceId) != request.lastScanDate) {
-            // console.log('helo->lastScanDateMismatch detected')
-            this.electronProvider.ipcRenderer.send('lastScanDateMismatch', request.deviceId);
-          }
-        });
 
+        });
         this.lastToast.present('A connection was successfully established with ' + request.deviceName)
       });
 
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
         this.ngZone.run(() => {
-          request.scanSessions.forEach(scanSession => {
-            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == scanSession.id);
+          request.scanSessions.forEach(newScanSession => {
+            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == newScanSession.id); // this is O(n^2) but i don't care since we don't have > 500 scan sessions, and the scanSessions array gets traversed all the way to the end only for the new created scan sessions
             if (scanSessionIndex != -1) {
-              this.scanSessions[scanSessionIndex].scannings = scanSession.scannings;
-            } else {
-              this.scanSessions.unshift(scanSession);
-              this.selectedScanSession = this.scanSessions[0];
-              this.scanSessionsContainer.scrollToTop();
-            }
-          })
-          //console.log('putScanSessions->settingNewLastScanDate')                    
-          this.storageProvider.setLastScanDate(request.deviceId, request.lastScanDate);
-          this.save();
-        });
-      })
+              console.log('@ Scan session already present, merging the scannings')
+              let existingScanSession = this.scanSessions[scanSessionIndex];
 
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSION, (e, request: requestModelPutScanSession) => {
-        this.ngZone.run(() => {
-          this.scanSessions.unshift(request.scanSessions);
-          this.selectedScanSession = this.scanSessions[0];
-          this.scanSessionsContainer.scrollToTop();
-          this.save();
-        });
-      })
+              if (existingScanSession.scannings.length == 0) {
+                console.log('@ scannings array emtpy -> assigning the whole array')
+                existingScanSession.scannings = newScanSession.scannings;
+              } else {
+                console.log('@ scannings array not emtpy -> adding only the new scans')
 
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN, (e, request: requestModelPutScan) => {
-        this.ngZone.run(() => {
+                // I expect to receive the scans sorted by id desc, so i copy
+                // to the local scan list only the scans that have an id  
+                // greater than the one that has the lastest received scan.
+                let lastReceivedScanId = existingScanSession.scannings[0].id;
+                let alreadyExistingScanIndex = newScanSession.scannings.findIndex(newScan => newScan.id <= lastReceivedScanId); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
 
-          let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-          if (scanSessionIndex != -1) { // scan alreadyexists
-            if (request.scan.repeated) {
-              let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
-              if (scanIndex == -1) {
-                this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
+                console.log('@ lastReceivedScanId = ' + lastReceivedScanId + ' alreadyExistingScanIndex = ' + alreadyExistingScanIndex)
+
+                if (alreadyExistingScanIndex != -1) { // if some scan is already present => i do not include them
+                  console.log('@ the list of the received scans includes scans that are already present, slicing the array from 0 to ' + alreadyExistingScanIndex)
+
+                  let newScans: ScanModel[] = newScanSession.scannings.slice(0, alreadyExistingScanIndex);
+                  existingScanSession.scannings = newScans.concat(existingScanSession.scannings)
+                } else { // if the scans are all new, i copy all of them
+                  console.log('@ merging the scans as they are: ', newScanSession.scannings, existingScanSession.scannings)
+
+                  existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings)
+                  // what if newScanSession.scannings is empty?
+                }
               }
             } else {
-              // this.scanSessionsContainer.scrollToTop();
-              this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
-
-              this.selectedScanSession = this.scanSessions[scanSessionIndex];
-              this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
+              this.addScanSession(newScanSession);
             }
-          } else {
-            // TODO: request a scansessions sync
-            //console.log('Scan session already exists')
-          }
-
-          if (this.storageProvider.getLastScanDate(request.deviceId) != request.lastScanDate) {
-            //console.log('putScan->lastScanDateMismatch detected')
-            this.electronProvider.ipcRenderer.send('lastScanDateMismatch', request.deviceId);
-          } else {
-            //console.log('putScan->settingNewLastScanDate')
-            this.storageProvider.setLastScanDate(request.deviceId, request.newScanDate);
-          }
+            // this.scanSessionsContainer.scrollToTop();
+            this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
+            this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
+          })
           this.save();
         });
-      });
+
+        // if (request.scan.repeated) {
+        //   let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
+        //   if (scanIndex == -1) {
+        //     this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
+        //   }
+        // } 
+      })
 
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN, (e, request: requestModelDeleteScan) => {
         this.ngZone.run(() => {
@@ -339,6 +325,12 @@ export class HomePage {
 
   public getLocaleDate(date) {
     return new Date(date).toLocaleString();
+  }
+
+  private addScanSession(scanSessions: ScanSessionModel) {
+    this.scanSessions.unshift(scanSessions);
+    this.selectedScanSession = this.scanSessions[0];
+    this.scanSessionsContainer.scrollToTop();
   }
 }
 
