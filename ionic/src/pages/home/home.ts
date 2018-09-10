@@ -298,6 +298,7 @@ export class HomePage {
 
   onClearAllClick() {
     this.scanSessions = [];
+    this.selectedScanSession = null;
     this.save();
   }
 
