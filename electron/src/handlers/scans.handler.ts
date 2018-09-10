@@ -1,4 +1,4 @@
-import { dialog, shell } from 'electron';
+import { dialog, shell, clipboard } from 'electron';
 import * as fs from 'fs';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
@@ -154,7 +154,10 @@ export class ScansHandler implements Handler {
 
     outputString(string) {
         if (this.settingsHandler.enableRealtimeStrokes) {
-            robotjs.typeString(string);
+            //robotjs.typeString(string);
+            var ctrlKey = process.platform === "darwin"? "command": "control";
+            clipboard.writeText(string);
+            robotjs.keyTap("v", ctrlKey);
         }
 
         if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
