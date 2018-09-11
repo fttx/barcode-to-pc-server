@@ -154,10 +154,13 @@ export class ScansHandler implements Handler {
 
     outputString(string) {
         if (this.settingsHandler.enableRealtimeStrokes) {
-            //robotjs.typeString(string);
-            var ctrlKey = process.platform === "darwin"? "command": "control";
-            clipboard.writeText(string);
-            robotjs.keyTap("v", ctrlKey);
+            if (this.settingsHandler.typeMethod == 'keyboard') {
+                robotjs.typeString(string);
+            } else {
+                var ctrlKey = process.platform === "darwin" ? "command" : "control";
+                clipboard.writeText(string);
+                robotjs.keyTap("v", ctrlKey);
+            }
         }
 
         if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {

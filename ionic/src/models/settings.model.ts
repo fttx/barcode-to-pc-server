@@ -13,4 +13,6 @@ export class SettingsModel {
     enableTray: boolean = true;
     appendCSVEnabled: boolean = false;
     csvPath: string;
+    typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
+    enableAdvancedSettings: boolean = false; 
 }

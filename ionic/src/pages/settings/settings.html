@@ -45,7 +45,7 @@
               <i>{{ getAppName() }}</i> automatically after you log into the computer&nbsp;
             </ion-col>
             <ion-col>
-              <select [(ngModel)]="openAutomatically" interface="popover">
+              <select [(ngModel)]="openAutomatically">
                 <option value="no">No</option>
                 <option selected value="yes">Yes</option>
                 <option value="minimized">Minimized</option>
@@ -75,6 +75,22 @@
         <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
       </ion-item>
 
+      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col col-sm-2>
+              Type method&nbsp;
+            </ion-col>
+            <ion-col>
+              <select [(ngModel)]="settings && settings.typeMethod">
+                <option value="keyboard" selected="selected">Keyboard</option>
+                <option value="clipboard">Clipboard</option>
+              </select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
       <ion-item-divider>
         Output settings
       </ion-item-divider>
@@ -85,13 +101,18 @@
           ?
         </button>
         <popper-content #popper1Content>
-          To edit the emulated keyboard output drag & drop one element from the <br><b>Available components</b> box to the
+          To edit the emulated keyboard output drag & drop one element from the <br><b>Available components</b> box to
+          the
           <b>Output</b> box by keeping pressed your mouse button.
-          <br> If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full list
+          <br> If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full
+          list
           is avaialable
-          <a (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">here</a>. If you want
-          to apply a custom function like a character replacement<br> or transform the barcode to uppercase, you can use
-          the <b>CUSTOM FUNCTION</b> component with the following syntax:<br> <i>barcode.replace('a', 'b')</i>. The full
+          <a (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">here</a>. If you
+          want
+          to apply a custom function like a character replacement<br> or transform the barcode to uppercase, you can
+          use
+          the <b>CUSTOM FUNCTION</b> component with the following syntax:<br> <i>barcode.replace('a', 'b')</i>. The
+          full
           list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
         </popper-content>
         <div id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents' class="components-container">
@@ -123,8 +144,8 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <input [(ngModel)]="settings && settings.csvPath" class="components-container csv-path" type="text" placeholder="Select the file path"
-              />
+              <input [(ngModel)]="settings && settings.csvPath" class="components-container csv-path" type="text"
+                placeholder="Select the file path" />
             </ion-col>
             <ion-col>
               <button ion-button small color="light" (click)="onSelectCSVPathClick()">Select</button>
@@ -140,7 +161,7 @@
       </ion-item>
 
       <!-- <ion-item no-lines>
-        <ion-select [(ngModel)]="settings && settings.newLineCharacter" interface="popover" no-padding>
+        <ion-select [(ngModel)]="settings && settings.newLineCharacter" no-padding>
           <ion-option selected value="CRLF">New Line character: \\r\\n</ion-option>
           <ion-option value="LF">New Line character: \\n</ion-option>
           <ion-option value="CR">New Line character: \\r</ion-option>
@@ -154,7 +175,7 @@
               New Line character
             </ion-col>
             <ion-col col-md-10>
-              <select [(ngModel)]="settings && settings.newLineCharacter" interface="popover">
+              <select [(ngModel)]="settings && settings.newLineCharacter">
                 <option selected value="CRLF">&#92;r&#92;n</option>
                 <option value="LF">&#92;n</option>
                 <option value="CR">&#92;r</option>
@@ -164,6 +185,15 @@
         </ion-grid>
       </ion-item>
 
+
+      <ion-item-divider>
+        Other
+      </ion-item-divider>
+
+      <ion-item no-lines>
+        <ion-label>Show advanced settings</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.enableAdvancedSettings"></ion-checkbox>
+      </ion-item>
 
     </ion-list>
   </ion-grid>

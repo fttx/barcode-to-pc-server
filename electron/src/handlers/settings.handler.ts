@@ -54,6 +54,9 @@ export class SettingsHandler implements Handler {
     get appendCSVEnabled(): boolean {
         return this.settings.appendCSVEnabled
     }
+    get typeMethod() {
+        return this.settings.typeMethod
+    }
 
     onWsMessage(ws: WebSocket, message: any) {
         throw new Error("Method not implemented.");
