@@ -57,6 +57,7 @@ export class HomePage {
   @ViewChild('scanSessionsContainer') scanSessionsContainer: Content;
   @ViewChild('searchbar') searchbar: Searchbar;
 
+  private lastInsertedScanIndex = 0;
   private connectedClientPopover: Popover = null;
 
   onScanSessionClick(scanSession) {
@@ -161,6 +162,17 @@ export class HomePage {
               if (existingScanSession.scannings.length == 0) {
                 console.log('@ scannings array emtpy -> assigning the whole array')
                 existingScanSession.scannings = newScanSession.scannings;
+              } else if (existingScanSession.scannings.length != 0 && newScanSession.scannings.length == 1) {
+                console.log('@ scannings array not emtpy -> adding only the new scans (the new scansessions contain only one scan -> unshift)')
+                let newScan = newScanSession.scannings[0];
+                let alreadyExistingScanIndex = existingScanSession.scannings.findIndex(x => x.id == newScan.id); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
+
+                if (alreadyExistingScanIndex == -1) {
+                  existingScanSession.scannings.unshift(newScan)
+                  this.lastInsertedScanIndex = 0;
+                } else {
+                  this.lastInsertedScanIndex = alreadyExistingScanIndex;
+                }
               } else {
                 console.log('@ scannings array not emtpy -> adding only the new scans')
 
@@ -283,7 +295,7 @@ export class HomePage {
   }
 
   canAnimate(i: number) {
-    return this.animateLast && i == 0;
+    return this.animateLast && i == this.lastInsertedScanIndex;
   }
 
   save() {
