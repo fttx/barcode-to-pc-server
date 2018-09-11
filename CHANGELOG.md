@@ -4,13 +4,14 @@
 
 ### Added
 
+* Continuous mode
 * Option to clear the server data
 * Quantity output component
 * Delay output componet
 * Other key output componet (to press keys like F1, DEL, etc.)
-* Append to CSV file option
+* Append scannings to CSV file in realtime
 * Auto reconnect when the IP address changes
-* Minimizzation to tray icon support
+* Minimizzation to tray icon
 * Button to delete scan sessions from the server
 * Support for CODE 32
 * Settings to enable/disable scan formats
@@ -18,7 +19,8 @@
 * OTG support (Open a scan session, type the barcode and press the ENTER key)
 * Repeat barcodes
 * Archive barcodes
-* Search option
+* Search (CTRL+F or CMD+F)
+* Support for Chinese characters (UTF-8, you have to select clipboard typeMethod)
 
 ### Fixed
 
