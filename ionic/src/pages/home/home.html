@@ -70,8 +70,7 @@
         <div *ngIf="selectedScanSession">
           <!-- <button ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" (click)="onItemClicked(scan, i)" (press)="onItemPressed(scan, i)" -->
 
-          <ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" [color]="scan.repeated ? 'light' : 'default'"
-            [ngClass]="canAnimate(i) ? 'scan-text-animate' : ''">
+          <ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" [ngClass]="canAnimate(i) ? 'scan-text-animate' : ''">
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
@@ -108,7 +107,8 @@
 
 
   <div class="search-bar-container">
-    <ion-searchbar #searchbar [hidden]="hideSearchBar" [(ngModel)]="searchTerms" (ionCancel)="onSearchCancel($event)" (ionInput)="onSearch($event)">
+    <ion-searchbar #searchbar [hidden]="hideSearchBar" [(ngModel)]="searchTerms" (ionCancel)="onSearchCancel($event)"
+      (ionInput)="onSearch($event)">
     </ion-searchbar>
 
     <button [hidden]="hideSearchBar" ion-button solid color="secondary" (click)="onSearchCancel($event)">
