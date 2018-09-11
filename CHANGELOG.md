@@ -20,7 +20,7 @@
 * Repeat barcodes
 * Archive barcodes
 * Search (CTRL+F or CMD+F)
-* Support for Chinese characters (UTF-8, you have to select clipboard typeMethod)
+* Support for Chinese characters (Select clipboard typeMethod) thanks to KaiYi
 
 ### Fixed
 
