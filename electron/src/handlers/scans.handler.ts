@@ -58,7 +58,9 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                             case 'key': {
-                                robotjs.keyTap(stringComponent.value);
+                                if (this.settingsHandler.enableRealtimeStrokes) {
+                                    robotjs.keyTap(stringComponent.value);
+                                }
                                 break;
                             }
                             case 'variable': {
@@ -119,8 +121,7 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                         }
-
-                        if (outputString) {
+                        if (this.settingsHandler.enableRealtimeStrokes) {
                             this.outputString(outputString);
                         }
                     }
@@ -153,14 +154,16 @@ export class ScansHandler implements Handler {
     }
 
     outputString(string) {
-        if (this.settingsHandler.enableRealtimeStrokes) {
-            if (this.settingsHandler.typeMethod == 'keyboard') {
-                robotjs.typeString(string);
-            } else {
-                var ctrlKey = process.platform === "darwin" ? "command" : "control";
-                clipboard.writeText(string);
-                robotjs.keyTap("v", ctrlKey);
-            }
+        if (!string) {
+            return;
+        }
+
+        if (this.settingsHandler.typeMethod == 'keyboard') {
+            robotjs.typeString(string);
+        } else {
+            var ctrlKey = process.platform === "darwin" ? "command" : "control";
+            clipboard.writeText(string);
+            robotjs.keyTap("v", ctrlKey);
         }
 
         if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
