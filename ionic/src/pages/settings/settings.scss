@@ -4,6 +4,15 @@ page-settings {
         line-height: 26px;
         min-height: 26px;
     }
+
+    .components-container-disabled {
+        cursor: not-allowed;
+        height: 142px;
+        background-color: #fdfdfd;
+        color: black;
+        border: 1px solid darkgrey;
+    }
+
     ion-item-divider {
         font-weight: bold !important;
         font-size: 1.4em !important;

@@ -115,7 +115,16 @@
           full
           list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
         </popper-content>
-        <div id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents' class="components-container">
+        <div [hidden]="canAddMoreComponents()" class="components-container-disabled" text-center>
+          <h2 padding-vertical>
+            You've reached the maximum number of components
+          </h2>
+          <p>Drag out one component from the output field to continue</p>
+          <div>or</div>
+          <button ion-button color="secondary" (click)="onSubscribeClick()">Subscribe</button>
+        </div>
+        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents'
+          class="components-container">
           <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
         </div>
       </ion-item>

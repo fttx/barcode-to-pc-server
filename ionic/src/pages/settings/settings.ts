@@ -100,6 +100,14 @@ export class SettingsPage {
     return Config.APP_NAME;
   }
 
+  public canAddMoreComponents() {
+    return this.settings.typedString.length < 3;
+  }
+
+  public onSubscribeClick() {
+    this.electronProvider.shell.openExternal(Config.URL_PRICING);
+  }
+
   ionViewDidLoad() {
     this.settings = this.storageProvider.getSettings();
 
