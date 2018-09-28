@@ -1,4 +1,4 @@
-import { dialog, shell, clipboard } from 'electron';
+import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
@@ -36,7 +36,7 @@ export class ScansHandler implements Handler {
                 if (request.scanSessions.length == 0 ||
                     (request.scanSessions.length == 1 && request.scanSessions[0].scannings && request.scanSessions[0].scannings.length != 1) ||
                     request.scanSessions.length > 1
-                ) {
+                ) { // checks for at least 1 scan inside the request
                     return;
                 }
 
@@ -45,6 +45,7 @@ export class ScansHandler implements Handler {
                 let barcode = scan.text;
 
                 (async () => {
+                    let csvOut = '';
                     for (let stringComponent of this.settingsHandler.typedString) {
                         let outputString;
 
@@ -60,6 +61,10 @@ export class ScansHandler implements Handler {
                             case 'key': {
                                 if (this.settingsHandler.enableRealtimeStrokes) {
                                     robotjs.keyTap(stringComponent.value);
+                                }
+
+                                if (stringComponent.value == 'tab') {
+                                    csvOut += '\t';
                                 }
                                 break;
                             }
@@ -121,11 +126,17 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                         }
-                        if (this.settingsHandler.enableRealtimeStrokes) {
-                            this.outputString(outputString);
+                        if (outputString) {
+                            csvOut += outputString;
                         }
+                        if (this.settingsHandler.enableRealtimeStrokes) {
+                            this.typeString(outputString);
+                        }
+                    } // end for
+                    if (this.settingsHandler.appendCSVEnabled) {
+                        let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
+                        this.appendToCSVFile(csvOut + newLineCharacter);
                     }
-                    this.appendNewLineCharacterToCSVFile();
                 })();
 
                 if (this.settingsHandler.enableOpenInBrowser) {
@@ -153,7 +164,7 @@ export class ScansHandler implements Handler {
         }
     }
 
-    outputString(string) {
+    typeString(string) {
         if (!string) {
             return;
         }
@@ -165,15 +176,11 @@ export class ScansHandler implements Handler {
             clipboard.writeText(string);
             robotjs.keyTap("v", ctrlKey);
         }
-
-        if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
-            fs.appendFileSync(this.settingsHandler.csvPath, string);
-        }
     }
 
-    appendNewLineCharacterToCSVFile() {
+    appendToCSVFile(text: string) {
         if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
-            fs.appendFileSync(this.settingsHandler.csvPath, this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n'));
+            fs.appendFileSync(this.settingsHandler.csvPath, text);
         }
     }
 
