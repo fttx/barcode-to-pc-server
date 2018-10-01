@@ -1,12 +1,13 @@
 import * as b from 'bonjour';
 import { app, dialog, ipcMain } from 'electron';
+import ElectronStore = require('electron-store');
 import * as mdns from 'mdns';
 import * as network from 'network';
 import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelEnableQuantity, responseModelHelo, responseModelPong } from '../../../ionic/src/models/response.model';
+import { responseModelEnableQuantity, responseModelHelo, responseModelPong, responseModelKick } from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -16,6 +17,7 @@ import { UiHandler } from './ui.handler';
 const bonjour = b();
 
 export class ConnectionHandler implements Handler {
+    public static EVENT_CODE_KICKED_OUT = 4001; // Used when the server kicks out a client
 
     private fallBackBonjour: b.Service;
     private mdnsAd: mdns.Advertisement;
@@ -48,6 +50,11 @@ export class ConnectionHandler implements Handler {
                 });
             }).on('getHostname', (event, arg) => {
                 event.sender.send('hostname', os.hostname());
+            }).on('kick', (event, deviceId) => {
+                console.log('@Kick', deviceId)
+                if (deviceId in this.wsClients) {
+                    this.wsClients[deviceId].send(JSON.stringify(new responseModelKick()));
+                }
             })
         // send enableQuantity to already connected clients
         settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {

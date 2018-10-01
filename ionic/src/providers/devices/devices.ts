@@ -5,6 +5,7 @@ import { ElectronProvider } from '../electron/electron';
 import { StorageProvider } from '../storage/storage';
 import { DeviceModel } from '../../models/device.model';
 import { Subject } from 'rxjs';
+import { LicenseProvider } from '../license/license';
 
 /*
   Generated class for the DevicesProvider provider.
@@ -21,6 +22,7 @@ export class DevicesProvider {
     public ngZone: NgZone,
     public storageProvider: StorageProvider,
     public electronProvider: ElectronProvider,
+    private licenseProvider: LicenseProvider,
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
@@ -47,7 +49,7 @@ export class DevicesProvider {
     if (this.connectedDevices.findIndex(x => x.equals(device)) == -1) {
       this.connectedDevices.push(device);
     }
-
+    this.licenseProvider.limitNOMaxConnectedDevices(device, this.connectedDevices);
     this.onConnectedDevicesListChange.next(this.connectedDevices);
   }
 

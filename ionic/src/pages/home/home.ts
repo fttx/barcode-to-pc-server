@@ -354,15 +354,15 @@ export class HomePage {
       <ion-list-header>
         Connected devices
       </ion-list-header>
-      <ion-item no-padding *ngFor="let connectedDevice of connectedDevices; let i = index;">
+      <ion-item no-padding *ngFor="let connectedDevice of connectedDevices; let i = index;" [class.kicked]="connectedDevice.kicked">
         <ion-avatar item-start text-center padding-vertical>
           <ion-icon name="phone-portrait"></ion-icon>
         </ion-avatar>
         <h2>{{ connectedDevice.name }}</h2>
         <!-- p>{{ connectedDevice.name }}</p -->
       </ion-item>
-    </ion-list>
-  `
+    </ion-list>`,
+  styles: [`.kicked { color: lightgrey !important;}`],
 })
 export class ConnectedClientsPopover {
   public connectedDevices: DeviceModel[] = [];
@@ -371,9 +371,7 @@ export class ConnectedClientsPopover {
   ) {
     this.connectedDevices = this.navParams.get('connectedDevices');
   }
-
 }
-
 
 
 // ScanSessionContextMenuPopover

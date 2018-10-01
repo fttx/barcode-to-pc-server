@@ -3,6 +3,7 @@ export class DeviceModel {
     // ip: string;
     deviceId: string;
     connected: boolean;
+    kicked: boolean = false;
 
     constructor(deviceId: string, name: string = '', connected: boolean = false) {
         this.deviceId = deviceId;

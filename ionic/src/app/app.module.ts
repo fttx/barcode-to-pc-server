@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -23,6 +24,7 @@ import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { LastToastProvider } from '../providers/last-toast/last-toast';
+import { LicenseProvider } from '../providers/license/license';
 import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
@@ -43,7 +45,8 @@ import { MyApp } from './app.component';
     BrowserModule,
     IonicStorageModule.forRoot(),
     QRCodeModule,
-    ClipboardModule, 
+    ClipboardModule,
+    HttpClientModule,
     NgxPopperModule.forRoot({
       trigger: Triggers.CLICK,
       hideOnClickOutside: true,
@@ -83,7 +86,8 @@ import { MyApp } from './app.component';
     StorageProvider,
     UtilsProvider,
     LastToastProvider,
-    DevicesProvider
+    DevicesProvider,
+    LicenseProvider
   ]
 })
 export class AppModule { }

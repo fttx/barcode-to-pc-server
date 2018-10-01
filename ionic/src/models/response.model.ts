@@ -1,3 +1,7 @@
+/**
+ * When editing this file rember to reflect the same changes to
+ * response.model.ts present on the server side.
+ */
 export abstract class responseModel {
     readonly action: string;
     public abstract fromObject(obj: any): responseModel;
@@ -8,7 +12,8 @@ export abstract class responseModel {
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
     public static readonly ACTION_POPUP = 'action_popup';
     public static readonly ACTION_ENABLE_QUANTITY = 'enableQuantity'
-    public static ACTION_REQUEST_SCAN_SESSION_UPDATE = 'requestScanSessionUpdate';
+    public static readonly ACTION_REQUEST_SCAN_SESSION_UPDATE = 'requestScanSessionUpdate';
+    public static readonly ACTION_KICK = 'kick';
 }
 
 /**
@@ -76,4 +81,10 @@ export class responseModelEnableQuantity extends responseModel {
         this.enable = obj.enable;
         return this;
     }
+}
+
+export class responseModelKick extends responseModel {
+    action = responseModel.ACTION_KICK;
+
+    public fromObject() { return this }
 }

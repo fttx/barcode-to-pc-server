@@ -9,6 +9,7 @@ import { StorageProvider } from '../../providers/storage/storage';
 import { requestModel } from '../../models/request.model';
 import { responseModel } from '../../models/response.model';
 import { Config } from '../../../../electron/src/config';
+import { LicenseProvider } from '../../providers/license/license';
 
 /**
  * Generated class for the SettingsPage page.
@@ -78,6 +79,7 @@ export class SettingsPage {
     private dragulaService: DragulaService,
     private storageProvider: StorageProvider,
     private electronProvider: ElectronProvider,
+    private licenseProvider: LicenseProvider,
     private alertCtrl: AlertController,
   ) {
     this.dragulaService.destroy('dragula-group')
@@ -101,11 +103,11 @@ export class SettingsPage {
   }
 
   public canAddMoreComponents() {
-    return this.settings.typedString.length < 3;
+    return this.settings.typedString.length < this.licenseProvider.getNOMaxComponents();
   }
 
   public onSubscribeClick() {
-    this.electronProvider.shell.openExternal(Config.URL_PRICING);
+    this.licenseProvider.showPricingPage();
   }
 
   ionViewDidLoad() {

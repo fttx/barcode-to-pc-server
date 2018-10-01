@@ -1,24 +1,20 @@
 page-home {
-
-    .main-container > div{
+    .main-container>div {
         overflow: hidden !important;
     }
-
-    .child-container > div {
-        overflow-y: auto !important;        
+    .child-container>div {
+        overflow-y: auto !important;
     }
-    
-    .desaturate-img { 
+    .desaturate-img {
         filter: none;
         -webkit-filter: grayscale(100%);
-        -moz-filter:    grayscale(100%);
-        -ms-filter:     grayscale(100%);
+        -moz-filter: grayscale(100%);
+        -ms-filter: grayscale(100%);
         opacity: .3;
         max-height: 45%;
         max-width: 55%;
         margin: 150px 0 40px 0;
     }
-
     .empty {
         width: 230px;
         margin: 0 auto;
@@ -29,65 +25,52 @@ page-home {
         background: rgba(183, 28, 28, 0.4);
         border-radius: 5px;
     }
-
-
     .scan-text-animate {
         animation: scanAnimation 1000ms linear 1
     }
-
     @keyframes scanAnimation {
         0% {
             background: auto;
         }
-
         50% {
             background: rgba(183, 28, 28, 0.4)
         }
-
         100% {
-            background: auto;            
+            background: auto;
         }
     }
-
-    .scan-sessions-list  ion-col {
+    .scan-sessions-list ion-col {
         background: none;
     }
-
     .scan-sessions-list {
         cursor: pointer;
     }
- 
     .scan-sessions-list .label-md {
         margin: 3px
     }
-
     .scans-list .label-md {
         margin: 0
     }
-
-    .scans-list input, .scans-list input:focus {
+    .scans-list input,
+    .scans-list input:focus {
         border: none;
         background: none;
     }
-
     .scans-list ion-col {
         background: none;
     }
-
     .scan-text {
         width: 100%;
     }
-
     .search-bar-container button {
         position: absolute;
         right: 0;
         top: 0px;
     }
-
-    ion-searchbar{
+    ion-searchbar {
         width: 400px;
         position: absolute;
         right: 49px;
-        top: -7px; 
+        top: -7px;
     }
 }
