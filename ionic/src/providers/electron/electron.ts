@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell } from 'electron';
 import { StorageProvider } from '../storage/storage';
+import ElectronStore from 'electron-store'
 
 declare var window: any;
 // If you import a module but never use any of the imported values other than as TypeScript types,
@@ -8,10 +9,7 @@ declare var window: any;
 
 
 /*
-  Generated class for the ElectronProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
+ https://electronjs.org/docs/api/remote
 */
 @Injectable()
 export class ElectronProvider {
@@ -22,6 +20,7 @@ export class ElectronProvider {
   shell: typeof shell;
   process: typeof process;
   remote: typeof remote;
+  ElectronStore: typeof ElectronStore;
 
   constructor(
     private storageProvider: StorageProvider
@@ -36,6 +35,7 @@ export class ElectronProvider {
       this.shell = electron.shell;
       this.process = electron.remote.process;
       this.remote = electron.remote;
+      this.ElectronStore = electron.remote.require('electron-store');
     }
   }
 
