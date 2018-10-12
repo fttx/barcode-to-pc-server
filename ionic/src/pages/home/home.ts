@@ -34,6 +34,7 @@ import { StorageProvider } from '../../providers/storage/storage';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
+import { ActivatePage } from '../activate/activate';
 
 /**
  * Generated class for the HomePage page.
@@ -428,6 +429,7 @@ export class ScanSessionContextMenuPopover {
     <ion-list>
       <ion-list-header>More</ion-list-header>
       <button ion-item (click)="onShowPairQrCodeClick()" class="show-pair-qr-code-button">Pair the app with QR code</button>
+      <button ion-item (click)="onActivateClick()">Activate</button>
       <button ion-item (click)="onInfoClick()">Info</button>
     </ion-list>
   `
@@ -450,6 +452,11 @@ export class MainMenuPopover {
   onInfoClick() {
     this.close()
     this.modalCtrl.create(InfoPage).present();
+  }
+  
+  onActivateClick() {
+    this.close();
+    this.modalCtrl.create(ActivatePage).present();
   }
 }
 

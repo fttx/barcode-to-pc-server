@@ -28,6 +28,7 @@ import { LicenseProvider } from '../providers/license/license';
 import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
+import { ActivatePage } from '../pages/activate/activate';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { MyApp } from './app.component';
     HomePage,
     WelcomePage,
     InfoPage,
+    ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
     QrCodePairingModal,
@@ -72,6 +74,7 @@ import { MyApp } from './app.component';
     HomePage,
     WelcomePage,
     InfoPage,
+    ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
     QrCodePairingModal,

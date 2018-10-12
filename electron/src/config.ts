@@ -16,6 +16,11 @@ export class Config {
 
     // public static URL_WEBSITE = 'https://barcodetopc.com';
     public static URL_WEBSITE = 'http://localhost/wordpress/site';
+
+    // public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com';
+    public static URL_LICENSE_SERVER = 'http://localhost:3000'
+    public static URL_CHECK_SUBSCRIPTION = Config.URL_LICENSE_SERVER + '/subscription/check';
+
     // public static URL_BLOG = 'https://blog.barcodetopc.com';
     public static URL_BLOG = 'http://localhost/wordpress';
 

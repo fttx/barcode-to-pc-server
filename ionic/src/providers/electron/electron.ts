@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell } from 'electron';
 import { StorageProvider } from '../storage/storage';
+import * as v5 from 'uuid/v5';
 
 declare var window: any;
 // If you import a module but never use any of the imported values other than as TypeScript types,
@@ -15,6 +16,7 @@ declare var window: any;
 */
 @Injectable()
 export class ElectronProvider {
+  public uuid = '';
 
   ipcRenderer: typeof ipcRenderer;
   dialog: typeof remote.dialog;
@@ -22,6 +24,7 @@ export class ElectronProvider {
   shell: typeof shell;
   process: typeof process;
   remote: typeof remote;
+  v5: typeof v5;
 
   constructor(
     private storageProvider: StorageProvider
@@ -36,6 +39,9 @@ export class ElectronProvider {
       this.shell = electron.shell;
       this.process = electron.remote.process;
       this.remote = electron.remote;
+      this.v5 = electron.remote.require('uuid/v5');
+
+      this.uuid = v5('license.barcodetopc.com', v5.DNS);
     }
   }
 
