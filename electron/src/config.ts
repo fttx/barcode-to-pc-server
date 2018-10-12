@@ -36,4 +36,8 @@ export class Config {
     public static URL_PAIR = 'http://app.barcodetopc.com';
 
 
+
+    // Constants
+    public static STORAGE_ACTIVATED = 'activated';
+
 }

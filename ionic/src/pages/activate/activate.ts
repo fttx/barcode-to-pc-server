@@ -46,7 +46,24 @@ export class ActivatePage {
       serial: this.serial,
       uuid: this.electronProvider.uuid
     }).subscribe(value => {
-      console.log(value);
-    });
+      if (value['active'] == true) {
+        let store = new this.electronProvider.ElectronStore();
+        store.set(Config.STORAGE_ACTIVATED, true);
+        this.electronProvider.dialog.showMessageBox(this.electronProvider.remote.getCurrentWindow(), {
+          type: 'info', buttons: ['Close'], message: 'The license has been activated successfully'
+        })
+      } else {
+        this.showErrorDialog();
+      }
+      // console.log(value);
+    }, error => {
+      this.showErrorDialog();
+    })
+  }
+
+  private showErrorDialog() {
+    this.electronProvider.dialog.showMessageBox(this.electronProvider.remote.getCurrentWindow(), {
+      type: 'error', buttons: ['Close'], message: 'An error occurred'
+    })
   }
 }
