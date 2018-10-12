@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell } from 'electron';
 import { StorageProvider } from '../storage/storage';
+import ElectronStore from 'electron-store'
 import * as v5 from 'uuid/v5';
 
 declare var window: any;
@@ -9,10 +10,7 @@ declare var window: any;
 
 
 /*
-  Generated class for the ElectronProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
+ https://electronjs.org/docs/api/remote
 */
 @Injectable()
 export class ElectronProvider {
@@ -24,6 +22,7 @@ export class ElectronProvider {
   shell: typeof shell;
   process: typeof process;
   remote: typeof remote;
+  ElectronStore: typeof ElectronStore;
   v5: typeof v5;
 
   constructor(
@@ -39,6 +38,7 @@ export class ElectronProvider {
       this.shell = electron.shell;
       this.process = electron.remote.process;
       this.remote = electron.remote;
+      this.ElectronStore = electron.remote.require('electron-store');
       this.v5 = electron.remote.require('uuid/v5');
 
       this.uuid = v5('license.barcodetopc.com', v5.DNS);
