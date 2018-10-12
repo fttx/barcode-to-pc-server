@@ -3,6 +3,7 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { HttpClient } from '@angular/common/http';
 import { ElectronProvider } from '../../providers/electron/electron';
+import ElectronStore from 'electron-store'
 
 
 /**
@@ -17,8 +18,12 @@ import { ElectronProvider } from '../../providers/electron/electron';
   templateUrl: 'activate.html',
 })
 export class ActivatePage {
+  public uuid = '';
+  
   public serial = '';
-  public uuid = 'INVALID-UUID';
+  public activated = false;
+  
+  private store: ElectronStore;
 
   constructor(
     public navCtrl: NavController,
@@ -27,6 +32,9 @@ export class ActivatePage {
     public electronProvider: ElectronProvider,
     public http: HttpClient,
   ) {
+    this.store = new this.electronProvider.ElectronStore();
+    this.activated = this.store.get(Config.STORAGE_ACTIVATED, false)
+    this.serial = this.store.get(Config.STORAGE_SERIAL, '')
   }
 
   ionViewDidLoad() {
@@ -41,14 +49,15 @@ export class ActivatePage {
     return Config.URL_PRICING;
   }
 
-  checkActivation() {
+  onCheckActivationClick() {
     this.http.post(Config.URL_CHECK_SUBSCRIPTION, {
       serial: this.serial,
       uuid: this.electronProvider.uuid
     }).subscribe(value => {
       if (value['active'] == true) {
-        let store = new this.electronProvider.ElectronStore();
-        store.set(Config.STORAGE_ACTIVATED, true);
+        this.activated = true;
+        this.store.set(Config.STORAGE_ACTIVATED, this.activated);
+        this.store.set(Config.STORAGE_SERIAL, this.serial);
         this.electronProvider.dialog.showMessageBox(this.electronProvider.remote.getCurrentWindow(), {
           type: 'info', buttons: ['Close'], message: 'The license has been activated successfully'
         })
@@ -59,6 +68,16 @@ export class ActivatePage {
     }, error => {
       this.showErrorDialog();
     })
+  }
+
+  onDeactivateClick() {
+    // TODO: send the user an e-mail with a token and only when the e-mail is
+    // verified deactivate the license
+    // Alternatively do it manually with human support
+    // this.activated = false;
+    // this.serial = '';
+    // this.store.set(Config.STORAGE_ACTIVATED, this.activated);
+    // this.store.set(Config.STORAGE_SERIAL, this.serial);
   }
 
   private showErrorDialog() {

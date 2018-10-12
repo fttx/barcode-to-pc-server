@@ -23,28 +23,38 @@
 <ion-content padding>
   <ion-list>
     <ion-item no-lines text-wrap no-padding>
-      See the <a (click)="electronProvider.shell.openExternal(getPricingUrl())">pricing</a> page to compare the available plans.
+      See the <a (click)="electronProvider.shell.openExternal(getPricingUrl())">pricing</a> page to compare the
+      available plans.
       <br><br>
 
-      If you've already subscribed insert the serial number that we've sent to
-      your e-mail down below.
+      If you've already subscribed enter the serial number that we've sent to
+      your e-mail in the input box down below.
+      <br><br>
+      For orders support: <a href="mailto:orders@fastspring.com">orders@fastspring.com</a>
       <br><br>
     </ion-item>
 
-    <ion-item no-lines text-wrap no-padding>
-      Serial
-      <input [(ngModel)]="serial" type="text" class="serial-container" />
-    </ion-item>
+    <div [hidden]="activated">
+      <ion-item no-lines text-wrap no-padding>
+        Serial
+        <input [(ngModel)]="serial" type="text" class="serial-container" />
+      </ion-item>
 
-    <ion-item no-lines no-padding>
-      <button ion-button color="secondary" default float-right (click)="checkActivation()">Activate</button>
-      <br><br>
-      <br><br>
-      <br><br>
-    </ion-item>
+      <ion-item no-lines no-padding>
+        <button ion-button color="secondary" default float-right (click)="onCheckActivationClick()">Activate</button>
+      </ion-item>
+    </div>
 
-    <ion-item no-lines no-padding text-center>
-        For orders support: <a href="mailto:orders@fastspring.com">orders@fastspring.com</a>
-    </ion-item>
+
+    <div [hidden]="!activated">
+      <ion-item no-lines text-wrap no-padding>
+        Serial
+        <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
+      </ion-item>
+
+      <ion-item no-lines no-padding>
+        <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">De-Activate</button>
+      </ion-item>
+    </div>
   </ion-list>
 </ion-content>
