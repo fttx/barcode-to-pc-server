@@ -19,10 +19,10 @@ import ElectronStore from 'electron-store'
 })
 export class ActivatePage {
   public uuid = '';
-  
+
   public serial = '';
   public activated = false;
-  
+
   private store: ElectronStore;
 
   constructor(
@@ -58,15 +58,15 @@ export class ActivatePage {
         this.activated = true;
         this.store.set(Config.STORAGE_ACTIVATED, this.activated);
         this.store.set(Config.STORAGE_SERIAL, this.serial);
-        this.electronProvider.dialog.showMessageBox(this.electronProvider.remote.getCurrentWindow(), {
-          type: 'info', buttons: ['Close'], message: 'The license has been activated successfully'
+        this.electronProvider.dialog.showMessageBox(null, {
+          type: 'info', title: 'Success', buttons: ['Close'], message: 'The license has been activated successfully'
         })
       } else {
-        this.showErrorDialog();
+        this.showLicenseErrorDialog(value['message']);
       }
       // console.log(value);
     }, error => {
-      this.showErrorDialog();
+      this.showLicenseErrorDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
     })
   }
 
@@ -80,9 +80,9 @@ export class ActivatePage {
     // this.store.set(Config.STORAGE_SERIAL, this.serial);
   }
 
-  private showErrorDialog() {
-    this.electronProvider.dialog.showMessageBox(this.electronProvider.remote.getCurrentWindow(), {
-      type: 'error', buttons: ['Close'], message: 'An error occurred'
+  private showLicenseErrorDialog(message: string = '') {
+    this.electronProvider.dialog.showMessageBox(null, { // this.electronProvider.remote.getCurrentWindow()
+      type: 'error', title: 'Error', buttons: ['Close'], message: message,
     })
   }
 }
