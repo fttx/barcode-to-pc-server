@@ -38,7 +38,7 @@ export class Config {
 
 
     // Constants
-    public static STORAGE_ACTIVATED = 'activated';
+    public static STORAGE_SUBSCRIPTION = 'subscription';
     public static STORAGE_SERIAL = 'serial';
 
 }

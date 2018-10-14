@@ -1,13 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ElectronProvider } from '../electron/electron';
+import { AlertController, AlertOptions } from 'ionic-angular';
+
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
-import { AlertController, AlertOptions } from 'ionic-angular';
+import { ElectronProvider } from '../electron/electron';
+import { UtilsProvider } from '../utils/utils';
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
- * an active subscription for the current machine.
+ * an active subscription for the current machine. (The check is done on app
+ * start in the constructor)
  * LicenseProvider provides methods to see wheter a certain feature can be
  * accessed with the active subscription plan.
  * It also provides methods to show to the user license related messages/pages.
@@ -19,42 +22,81 @@ export class LicenseProvider {
   public static SUBSCRIPTION_PRO = 2;
   public static SUBSCRIPTION_UNLIMITED = 3;
 
-  private activeSubscription = LicenseProvider.SUBSCRIPTION_FREE;
+  public activeSubscription = LicenseProvider.SUBSCRIPTION_FREE;
+  public serial = '';
 
   constructor(
     public http: HttpClient,
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
+    private utilsProvider: UtilsProvider
   ) {
-
+    this.updateSubscriptionStatus();
   }
 
   /**
    * This method finds out if there is an active subscription for the current
    * machine and saves it locally. 
+   * 
    * Once it has been executed the other methods of this class will return the
    * corresponding max allowed values for the active subscription plan (eg.
    * getMaxComponentsNumber will return different values based on the active
    * subscription).
+   * 
    * This method should be called as soon as the app starts
+   * 
+   * If no serial is passed it'll try to load it from the storage and silently
+   * perform the checks
+   * 
+   * If the serial is passed it'll prompt the user with dialogs
    */
-  updateSubscriptionStatus() {
-    // First check if there is a saved subscription in the storage
-    // After that contact asyncronusly the subscription-server and fetch the
-    // subscription data
+  updateSubscriptionStatus(serial: string = '') {
+    let store = new this.electronProvider.ElectronStore();
+    this.activeSubscription = store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.SUBSCRIPTION_FREE)
 
-    // let store = new this.electronProvider.ElectronStore();
-    // store.set('unicorn', '🦄');
-    // console.log(store.get('unicorn'));
+    if (serial) {
+      this.serial = serial;
+      store.set(Config.STORAGE_SERIAL, this.serial);
+    } else {
+      this.serial = store.get(Config.STORAGE_SERIAL, '')
+    }
 
-    // http.get('url', {}).subscribe(value => {
+    this.http.post(Config.URL_CHECK_SUBSCRIPTION, {
+      serial: this.serial,
+      uuid: this.electronProvider.uuid
+    }).subscribe(value => {
+      if (value['active'] == true) {
+        // TODO: set the appropriate plan based on the response.
+        this.activeSubscription = LicenseProvider.SUBSCRIPTION_BASIC;
+        store.set(Config.STORAGE_SUBSCRIPTION, this.activeSubscription);
+        if (serial) {
+          this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
+        }
+      } else {
+        if (serial) {
+          this.utilsProvider.showErrorNativeDialog(value['message']);
+        } else {
+        }
+        
+        // TODO: Wait a week before prompting the user, and ask to enable the
+        // connection
+        store.set(Config.STORAGE_SUBSCRIPTION, LicenseProvider.SUBSCRIPTION_FREE);
+      }
+    }, error => {
+      this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
+    })
+  }
 
-    // });
+  deactivateSubscription() {
+    this.serial = '';
+    this.activeSubscription = LicenseProvider.SUBSCRIPTION_FREE;
+    let store = new this.electronProvider.ElectronStore();
+    store.set(Config.STORAGE_SUBSCRIPTION, this.activeSubscription);
+    store.set(Config.STORAGE_SERIAL, this.serial);
   }
 
   showPricingPage() {
-    let uiniqueId = this.getUniqueId();
-    this.electronProvider.shell.openExternal(Config.URL_PRICING + '?uniqueId=' + uiniqueId);
+    this.electronProvider.shell.openExternal(Config.URL_PRICING);
   }
 
   /**
@@ -90,6 +132,10 @@ export class LicenseProvider {
     }
   }
 
+  isActived() {
+    return this.activeSubscription != LicenseProvider.SUBSCRIPTION_FREE;
+  }
+
   private showSubscribeDialog(title, message) {
     this.alertCtrl.create({
       title: title, message: message, buttons: [{ text: 'Close', role: 'cancel' }, {
@@ -98,9 +144,5 @@ export class LicenseProvider {
         }
       }]
     }).present();
-  }
-
-  private getUniqueId(): string {
-    return '';
   }
 }

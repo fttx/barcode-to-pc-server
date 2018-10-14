@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { ElectronProvider } from '../electron/electron';
 import { Config } from '../../../../electron/src/config';
+import { ElectronProvider } from '../electron/electron';
 
 
 /*
@@ -81,4 +81,16 @@ export class UtilsProvider {
     return -1;
   }
 
+  public showErrorNativeDialog(message: string = '') {
+    this.electronProvider.dialog.showMessageBox(null, { // this.electronProvider.remote.getCurrentWindow()
+      type: 'error', title: 'Error', buttons: ['Close'], message: message,
+    })
+  }
+
+
+  public showSuccessNativeDialog(message: string = '') {
+    this.electronProvider.dialog.showMessageBox(null, {
+      type: 'info', title: 'Success', buttons: ['Close'], message: message
+    })
+  }
 }

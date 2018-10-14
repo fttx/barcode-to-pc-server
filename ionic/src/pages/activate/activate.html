@@ -23,7 +23,7 @@
 <ion-content padding>
   <ion-list>
     <ion-item no-lines text-wrap no-padding>
-      See the <a (click)="electronProvider.shell.openExternal(getPricingUrl())">pricing</a> page to compare the
+      See the <a (click)="licenseProvider.showPricingPage()">pricing</a> page to compare the
       available plans.
       <br><br>
 
@@ -34,19 +34,19 @@
       <br><br>
     </ion-item>
 
-    <div [hidden]="activated">
+    <div [hidden]="licenseProvider.isActived()">
       <ion-item no-lines text-wrap no-padding>
         Serial
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
 
       <ion-item no-lines no-padding>
-        <button ion-button color="secondary" default float-right (click)="onCheckActivationClick()">Activate</button>
+        <button ion-button color="secondary" default float-right (click)="onActivationClick()">Activate</button>
       </ion-item>
     </div>
 
 
-    <div [hidden]="!activated">
+    <div [hidden]="!licenseProvider.isActived()">
       <ion-item no-lines text-wrap no-padding>
         Serial
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
