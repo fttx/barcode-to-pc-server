@@ -77,7 +77,7 @@ export class LicenseProvider {
           this.utilsProvider.showErrorNativeDialog(value['message']);
         } else {
         }
-        
+
         // TODO: Wait a week before prompting the user, and ask to enable the
         // connection
         store.set(Config.STORAGE_SUBSCRIPTION, LicenseProvider.SUBSCRIPTION_FREE);
@@ -134,6 +134,15 @@ export class LicenseProvider {
 
   isActived() {
     return this.activeSubscription != LicenseProvider.SUBSCRIPTION_FREE;
+  }
+
+  getPlanName() {
+    switch (this.activeSubscription) {
+      case LicenseProvider.SUBSCRIPTION_FREE: return 'Free';
+      case LicenseProvider.SUBSCRIPTION_BASIC: return 'Basic';
+      case LicenseProvider.SUBSCRIPTION_PRO: return 'Pro';
+      case LicenseProvider.SUBSCRIPTION_UNLIMITED: return 'Unlimited'
+    }
   }
 
   private showSubscribeDialog(title, message) {

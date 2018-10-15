@@ -51,6 +51,10 @@
         Serial
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
       </ion-item>
+      <ion-item no-lines text-wrap no-padding>
+        Plan <br>
+        <b>{{ licenseProvider.getPlanName() }}</b>
+      </ion-item>
 
       <ion-item no-lines no-padding>
         <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">De-Activate</button>
