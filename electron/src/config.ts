@@ -36,9 +36,8 @@ export class Config {
     public static URL_PAIR = 'http://app.barcodetopc.com';
 
 
-
     // Constants
     public static STORAGE_SUBSCRIPTION = 'subscription';
     public static STORAGE_SERIAL = 'serial';
-
+    public static STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE = 'storage_first_license_check_fail_date';
 }
