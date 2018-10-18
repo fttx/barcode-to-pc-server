@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AlertController, AlertOptions } from 'ionic-angular';
 
@@ -17,12 +17,12 @@ import { UtilsProvider } from '../utils/utils';
  */
 @Injectable()
 export class LicenseProvider {
-  public static SUBSCRIPTION_FREE = 0;
-  public static SUBSCRIPTION_BASIC = 1;
-  public static SUBSCRIPTION_PRO = 2;
-  public static SUBSCRIPTION_UNLIMITED = 3;
+  public static PLAN_FREE = 'barcode-to-pc-free';
+  public static PLAN_BASIC = 'barcode-to-pc-basic';
+  public static PLAN_PRO = 'barcode-to-pc-pro';
+  public static PLAN_UNLIMITED = 'barcode-to-pc-unlimited';
 
-  public activeSubscription = LicenseProvider.SUBSCRIPTION_FREE;
+  public plan = LicenseProvider.PLAN_FREE;
   public serial = '';
 
   constructor(
@@ -52,7 +52,8 @@ export class LicenseProvider {
    */
   updateSubscriptionStatus(serial: string = '') {
     let store = new this.electronProvider.ElectronStore();
-    this.activeSubscription = store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.SUBSCRIPTION_FREE)
+    this.plan = store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
+    // store.delete(Config.STORAGE_SUBSCRIPTION);
 
     if (serial) {
       this.serial = serial;
@@ -62,7 +63,7 @@ export class LicenseProvider {
     }
 
     // Do not bother the license-server if there isn't an active subscription
-    if (serial == '' && this.activeSubscription == LicenseProvider.SUBSCRIPTION_FREE) {
+    if (serial == '' && this.plan == LicenseProvider.PLAN_FREE) {
       return;
     }
 
@@ -72,31 +73,46 @@ export class LicenseProvider {
     }).subscribe(value => {
       store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
       if (value['active'] == true) {
-        // TODO: set the appropriate plan based on the response.
-        this.activeSubscription = LicenseProvider.SUBSCRIPTION_BASIC;
-        store.set(Config.STORAGE_SUBSCRIPTION, this.activeSubscription);
-        if (serial) {
-          this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
+
+        // The first time that the request is performed the license-server will
+        // do a CLAIM procedure that doesn't return the plan name. From the
+        // second request on it will respond also with the active plan name.
+        if (!value['plan']) {
+          // If the plan name isn't in the response it means that this was the
+          // first request and that the CLAIM procedure has been executed
+          // successfully, so i can do a second request to retreive the plan name
+          this.updateSubscriptionStatus(serial);
+        } else {
+          this.plan = value['plan'];
+          store.set(Config.STORAGE_SUBSCRIPTION, this.plan);
+          if (serial) {
+            this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
+          }         
         }
       } else {
         // When the license-server says that the subscription is not active
-        // the user should be propted immediatly
-        store.set(Config.STORAGE_SUBSCRIPTION, LicenseProvider.SUBSCRIPTION_FREE);
+        // the user should be propted immediatly, no matter what it's passed a
+        // serial
+        this.deactivate();
         this.utilsProvider.showErrorNativeDialog(value['message']);
       }
-    }, error => {
+    }, (error: HttpErrorResponse) => {
       if (serial) {
-        this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
+        if (error.status == 503) {
+          this.utilsProvider.showErrorNativeDialog('Unable to fetch the subscription information, try later (FS problem)');
+        } else {
+          this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
+        }
       } else {
-        // Perhaps there is a connection problem, wait a week before asking the
+        // Perhaps there is a connection problem, wait a month before asking the
         // user to enable the connection.
         // For simplicty the STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE field is used
         // only within this method
         let firstFailDate = store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         let now = new Date().getTime();
-        if (firstFailDate && (now - firstFailDate) > 4.234e9) { // 1 week = 4.234e9 ms
-          // store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
-          this.deactivateSubscription();
+        if (firstFailDate && (now - firstFailDate) > 2592000000) { // 1 month = 2592000000 ms
+          store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+          this.deactivate();
           this.utilsProvider.showErrorNativeDialog('Unable to verify your subscription plan. Please make you sure that the computer has an active internet connection');
         } else {
           store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
@@ -105,12 +121,14 @@ export class LicenseProvider {
     })
   }
 
-  deactivateSubscription() {
-    this.serial = '';
-    this.activeSubscription = LicenseProvider.SUBSCRIPTION_FREE;
+  deactivate(clearSerial = false) {
     let store = new this.electronProvider.ElectronStore();
-    store.set(Config.STORAGE_SUBSCRIPTION, this.activeSubscription);
-    store.set(Config.STORAGE_SERIAL, this.serial);
+    if (clearSerial) {
+      this.serial = '';
+      store.set(Config.STORAGE_SERIAL, this.serial);
+    }
+    this.plan = LicenseProvider.PLAN_FREE;
+    store.set(Config.STORAGE_SUBSCRIPTION, this.plan);
   }
 
   showPricingPage() {
@@ -133,33 +151,33 @@ export class LicenseProvider {
   }
 
   getNOMaxComponents() {
-    switch (this.activeSubscription) {
-      case LicenseProvider.SUBSCRIPTION_FREE: return 4;
-      case LicenseProvider.SUBSCRIPTION_BASIC: return 7;
-      case LicenseProvider.SUBSCRIPTION_PRO: return 10;
-      case LicenseProvider.SUBSCRIPTION_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    switch (this.plan) {
+      case LicenseProvider.PLAN_FREE: return 4;
+      case LicenseProvider.PLAN_BASIC: return 7;
+      case LicenseProvider.PLAN_PRO: return 10;
+      case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
 
   getNOMaxConnectedDevices() {
-    switch (this.activeSubscription) {
-      case LicenseProvider.SUBSCRIPTION_FREE: return 1;
-      case LicenseProvider.SUBSCRIPTION_BASIC: return 2;
-      case LicenseProvider.SUBSCRIPTION_PRO: return 10;
-      case LicenseProvider.SUBSCRIPTION_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    switch (this.plan) {
+      case LicenseProvider.PLAN_FREE: return 1;
+      case LicenseProvider.PLAN_BASIC: return 2;
+      case LicenseProvider.PLAN_PRO: return 10;
+      case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
 
   isActived() {
-    return this.activeSubscription != LicenseProvider.SUBSCRIPTION_FREE;
+    return this.plan != LicenseProvider.PLAN_FREE;
   }
 
   getPlanName() {
-    switch (this.activeSubscription) {
-      case LicenseProvider.SUBSCRIPTION_FREE: return 'Free';
-      case LicenseProvider.SUBSCRIPTION_BASIC: return 'Basic';
-      case LicenseProvider.SUBSCRIPTION_PRO: return 'Pro';
-      case LicenseProvider.SUBSCRIPTION_UNLIMITED: return 'Unlimited'
+    switch (this.plan) {
+      case LicenseProvider.PLAN_FREE: return 'Free';
+      case LicenseProvider.PLAN_BASIC: return 'Basic';
+      case LicenseProvider.PLAN_PRO: return 'Pro';
+      case LicenseProvider.PLAN_UNLIMITED: return 'Unlimited'
     }
   }
 

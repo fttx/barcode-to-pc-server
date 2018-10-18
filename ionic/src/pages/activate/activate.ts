@@ -34,6 +34,6 @@ export class ActivatePage {
 
     // DEBUG ONLY:
     this.serial = '';
-    this.licenseProvider.deactivateSubscription();
+    this.licenseProvider.deactivate(true);
   }
 }
