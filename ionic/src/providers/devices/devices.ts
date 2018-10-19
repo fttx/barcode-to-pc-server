@@ -1,11 +1,11 @@
 import { Injectable, NgZone } from '@angular/core';
+import { Subject } from 'rxjs';
 
+import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelHelo } from '../../models/request.model';
 import { ElectronProvider } from '../electron/electron';
 import { StorageProvider } from '../storage/storage';
-import { DeviceModel } from '../../models/device.model';
-import { Subject } from 'rxjs';
-import { LicenseProvider } from '../license/license';
+import { responseModelKick } from '../../models/response.model';
 
 /*
   Generated class for the DevicesProvider provider.
@@ -22,7 +22,6 @@ export class DevicesProvider {
     public ngZone: NgZone,
     public storageProvider: StorageProvider,
     public electronProvider: ElectronProvider,
-    private licenseProvider: LicenseProvider,
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
@@ -45,15 +44,29 @@ export class DevicesProvider {
     }
   }
 
-  addDevice(device: DeviceModel) {
+  public kickDevice(device: DeviceModel, message = '') {
+    device.kicked = true;
+    let data = {
+      deviceId: device.deviceId,
+      response: new responseModelKick().fromObject({
+        message: message
+      })
+    }
+    this.electronProvider.ipcRenderer.send('kick', data);
+  }
+
+  public kickAllDevices(message = '') {
+    this.connectedDevices.forEach(device => this.kickDevice(device, message));
+  }
+
+  private addDevice(device: DeviceModel) {
     if (this.connectedDevices.findIndex(x => x.equals(device)) == -1) {
       this.connectedDevices.push(device);
     }
-    this.licenseProvider.limitNOMaxConnectedDevices(device, this.connectedDevices);
     this.onConnectedDevicesListChange.next(this.connectedDevices);
   }
 
-  removeDevice(device: DeviceModel) {
+  private removeDevice(device: DeviceModel) {
     let index = this.connectedDevices.findIndex(x => x.equals(device));
     if (index != -1) {
       this.connectedDevices.splice(index, 1);

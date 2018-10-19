@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
 import { LicenseProvider } from '../../providers/license/license';
+import { ElectronProvider } from '../../providers/electron/electron';
+import { Config } from '../../../../electron/src/config';
 
 @Component({
   selector: 'page-activate',
@@ -12,8 +14,9 @@ export class ActivatePage {
   public serial = '';
 
   constructor(
+    private electronProvider: ElectronProvider,
     public viewCtrl: ViewController,
-    public licenseProvider: LicenseProvider
+    public licenseProvider: LicenseProvider,
   ) {
     this.serial = this.licenseProvider.serial;
   }
@@ -35,5 +38,10 @@ export class ActivatePage {
     // DEBUG ONLY:
     this.serial = '';
     this.licenseProvider.deactivate(true);
+  }
+
+  getRemainingScans() {
+    let store = new this.electronProvider.ElectronStore();
+    return this.licenseProvider.getNOMaxAllowedScansPerMonth() -  store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0)
   }
 }

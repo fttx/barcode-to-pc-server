@@ -35,6 +35,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
 import { ActivatePage } from '../activate/activate';
+import { LicenseProvider } from '../../providers/license/license';
 
 /**
  * Generated class for the HomePage page.
@@ -76,6 +77,7 @@ export class HomePage {
     public events: Events,
     public title: Title,
     public devicesProvider: DevicesProvider,
+    public licenseProvider: LicenseProvider,
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
@@ -154,6 +156,7 @@ export class HomePage {
 
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
         this.ngZone.run(() => {
+          let initialNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
           request.scanSessions.forEach(newScanSession => {
             let scanSessionIndex = this.scanSessions.findIndex(x => x.id == newScanSession.id); // this is O(n^2) but i don't care since we don't have > 500 scan sessions, and the scanSessions array gets traversed all the way to the end only for the new created scan sessions
             if (scanSessionIndex != -1) {
@@ -198,14 +201,19 @@ export class HomePage {
                 }
               }
             } else {
-              this.addScanSession(newScanSession);
+              this.scanSessions.unshift(newScanSession);
+              this.selectedScanSession = this.scanSessions[0];
+              this.scanSessionsContainer.scrollToTop();
             }
-            // this.scanSessionsContainer.scrollToTop();
             this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
             this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
           })
+
+          let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
+          this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
+
           this.save();
-        });
+        }); // ngZone
 
         // if (request.scan.repeated) {
         //   let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
@@ -340,12 +348,6 @@ export class HomePage {
   public getLocaleDate(date) {
     return new Date(date).toLocaleString();
   }
-
-  private addScanSession(scanSessions: ScanSessionModel) {
-    this.scanSessions.unshift(scanSessions);
-    this.selectedScanSession = this.scanSessions[0];
-    this.scanSessionsContainer.scrollToTop();
-  }
 }
 
 // ConnectedClientsPopover
@@ -453,7 +455,7 @@ export class MainMenuPopover {
     this.close()
     this.modalCtrl.create(InfoPage).present();
   }
-  
+
   onActivateClick() {
     this.close();
     this.modalCtrl.create(ActivatePage).present();

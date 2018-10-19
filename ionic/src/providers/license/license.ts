@@ -1,9 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import ElectronStore from 'electron-store';
 import { AlertController, AlertOptions } from 'ionic-angular';
 
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
+import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
 
@@ -13,7 +15,7 @@ import { UtilsProvider } from '../utils/utils';
  * start in the constructor)
  * LicenseProvider provides methods to see wheter a certain feature can be
  * accessed with the active subscription plan.
- * It also provides methods to show to the user license related messages/pages.
+ * It also provides methods to show to the user license-related messages/pages.
  */
 @Injectable()
 export class LicenseProvider {
@@ -22,16 +24,24 @@ export class LicenseProvider {
   public static PLAN_PRO = 'barcode-to-pc-pro';
   public static PLAN_UNLIMITED = 'barcode-to-pc-unlimited';
 
-  public plan = LicenseProvider.PLAN_FREE;
+  public activePlan = LicenseProvider.PLAN_FREE;
   public serial = '';
+
+  private store: ElectronStore;
 
   constructor(
     public http: HttpClient,
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
-    private utilsProvider: UtilsProvider
+    private utilsProvider: UtilsProvider,
+    private devicesProvider: DevicesProvider,
   ) {
+    this.store = new this.electronProvider.ElectronStore();
     this.updateSubscriptionStatus();
+    this.devicesProvider.onConnectedDevicesListChange.subscribe(devicesList => {
+      let lastDevice = devicesList[devicesList.length - 1];
+      this.limitNOMaxConnectedDevices(lastDevice, devicesList);
+    })
   }
 
   /**
@@ -51,19 +61,18 @@ export class LicenseProvider {
    * If the serial is passed it'll prompt the user with dialogs
    */
   updateSubscriptionStatus(serial: string = '') {
-    let store = new this.electronProvider.ElectronStore();
-    this.plan = store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
-    // store.delete(Config.STORAGE_SUBSCRIPTION);
+    this.activePlan = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
+    // this.store.delete(Config.STORAGE_SUBSCRIPTION);
 
     if (serial) {
       this.serial = serial;
-      store.set(Config.STORAGE_SERIAL, this.serial);
+      this.store.set(Config.STORAGE_SERIAL, this.serial);
     } else {
-      this.serial = store.get(Config.STORAGE_SERIAL, '')
+      this.serial = this.store.get(Config.STORAGE_SERIAL, '')
     }
 
     // Do not bother the license-server if there isn't an active subscription
-    if (serial == '' && this.plan == LicenseProvider.PLAN_FREE) {
+    if (serial == '' && this.activePlan == LicenseProvider.PLAN_FREE) {
       return;
     }
 
@@ -71,7 +80,7 @@ export class LicenseProvider {
       serial: this.serial,
       uuid: this.electronProvider.uuid
     }).subscribe(value => {
-      store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+      this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
       if (value['active'] == true) {
 
         // The first time that the request is performed the license-server will
@@ -83,17 +92,17 @@ export class LicenseProvider {
           // successfully, so i can do a second request to retreive the plan name
           this.updateSubscriptionStatus(serial);
         } else {
-          this.plan = value['plan'];
-          store.set(Config.STORAGE_SUBSCRIPTION, this.plan);
+          this.activePlan = value['plan'];
+          this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
           if (serial) {
             this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
-          }         
+          }
         }
       } else {
         // When the license-server says that the subscription is not active
         // the user should be propted immediatly, no matter what it's passed a
         // serial
-        this.deactivate();
+        this.deactivate(true);
         this.utilsProvider.showErrorNativeDialog(value['message']);
       }
     }, (error: HttpErrorResponse) => {
@@ -101,6 +110,7 @@ export class LicenseProvider {
         if (error.status == 503) {
           this.utilsProvider.showErrorNativeDialog('Unable to fetch the subscription information, try later (FS problem)');
         } else {
+          this.deactivate();
           this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
         }
       } else {
@@ -108,27 +118,26 @@ export class LicenseProvider {
         // user to enable the connection.
         // For simplicty the STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE field is used
         // only within this method
-        let firstFailDate = store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+        let firstFailDate = this.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         let now = new Date().getTime();
         if (firstFailDate && (now - firstFailDate) > 2592000000) { // 1 month = 2592000000 ms
-          store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+          this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
           this.deactivate();
           this.utilsProvider.showErrorNativeDialog('Unable to verify your subscription plan. Please make you sure that the computer has an active internet connection');
         } else {
-          store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
+          this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
         }
       }
     })
   }
 
   deactivate(clearSerial = false) {
-    let store = new this.electronProvider.ElectronStore();
     if (clearSerial) {
       this.serial = '';
-      store.set(Config.STORAGE_SERIAL, this.serial);
+      this.store.set(Config.STORAGE_SERIAL, this.serial);
     }
-    this.plan = LicenseProvider.PLAN_FREE;
-    store.set(Config.STORAGE_SUBSCRIPTION, this.plan);
+    this.activePlan = LicenseProvider.PLAN_FREE;
+    this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
   }
 
   showPricingPage() {
@@ -136,31 +145,48 @@ export class LicenseProvider {
   }
 
   /**
-   * This function must to be called when a new device is connected.
+   * This method must to be called when a new device is connected.
    * It will check if the limit is reached and will show the appropriate
    * messages on both server and app
    * @param device 
    * @param connectedDevices 
    */
   limitNOMaxConnectedDevices(device: DeviceModel, connectedDevices: DeviceModel[]) {
-    if (connectedDevices.length > this.getNOMaxConnectedDevices()) {
-      device.kicked = true;
-      this.electronProvider.ipcRenderer.send('kick', device.deviceId);
-      this.showSubscribeDialog('Devices limit raeched', 'You\'ve reached the maximum number of connected devices, please subscribe')
+    if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
+      let message = 'You\'ve reached the maximum number of connected devices for your current subscription plan';
+      this.devicesProvider.kickDevice(device, message);
+      this.showUpgradeDialog('Devices limit raeched', message)
+    }
+  }
+
+  /**
+   * This method should be called when retrieving a set of new scans.
+   * It kicks out all devices and shows a dialog when the monthly limit of scans
+   * has been exceeded
+   */
+  limitMonthlyScans(noNewScans = 1) {
+    let count = this.store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0);
+    count += noNewScans;
+    this.store.set(Config.STORAGE_MONTHLY_SCANS_COUNT, count);
+
+    if (count > this.getNOMaxAllowedScansPerMonth()) {
+      let message = 'You\'ve reached the maximum number of monthly scannings for your current subscription plan.';
+      this.devicesProvider.kickAllDevices(message);
+      this.showUpgradeDialog('Monthly scans limit raeched', message)
     }
   }
 
   getNOMaxComponents() {
-    switch (this.plan) {
+    switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: return 4;
-      case LicenseProvider.PLAN_BASIC: return 7;
+      case LicenseProvider.PLAN_BASIC: return 5;
       case LicenseProvider.PLAN_PRO: return 10;
       case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
 
-  getNOMaxConnectedDevices() {
-    switch (this.plan) {
+  getNOMaxAllowedConnectedDevices() {
+    switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: return 1;
       case LicenseProvider.PLAN_BASIC: return 2;
       case LicenseProvider.PLAN_PRO: return 10;
@@ -168,12 +194,21 @@ export class LicenseProvider {
     }
   }
 
-  isActived() {
-    return this.plan != LicenseProvider.PLAN_FREE;
+  getNOMaxAllowedScansPerMonth() {
+    switch (this.activePlan) {
+      case LicenseProvider.PLAN_FREE: return 1000;
+      case LicenseProvider.PLAN_BASIC: return 2000;
+      case LicenseProvider.PLAN_PRO: return 10000;
+      case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    }
+  }
+
+  isSubscribed() {
+    return this.activePlan != LicenseProvider.PLAN_FREE;
   }
 
   getPlanName() {
-    switch (this.plan) {
+    switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: return 'Free';
       case LicenseProvider.PLAN_BASIC: return 'Basic';
       case LicenseProvider.PLAN_PRO: return 'Pro';
@@ -181,10 +216,10 @@ export class LicenseProvider {
     }
   }
 
-  private showSubscribeDialog(title, message) {
+  private showUpgradeDialog(title, message) {
     this.alertCtrl.create({
       title: title, message: message, buttons: [{ text: 'Close', role: 'cancel' }, {
-        text: 'Subscribe', handler: (opts: AlertOptions) => {
+        text: 'Upgrade', handler: (opts: AlertOptions) => {
           this.showPricingPage();
         }
       }]

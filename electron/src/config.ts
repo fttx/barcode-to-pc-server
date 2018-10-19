@@ -40,4 +40,5 @@ export class Config {
     public static STORAGE_SUBSCRIPTION = 'subscription';
     public static STORAGE_SERIAL = 'serial';
     public static STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE = 'storage_first_license_check_fail_date';
+    public static STORAGE_MONTHLY_SCANS_COUNT = 'storage_monthly_scans_count';
 }

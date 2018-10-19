@@ -85,6 +85,10 @@ export class responseModelEnableQuantity extends responseModel {
 
 export class responseModelKick extends responseModel {
     action = responseModel.ACTION_KICK;
+    message: string = '';
 
-    public fromObject() { return this }
+    public fromObject(obj: ({ message: string })) {
+        this.message = obj.message;
+        return this;
+    }
 }

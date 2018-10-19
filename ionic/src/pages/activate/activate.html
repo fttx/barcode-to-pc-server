@@ -5,7 +5,6 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar color="secondary">
     <ion-title>Activate</ion-title>
 
@@ -16,9 +15,7 @@
     </ion-buttons>
 
   </ion-navbar>
-
 </ion-header>
-
 
 <ion-content padding>
   <ion-list>
@@ -31,12 +28,12 @@
       your e-mail in the input box down below.
       <br><br>
       For orders support: <a href="mailto:orders@fastspring.com">orders@fastspring.com</a>
-      <br><br>
+      <br>
     </ion-item>
 
-    <div [hidden]="licenseProvider.isActived()">
+    <div [hidden]="licenseProvider.isSubscribed()">
       <ion-item no-lines text-wrap no-padding>
-        Serial
+        <b>Serial</b>
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
 
@@ -45,15 +42,24 @@
       </ion-item>
     </div>
 
-
-    <div [hidden]="!licenseProvider.isActived()">
+    <div [hidden]="!licenseProvider.isSubscribed()">
       <ion-item no-lines text-wrap no-padding>
-        Serial
+        <b>Serial</b>
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
       </ion-item>
       <ion-item no-lines text-wrap no-padding>
-        Plan <br>
-        <b>{{ licenseProvider.getPlanName() }}</b>
+        <b>Plan data</b> <br>
+        <ion-grid>
+          <ion-row>
+            <ion-col>Plan</ion-col>
+            <ion-col>{{ licenseProvider.getPlanName() }} ({{  licenseProvider.activePlan
+              }})</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Remaining scans</ion-col>
+            <ion-col>{{ getRemainingScans() }}</ion-col>
+          </ion-row>
+        </ion-grid>
       </ion-item>
 
       <ion-item no-lines no-padding>

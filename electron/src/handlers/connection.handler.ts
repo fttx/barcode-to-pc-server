@@ -7,7 +7,7 @@ import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelEnableQuantity, responseModelHelo, responseModelPong, responseModelKick } from '../../../ionic/src/models/response.model';
+import { responseModelEnableQuantity, responseModelHelo, responseModelPong, responseModelKick, responseModelKick } from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -50,10 +50,10 @@ export class ConnectionHandler implements Handler {
                 });
             }).on('getHostname', (event, arg) => {
                 event.sender.send('hostname', os.hostname());
-            }).on('kick', (event, deviceId) => {
-                console.log('@Kick', deviceId)
-                if (deviceId in this.wsClients) {
-                    this.wsClients[deviceId].send(JSON.stringify(new responseModelKick()));
+            }).on('kick', (event, data: ({deviceId: number, response: responseModelKick})) => {
+                console.log('@Kick', data.deviceId)
+                if (data.deviceId in this.wsClients) {
+                    this.wsClients[data.deviceId].send(JSON.stringify(data.response));
                 }
             })
         // send enableQuantity to already connected clients
