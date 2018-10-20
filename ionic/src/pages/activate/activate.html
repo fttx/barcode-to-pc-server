@@ -19,16 +19,11 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item no-lines text-wrap no-padding>
+    <ion-item no-lines no-padding>
       See the <a (click)="licenseProvider.showPricingPage()">pricing</a> page to compare the
-      available plans.
-      <br><br>
-
-      If you've already subscribed enter the serial number that we've sent to
-      your e-mail in the input box down below.
-      <br><br>
-      For orders support: <a href="mailto:orders@fastspring.com">orders@fastspring.com</a>
+      available subscription plans.
       <br>
+      For orders support: <a href="mailto:orders@fastspring.com">orders@fastspring.com</a><br>
     </ion-item>
 
     <div [hidden]="licenseProvider.isSubscribed()">
@@ -56,8 +51,28 @@
               }})</ion-col>
           </ion-row>
           <ion-row>
+            <ion-col>Next bill</ion-col>
+            <ion-col>{{ getNextChargeDate() }}</ion-col>
+          </ion-row>
+          <ion-row>
             <ion-col>Remaining scans</ion-col>
             <ion-col>{{ getRemainingScans() }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Max number of smartphones</ion-col>
+            <ion-col>{{ licenseProvider.getNOMaxAllowedConnectedDevices() }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Max number of output components</ion-col>
+            <ion-col>{{ licenseProvider.getNOMaxComponents() }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Quantity paramter</ion-col>
+            <ion-col>{{ licenseProvider.canUseQuantityParameter() ? 'Yes': 'No' }}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>Append to CSV file</ion-col>
+            <ion-col>{{ licenseProvider.canUseCSVAppend() ? 'Yes': 'No' }}</ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>

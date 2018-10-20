@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
-import { LicenseProvider } from '../../providers/license/license';
-import { ElectronProvider } from '../../providers/electron/electron';
 import { Config } from '../../../../electron/src/config';
+import { ElectronProvider } from '../../providers/electron/electron';
+import { LicenseProvider } from '../../providers/license/license';
 
+import ElectronStore from 'electron-store';
 @Component({
   selector: 'page-activate',
   templateUrl: 'activate.html',
@@ -13,11 +14,14 @@ export class ActivatePage {
   public uuid = '';
   public serial = '';
 
+  private store: ElectronStore;
+
   constructor(
     private electronProvider: ElectronProvider,
     public viewCtrl: ViewController,
     public licenseProvider: LicenseProvider,
   ) {
+    this.store = new this.electronProvider.ElectronStore();
     this.serial = this.licenseProvider.serial;
   }
 
@@ -41,7 +45,10 @@ export class ActivatePage {
   }
 
   getRemainingScans() {
-    let store = new this.electronProvider.ElectronStore();
-    return this.licenseProvider.getNOMaxAllowedScansPerMonth() -  store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0)
+    return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0)
+  }
+
+  getNextChargeDate() {
+    return new Date(this.store.get(Config.STORAGE_NEXT_CHARGE_DATE, 0)).toLocaleDateString();
   }
 }

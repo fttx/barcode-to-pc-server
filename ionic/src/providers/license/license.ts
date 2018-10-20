@@ -93,7 +93,8 @@ export class LicenseProvider {
           this.updateSubscriptionStatus(serial);
         } else {
           this.activePlan = value['plan'];
-          this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
+          this.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
+          this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, value['nextChargeDate']);
           if (serial) {
             this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
           }
@@ -200,6 +201,24 @@ export class LicenseProvider {
       case LicenseProvider.PLAN_BASIC: return 2000;
       case LicenseProvider.PLAN_PRO: return 10000;
       case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    }
+  }
+
+  canUseQuantityParameter() {
+    switch (this.activePlan) {
+      case LicenseProvider.PLAN_FREE: return false;
+      case LicenseProvider.PLAN_BASIC: return true;
+      case LicenseProvider.PLAN_PRO: return true;
+      case LicenseProvider.PLAN_UNLIMITED: return true;
+    }
+  }
+
+  canUseCSVAppend() {
+    switch (this.activePlan) {
+      case LicenseProvider.PLAN_FREE: return false;
+      case LicenseProvider.PLAN_BASIC: return true;
+      case LicenseProvider.PLAN_PRO: return true;
+      case LicenseProvider.PLAN_UNLIMITED: return true;
     }
   }
 
