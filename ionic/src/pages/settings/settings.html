@@ -146,7 +146,7 @@
 
       <ion-item no-lines>
         <ion-label>Append scans to a .csv file</ion-label>
-        <ion-checkbox [(ngModel)]="settings && settings.appendCSVEnabled"></ion-checkbox>
+        <ion-checkbox [(ngModel)]="settings && settings.appendCSVEnabled" (click)="onCSVClick()"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines [hidden]="!settings || !settings.appendCSVEnabled" class="csv-select-path-form">

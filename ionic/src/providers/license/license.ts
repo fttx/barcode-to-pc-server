@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import ElectronStore from 'electron-store';
-import { AlertController, AlertOptions } from 'ionic-angular';
+import { Alert, AlertController, AlertOptions } from 'ionic-angular';
 
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
@@ -13,9 +13,17 @@ import { UtilsProvider } from '../utils/utils';
  * LicenseProvider comunicates with the subscription-server to see if there is
  * an active subscription for the current machine. (The check is done on app
  * start in the constructor)
+ * 
  * LicenseProvider provides methods to see wheter a certain feature can be
  * accessed with the active subscription plan.
- * It also provides methods to show to the user license-related messages/pages.
+ * 
+ * Methods that looks like limitFeatureX must be called when the user tries to
+ * use an X paid feature. These methods when it's possible take care of
+ * disabling the feature. If it's not possible to directly disable it, they'll
+ * return a boolean value (TRUE = the user must upgrade) 
+ * 
+ * LicenseProvider also provides other methods to show to the user
+ * license-related dialogs and pages. 
  */
 @Injectable()
 export class LicenseProvider {
@@ -28,6 +36,7 @@ export class LicenseProvider {
   public serial = '';
 
   private store: ElectronStore;
+  private upgradeDialog: Alert = null;
 
   constructor(
     public http: HttpClient,
@@ -62,6 +71,7 @@ export class LicenseProvider {
    */
   updateSubscriptionStatus(serial: string = '') {
     this.activePlan = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
+    console.log('activeplane: ', this.activePlan)
     // this.store.delete(Config.STORAGE_SUBSCRIPTION);
 
     if (serial) {
@@ -177,6 +187,43 @@ export class LicenseProvider {
     }
   }
 
+  /**
+   * Shuld be called when the user tries to drag'n drop the quantity component
+   * @param showUpgradeDialog 
+   */
+  limitQuantityParameter(showUpgradeDialog = false): boolean {
+    let available = false;
+    switch (this.activePlan) {
+      case LicenseProvider.PLAN_FREE: available = false; break;
+      case LicenseProvider.PLAN_BASIC: available = true; break;
+      case LicenseProvider.PLAN_PRO: available = true; break;
+      case LicenseProvider.PLAN_UNLIMITED: available = true; break;
+    }
+
+    if (!available && showUpgradeDialog) {
+      this.showUpgradeDialog('Upgrade', 'This feature isn\'t available with your current subscription plan.');
+    }
+    return !available;
+  }
+
+  /**
+   * Shuld be called when the user tries to enable the CSV append option
+   * @param showUpgradeDialog 
+   */
+  limitCSVAppend(showUpgradeDialog = false): boolean {
+    let available = false;
+    switch (this.activePlan) {
+      case LicenseProvider.PLAN_FREE: available = false; break;
+      case LicenseProvider.PLAN_BASIC: available = true; break;
+      case LicenseProvider.PLAN_PRO: available = true; break;
+      case LicenseProvider.PLAN_UNLIMITED: available = true; break;
+    }
+    if (!available && showUpgradeDialog) {
+      this.showUpgradeDialog('Upgrade', 'This feature isn\'t available with your current subscription plan.');
+    }
+    return !available;
+  }
+
   getNOMaxComponents() {
     switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: return 4;
@@ -204,24 +251,6 @@ export class LicenseProvider {
     }
   }
 
-  canUseQuantityParameter() {
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return false;
-      case LicenseProvider.PLAN_BASIC: return true;
-      case LicenseProvider.PLAN_PRO: return true;
-      case LicenseProvider.PLAN_UNLIMITED: return true;
-    }
-  }
-
-  canUseCSVAppend() {
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return false;
-      case LicenseProvider.PLAN_BASIC: return true;
-      case LicenseProvider.PLAN_PRO: return true;
-      case LicenseProvider.PLAN_UNLIMITED: return true;
-    }
-  }
-
   isSubscribed() {
     return this.activePlan != LicenseProvider.PLAN_FREE;
   }
@@ -236,12 +265,17 @@ export class LicenseProvider {
   }
 
   private showUpgradeDialog(title, message) {
-    this.alertCtrl.create({
+    if (this.upgradeDialog != null) {
+      return;
+    }
+    this.upgradeDialog = this.alertCtrl.create({
       title: title, message: message, buttons: [{ text: 'Close', role: 'cancel' }, {
         text: 'Upgrade', handler: (opts: AlertOptions) => {
           this.showPricingPage();
         }
       }]
-    }).present();
+    });
+    this.upgradeDialog.onDidDismiss(() => this.upgradeDialog = null)
+    this.upgradeDialog.present();
   }
 }

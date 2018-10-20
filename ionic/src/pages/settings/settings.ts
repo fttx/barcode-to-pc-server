@@ -96,6 +96,14 @@ export class SettingsPage {
       },
       removeOnSpill: true
     });
+
+    this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
+      if (item.value == 'quantity') {
+        if (this.licenseProvider.limitQuantityParameter(true)) {
+          this.settings.typedString = this.settings.typedString.filter(x => x.value != 'quantity')
+        }
+      }
+    });
   }
 
   public getAppName() {
@@ -215,6 +223,16 @@ export class SettingsPage {
     console.log('esc');
     if (event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) { // esc 
       this.goBack();
+    }
+  }
+
+  onCSVClick() {
+    if (this.settings.appendCSVEnabled) {
+      if (this.licenseProvider.limitCSVAppend(true)) {
+        setTimeout(() => {
+          this.settings.appendCSVEnabled = false;
+        }, 500)
+      }
     }
   }
 }
