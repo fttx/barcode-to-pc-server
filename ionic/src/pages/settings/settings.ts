@@ -99,7 +99,7 @@ export class SettingsPage {
 
     this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
       if (item.value == 'quantity') {
-        if (this.licenseProvider.canUseQuantityParameter(true)) {
+        if (!this.licenseProvider.canUseQuantityParameter(true)) {
           setTimeout(() => this.settings.typedString = this.settings.typedString.filter(x => x.value != 'quantity'), 1000)
         }
       }
@@ -228,7 +228,7 @@ export class SettingsPage {
 
   onCSVClick() {
     if (this.settings.appendCSVEnabled) {
-      if (this.licenseProvider.canUseCSVAppend(true)) {
+      if (!this.licenseProvider.canUseCSVAppend(true)) {
         setTimeout(() => this.settings.appendCSVEnabled = false, 1000)
       }
     }

@@ -8,6 +8,7 @@ import { DeviceModel } from '../../models/device.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
+import { StorageProvider } from '../storage/storage';
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -23,6 +24,9 @@ import { UtilsProvider } from '../utils/utils';
  * 
  * LicenseProvider also provides other methods to show to the user
  * license-related dialogs and pages. 
+ * 
+ * // TODO: remove StorageProvider and use only ElectronStore, this way should
+ * be possible to convert all methods that looks like canUseX to limitFeatureX
  */
 @Injectable()
 export class LicenseProvider {
@@ -42,6 +46,7 @@ export class LicenseProvider {
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
     private utilsProvider: UtilsProvider,
+    private storageProvider: StorageProvider, // deprecated, use ElectronStore
     private devicesProvider: DevicesProvider,
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -70,7 +75,6 @@ export class LicenseProvider {
    */
   updateSubscriptionStatus(serial: string = '') {
     this.activePlan = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
-    console.log('activeplane: ', this.activePlan)
     // this.store.delete(Config.STORAGE_SUBSCRIPTION);
 
     if (serial) {
@@ -81,7 +85,10 @@ export class LicenseProvider {
     }
 
     // Do not bother the license-server if there isn't an active subscription
-    if (serial == '' && this.activePlan == LicenseProvider.PLAN_FREE) {
+    if (serial == '' && this.serial == '' && this.activePlan == LicenseProvider.PLAN_FREE) {
+      // it's also required to check this.serial == '' because when there isn't
+      // a internet connection the plan gets downgraded but the serial is
+      // still saved to the storage
       return;
     }
 
@@ -130,6 +137,7 @@ export class LicenseProvider {
         // only within this method
         let firstFailDate = this.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         let now = new Date().getTime();
+        console.log(firstFailDate, now)
         if (firstFailDate && (now - firstFailDate) > 2592000000) { // 1 month = 2592000000 ms
           this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
           this.deactivate();
@@ -148,6 +156,15 @@ export class LicenseProvider {
     }
     this.activePlan = LicenseProvider.PLAN_FREE;
     this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
+
+    let settings = this.storageProvider.getSettings();
+    if (!this.canUseCSVAppend(false)) {
+      settings.appendCSVEnabled = false;
+    }
+    if (!this.canUseQuantityParameter(false)) {
+      settings.typedString = settings.typedString.filter(x => x.value != 'quantity');
+    }
+    this.storageProvider.setSettings(settings);
   }
 
   showPricingPage() {
@@ -186,7 +203,7 @@ export class LicenseProvider {
 
   /**
    * Shuld be called when the user tries to drag'n drop the quantity component.
-   * @returns TRUE if the feature should be limited
+   * @returns FALSE if the feature should be limited
    */
   canUseQuantityParameter(showUpgradeDialog = true): boolean {
     let available = false;
@@ -200,12 +217,12 @@ export class LicenseProvider {
     if (!available && showUpgradeDialog) {
       this.showUpgradeDialog('Upgrade', 'This feature isn\'t available with your current subscription plan.');
     }
-    return !available;
+    return available;
   }
 
   /**
    * Shuld be called when the user tries to enable the CSV append option
-   * @returns TRUE if the feature should be limited
+   * @returns FALSE if the feature should be limited
    */
   canUseCSVAppend(showUpgradeDialog = false): boolean {
     let available = false;
@@ -218,7 +235,7 @@ export class LicenseProvider {
     if (!available && showUpgradeDialog) {
       this.showUpgradeDialog('Upgrade', 'This feature isn\'t available with your current subscription plan.');
     }
-    return !available;
+    return available;
   }
 
   getNOMaxComponents() {
