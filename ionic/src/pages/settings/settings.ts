@@ -100,7 +100,7 @@ export class SettingsPage {
     this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
       if (item.value == 'quantity') {
         if (this.licenseProvider.limitQuantityParameter(true)) {
-          this.settings.typedString = this.settings.typedString.filter(x => x.value != 'quantity')
+          setTimeout(() => this.settings.typedString = this.settings.typedString.filter(x => x.value != 'quantity'), 1000)
         }
       }
     });
@@ -229,9 +229,7 @@ export class SettingsPage {
   onCSVClick() {
     if (this.settings.appendCSVEnabled) {
       if (this.licenseProvider.limitCSVAppend(true)) {
-        setTimeout(() => {
-          this.settings.appendCSVEnabled = false;
-        }, 500)
+        setTimeout(() => this.settings.appendCSVEnabled = false, 1000)
       }
     }
   }
