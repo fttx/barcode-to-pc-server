@@ -15,12 +15,11 @@ import { UtilsProvider } from '../utils/utils';
  * start in the constructor)
  * 
  * LicenseProvider provides methods to see wheter a certain feature can be
- * accessed with the active subscription plan.
+ * accessed with the active subscription plan like getNOMaxX or canUseX.
  * 
  * Methods that looks like limitFeatureX must be called when the user tries to
- * use an X paid feature. These methods when it's possible take care of
- * disabling the feature. If it's not possible to directly disable it, they'll
- * return a boolean value (TRUE = the user must upgrade) 
+ * use an X paid feature. These methods take care of disabling the feature for
+ * the future use and inform the user about it through dialogs.
  * 
  * LicenseProvider also provides other methods to show to the user
  * license-related dialogs and pages. 
@@ -159,8 +158,6 @@ export class LicenseProvider {
    * This method must to be called when a new device is connected.
    * It will check if the limit is reached and will show the appropriate
    * messages on both server and app
-   * @param device 
-   * @param connectedDevices 
    */
   limitNOMaxConnectedDevices(device: DeviceModel, connectedDevices: DeviceModel[]) {
     if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
@@ -188,10 +185,10 @@ export class LicenseProvider {
   }
 
   /**
-   * Shuld be called when the user tries to drag'n drop the quantity component
-   * @param showUpgradeDialog 
+   * Shuld be called when the user tries to drag'n drop the quantity component.
+   * @returns TRUE if the feature should be limited
    */
-  limitQuantityParameter(showUpgradeDialog = false): boolean {
+  canUseQuantityParameter(showUpgradeDialog = true): boolean {
     let available = false;
     switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: available = false; break;
@@ -208,9 +205,9 @@ export class LicenseProvider {
 
   /**
    * Shuld be called when the user tries to enable the CSV append option
-   * @param showUpgradeDialog 
+   * @returns TRUE if the feature should be limited
    */
-  limitCSVAppend(showUpgradeDialog = false): boolean {
+  canUseCSVAppend(showUpgradeDialog = false): boolean {
     let available = false;
     switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: available = false; break;

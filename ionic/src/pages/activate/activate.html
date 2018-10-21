@@ -68,11 +68,11 @@
           </ion-row>
           <ion-row>
             <ion-col>Quantity paramter</ion-col>
-            <ion-col>{{ !licenseProvider.limitQuantityParameter() ? 'Yes': 'No' }}</ion-col>
+            <ion-col>{{ !licenseProvider.canUseQuantityParameter(false) ? 'Yes': 'No' }}</ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Append to CSV file</ion-col>
-            <ion-col>{{ !licenseProvider.limitCSVAppend() ? 'Yes': 'No' }}</ion-col>
+            <ion-col>{{ !licenseProvider.canUseCSVAppend() ? 'Yes': 'No' }}</ion-col>
           </ion-row>
         </ion-grid>
       </ion-item>
