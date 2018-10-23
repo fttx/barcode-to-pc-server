@@ -92,7 +92,7 @@ export class LicenseProvider {
       return;
     }
 
-    this.http.post(Config.URL_CHECK_SUBSCRIPTION, {
+    this.http.post(Config.URL_SUBSCRIPTION_CHECK, {
       serial: this.serial,
       uuid: this.electronProvider.uuid
     }).subscribe(value => {
@@ -119,7 +119,7 @@ export class LicenseProvider {
         // When the license-server says that the subscription is not active
         // the user should be propted immediatly, no matter what it's passed a
         // serial
-        this.deactivate(true);
+        this.deactivate();
         this.utilsProvider.showErrorNativeDialog(value['message']);
       }
     }, (error: HttpErrorResponse) => {
@@ -149,22 +149,45 @@ export class LicenseProvider {
     })
   }
 
+  /**
+   * Resets the subscription plan to FREE.
+   * If clearSerial is TRUE it's required an internet connection to complete the
+   * deactivation process.
+   * @param clearSerial if TRUE the serial number is removed from the storage.
+   * The serial should be cleared only if the user explicitely deactivates the plan from
+   * the UI, the reason is to give the system the opportunity to reactivate itself
+   * when the connection comes back on, or the user updates his payment
+   * information 
+   */
   deactivate(clearSerial = false) {
-    if (clearSerial) {
-      this.serial = '';
-      this.store.set(Config.STORAGE_SERIAL, this.serial);
-    }
-    this.activePlan = LicenseProvider.PLAN_FREE;
-    this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
+    let downgradeToFree = () => {
+      this.activePlan = LicenseProvider.PLAN_FREE;
+      this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
 
-    let settings = this.storageProvider.getSettings();
-    if (!this.canUseCSVAppend(false)) {
-      settings.appendCSVEnabled = false;
+      let settings = this.storageProvider.getSettings();
+      if (!this.canUseCSVAppend(false)) {
+        settings.appendCSVEnabled = false;
+      }
+      if (!this.canUseQuantityParameter(false)) {
+        settings.typedString = settings.typedString.filter(x => x.value != 'quantity');
+      }
+      this.storageProvider.setSettings(settings);
     }
-    if (!this.canUseQuantityParameter(false)) {
-      settings.typedString = settings.typedString.filter(x => x.value != 'quantity');
+
+    if (clearSerial) {
+      this.http.post(Config.URL_SUBSCRIPTION_DEACTIVATE, {
+        serial: this.serial,
+        uuid: this.electronProvider.uuid
+      }).subscribe(value => {
+        downgradeToFree();
+        this.serial = '';
+        this.store.set(Config.STORAGE_SERIAL, this.serial);
+      }, (error: HttpErrorResponse) => {
+        this.utilsProvider.showErrorNativeDialog('Unable to deactivate your subscription plan. Please make you sure that the computer has an active internet connection');
+      });
+    } else {
+      downgradeToFree();
     }
-    this.storageProvider.setSettings(settings);
   }
 
   showPricingPage() {
