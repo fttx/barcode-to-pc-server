@@ -27,6 +27,7 @@ import { StorageProvider } from '../storage/storage';
  * 
  * // TODO: remove StorageProvider and use only ElectronStore, this way should
  * be possible to convert all methods that looks like canUseX to limitFeatureX
+ * so that this class can encapsulate all license related code
  */
 @Injectable()
 export class LicenseProvider {
@@ -137,7 +138,6 @@ export class LicenseProvider {
         // only within this method
         let firstFailDate = this.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         let now = new Date().getTime();
-        console.log(firstFailDate, now)
         if (firstFailDate && (now - firstFailDate) > 2592000000) { // 1 month = 2592000000 ms
           this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
           this.deactivate();
