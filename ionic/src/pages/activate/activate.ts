@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ViewController } from 'ionic-angular';
 
-import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 
 import ElectronStore from 'electron-store';
+import { Config } from '../../config';
 @Component({
   selector: 'page-activate',
   templateUrl: 'activate.html',

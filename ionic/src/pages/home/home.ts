@@ -14,7 +14,6 @@ import {
 } from 'ionic-angular';
 import * as Papa from 'papaparse';
 
-import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import {
   requestModel,
@@ -36,6 +35,7 @@ import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
 import { ActivatePage } from '../activate/activate';
 import { LicenseProvider } from '../../providers/license/license';
+import { Config } from '../../config';
 
 /**
  * Generated class for the HomePage page.
@@ -431,6 +431,7 @@ export class ScanSessionContextMenuPopover {
     <ion-list>
       <ion-list-header>More</ion-list-header>
       <button ion-item (click)="onShowPairQrCodeClick()" class="show-pair-qr-code-button">Pair the app with QR code</button>
+      <button ion-item (click)="onUpgradeClick()">Pricing</button>
       <button ion-item (click)="onActivateClick()">Activate</button>
       <button ion-item (click)="onInfoClick()">Info</button>
     </ion-list>
@@ -440,6 +441,7 @@ export class MainMenuPopover {
   constructor(
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
+    public licenseProvider: LicenseProvider
   ) { }
 
   close() {
@@ -454,6 +456,11 @@ export class MainMenuPopover {
   onInfoClick() {
     this.close()
     this.modalCtrl.create(InfoPage).present();
+  }
+
+  onUpgradeClick() {
+    this.close()
+    this.licenseProvider.showPricingPage();
   }
 
   onActivateClick() {

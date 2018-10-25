@@ -3,12 +3,12 @@ import { Injectable } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions } from 'ionic-angular';
 
-import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
 import { StorageProvider } from '../storage/storage';
+import { Config } from '../../config';
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is

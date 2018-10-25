@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../electron/electron';
+import { Config } from '../../config';
 
 
 /*
