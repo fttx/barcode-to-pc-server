@@ -19,7 +19,8 @@ export class Config {
 
     // public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com';
     public static URL_LICENSE_SERVER = 'http://localhost:3000'
-    public static URL_CHECK_SUBSCRIPTION = Config.URL_LICENSE_SERVER + '/subscription/check';
+    public static URL_SUBSCRIPTION_CHECK = Config.URL_LICENSE_SERVER + '/subscription/check';
+    public static URL_SUBSCRIPTION_DEACTIVATE = Config.URL_LICENSE_SERVER + '/subscription/remove';
 
     // public static URL_BLOG = 'https://blog.barcodetopc.com';
     public static URL_BLOG = 'http://localhost/wordpress';
@@ -39,7 +40,7 @@ export class Config {
     // Constants
     public static STORAGE_SUBSCRIPTION = 'subscription';
     public static STORAGE_SERIAL = 'serial';
-    public static STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE = 'storage_first_license_check_fail_date';
+    public static STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE = 'storage_first_license_check_fail_date'; // contains the date of the first time that the license check failed to receive a vaild response (eg. no internet connection)
     public static STORAGE_MONTHLY_SCANS_COUNT = 'storage_monthly_scans_count';
     public static STORAGE_NEXT_CHARGE_DATE = 'storage_next_charge_date';
 }

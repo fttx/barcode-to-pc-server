@@ -1,13 +1,17 @@
 import * as b from 'bonjour';
 import { app, dialog, ipcMain } from 'electron';
-import ElectronStore = require('electron-store');
 import * as mdns from 'mdns';
 import * as network from 'network';
 import * as os from 'os';
 import * as WebSocket from 'ws';
 
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelEnableQuantity, responseModelHelo, responseModelPong, responseModelKick, responseModelKick } from '../../../ionic/src/models/response.model';
+import {
+    responseModelEnableQuantity,
+    responseModelHelo,
+    responseModelKick,
+    responseModelPong,
+} from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
