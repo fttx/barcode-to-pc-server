@@ -56,8 +56,8 @@ gulp.task('ionic:install', () => {
 
 gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
   // exec is less cross-platoform but at least works
-  return execSync('npm run ionic:build', { cwd: '../', stdio: "inherit", shell: true })
-
+  execSync('npm run ionic:build', { cwd: '../', stdio: "inherit", shell: true })
+  return gulp.src(['./www/**/*']).pipe(gulp.dest('../dist/ionic/www/'))
   // const ionicConfig = require('@ionic/app-scripts/dist/util/config')
   // const ionic = require('@ionic/app-scripts')
 
