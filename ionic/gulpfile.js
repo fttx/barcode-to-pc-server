@@ -60,21 +60,21 @@ gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
 
   return new Promise((resolve, reject) => {
     // exec is less cross-platoform but at least works
-    // execSync('npm run ionic:build-browser', { stdio: "inherit", shell: true })
+    execSync('npm run build:browser', { stdio: "inherit", shell: true })
 
     // ionic.build doesn't add the platform if it isn't installed first.
-    let buildContext = ionicConfig.generateContext({
-      isProd: true,
-      platform: 'browser',
-    });
-    ionic.build(buildContext).then(() => {
-      gulp
-        // .src(['./platforms/browser/www/**/*'])
-        .src(['./www/**/*'])
-        .pipe(gulp.dest('../dist/ionic/www/'))
-        .on('error', reject)
-        .on('end', resolve)
-    })
+    // let buildContext = ionicConfig.generateContext({
+    //   isProd: true,
+    //   platform: 'browser',
+    // });
+    // ionic.build(buildContext).then(() => {
+    //   gulp
+    //     // .src(['./platforms/browser/www/**/*'])
+    //     .src(['./www/**/*'])
+    //     .pipe(gulp.dest('../dist/ionic/www/'))
+    //     .on('error', reject)
+    //     .on('end', resolve)
+    // })
   })
 });
 
