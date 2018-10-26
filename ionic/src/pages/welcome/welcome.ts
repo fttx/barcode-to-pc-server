@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
+import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { HomePage } from '../home/home';
-import { Config } from '../../config';
 
 /**
  * Generated class for the WelcomePage page.

@@ -23,21 +23,22 @@ gulp.task('serve', ['electron:assets', 'ionic:install'], () => {
 
 gulp.task('electron:resources', ['mkdir'], () => {
   return new Promise((resolve, reject) => {
-    gulp.src(['../electron/electron-resources/**/*']).pipe(gulp.dest('../dist/build/')).on('error', reject).on('end', resolve)
+    gulp.src(['../electron/electron-resources/**/*'])
+      .pipe(gulp.dest('../dist/build/'))
+      .on('error', reject)
+      .on('end', resolve)
   })
 });
 
 gulp.task('electron:tsc', ['mkdir'], () => {
   return new Promise((resolve, reject) => {
     execSync('npm run tsc:electron', { cwd: '../', stdio: "inherit", shell: true })
-    gulp.src(['../package.json']).pipe(gulp.dest('../dist/')).on('end', resolve).on('error', reject);
+    gulp.src(['../package.json'])
+      .pipe(gulp.dest('../dist/'))
+      .on('end', resolve)
+      .on('error', reject);
   })
 });
-
-
-gulp.task('ionic:copy-config', () => {
-  return gulp.src(['../electron/src/config.ts']).pipe(gulp.dest('./src/'))
-})
 
 gulp.task('ionic:install', () => {
   console.log('ionic:install start')
@@ -53,7 +54,7 @@ gulp.task('ionic:install', () => {
   })
 })
 
-gulp.task('ionic:build', ['mkdir', 'ionic:copy-config', 'ionic:install'], () => {
+gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
   const ionicConfig = require('@ionic/app-scripts/dist/util/config')
   const ionic = require('@ionic/app-scripts')
 
@@ -67,15 +68,20 @@ gulp.task('ionic:build', ['mkdir', 'ionic:copy-config', 'ionic:install'], () => 
       platform: 'browser',
     });
     ionic.build(buildContext).then(() => {
-      gulp.src(['./www/**/*']).pipe(gulp.dest('../dist/ionic/www/')).on('error', reject).on('end', resolve)
-      // .src(['./platforms/browser/www/**/*'])
+      gulp
+        // .src(['./platforms/browser/www/**/*'])
+        .src(['./www/**/*'])
+        .pipe(gulp.dest('../dist/ionic/www/'))
+        .on('error', reject)
+        .on('end', resolve)
     })
   })
 });
 
 gulp.task('electron:assets', ['mkdir'], () => {
-  // when this task is used as dependency from another task it will wait for this task to complete
-  return gulp.src(['../electron/src/assets/**/*']).pipe(gulp.dest('../dist/electron/src/assets/'))
+  return gulp // when this task is used as dependency from another task it will wait for this task to complete
+    .src(['../electron/src/assets/**/*'])
+    .pipe(gulp.dest('../dist/electron/src/assets/'))
 });
 
 

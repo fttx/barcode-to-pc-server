@@ -1,13 +1,15 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
 import { Alert, AlertController, Navbar, NavController, NavParams } from 'ionic-angular';
-import { DragulaService } from 'ng2-dragula';
+import { DragulaService } from "ng2-dragula";
 
-import { Config } from '../../config';
 import { SettingsModel } from '../../models/settings.model';
 import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
-import { LicenseProvider } from '../../providers/license/license';
 import { StorageProvider } from '../../providers/storage/storage';
+import { requestModel } from '../../models/request.model';
+import { responseModel } from '../../models/response.model';
+import { Config } from '../../../../electron/src/config';
+import { LicenseProvider } from '../../providers/license/license';
 
 /**
  * Generated class for the SettingsPage page.

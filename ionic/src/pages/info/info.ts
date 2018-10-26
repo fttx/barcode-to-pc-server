@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { ElectronProvider } from '../../providers/electron/electron';
-import { Config } from '../../config';
+import { Config } from '../../../../electron/src/config';
 
 /**
  * Generated class for the InfoPage page.
