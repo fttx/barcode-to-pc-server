@@ -127,13 +127,10 @@ export class UiHandler implements Handler {
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         }
 
-        const isSecondInstance = app.makeSingleInstance((commandLine, workingDirectory) => {
+        app.requestSingleInstanceLock()
+        app.on('second-instance', (argv, cwd) => {
             this.bringWindowUp(); // Someone tried to run a second instance, we should focus our window.
         })
-
-        if (isSecondInstance) {
-            this.quit();
-        }
 
         if (process.platform === 'darwin') {
             let template: MenuItemConstructorOptions[] = [
