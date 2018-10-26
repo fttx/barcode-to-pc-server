@@ -55,27 +55,27 @@ gulp.task('ionic:install', () => {
 })
 
 gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
-  const ionicConfig = require('@ionic/app-scripts/dist/util/config')
-  const ionic = require('@ionic/app-scripts')
+  // exec is less cross-platoform but at least works
+  return execSync('npm run ionic:build', { cwd: '../', stdio: "inherit", shell: true })
 
-  return new Promise((resolve, reject) => {
-    // exec is less cross-platoform but at least works
-    execSync('npm run build:browser', { stdio: "inherit", shell: true })
+  // const ionicConfig = require('@ionic/app-scripts/dist/util/config')
+  // const ionic = require('@ionic/app-scripts')
 
-    // ionic.build doesn't add the platform if it isn't installed first.
-    // let buildContext = ionicConfig.generateContext({
-    //   isProd: true,
-    //   platform: 'browser',
-    // });
-    // ionic.build(buildContext).then(() => {
-    //   gulp
-    //     // .src(['./platforms/browser/www/**/*'])
-    //     .src(['./www/**/*'])
-    //     .pipe(gulp.dest('../dist/ionic/www/'))
-    //     .on('error', reject)
-    //     .on('end', resolve)
-    // })
-  })
+  // return new Promise((resolve, reject) => {
+  //   // ionic.build doesn't add the platform if it isn't installed first.
+  //   let buildContext = ionicConfig.generateContext({
+  //     isProd: true,
+  //     platform: 'browser',
+  //   });
+  //   ionic.build(buildContext).then(() => {
+  //     gulp
+  //       // .src(['./platforms/browser/www/**/*'])
+  //       .src(['./www/**/*'])
+  //       .pipe(gulp.dest('../dist/ionic/www/'))
+  //       .on('error', reject)
+  //       .on('end', resolve)
+  //   })
+  // })
 });
 
 gulp.task('electron:assets', ['mkdir'], () => {

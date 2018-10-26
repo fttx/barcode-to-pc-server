@@ -28,7 +28,8 @@
     "mocha": "mocha",
     "tsc:electron": "tsc -p electron/tsconfig.json",
     "tsc:watch-electron": "tsc -w -p electron/tsconfig.json",
-    "electron:dev": "npx electron dist/electron/src/main.js --dev"
+    "electron:dev": "npx electron dist/electron/src/main.js --dev",
+    "ionic:build": "cd ionic && npx ionic cordova build browser --prod"
   },
   "private": true,
   "build": {
