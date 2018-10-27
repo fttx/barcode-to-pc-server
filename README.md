@@ -32,6 +32,7 @@
     npm install
     ```
     * If you get errors related to cairo.h:  <https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error>
+    * If you get ng2-dragula errors: <https://github.com/valor-software/ng2-dragula/issues/912>
     * If you're building on Windows, you may need to install these packages: 
         * [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe)
         * [Python 2.7 and Visual C++ Build Environment](https://github.com/nodejs/node-gyp#on-windows)

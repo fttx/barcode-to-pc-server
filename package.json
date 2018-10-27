@@ -57,7 +57,7 @@
   "dependencies": {
     "bonjour": "^3.5.0",
     "electron-store": "^2.0.0",
-    "electron-updater": "^3.1.1",
+    "electron-updater": "^3.1.5",
     "install": "^0.12.1",
     "mdns": "^2.4.0",
     "network": "^0.4.1",
@@ -81,6 +81,6 @@
     "mocha": "^5.2.0",
     "npx": "^10.2.0",
     "spectron": "^3.8.0",
-    "typescript": "^2.7.2"
+    "typescript": "^3.1.3"
   }
 }
