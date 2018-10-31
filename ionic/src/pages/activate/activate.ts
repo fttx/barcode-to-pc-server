@@ -51,4 +51,20 @@ export class ActivatePage {
   getNextChargeDate() {
     return new Date(this.store.get(Config.STORAGE_NEXT_CHARGE_DATE, 0)).toLocaleDateString();
   }
+
+  contactSupportClick() {
+    this.electronProvider.shell.openExternal('mailto:' + Config.EMAIL_SUPPORT);
+  }
+
+  getSupportEmail() {
+    return Config.EMAIL_SUPPORT;
+  }
+
+  contactOrdersClick() {
+    this.electronProvider.shell.openExternal('mailto:' + Config.EMAIL_ORDERS);
+  }
+
+  getOrdersEmail() {
+    return Config.EMAIL_ORDERS;
+  }
 }

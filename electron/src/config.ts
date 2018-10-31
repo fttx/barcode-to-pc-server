@@ -32,10 +32,11 @@ export class Config {
     public static URL_API = Config.URL_WEBSITE + "http-api.json"
     public static URL_GITHUB_SERVER = 'https://github.com/fttx/barcode-to-pc-server';
     public static URL_GITHUB_APP = 'https://github.com/fttx/barcode-to-pc-app';
-    public static URL_MAIL = 'mailto:filippo.tortomasi@gmail.com';
 
     public static URL_PAIR = 'http://app.barcodetopc.com';
 
+    public static EMAIL_SUPPORT = 'support@barcodetopc.com';
+    public static EMAIL_ORDERS = 'orders@fastspring.com';
 
     // Constants
     public static STORAGE_SUBSCRIPTION = 'subscription';

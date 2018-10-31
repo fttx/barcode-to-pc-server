@@ -60,7 +60,7 @@ export class InfoPage {
   }
 
   getMail() {
-    return Config.URL_MAIL;
+    return 'mailto:' + Config.EMAIL_SUPPORT;
   }
 
 }
