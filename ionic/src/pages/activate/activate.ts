@@ -45,6 +45,9 @@ export class ActivatePage {
   }
 
   getRemainingScans() {
+    if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
+      return 'Unlimited'
+    }
     return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0)
   }
 
@@ -66,5 +69,12 @@ export class ActivatePage {
 
   getOrdersEmail() {
     return Config.EMAIL_ORDERS;
+  }
+
+  toReadable(number: number) {
+    if (number == Number.MAX_SAFE_INTEGER) {
+      return 'Unlimited'
+    }
+    return number + '';
   }
 }

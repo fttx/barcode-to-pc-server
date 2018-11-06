@@ -61,11 +61,11 @@
           </ion-row>
           <ion-row>
             <ion-col>Max number of smartphones</ion-col>
-            <ion-col>{{ licenseProvider.getNOMaxAllowedConnectedDevices() }}</ion-col>
+            <ion-col>{{ toReadable(licenseProvider.getNOMaxAllowedConnectedDevices()) }}</ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Max number of output components</ion-col>
-            <ion-col>{{ licenseProvider.getNOMaxComponents() }}</ion-col>
+            <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
           </ion-row>
           <ion-row>
             <ion-col>Quantity paramter</ion-col>
