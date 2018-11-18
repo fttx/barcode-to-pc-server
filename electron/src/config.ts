@@ -14,16 +14,13 @@ export class Config {
 
     public static WEB_SITE_NAME = 'barcodetopc.com';
 
-    // public static URL_WEBSITE = 'https://barcodetopc.com';
-    public static URL_WEBSITE = 'http://localhost/wordpress/site';
+    public static URL_WEBSITE = 'https://barcodetopc.com';
 
-    // public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com';
-    public static URL_LICENSE_SERVER = 'http://localhost:3000'
+    public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com';
     public static URL_SUBSCRIPTION_CHECK = Config.URL_LICENSE_SERVER + '/subscription/check';
     public static URL_SUBSCRIPTION_DEACTIVATE = Config.URL_LICENSE_SERVER + '/subscription/remove';
 
-    // public static URL_BLOG = 'https://blog.barcodetopc.com';
-    public static URL_BLOG = 'http://localhost/wordpress';
+    public static URL_BLOG = 'https://blog.barcodetopc.com';
 
     public static URL_PRICING = Config.URL_BLOG + '/pricing/';
     public static URL_DOWNLOAD = Config.URL_WEBSITE + '/#download';
