@@ -50,7 +50,7 @@
 * To sign the installers follow the electron-builder [code-signing tutorial](https://www.electron.build/code-signing). TL;DR: set `CSC_LINK` and `CSC_KEY_PASSWORD` environment variables.
 * To enable the publishing to GitHub releases set `GH_TOKEN` environment variable and give all the `repo` permissions
 * The installer will be put in the dist/dist/ folder.
-* If you get sass errors run `npm run fix-sass`
+* If you get sass errors run `cd ionic && npm rebuild node-sass --force`
 
 ## Run
 
