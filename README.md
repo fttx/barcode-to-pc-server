@@ -32,7 +32,6 @@
     npm install
     ```
     * If you get errors related to cairo.h:  <https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error>
-    * If you get ng2-dragula errors: <https://github.com/valor-software/ng2-dragula/issues/912>
     * If you're building on Windows, you may need to install these packages: 
         * [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe)
         * [Python 2.7 and Visual C++ Build Environment](https://github.com/nodejs/node-gyp#on-windows)
@@ -62,17 +61,11 @@
 npm start # run electron with dev tools and the webserver with livereload
 ```
 
-* If you want to open it on your browser without electron:
-
-```bash
-npm run browser # run the webserver with livereload only
-```
-
 * If you're working on the electron/main.ts file:
 
 ```bash
 npm run watch # run the webserver with livereload and also watch the electron/main.ts file
-npm run electron-dev # run electron with dev tools or press F5 if you're using VSCode to start debugging
+npm run electron:dev # run electron with dev tools or press F5 if you're using VSCode to start debugging
 ```
 
 ## Publishing updates
