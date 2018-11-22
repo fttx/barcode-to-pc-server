@@ -203,7 +203,7 @@ export class LicenseProvider {
     if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
       let message = 'You\'ve reached the maximum number of connected devices for your current subscription plan';
       this.devicesProvider.kickDevice(device, message);
-      this.showUpgradeDialog('Devices limit raeched', message)
+      this.showUpgradeDialog('Devices limit reached', message)
     }
   }
 
@@ -220,7 +220,7 @@ export class LicenseProvider {
     if (count > this.getNOMaxAllowedScansPerMonth()) {
       let message = 'You\'ve reached the maximum number of monthly scannings for your current subscription plan.';
       this.devicesProvider.kickAllDevices(message);
-      this.showUpgradeDialog('Monthly scans limit raeched', message)
+      this.showUpgradeDialog('Monthly scans limit reached', message)
     }
   }
 
