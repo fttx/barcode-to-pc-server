@@ -184,7 +184,7 @@ export class UiHandler implements Handler {
                     submenu: [
                         { role: 'minimize' },
                         { role: 'close' },
-                        { role: 'minimize' },
+                        { role: 'hide' },
                         { role: 'zoom' },
                         { type: 'separator' },
                         { role: 'front' }
