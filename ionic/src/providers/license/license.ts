@@ -14,17 +14,17 @@ import { StorageProvider } from '../storage/storage';
  * LicenseProvider comunicates with the subscription-server to see if there is
  * an active subscription for the current machine. (The check is done on app
  * start in the constructor)
- * 
+ *
  * LicenseProvider provides methods to see wheter a certain feature can be
  * accessed with the active subscription plan like getNOMaxX or canUseX.
- * 
+ *
  * Methods that looks like limitFeatureX must be called when the user tries to
  * use an X paid feature. These methods take care of disabling the feature for
  * the future use and inform the user about it through dialogs.
- * 
+ *
  * LicenseProvider also provides other methods to show to the user
  * license-related dialogs and pages. 
- * 
+ *
  * // TODO: remove StorageProvider and use only ElectronStore, this way should
  * be possible to convert all methods that looks like canUseX to limitFeatureX
  * so that this class can encapsulate all license related code
@@ -106,7 +106,7 @@ export class LicenseProvider {
         if (!value['plan']) {
           // If the plan name isn't in the response it means that this was the
           // first request and that the CLAIM procedure has been executed
-          // successfully, so i can do a second request to retreive the plan name
+          // successfully, so i can do a second request to retreive the plan name.
           this.updateSubscriptionStatus(serial);
         } else {
           this.activePlan = value['plan'];
@@ -118,8 +118,8 @@ export class LicenseProvider {
         }
       } else {
         // When the license-server says that the subscription is not active
-        // the user should be propted immediatly, no matter what it's passed a
-        // serial
+        // the user should be propted immediatly, no matter what is passed a
+        // serial or not.
         this.deactivate();
         this.utilsProvider.showErrorNativeDialog(value['message']);
       }
@@ -151,13 +151,19 @@ export class LicenseProvider {
 
   /**
    * Resets the subscription plan to FREE.
-   * If clearSerial is TRUE it's required an internet connection to complete the
-   * deactivation process.
-   * @param clearSerial if TRUE the serial number is removed from the storage.
-   * The serial should be cleared only if the user explicitely deactivates the plan from
-   * the UI, the reason is to give the system the opportunity to reactivate itself
-   * when the connection comes back on, or the user updates his payment
-   * information 
+   * 
+   * @param clearSerial If TRUE the serial number is removed from the storage.
+   * The serial should be cleared only if the user explicitely deactivates the
+   * plan from the UI. 
+   * 
+   * In all other cases clearSerial should always be set to FALSE in order to
+   * give the system the opportunity to reactivate itself when for example the
+   * connection comes back on after that the system wasn't able to contact the
+   * license server, or even when the subscription fails to renew and the user
+   * updates his payment information.
+   * 
+   * When clearSerial is TRUE it's required an internet connection to complete
+   * the deactivation process.
    */
   deactivate(clearSerial = false) {
     let downgradeToFree = () => {
