@@ -2,13 +2,13 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions } from 'ionic-angular';
-
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
-import { UtilsProvider } from '../utils/utils';
 import { StorageProvider } from '../storage/storage';
+import { UtilsProvider } from '../utils/utils';
+
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -56,6 +56,13 @@ export class LicenseProvider {
       let lastDevice = devicesList[devicesList.length - 1];
       this.limitNOMaxConnectedDevices(lastDevice, devicesList);
     })
+
+    // if it's the first app start, initialize nextChargeDate and lastScanCountResetDate
+    let nextChargeDate = this.store.get(Config.STORAGE_NEXT_CHARGE_DATE, null);
+    if (nextChargeDate === null) { // happens only on the first start
+      this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, new Date().getTime() + 1000 * 60 * 60 * 24 * 31); // NOW() + 1 month
+      this.store.set(Config.STORAGE_LAST_SCAN_COUNT_RESET_DATE, 0); // 0 = past moment
+    }
   }
 
   /**
@@ -76,13 +83,21 @@ export class LicenseProvider {
    */
   updateSubscriptionStatus(serial: string = '') {
     this.activePlan = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
-    // this.store.delete(Config.STORAGE_SUBSCRIPTION);
 
     if (serial) {
       this.serial = serial;
       this.store.set(Config.STORAGE_SERIAL, this.serial);
     } else {
       this.serial = this.store.get(Config.STORAGE_SERIAL, '')
+    }
+
+    let now = new Date().getTime();
+    let nextChargeDate = this.store.get(Config.STORAGE_NEXT_CHARGE_DATE);
+    let canResetScanCount = now > nextChargeDate;
+
+    if (this.activePlan == LicenseProvider.PLAN_FREE && canResetScanCount) {
+      this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+      this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, new Date().getTime() + 1000 * 60 * 60 * 24 * 31); // NOW() + 1 month      
     }
 
     // Do not bother the license-server if there isn't an active subscription
@@ -115,6 +130,9 @@ export class LicenseProvider {
           if (serial) {
             this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
           }
+          if (canResetScanCount) {
+            this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+          }
         }
       } else {
         // When the license-server says that the subscription is not active
@@ -132,13 +150,13 @@ export class LicenseProvider {
           this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
         }
       } else {
-        // Perhaps there is a connection problem, wait a month before asking the
+        // Perhaps there is a connection problem, wait 15 days before asking the
         // user to enable the connection.
         // For simplicty the STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE field is used
         // only within this method
         let firstFailDate = this.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         let now = new Date().getTime();
-        if (firstFailDate && (now - firstFailDate) > 2592000000) { // 1 month = 2592000000 ms
+        if (firstFailDate && (now - firstFailDate) > 1296000000) { //  15 days = 1296000000 ms
           this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
           this.deactivate();
           this.utilsProvider.showErrorNativeDialog('Unable to verify your subscription plan. Please make you sure that the computer has an active internet connection');
@@ -147,7 +165,7 @@ export class LicenseProvider {
         }
       }
     })
-  }
+  } // updateSubscriptionStatus
 
   /**
    * Resets the subscription plan to FREE.
@@ -219,9 +237,9 @@ export class LicenseProvider {
    * has been exceeded
    */
   limitMonthlyScans(noNewScans = 1) {
-    let count = this.store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0);
+    let count = this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
     count += noNewScans;
-    this.store.set(Config.STORAGE_MONTHLY_SCANS_COUNT, count);
+    this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
 
     if (count > this.getNOMaxAllowedScansPerMonth()) {
       let message = 'You\'ve reached the maximum number of monthly scannings for your current subscription plan.';

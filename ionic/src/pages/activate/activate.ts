@@ -48,7 +48,7 @@ export class ActivatePage {
     if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
       return 'Unlimited'
     }
-    return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCANS_COUNT, 0)
+    return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
   }
 
   getNextChargeDate() {
