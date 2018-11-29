@@ -8,6 +8,7 @@ import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { StorageProvider } from '../storage/storage';
 import { UtilsProvider } from '../utils/utils';
+import { SettingsModel } from '../../models/settings.model';
 
 
 /**
@@ -215,7 +216,25 @@ export class LicenseProvider {
   }
 
   showPricingPage() {
-    this.electronProvider.shell.openExternal(Config.URL_PRICING);
+    // determine the value of customTypedString
+    let settings = this.storageProvider.getSettings();
+    let customTypedString = false;
+    if (settings.typedString.length != 2 || settings.typedString.length >= 3) {
+      customTypedString = true;
+    } else if (settings.typedString.length == 2) {
+      let defaultSettings = new SettingsModel();
+      customTypedString = (settings.typedString[0].value != defaultSettings.typedString[0].value || settings.typedString[1].value != defaultSettings.typedString[1].value);
+    }
+
+    // generate and open the url
+    let parameters = {
+      elapsedDaysSinceInstall: 0,
+      customTypedString: customTypedString,
+      scanCount: this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
+    }
+    this.electronProvider.shell.openExternal(
+      this.utilsProvider.appendParametersToURL(Config.URL_PRICING, parameters)
+    );
   }
 
   /**

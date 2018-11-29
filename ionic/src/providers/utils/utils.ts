@@ -93,4 +93,11 @@ export class UtilsProvider {
       type: 'info', title: 'Success', buttons: ['Close'], message: message
     })
   }
+
+  public appendParametersToURL(url, data) {
+    const ret = [];
+    for (let d in data)
+      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    return url + '?' + ret.join('&');
+  }
 }
