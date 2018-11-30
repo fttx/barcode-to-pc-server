@@ -93,7 +93,7 @@ export class HomePage {
       }
     })
 
-    this.devicesProvider.onConnectedDevicesListChange.subscribe((devices: DeviceModel[]) => {
+    this.devicesProvider.onConnectedDevicesListChange().subscribe((devices: DeviceModel[]) => {
       this.connectedDevices = devices;
       if (this.connectedClientPopover) {
         this.connectedClientPopover.dismiss();

@@ -53,7 +53,7 @@ export class LicenseProvider {
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.updateSubscriptionStatus();
-    this.devicesProvider.onConnectedDevicesListChange.subscribe(devicesList => {
+    this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
       let lastDevice = devicesList[devicesList.length - 1];
       this.limitNOMaxConnectedDevices(lastDevice, devicesList);
     })

@@ -11,7 +11,6 @@ import { SettingsModel } from '../../models/settings.model';
 export class StorageProvider {
   private static SCAN_SESSIONS = "scan_sessions";
   private static SETTINGS = "settings";
-  private static EVER_CONNECTED = "ever_connected";
 
   constructor(
     public storage: Storage
@@ -31,13 +30,5 @@ export class StorageProvider {
 
   setSettings(settings: SettingsModel) {
     localStorage.setItem(StorageProvider.SETTINGS, JSON.stringify(settings));
-  }
-
-  getEverConnected(): boolean {
-    return JSON.parse(localStorage.getItem(StorageProvider.EVER_CONNECTED)) || false;
-  }
-
-  setEverConnected(everConnected: boolean) {
-    localStorage.setItem(StorageProvider.EVER_CONNECTED, JSON.stringify(everConnected));
   }
 }

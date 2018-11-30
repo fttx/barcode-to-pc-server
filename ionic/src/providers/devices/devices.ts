@@ -16,12 +16,13 @@ import { responseModelKick } from '../../models/response.model';
 @Injectable()
 export class DevicesProvider {
   public connectedDevices: DeviceModel[] = [];
-  public onConnectedDevicesListChange: Subject<DeviceModel[]> = new Subject<DeviceModel[]>();
+  private _onConnectedDevicesListChange: Subject<DeviceModel[]> = new Subject<DeviceModel[]>();
+  public onConnectedDevicesListChange = () => this._onConnectedDevicesListChange;
 
   constructor(
-    public ngZone: NgZone,
-    public storageProvider: StorageProvider,
-    public electronProvider: ElectronProvider,
+    private ngZone: NgZone,
+    private storageProvider: StorageProvider,
+    private electronProvider: ElectronProvider,
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
@@ -63,7 +64,7 @@ export class DevicesProvider {
     if (this.connectedDevices.findIndex(x => x.equals(device)) == -1) {
       this.connectedDevices.push(device);
     }
-    this.onConnectedDevicesListChange.next(this.connectedDevices);
+    this._onConnectedDevicesListChange.next(this.connectedDevices);
   }
 
   private removeDevice(device: DeviceModel) {
@@ -71,6 +72,6 @@ export class DevicesProvider {
     if (index != -1) {
       this.connectedDevices.splice(index, 1);
     }
-    this.onConnectedDevicesListChange.next(this.connectedDevices);
+    this._onConnectedDevicesListChange.next(this.connectedDevices);
   }
 }

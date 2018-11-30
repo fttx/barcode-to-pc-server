@@ -40,4 +40,5 @@ export class Config {
     public static STORAGE_MONTHLY_SCAN_COUNT = 'storage_monthly_scan_count';
     public static STORAGE_LAST_SCAN_COUNT_RESET_DATE = 'storage_last_scan_count_reset_date';
     public static STORAGE_NEXT_CHARGE_DATE = 'storage_next_charge_date';
+    public static STORAGE_FIRST_CONNECTION_DATE = 'storage_first_connection_date';
 }

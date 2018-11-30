@@ -14,7 +14,6 @@ import { HomePage, MainMenuPopover, QrCodePairingModal, ScanSessionContextMenuPo
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
-import { ConfigProvider } from '../providers/config/config';
 import { ElectronProvider } from '../providers/electron/electron';
 import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
@@ -63,7 +62,6 @@ describe('MyApp Component', () => {
         ElectronProvider,
         StorageProvider,
         UtilsProvider,
-        ConfigProvider
       ]
     })
   }));
