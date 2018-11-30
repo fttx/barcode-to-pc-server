@@ -215,10 +215,10 @@ export class LicenseProvider {
     }
   }
 
-  showPricingPage() {
+  showPricingPage(refer) {
     // determine the value of customTypedString
-    let settings = this.storageProvider.getSettings();
     let customTypedString = false;
+    let settings = this.storageProvider.getSettings();
     if (settings.typedString.length != 2 || settings.typedString.length >= 3) {
       customTypedString = true;
     } else if (settings.typedString.length == 2) {
@@ -226,11 +226,17 @@ export class LicenseProvider {
       customTypedString = (settings.typedString[0].value != defaultSettings.typedString[0].value || settings.typedString[1].value != defaultSettings.typedString[1].value);
     }
 
+    let daysSinceFirstConnection
+      = parseInt(
+        ((new Date().getTime() - this.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0)) / 86400000) + ''
+      );
+
     // generate and open the url
     let parameters = {
-      elapsedDaysSinceInstall: 0,
+      daysSinceFirstConnection: daysSinceFirstConnection,
       customTypedString: customTypedString,
-      scanCount: this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
+      scanCount: this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0),
+      refer: refer,
     }
     this.electronProvider.shell.openExternal(
       this.utilsProvider.appendParametersToURL(Config.URL_PRICING, parameters)
@@ -246,7 +252,7 @@ export class LicenseProvider {
     if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
       let message = 'You\'ve reached the maximum number of connected devices for your current subscription plan';
       this.devicesProvider.kickDevice(device, message);
-      this.showUpgradeDialog('Devices limit reached', message)
+      this.showUpgradeDialog('limitNOMaxConnectedDevices', 'Devices limit reached', message)
     }
   }
 
@@ -263,7 +269,7 @@ export class LicenseProvider {
     if (count > this.getNOMaxAllowedScansPerMonth()) {
       let message = 'You\'ve reached the maximum number of monthly scannings for your current subscription plan.';
       this.devicesProvider.kickAllDevices(message);
-      this.showUpgradeDialog('Monthly scans limit reached', message)
+      this.showUpgradeDialog('limitMonthlyScans', 'Monthly scans limit reached', message)
     }
   }
 
@@ -281,7 +287,7 @@ export class LicenseProvider {
     }
 
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('Upgrade', 'This feature isn\'t available with your current subscription plan.');
+      this.showUpgradeDialog('canUseQuantityParameter', 'Upgrade', 'This feature isn\'t available with your current subscription plan.');
     }
     return available;
   }
@@ -299,7 +305,7 @@ export class LicenseProvider {
       case LicenseProvider.PLAN_UNLIMITED: available = true; break;
     }
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('Upgrade', 'This feature isn\'t available with your current subscription plan.');
+      this.showUpgradeDialog('canUseCSVAppend', 'Upgrade', 'This feature isn\'t available with your current subscription plan.');
     }
     return available;
   }
@@ -344,14 +350,14 @@ export class LicenseProvider {
     }
   }
 
-  private showUpgradeDialog(title, message) {
+  private showUpgradeDialog(refer, title, message) {
     if (this.upgradeDialog != null) {
       return;
     }
     this.upgradeDialog = this.alertCtrl.create({
       title: title, message: message, buttons: [{ text: 'Close', role: 'cancel' }, {
         text: 'Upgrade', handler: (opts: AlertOptions) => {
-          this.showPricingPage();
+          this.showPricingPage(refer);
         }
       }]
     });
