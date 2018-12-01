@@ -357,7 +357,7 @@ export class LicenseProvider {
     this.upgradeDialog = this.alertCtrl.create({
       title: title, message: message, buttons: [{ text: 'Close', role: 'cancel' }, {
         text: 'Upgrade', handler: (opts: AlertOptions) => {
-          this.showPricingPage(refer);
+          this.showPricingPage(refer + 'Dialog');
         }
       }]
     });
