@@ -19,6 +19,12 @@ export class DevicesProvider {
   private _onConnectedDevicesListChange: Subject<DeviceModel[]> = new Subject<DeviceModel[]>();
   public onConnectedDevicesListChange = () => this._onConnectedDevicesListChange;
 
+  private _onDeviceConnect: Subject<DeviceModel> = new Subject<DeviceModel>();
+  public onDeviceConnect = () => this._onDeviceConnect;
+
+  private _onDeviceDisconnect: Subject<DeviceModel> = new Subject<DeviceModel>();
+  public onDeviceDisconnect = () => this._onDeviceDisconnect;
+
   constructor(
     private ngZone: NgZone,
     private storageProvider: StorageProvider,
@@ -63,6 +69,7 @@ export class DevicesProvider {
   private addDevice(device: DeviceModel) {
     if (this.connectedDevices.findIndex(x => x.equals(device)) == -1) {
       this.connectedDevices.push(device);
+      this._onDeviceConnect.next(device);
     }
     this._onConnectedDevicesListChange.next(this.connectedDevices);
   }
@@ -71,6 +78,7 @@ export class DevicesProvider {
     let index = this.connectedDevices.findIndex(x => x.equals(device));
     if (index != -1) {
       this.connectedDevices.splice(index, 1);
+      this._onDeviceDisconnect.next(device);
     }
     this._onConnectedDevicesListChange.next(this.connectedDevices);
   }

@@ -58,6 +58,14 @@ export class LicenseProvider {
       this.limitNOMaxConnectedDevices(lastDevice, devicesList);
     })
 
+    this.devicesProvider.onDeviceDisconnect().subscribe(device => {
+      this.showUpgradeDialog('commercialUse', 'Free plan', 'Your current plan is for non-commercial use only. Please subscribe to a paid plan if you are using Barcode to PC for commercial purposes')
+    })
+
+    this.devicesProvider.onDeviceConnect().subscribe(device => {
+      this.hideUpgradeDialog();
+    })
+
     // if it's the first app start, initialize nextChargeDate and lastScanCountResetDate
     let nextChargeDate = this.store.get(Config.STORAGE_NEXT_CHARGE_DATE, null);
     if (nextChargeDate === null) { // happens only on the first start
@@ -363,5 +371,11 @@ export class LicenseProvider {
     });
     this.upgradeDialog.onDidDismiss(() => this.upgradeDialog = null)
     this.upgradeDialog.present();
+  }
+
+  private hideUpgradeDialog() {
+    if (this.upgradeDialog != null) {
+      this.upgradeDialog.dismiss();
+    }
   }
 }
