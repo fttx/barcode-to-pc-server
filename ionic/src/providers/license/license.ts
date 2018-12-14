@@ -322,8 +322,8 @@ export class LicenseProvider {
   getNOMaxAllowedConnectedDevices() {
     switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: return 1;
-      case LicenseProvider.PLAN_BASIC: return 2;
-      case LicenseProvider.PLAN_PRO: return 10;
+      case LicenseProvider.PLAN_BASIC: return 1;
+      case LicenseProvider.PLAN_PRO: return 3;
       case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
