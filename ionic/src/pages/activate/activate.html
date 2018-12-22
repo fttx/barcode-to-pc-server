@@ -44,6 +44,11 @@
         <b>Serial</b>
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
       </ion-item>
+      <ion-item no-lines no-padding>
+        <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">De-Activate</button>
+      </ion-item>
+    </div>
+
       <ion-item no-lines text-wrap no-padding>
         <b>Plan data</b> <br>
         <ion-grid>
@@ -53,7 +58,8 @@
               }})</ion-col>
           </ion-row>
           <ion-row>
-            <ion-col>Next bill</ion-col>
+            <ion-col [hidden]="licenseProvider.isSubscribed()">Next reset date</ion-col>
+            <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col>
             <ion-col>{{ getNextChargeDate() }}</ion-col>
           </ion-row>
           <ion-row>
@@ -78,10 +84,5 @@
           </ion-row>
         </ion-grid>
       </ion-item>
-
-      <ion-item no-lines no-padding>
-        <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">De-Activate</button>
-      </ion-item>
-    </div>
   </ion-list>
 </ion-content>

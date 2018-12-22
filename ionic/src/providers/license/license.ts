@@ -59,7 +59,9 @@ export class LicenseProvider {
     })
 
     this.devicesProvider.onDeviceDisconnect().subscribe(device => {
-      this.showUpgradeDialog('commercialUse', 'Free plan', 'Your current plan is for non-commercial use only. Please subscribe to a paid plan if you are using Barcode to PC for commercial purposes')
+      if (this.activePlan == LicenseProvider.PLAN_FREE) {
+        this.showUpgradeDialog('commercialUse', 'Free plan', 'Your current plan is for non-commercial use only. Please subscribe to a paid plan if you are using Barcode to PC for commercial purposes')
+      }
     })
 
     this.devicesProvider.onDeviceConnect().subscribe(device => {
@@ -224,7 +226,7 @@ export class LicenseProvider {
   }
 
   showPricingPage(refer) {
-    // determine the value of customTypedString
+    // customTypedString
     let customTypedString = false;
     let settings = this.storageProvider.getSettings();
     if (settings.typedString.length != 2 || settings.typedString.length >= 3) {
@@ -234,20 +236,34 @@ export class LicenseProvider {
       customTypedString = (settings.typedString[0].value != defaultSettings.typedString[0].value || settings.typedString[1].value != defaultSettings.typedString[1].value);
     }
 
-    let daysSinceFirstConnection
-      = parseInt(
-        ((new Date().getTime() - this.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0)) / 86400000) + ''
-      );
+    // scanLimitReached
+    let scanLimitReached =
+      this.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) <= 0;
 
-    // generate and open the url
-    let parameters = {
-      daysSinceFirstConnection: daysSinceFirstConnection,
-      customTypedString: customTypedString,
-      scanCount: this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0),
-      refer: refer,
+    // periodOfUseSinceFirstConnection
+    let periodOfUseSinceFirstConnection = 'days';
+    let days = parseInt(
+      ((new Date().getTime() - this.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0)) / 86400000) + ''
+    );
+    if (days >= 7) {
+      periodOfUseSinceFirstConnection = 'weeks';
     }
+    if (days >= 31) {
+      periodOfUseSinceFirstConnection = 'months';
+    }
+    if (days >= 365) {
+      periodOfUseSinceFirstConnection = 'years';
+    }
+
+    // Put everything together and open the url in the system browser
     this.electronProvider.shell.openExternal(
-      this.utilsProvider.appendParametersToURL(Config.URL_PRICING, parameters)
+      this.utilsProvider.appendParametersToURL(Config.URL_PRICING, {
+        currentPlan: this.activePlan,
+        customTypedString: customTypedString,
+        scanLimitReached: scanLimitReached,
+        periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
+        refer: refer,
+      })
     );
   }
 
