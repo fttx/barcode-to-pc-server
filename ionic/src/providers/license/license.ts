@@ -311,7 +311,7 @@ export class LicenseProvider {
     }
 
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseQuantityParameter', 'Upgrade', 'This feature isn\'t available with your current subscription plan.');
+      this.showUpgradeDialog('canUseQuantityParameter', 'Upgrade', 'The quantity component isn\'t available with your current subscription plan.');
     }
     return available;
   }
