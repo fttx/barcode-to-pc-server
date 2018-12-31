@@ -15,7 +15,6 @@ import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { ElectronProvider } from '../providers/electron/electron';
-import { StorageProvider } from '../providers/storage/storage';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
 
@@ -60,7 +59,6 @@ describe('MyApp Component', () => {
         SplashScreen,
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         ElectronProvider,
-        StorageProvider,
         UtilsProvider,
       ]
     })

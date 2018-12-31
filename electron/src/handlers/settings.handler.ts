@@ -1,21 +1,24 @@
 import { ipcMain } from 'electron';
 import { Subject } from 'rxjs/Subject';
 import * as WebSocket from 'ws';
-
-import { Handler } from '../models/handler.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { StringComponentModel } from '../../../ionic/src/models/string-component.model';
-
+import { Config } from '../config';
+import { Handler } from '../models/handler.model';
+import ElectronStore = require('electron-store');
 
 export class SettingsHandler implements Handler {
     public onSettingsChanged: Subject<SettingsModel> = new Subject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
     private settings: SettingsModel;
 
     private static instance: SettingsHandler;
+    private store: ElectronStore;
+
     private constructor() {
+        this.store = new ElectronStore();
+        // this communication is needed because electronStore.onDidChange() triggers only within the same process
         ipcMain.on('settings', (event, arg) => {
-            // console.log('settings received', arg)
-            this.settings = arg;
+            this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel())
             this.onSettingsChanged.next(this.settings);
         });
     }

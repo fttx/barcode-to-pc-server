@@ -6,7 +6,6 @@ import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
-import { StorageProvider } from '../storage/storage';
 import { UtilsProvider } from '../utils/utils';
 import { SettingsModel } from '../../models/settings.model';
 
@@ -26,7 +25,7 @@ import { SettingsModel } from '../../models/settings.model';
  * LicenseProvider also provides other methods to show to the user
  * license-related dialogs and pages. 
  *
- * // TODO: remove StorageProvider and use only ElectronStore, this way should
+ * // TODO: remove StorageProvider and use only ElectronStore ✅, this way should
  * be possible to convert all methods that looks like canUseX to limitFeatureX
  * so that this class can encapsulate all license related code
  */
@@ -48,7 +47,6 @@ export class LicenseProvider {
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
     private utilsProvider: UtilsProvider,
-    private storageProvider: StorageProvider, // deprecated, use ElectronStore
     private devicesProvider: DevicesProvider,
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -199,14 +197,14 @@ export class LicenseProvider {
       this.activePlan = LicenseProvider.PLAN_FREE;
       this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
 
-      let settings = this.storageProvider.getSettings();
+      let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
       if (!this.canUseCSVAppend(false)) {
         settings.appendCSVEnabled = false;
       }
       if (!this.canUseQuantityParameter(false)) {
         settings.typedString = settings.typedString.filter(x => x.value != 'quantity');
       }
-      this.storageProvider.setSettings(settings);
+      this.store.set(Config.STORAGE_SETTINGS, settings);
     }
 
     if (clearSerial) {
@@ -228,7 +226,7 @@ export class LicenseProvider {
   showPricingPage(refer) {
     // customTypedString
     let customTypedString = false;
-    let settings = this.storageProvider.getSettings();
+    let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
     if (settings.typedString.length != 2 || settings.typedString.length >= 3) {
       customTypedString = true;
     } else if (settings.typedString.length == 2) {

@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelHelo } from '../../models/request.model';
 import { ElectronProvider } from '../electron/electron';
-import { StorageProvider } from '../storage/storage';
 import { responseModelKick } from '../../models/response.model';
 
 /*
@@ -27,7 +26,6 @@ export class DevicesProvider {
 
   constructor(
     private ngZone: NgZone,
-    private storageProvider: StorageProvider,
     private electronProvider: ElectronProvider,
   ) {
     if (this.electronProvider.isElectron()) {

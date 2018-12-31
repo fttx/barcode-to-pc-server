@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell } from 'electron';
-import { StorageProvider } from '../storage/storage';
 import ElectronStore from 'electron-store'
 import * as v5 from 'uuid/v5';
+import { Config } from '../../../../electron/src/config';
+import { SettingsModel } from '../../models/settings.model';
 
 declare var window: any;
 // If you import a module but never use any of the imported values other than as TypeScript types,
@@ -15,7 +16,7 @@ declare var window: any;
 @Injectable()
 export class ElectronProvider {
   public uuid = '';
-
+  
   ipcRenderer: typeof ipcRenderer;
   dialog: typeof remote.dialog;
   app: typeof remote.app;
@@ -26,7 +27,6 @@ export class ElectronProvider {
   v5: typeof v5;
 
   constructor(
-    private storageProvider: StorageProvider
   ) {
     // console.log('test')
     if (this.isElectron()) {
@@ -48,7 +48,7 @@ export class ElectronProvider {
   sendReadyToMainProcess() {
     if (this.isElectron()) {
       this.ipcRenderer.send('pageLoad'); // send the first message from the renderer
-      this.ipcRenderer.send('settings', this.storageProvider.getSettings());
+      this.ipcRenderer.send('settings');
     }
   }
 

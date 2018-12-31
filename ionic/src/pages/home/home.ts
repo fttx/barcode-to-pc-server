@@ -1,41 +1,23 @@
 import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
+import ElectronStore from 'electron-store';
 import { saveAs } from 'file-saver';
-import {
-  Content,
-  Events,
-  ModalController,
-  NavController,
-  NavParams,
-  Popover,
-  PopoverController,
-  Searchbar,
-  ViewController,
-} from 'ionic-angular';
+import { Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
 import * as Papa from 'papaparse';
-
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
-import {
-  requestModel,
-  requestModelClearScanSessions,
-  requestModelDeleteScan,
-  requestModelDeleteScanSessions,
-  requestModelHelo,
-  requestModelPutScanSessions,
-  requestModelUpdateScanSession,
-} from '../../models/request.model';
+import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
 import { ScanModel } from '../../models/scan.model';
 import { DevicesProvider } from '../../providers/devices/devices';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
-import { StorageProvider } from '../../providers/storage/storage';
+import { LicenseProvider } from '../../providers/license/license';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-import { ActivatePage } from '../activate/activate';
-import { LicenseProvider } from '../../providers/license/license';
+import { SettingsModel } from '../../models/settings.model';
 
 /**
  * Generated class for the HomePage page.
@@ -62,6 +44,8 @@ export class HomePage {
   private lastInsertedScanIndex = 0;
   private connectedClientPopover: Popover = null;
 
+  private store: ElectronStore;
+
   onScanSessionClick(scanSession) {
     this.selectedScanSession = scanSession;
   }
@@ -71,7 +55,6 @@ export class HomePage {
     public navParams: NavParams,
     public electronProvider: ElectronProvider,
     public ngZone: NgZone,
-    public storageProvider: StorageProvider,
     public popoverCtrl: PopoverController,
     private lastToast: LastToastProvider,
     public events: Events,
@@ -81,6 +64,7 @@ export class HomePage {
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
+    this.store = new this.electronProvider.ElectronStore();
 
     this.events.subscribe('delete:scanSession', (scanSession) => {
       var index = this.scanSessions.indexOf(scanSession, 0);
@@ -263,9 +247,8 @@ export class HomePage {
         });
       });
     }
-    this.scanSessions = this.storageProvider.getScanSessions();
+    this.scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
   }
-
 
   onSettingsClick() {
     this.navCtrl.push(SettingsPage)
@@ -309,7 +292,7 @@ export class HomePage {
 
   save() {
     console.log('save()', this.scanSessions);
-    this.storageProvider.setScanSessions(this.scanSessions);
+    this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
   }
 
   getItemBackgroundColor(scanSession) {
@@ -389,13 +372,15 @@ export class ConnectedClientsPopover {
 })
 export class ScanSessionContextMenuPopover {
   private scanSession: ScanSessionModel;
+  private store: ElectronStore;
 
   constructor(
     public viewCtrl: ViewController,
     public navParams: NavParams,
-    public storageProvider: StorageProvider,
+    public electronProvider: ElectronProvider,
     public events: Events,
   ) {
+    this.store = new this.electronProvider.ElectronStore();
     this.scanSession = this.navParams.get('scanSession');
   }
 
@@ -407,7 +392,8 @@ export class ScanSessionContextMenuPopover {
     this.close()
 
     let content = [];
-    let settings = this.storageProvider.getSettings();
+    let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+
     content.push(Papa.unparse(this.scanSession.scannings.map(x => { return { 'text': x.text } }), {
       quotes: settings.enableQuotes,
       delimiter: ",",

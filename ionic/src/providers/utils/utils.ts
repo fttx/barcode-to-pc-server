@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-
+import ElectronStore from 'electron-store';
 import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../electron/electron';
-
 
 /*
   Generated class for the UtilsProvider provider.
@@ -12,10 +11,14 @@ import { ElectronProvider } from '../electron/electron';
 */
 @Injectable()
 export class UtilsProvider {
+  private store: ElectronStore;
 
   constructor(
     private electronProvider: ElectronProvider,
-  ) { }
+    public storage: Storage
+  ) {
+    this.store = new this.electronProvider.ElectronStore();
+  }
 
   getQrCodeUrl(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -99,5 +102,22 @@ export class UtilsProvider {
     for (let d in data)
       ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
     return url + '?' + ret.join('&');
+  }
+
+  public upgradeIonicStoreToElectronStore() {
+    const SCAN_SESSIONS = "scan_sessions";
+    const SETTINGS = "settings";
+
+    let scanSessions = JSON.parse(localStorage.getItem(SCAN_SESSIONS)) || [];
+    if (scanSessions.length) {
+      this.store.set(Config.STORAGE_SCAN_SESSIONS, scanSessions);
+      localStorage.removeItem(SCAN_SESSIONS);
+    }
+
+    let settings = JSON.parse(localStorage.getItem(SETTINGS));
+    if (settings != null) {
+      this.store.set(Config.STORAGE_SETTINGS, settings);
+      localStorage.removeItem(SETTINGS);
+    }
   }
 }

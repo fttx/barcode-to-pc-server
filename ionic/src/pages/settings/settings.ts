@@ -6,7 +6,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
-import { StorageProvider } from '../../providers/storage/storage';
+import ElectronStore from 'electron-store';
 
 /**
  * Generated class for the SettingsPage page.
@@ -28,6 +28,7 @@ export class SettingsPage {
   public openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
 
   private lastSavedSettings: string;
+  private store: ElectronStore;
 
   private getAvailableComponents(): StringComponentModel[] {
     return [
@@ -74,11 +75,11 @@ export class SettingsPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     private dragulaService: DragulaService,
-    private storageProvider: StorageProvider,
     private electronProvider: ElectronProvider,
     private licenseProvider: LicenseProvider,
     private alertCtrl: AlertController,
   ) {
+    this.store = new this.electronProvider.ElectronStore();
     this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
       copy: (el, source) => {
@@ -116,7 +117,7 @@ export class SettingsPage {
   }
 
   ionViewDidLoad() {
-    this.settings = this.storageProvider.getSettings();
+    this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
 
     if (this.electronProvider.isElectron()) {
       let openAtLogin = this.electronProvider.app.getLoginItemSettings().openAtLogin;
@@ -151,7 +152,7 @@ export class SettingsPage {
   }
 
   apply() {
-    this.storageProvider.setSettings(this.settings);
+    this.store.set(Config.STORAGE_SETTINGS, this.settings);
     if (this.electronProvider.isElectron()) {
       this.electronProvider.app.setLoginItemSettings({
         openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
@@ -160,7 +161,7 @@ export class SettingsPage {
     }
     this.lastSavedSettings = JSON.stringify(this.settings);
     if (this.electronProvider.isElectron()) {
-      this.electronProvider.ipcRenderer.send('settings', this.settings);
+      this.electronProvider.ipcRenderer.send('settings');
     }
   }
 

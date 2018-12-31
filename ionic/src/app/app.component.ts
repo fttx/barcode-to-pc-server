@@ -8,7 +8,7 @@ import { HomePage } from '../pages/home/home';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
-import { StorageProvider } from '../providers/storage/storage';
+import { UtilsProvider } from '../providers/utils/utils';
 
 @Component({
   templateUrl: 'app.html'
@@ -23,9 +23,9 @@ export class MyApp {
     platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
-    public storage: StorageProvider,
     public electronProvider: ElectronProvider,
     public devicesProvider: DevicesProvider,
+    utils: UtilsProvider
   ) {
     this.store = new this.electronProvider.ElectronStore();
 
@@ -46,5 +46,7 @@ export class MyApp {
         this.store.set(Config.STORAGE_FIRST_CONNECTION_DATE, new Date().getTime())
       }
     });
+
+    utils.upgradeIonicStoreToElectronStore();
   }
 }
