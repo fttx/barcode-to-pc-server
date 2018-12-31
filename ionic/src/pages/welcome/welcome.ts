@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
@@ -28,11 +28,13 @@ export class WelcomePage {
     public electronProvider: ElectronProvider,
     private lastToast: LastToastProvider,
     private utilsService: UtilsProvider,
+    public ngZone: NgZone,
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
-        this.navCtrl.setRoot(HomePage);
-
+          ngZone.run(() => {
+            this.navCtrl.setRoot(HomePage);
+          })
         this.lastToast.present('A connection was successfully established with ' + request.deviceName);
       });
     }
