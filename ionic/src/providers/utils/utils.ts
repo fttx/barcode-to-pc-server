@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Storage } from '@ionic/storage';
 import ElectronStore from 'electron-store';
 import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../electron/electron';
