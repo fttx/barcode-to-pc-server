@@ -22,8 +22,8 @@ export class Config {
 
     public static URL_PRICING = Config.URL_WEBSITE + '/pricing/';
     public static URL_DOWNLOAD = Config.URL_WEBSITE + '/#download';
-    public static URL_FAQ = Config.URL_WEBSITE + '/faq.html';
-    public static URL_FAQ_APP_DOESNT_FIND_COMPUTER = Config.URL_WEBSITE + '/faq.html#app-doesnt-find-computer';
+    public static URL_FAQ = Config.URL_WEBSITE + '/frequently-asked-questions/';
+    public static URL_FAQ_APP_DOESNT_FIND_COMPUTER = Config.URL_FAQ + '#app-doesnt-find-computer';
     public static URL_API = Config.URL_WEBSITE + "http-api.json"
     public static URL_GITHUB_SERVER = 'https://github.com/fttx/barcode-to-pc-server';
     public static URL_GITHUB_APP = 'https://github.com/fttx/barcode-to-pc-app';
