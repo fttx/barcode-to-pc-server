@@ -352,9 +352,9 @@ export class LicenseProvider {
 
   getNOMaxAllowedScansPerMonth() {
     switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return 1000;
-      case LicenseProvider.PLAN_BASIC: return 2000;
-      case LicenseProvider.PLAN_PRO: return 10000;
+      case LicenseProvider.PLAN_FREE: return 60;
+      case LicenseProvider.PLAN_BASIC: return 120;
+      case LicenseProvider.PLAN_PRO: return 500;
       case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
