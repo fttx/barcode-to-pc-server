@@ -2,13 +2,33 @@
 
 ## [Unreleased]
 
+Everything up to date
+
+<!-- ### Security -->
+
+<!-- ## [x.0.0] - 2019-mm-dd
+
+### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security -->
+
+## [v3.0.0] - 2019-01-XXXXXXX
+
 ### Added
 
 * Continuous mode
 * Option to clear the server data
 * Quantity output component
-* Delay output componet
-* Other key output componet (to press keys like F1, DEL, etc.)
+* Delay output component
+* Other key output component (to press keys like F1, DEL, etc.)
 * Append scannings to CSV file in realtime
 * Auto reconnect when the IP address changes
 * Minimizzation to tray icon
@@ -26,25 +46,7 @@
 
 * DATE, DATE_TIME, etc. variable 'unknown' issue
 * Scan session name sync issue
-* Minor UI enachments
-
-<!-- ### Security -->
-
-
-
-<!-- ## [x.0.0] - 2019-mm-dd
-
-### Added
-
-### Changed
-
-### Deprecated
-
-### Removed
-
-### Fixed
-
-### Security -->
+* Minor UI enhancements
 
 ## [v2.0.0] - 2017-12-05
 
@@ -73,6 +75,7 @@
 * Included the Apple Bonjour installer
 
 [Unreleased]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...HEAD
+[v3.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.0
 [v2.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0...v2.0.0
 [v2.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0...v2.0.0
 [v1.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0-rc1...v1.1.0
