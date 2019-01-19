@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import { Subject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelHelo } from '../../models/request.model';
@@ -15,13 +15,13 @@ import { responseModelKick } from '../../models/response.model';
 @Injectable()
 export class DevicesProvider {
   public connectedDevices: DeviceModel[] = [];
-  private _onConnectedDevicesListChange: Subject<DeviceModel[]> = new Subject<DeviceModel[]>();
+  private _onConnectedDevicesListChange: ReplaySubject<DeviceModel[]> = new ReplaySubject<DeviceModel[]>();
   public onConnectedDevicesListChange = () => this._onConnectedDevicesListChange;
 
-  private _onDeviceConnect: Subject<DeviceModel> = new Subject<DeviceModel>();
+  private _onDeviceConnect: ReplaySubject<DeviceModel> = new ReplaySubject<DeviceModel>();
   public onDeviceConnect = () => this._onDeviceConnect;
 
-  private _onDeviceDisconnect: Subject<DeviceModel> = new Subject<DeviceModel>();
+  private _onDeviceDisconnect: ReplaySubject<DeviceModel> = new ReplaySubject<DeviceModel>();
   public onDeviceDisconnect = () => this._onDeviceDisconnect;
 
   constructor(
