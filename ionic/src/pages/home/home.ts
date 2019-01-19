@@ -84,15 +84,6 @@ export class HomePage {
       }
       // console.log('@@@', this.connectedDevices)
     });
-
-    this.electronProvider.ipcRenderer.on('find', (e, data: {}) => {
-      this.ngZone.run(() => {
-        this.hideSearchBar = false;
-        setTimeout(() => {
-          this.searchbar.setFocus();
-        }, 250)
-      })
-    });
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -128,126 +119,139 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.title.setTitle(Config.APP_NAME);
+    this.scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
 
-    if (this.electronProvider.isElectron()) {
+    // If the app isn't package inside electron it will never
+    // receive these events, so i won't subscribe to them
+    if (!this.electronProvider.isElectron()) {
+      return;
+    }
 
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
-        this.ngZone.run(() => {
+    // Those events are inside ionViewDidLoad because they need to be listening
+    // as long as the Home page is alive. Doesn't matter if there is another 
+    // page on top of it. They get registered only one time whene the Home page
+    // loads, so there isn't the need to clear them or perform other checks.
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
+      this.ngZone.run(() => this.lastToast.present('A connection was successfully established with ' + request.deviceName));
+    });
 
-        });
-        this.lastToast.present('A connection was successfully established with ' + request.deviceName)
-      });
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
+      this.ngZone.run(() => {
+        let initialNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
+        request.scanSessions.forEach(newScanSession => {
+          let scanSessionIndex = this.scanSessions.findIndex(x => x.id == newScanSession.id); // this is O(n^2) but i don't care since we don't have > 500 scan sessions, and the scanSessions array gets traversed all the way to the end only for the new created scan sessions
+          if (scanSessionIndex != -1) {
+            console.log('@ Scan session already present, merging the scannings')
+            let existingScanSession = this.scanSessions[scanSessionIndex];
 
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
-        this.ngZone.run(() => {
-          let initialNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
-          request.scanSessions.forEach(newScanSession => {
-            let scanSessionIndex = this.scanSessions.findIndex(x => x.id == newScanSession.id); // this is O(n^2) but i don't care since we don't have > 500 scan sessions, and the scanSessions array gets traversed all the way to the end only for the new created scan sessions
-            if (scanSessionIndex != -1) {
-              console.log('@ Scan session already present, merging the scannings')
-              let existingScanSession = this.scanSessions[scanSessionIndex];
+            if (existingScanSession.scannings.length == 0) {
+              console.log('@ scannings array emtpy -> assigning the whole array')
+              existingScanSession.scannings = newScanSession.scannings;
+            } else if (existingScanSession.scannings.length != 0 && newScanSession.scannings.length == 1) {
+              console.log('@ scannings array not emtpy -> adding only the new scans (the new scansessions contain only one scan -> unshift)')
+              let newScan = newScanSession.scannings[0];
+              let alreadyExistingScanIndex = existingScanSession.scannings.findIndex(x => x.id == newScan.id); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
 
-              if (existingScanSession.scannings.length == 0) {
-                console.log('@ scannings array emtpy -> assigning the whole array')
-                existingScanSession.scannings = newScanSession.scannings;
-              } else if (existingScanSession.scannings.length != 0 && newScanSession.scannings.length == 1) {
-                console.log('@ scannings array not emtpy -> adding only the new scans (the new scansessions contain only one scan -> unshift)')
-                let newScan = newScanSession.scannings[0];
-                let alreadyExistingScanIndex = existingScanSession.scannings.findIndex(x => x.id == newScan.id); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
-
-                if (alreadyExistingScanIndex == -1) {
-                  existingScanSession.scannings.unshift(newScan)
-                  this.lastInsertedScanIndex = 0;
-                } else {
-                  this.lastInsertedScanIndex = alreadyExistingScanIndex;
-                }
+              if (alreadyExistingScanIndex == -1) {
+                existingScanSession.scannings.unshift(newScan)
+                this.lastInsertedScanIndex = 0;
               } else {
-                console.log('@ scannings array not emtpy -> adding only the new scans')
-
-                // I expect to receive the scans sorted by id desc, so i copy
-                // to the local scan list only the scans that have an id  
-                // greater than the one that has the lastest received scan.
-                let lastReceivedScanId = existingScanSession.scannings[0].id;
-                let alreadyExistingScanIndex = newScanSession.scannings.findIndex(newScan => newScan.id <= lastReceivedScanId); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
-
-                console.log('@ lastReceivedScanId = ' + lastReceivedScanId + ' alreadyExistingScanIndex = ' + alreadyExistingScanIndex)
-
-                if (alreadyExistingScanIndex != -1) { // if some scan is already present => i do not include them
-                  console.log('@ the list of the received scans includes scans that are already present, slicing the array from 0 to ' + alreadyExistingScanIndex)
-
-                  let newScans: ScanModel[] = newScanSession.scannings.slice(0, alreadyExistingScanIndex);
-                  existingScanSession.scannings = newScans.concat(existingScanSession.scannings)
-                } else { // if the scans are all new, i copy all of them
-                  console.log('@ merging the scans as they are: ', newScanSession.scannings, existingScanSession.scannings)
-
-                  existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings)
-                  // what if newScanSession.scannings is empty?
-                }
+                this.lastInsertedScanIndex = alreadyExistingScanIndex;
               }
             } else {
-              this.scanSessions.unshift(newScanSession);
-              this.selectedScanSession = this.scanSessions[0];
-              this.scanSessionsContainer.scrollToTop();
+              console.log('@ scannings array not emtpy -> adding only the new scans')
+
+              // I expect to receive the scans sorted by id desc, so i copy
+              // to the local scan list only the scans that have an id  
+              // greater than the one that has the lastest received scan.
+              let lastReceivedScanId = existingScanSession.scannings[0].id;
+              let alreadyExistingScanIndex = newScanSession.scannings.findIndex(newScan => newScan.id <= lastReceivedScanId); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
+
+              console.log('@ lastReceivedScanId = ' + lastReceivedScanId + ' alreadyExistingScanIndex = ' + alreadyExistingScanIndex)
+
+              if (alreadyExistingScanIndex != -1) { // if some scan is already present => i do not include them
+                console.log('@ the list of the received scans includes scans that are already present, slicing the array from 0 to ' + alreadyExistingScanIndex)
+
+                let newScans: ScanModel[] = newScanSession.scannings.slice(0, alreadyExistingScanIndex);
+                existingScanSession.scannings = newScans.concat(existingScanSession.scannings)
+              } else { // if the scans are all new, i copy all of them
+                console.log('@ merging the scans as they are: ', newScanSession.scannings, existingScanSession.scannings)
+
+                existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings)
+                // what if newScanSession.scannings is empty?
+              }
             }
-            this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
-            this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
-          })
+          } else {
+            this.scanSessions.unshift(newScanSession);
+            this.selectedScanSession = this.scanSessions[0];
+            this.scanSessionsContainer.scrollToTop();
+          }
+          this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
+          this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
+        })
 
-          let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
-          this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
+        let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
+        this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
 
+        this.save();
+      }); // ngZone
+
+      // if (request.scan.repeated) {
+      //   let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
+      //   if (scanIndex == -1) {
+      //     this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
+      //   }
+      // } 
+    })
+
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN, (e, request: requestModelDeleteScan) => {
+      this.ngZone.run(() => {
+
+        let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
+        if (scanSessionIndex != -1) {
+          let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
+          this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
+        }
+        this.save();
+      });
+    });
+
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSessions) => {
+      this.ngZone.run(() => {
+        if (this.selectedScanSession && request.scanSessionIds.findIndex(x => x == this.selectedScanSession.id) != -1) {
+          this.selectedScanSession = null;
+        }
+        this.scanSessions = this.scanSessions.filter(x => request.scanSessionIds.indexOf(x.id) < 0);
+        this.save();
+      });
+    });
+
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_UPDATE_SCAN_SESSION, (e, request: requestModelUpdateScanSession) => {
+      this.ngZone.run(() => {
+        let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
+        if (scanSessionIndex != -1) {
+          this.scanSessions[scanSessionIndex].name = request.scanSessionName;
+          this.scanSessions[scanSessionIndex].date = request.scanSessionDate;
           this.save();
-        }); // ngZone
+        }
+      });
+    });
 
-        // if (request.scan.repeated) {
-        //   let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
-        //   if (scanIndex == -1) {
-        //     this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
-        //   }
-        // } 
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_CLEAR_SCAN_SESSIONS, (e, request: requestModelClearScanSessions) => {
+      this.ngZone.run(() => {
+        let scanSessionIndex = this.scanSessions = [];
+        this.save();
+      });
+    });
+
+    this.electronProvider.ipcRenderer.on('find', (e, data: {}) => {
+      this.ngZone.run(() => {
+        this.hideSearchBar = false;
+        setTimeout(() => {
+          this.searchbar.setFocus();
+        }, 250)
       })
-
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN, (e, request: requestModelDeleteScan) => {
-        this.ngZone.run(() => {
-
-          let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-          if (scanSessionIndex != -1) {
-            let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
-            this.scanSessions[scanSessionIndex].scannings.splice(scanIndex, 1);
-          }
-          this.save();
-        });
-      });
-
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSessions) => {
-        this.ngZone.run(() => {
-          if (this.selectedScanSession && request.scanSessionIds.findIndex(x => x == this.selectedScanSession.id) != -1) {
-            this.selectedScanSession = null;
-          }
-          this.scanSessions = this.scanSessions.filter(x => request.scanSessionIds.indexOf(x.id) < 0);
-          this.save();
-        });
-      });
-
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_UPDATE_SCAN_SESSION, (e, request: requestModelUpdateScanSession) => {
-        this.ngZone.run(() => {
-          let scanSessionIndex = this.scanSessions.findIndex(x => x.id == request.scanSessionId);
-          if (scanSessionIndex != -1) {
-            this.scanSessions[scanSessionIndex].name = request.scanSessionName;
-            this.scanSessions[scanSessionIndex].date = request.scanSessionDate;
-            this.save();
-          }
-        });
-      });
-
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_CLEAR_SCAN_SESSIONS, (e, request: requestModelClearScanSessions) => {
-        this.ngZone.run(() => {
-          let scanSessionIndex = this.scanSessions = [];
-          this.save();
-        });
-      });
-    }
-    this.scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
+    });
   }
 
   onSettingsClick() {
