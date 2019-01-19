@@ -31,11 +31,10 @@ export class WelcomePage {
     public ngZone: NgZone,
   ) {
     if (this.electronProvider.isElectron()) {
-      this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
+      this.electronProvider.ipcRenderer.once(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
           ngZone.run(() => {
             this.navCtrl.setRoot(HomePage);
           })
-        this.lastToast.present('A connection was successfully established with ' + request.deviceName);
       });
     }
     this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
