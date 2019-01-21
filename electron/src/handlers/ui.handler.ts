@@ -16,6 +16,14 @@ export class UiHandler implements Handler {
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
+        if (!app.requestSingleInstanceLock()) {
+            app.quit()
+            return;
+        } 
+        app.on('second-instance', (event, commandLine, workingDirectory) => {
+            this.bringWindowUp(); // Someone tried to run a second instance, we should focus our window.
+        })
+
         this.settingsHandler = settingsHandler;
         settingsHandler.onSettingsChanged.subscribe((settings) => {
             this.updateTray();
@@ -98,7 +106,7 @@ export class UiHandler implements Handler {
             if (this.mainWindow.isMinimized()) this.mainWindow.restore();
             this.mainWindow.show();
             this.mainWindow.focus();
-            if (app.dock != null ) {
+            if (app.dock != null) {
                 app.dock.show();
             }
         }
@@ -126,11 +134,6 @@ export class UiHandler implements Handler {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         }
-
-        app.requestSingleInstanceLock()
-        app.on('second-instance', (argv, cwd) => {
-            this.bringWindowUp(); // Someone tried to run a second instance, we should focus our window.
-        })
 
         if (process.platform === 'darwin') {
             let template: MenuItemConstructorOptions[] = [
@@ -208,7 +211,7 @@ export class UiHandler implements Handler {
             if (!this.isQuitting) {
                 event.preventDefault();
                 this.mainWindow.hide();
-                if (app.dock != null ) {
+                if (app.dock != null) {
                     app.dock.hide();
                 }
             }
@@ -228,7 +231,7 @@ export class UiHandler implements Handler {
         })
 
         if (this.mainWindow.isVisible()) {
-            if (app.dock != null ) {
+            if (app.dock != null) {
                 app.dock.show();
             }
         }
