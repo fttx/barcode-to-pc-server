@@ -2,7 +2,7 @@ import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
 import { saveAs } from 'file-saver';
-import { Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
+import { Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController, AlertController, AlertOptions } from 'ionic-angular';
 import * as Papa from 'papaparse';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
@@ -60,6 +60,7 @@ export class HomePage {
     public events: Events,
     public title: Title,
     public devicesProvider: DevicesProvider,
+    private alertCtrl: AlertController,
     public licenseProvider: LicenseProvider,
   ) {
     // debug
@@ -305,9 +306,15 @@ export class HomePage {
 
 
   onClearAllClick() {
-    this.scanSessions = [];
-    this.selectedScanSession = null;
-    this.save();
+    this.alertCtrl.create({
+      title: 'Delete all scan sessions?', message: 'The scans session will be deleted from the server. You can send them again from your smartphone.', buttons: [{ text: 'Cancel', role: 'cancel' }, {
+        text: 'Delete all', handler: (opts: AlertOptions) => {
+          this.scanSessions = [];
+          this.selectedScanSession = null;
+          this.save();
+        }
+      }]
+    }).present();
   }
 
   connectedClientsClick(event) {
