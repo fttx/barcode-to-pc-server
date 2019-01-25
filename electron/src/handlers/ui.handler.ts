@@ -12,10 +12,19 @@ export class UiHandler implements Handler {
     public mainWindow: BrowserWindow; // Keep a global reference of the window object, if you don't, the window will be closed automatically when the JavaScript object is garbage collected.
     private settingsHandler: SettingsHandler;
     private ipcClient;
+    /**
+     * quitImmediately must be set to TRUE before calling app.quit().
+     * 
+     * This variable is used to detect when the user clicks the *close button* of the window:
+     * since the 'close' event may fire for various reasons, everytime that quitImmediately is set 
+     * to FALSE we can assume that the user has clicked the close button.
+     */
+    private quitImmediately = false;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
         if (!app.requestSingleInstanceLock()) {
+            this.quitImmediately = true;
             app.quit();
             return;
         }
@@ -65,6 +74,7 @@ export class UiHandler implements Handler {
                     // { label: 'Enable realtime ', type: 'radio', checked: false },        
                     {
                         label: 'Exit', click: () => {
+                            this.quitImmediately = true;
                             app.quit();
                         }
                     },
@@ -149,6 +159,7 @@ export class UiHandler implements Handler {
                         { type: 'separator' },
                         {
                             label: 'Quit ' + Config.APP_NAME, click: (menuItem, browserWindow, event) => {
+                                this.quitImmediately = true;
                                 app.quit();
                             }
                         }
@@ -207,7 +218,7 @@ export class UiHandler implements Handler {
         }
 
         this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
-            if (this.settingsHandler.enableTray) {
+            if (this.settingsHandler.enableTray || this.quitImmediately) {
                 event.preventDefault();
                 this.mainWindow.hide();
                 if (app.dock != null) {
