@@ -12,14 +12,13 @@ export class UiHandler implements Handler {
     public mainWindow: BrowserWindow; // Keep a global reference of the window object, if you don't, the window will be closed automatically when the JavaScript object is garbage collected.
     private settingsHandler: SettingsHandler;
     private ipcClient;
-    private isQuitting = false;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
         if (!app.requestSingleInstanceLock()) {
-            app.quit()
+            app.quit();
             return;
-        } 
+        }
         app.on('second-instance', (event, commandLine, workingDirectory) => {
             this.bringWindowUp(); // Someone tried to run a second instance, we should focus our window.
         })
@@ -34,7 +33,7 @@ export class UiHandler implements Handler {
         });
         app.on('window-all-closed', () => {  // Quit when all windows are closed.            
             // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode to PC needs the browser windows to perform operation on the localStorage this is not allowed
-            this.quit()
+            app.quit()
             // }
         })
         // app.on('activate', () => {
@@ -66,7 +65,7 @@ export class UiHandler implements Handler {
                     // { label: 'Enable realtime ', type: 'radio', checked: false },        
                     {
                         label: 'Exit', click: () => {
-                            this.quit();
+                            app.quit();
                         }
                     },
                 ];
@@ -150,7 +149,7 @@ export class UiHandler implements Handler {
                         { type: 'separator' },
                         {
                             label: 'Quit ' + Config.APP_NAME, click: (menuItem, browserWindow, event) => {
-                                this.quit();
+                                app.quit();
                             }
                         }
                     ]
@@ -208,7 +207,7 @@ export class UiHandler implements Handler {
         }
 
         this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
-            if (!this.isQuitting) {
+            if (this.settingsHandler.enableTray) {
                 event.preventDefault();
                 this.mainWindow.hide();
                 if (app.dock != null) {
@@ -227,7 +226,7 @@ export class UiHandler implements Handler {
             //     client.close();
             //     // }
             // });
-            // this.quit();
+            // app.quit();
         })
 
         if (this.mainWindow.isVisible()) {
@@ -249,10 +248,5 @@ export class UiHandler implements Handler {
 
     setIpcClient(ipcClient) {
         this.ipcClient = ipcClient;
-    }
-
-    private quit() {
-        this.isQuitting = true;
-        app.quit();
     }
 }
