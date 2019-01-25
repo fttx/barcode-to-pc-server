@@ -218,14 +218,21 @@ export class UiHandler implements Handler {
         }
 
         this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
-            if (this.settingsHandler.enableTray || this.quitImmediately) {
+            event.returnValue = true;
+            if (this.quitImmediately) {
+                return true;
+            }
+            
+            if (this.settingsHandler.enableTray) {
                 event.preventDefault();
                 this.mainWindow.hide();
                 if (app.dock != null) {
                     app.dock.hide();
                 }
+                event.returnValue = false
+                return false;
             }
-            return false;
+            return true;
         });
 
         // Emitted when the window is closed.
