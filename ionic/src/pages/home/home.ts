@@ -2,7 +2,7 @@ import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
 import { saveAs } from 'file-saver';
-import { Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController, AlertController, AlertOptions } from 'ionic-angular';
+import { Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController, AlertController, AlertOptions, Alert } from 'ionic-angular';
 import * as Papa from 'papaparse';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
@@ -127,6 +127,8 @@ export class HomePage {
     if (!this.electronProvider.isElectron()) {
       return;
     }
+
+    this.checkAccessibilityPermission();
 
     // Those events are inside ionViewDidLoad because they need to be listening
     // as long as the Home page is alive. Doesn't matter if there is another 
@@ -253,6 +255,29 @@ export class HomePage {
         }, 250)
       })
     });
+  }
+
+  private accessibilityAlert: Alert;
+  checkAccessibilityPermission() {
+    if (this.accessibilityAlert) {
+      this.accessibilityAlert.dismiss();
+    }
+
+    if (!this.electronProvider.remote.systemPreferences.isTrustedAccessibilityClient(false)) {
+      this.accessibilityAlert = this.alertCtrl.create({
+        title: 'Allow access', message:
+          `In order to enable the "keyboard emulation" feature, ` + Config.APP_NAME + ` needs your permission to control the computer.
+          <br/><br/>When you'll click Next, the System Preferences will open.
+          <br/><br/>Please make you sure that ` + Config.APP_NAME + ` <u>is present</u> in the allowed list and that it <u>is checked</u>`,
+        buttons: [{
+          text: 'Next', handler: (opts: AlertOptions) => {
+            this.electronProvider.remote.systemPreferences.isTrustedAccessibilityClient(true);
+            setTimeout(() => this.checkAccessibilityPermission(), 1000 * 60)
+          }
+        }]
+      });
+      this.accessibilityAlert.present();
+    }
   }
 
   onSettingsClick() {
