@@ -95,6 +95,14 @@ gulp.task('publish', ['build'], () => {
   return electronBuilder.build({ projectDir: '../dist', publish: 'always' });
 })
 
+gulp.task('publish-w', ['build'], () => {
+  return electronBuilder.build({ projectDir: '../dist', publish: 'always', x64: true, ia32: true });
+})
+
+gulp.task('publish-l', ['build'], () => {
+  return electronBuilder.build({ projectDir: '../dist', publish: 'always', platform: 'linux', x64: true, ia32: true, arm64: true, armv7l: true });
+})
+
 gulp.task('test', ['build'], () => {
   execSync('npm run tsc:electron', { cwd: '../', stdio: "inherit", shell: true }) // this way i'm sure that it's compiled before launching mocha
   return execSync('npm run mocha', { cwd: '../', stdio: "inherit", shell: true })

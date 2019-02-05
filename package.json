@@ -24,6 +24,8 @@
     "test": "npx gulp --cwd ./ionic/ test",
     "dist": "npx gulp --cwd ./ionic/ dist",
     "publish": "npx gulp --cwd ./ionic/ publish",
+    "publish-w": "npx gulp --cwd ./ionic/ publish-w",
+    "publish-l": "npx gulp --cwd ./ionic/ publish-l",
     "tsc": "tsc",
     "mocha": "mocha",
     "tsc:electron": "tsc -p electron/tsconfig.json",

@@ -41,9 +41,9 @@
 
   ```bash
   npm run dist # build the angular project in prod mode and generate the app install files for the current platform, works with Windows/macOS/Linux. Out dir: dist/dist/
-  npm run publish # build the angular project in prod mode and generate the app installer for all platforms and uploads them to GitHub releases
-  npm run publish-win  # build the angular project in prod mode, generate the app installer for Windows x32, for Windows x64 and uploads them to GitHub releases
-  npm run publish-ml  # build the angular project in prod mode, generate the app installer for macOS, Linux and uploads them to GitHub releases
+  npm run publish # build the angular project in prod mode and generate the app installer for the current platform and uploads it to GitHub releases
+  npm run publish-l  # build the angular project in prod mode, generate the app installer for linux and uploads them to GitHub releases
+  npm run publish-w  # build the angular project in prod mode, generate the app installer for Windows ia32 and x64 and uploads them to GitHub releases
   ```
 
 * To sign the installers follow the electron-builder [code-signing tutorial](https://www.electron.build/code-signing). TL;DR: set `CSC_LINK` and `CSC_KEY_PASSWORD` environment variables.
