@@ -45,10 +45,18 @@
       }
     },
     "win": {
-      "target": "nsis-web",
+      "target": [
+        {
+          "target": "nsis-web",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
       "icon": "build/icon.ico"
     },
-    "nsis": {
+    "nsisWeb": {
       "oneClick": false,
       "perMachine": true,
       "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
