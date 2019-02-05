@@ -96,7 +96,7 @@ gulp.task('publish', ['build'], () => {
 })
 
 gulp.task('publish-w', ['build'], () => {
-  return electronBuilder.build({ projectDir: '../dist', publish: 'always', x64: true, ia32: true });
+  return electronBuilder.build({ projectDir: '../dist', publish: 'always', platform: 'win', x64: true, ia32: true });
 })
 
 gulp.task('publish-l', ['build'], () => {
