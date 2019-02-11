@@ -16,7 +16,7 @@ declare var window: any;
 @Injectable()
 export class ElectronProvider {
   public uuid = '';
-  
+
   ipcRenderer: typeof ipcRenderer;
   dialog: typeof remote.dialog;
   app: typeof remote.app;
@@ -59,6 +59,13 @@ export class ElectronProvider {
 
   isDev() {
     return !this.isElectron() || (this.process && this.process.argv.indexOf('--dev') != -1);
+  }
+
+  isTrustedAccessibilityClient(prompt: boolean) {
+    if (!this.isElectron() || process.platform !== "darwin") { // always pass TRUE if the platform is not macOS
+      return true;
+    }
+    return this.remote.systemPreferences.isTrustedAccessibilityClient(false);
   }
 
 }
