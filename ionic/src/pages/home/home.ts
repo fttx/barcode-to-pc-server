@@ -263,7 +263,7 @@ export class HomePage {
       this.accessibilityAlert.dismiss();
     }
 
-    if (!this.electronProvider.remote.systemPreferences.isTrustedAccessibilityClient(false)) {
+    if (!this.electronProvider.isTrustedAccessibilityClient(false)) {
       this.accessibilityAlert = this.alertCtrl.create({
         title: 'Allow access', message:
           `In order to enable the "keyboard emulation" feature, ` + Config.APP_NAME + ` needs your permission to control the computer.
@@ -271,7 +271,7 @@ export class HomePage {
           <br/><br/>Please make you sure that ` + Config.APP_NAME + ` <u>is present</u> in the allowed list and that it <u>is checked</u>`,
         buttons: [{
           text: 'Next', handler: (opts: AlertOptions) => {
-            this.electronProvider.remote.systemPreferences.isTrustedAccessibilityClient(true);
+            this.electronProvider.isTrustedAccessibilityClient(true);
             setTimeout(() => this.checkAccessibilityPermission(), 1000 * 60)
           }
         }]
