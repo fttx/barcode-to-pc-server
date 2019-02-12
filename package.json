@@ -19,7 +19,7 @@
   },
   "main": "electron/src/main.js",
   "scripts": {
-    "postinstall": "npx electron-builder install-app-deps",
+    "postinstall": "electron-builder install-app-deps",
     "start": "npx gulp --cwd ./ionic/ serve",
     "test": "npx gulp --cwd ./ionic/ test",
     "dist": "npx gulp --cwd ./ionic/ dist",
