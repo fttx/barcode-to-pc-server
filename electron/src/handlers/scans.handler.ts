@@ -100,7 +100,7 @@ export class ScansHandler implements Handler {
                                             outputString = scan.quantity + '';
                                         } else {
                                             // electron popup: invalid quantity, please enable quantity in the app and insert a numeric value.
-                                            dialog.showMessageBox(this.uiHandler.mainWindow, {
+                                            dialog.showMessageBox(null, {
                                                 type: 'error',
                                                 title: 'Invalid quantity',
                                                 message: 'Please make you sure to enter a quantity in the app',
@@ -112,8 +112,32 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                             case 'function': {
-                                let functionCode = stringComponent.value.replace('barcode', '"' + barcode + '"');
-                                outputString = eval(functionCode);
+                                try {
+                                    // Typescript transpiles local variables such **barcode** and changes their name.
+                                    // When eval() gets called it doesn't find the **barcode** variable and throws a syntax error.
+                                    // To prevent that i store the barcode inside the variable **global** which doesn't change.
+                                    // I use the scan.id as index insted of a fixed string to enforce mutual exclusion
+                                    global[scan.id] = barcode;
+                                    let code = stringComponent.value.replace('barcode', 'global[' + scan.id + ']'); // i put the index like a literal, since scan.id can be transpiled too
+                                    outputString = eval(code);
+                                    delete global[scan.id];
+                                    // Note:
+                                    //     The previous solution: stringComponent.value.replace('barcode', '"' + barcode + '"');
+                                    //     didn't always work because the **barcode** value is treated as a string immediately. 
+                                    //
+                                    //  ie:
+                                    //
+                                    //     "this is
+                                    //        as test".replace(...)
+                                    // 
+                                    //     doesn't work because the first line doesn't have the ending \ character.
+                                } catch (e) {
+                                    dialog.showMessageBox(null, {
+                                        type: 'error',
+                                        title: stringComponent.name + ' error',
+                                        message: 'The ' + stringComponent.name + ' component contains an error: \n' + e,
+                                    });
+                                }
                                 break;
                             }
 
