@@ -118,7 +118,7 @@ export class ScansHandler implements Handler {
                                     // To prevent that i store the barcode inside the variable **global** which doesn't change.
                                     // I use the scan.id as index insted of a fixed string to enforce mutual exclusion
                                     global[scan.id] = barcode;
-                                    let code = stringComponent.value.replace('barcode', 'global[' + scan.id + ']'); // i put the index like a literal, since scan.id can be transpiled too
+                                    let code = stringComponent.value.replace(/barcode/g, 'global[' + scan.id + ']'); // i put the index like a literal, since scan.id can be transpiled too
                                     outputString = eval(code);
                                     delete global[scan.id];
                                     // Note:
