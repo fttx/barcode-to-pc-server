@@ -31,11 +31,11 @@ Everything up to date
 * Other key output component (to press keys like F1, DEL, etc.)
 * Append scannings to CSV file in realtime
 * Auto reconnect when the IP address changes
-* Minimizzation to tray icon
+* Minimization to tray icon
 * Button to delete scan sessions from the server
 * Support for CODE 32
 * Settings to enable/disable scan formats
-* Added a way to enter bacodes manually (by typing it)
+* Added a way to enter barcodes manually (by typing it)
 * OTG support (Open a scan session, type the barcode and press the ENTER key)
 * Repeat barcodes
 * Archive barcodes
