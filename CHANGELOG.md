@@ -20,7 +20,7 @@ Everything up to date
 
 ### Security -->
 
-## [v3.0.0] - 2019-01-XXXXXXX
+## [v3.0.0] - 2019-02-19
 
 ### Added
 
