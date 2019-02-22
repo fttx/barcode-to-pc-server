@@ -2,13 +2,14 @@ import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
 import { saveAs } from 'file-saver';
-import { Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController, AlertController, AlertOptions, Alert } from 'ionic-angular';
+import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
 import * as Papa from 'papaparse';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
 import { ScanModel } from '../../models/scan.model';
+import { SettingsModel } from '../../models/settings.model';
 import { DevicesProvider } from '../../providers/devices/devices';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
@@ -17,7 +18,6 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-import { SettingsModel } from '../../models/settings.model';
 
 /**
  * Generated class for the HomePage page.
@@ -189,7 +189,9 @@ export class HomePage {
           } else {
             this.scanSessions.unshift(newScanSession);
             this.selectedScanSession = this.scanSessions[0];
-            this.scanSessionsContainer.scrollToTop();
+            if (this.scanSessionsContainer) {
+              this.scanSessionsContainer.scrollToTop();
+            }
           }
           this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
           this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
