@@ -20,6 +20,16 @@ Everything up to date
 
 ### Security -->
 
+## [v3.0.1] - 2019-02-22
+
+### Changed
+
+* Converted Subscription plans to life-time licenses
+
+### Fixed
+
+* scrollTop error
+
 ## [v3.0.0] - 2019-02-19
 
 ### Added
@@ -75,6 +85,7 @@ Everything up to date
 * Included the Apple Bonjour installer
 
 [Unreleased]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...HEAD
+[v3.0.1]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.1
 [v3.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.0
 [v2.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0...v2.0.0
 [v2.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0...v2.0.0
