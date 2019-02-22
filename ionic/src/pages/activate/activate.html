@@ -21,7 +21,7 @@
   <ion-list>
     <ion-item no-lines no-padding>
       See the <a (click)="licenseProvider.showPricingPage('activatePageShowPricing')">pricing</a> page to compare the
-      available subscription plans.
+      available plans.
       <br>
       <br>
       For orders support:  <a (click)="contactOrdersClick()">{{ getOrdersEmail() }}</a><br>
@@ -58,8 +58,8 @@
               }})</ion-col>
           </ion-row>
           <ion-row>
-            <ion-col [hidden]="licenseProvider.isSubscribed()">Next reset date</ion-col>
-            <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col>
+            <ion-col [hidden]="false && licenseProvider.isSubscribed()">Next reset date</ion-col>
+            <!-- <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col> -->
             <ion-col>{{ getNextChargeDate() }}</ion-col>
           </ion-row>
           <ion-row>
