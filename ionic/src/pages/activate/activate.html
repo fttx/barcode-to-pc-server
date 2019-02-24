@@ -36,7 +36,7 @@
 
       <ion-item no-lines no-padding >
         <button ion-button color="secondary" default float-right (click)="onActivationClick()">Activate</button>
-        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [hidden]="!serial || serial == '' ">Clear</button>
+        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">Clear</button>
       </ion-item>
     </div>
 
