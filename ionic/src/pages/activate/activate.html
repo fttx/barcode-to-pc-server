@@ -24,7 +24,7 @@
       available plans.
       <br>
       <br>
-      For orders support:  <a (click)="contactOrdersClick()">{{ getOrdersEmail() }}</a><br>
+      For payment methods support: <a (click)="contactOrdersClick()">{{ getOrdersEmail() }}</a><br>
       For general support: <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a>
     </ion-item>
 
@@ -34,8 +34,9 @@
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
 
-      <ion-item no-lines no-padding>
+      <ion-item no-lines no-padding >
         <button ion-button color="secondary" default float-right (click)="onActivationClick()">Activate</button>
+        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [hidden]="!serial || serial == '' ">Clear</button>
       </ion-item>
     </div>
 
@@ -49,40 +50,40 @@
       </ion-item>
     </div>
 
-      <ion-item no-lines text-wrap no-padding>
-        <b>Plan data</b> <br>
-        <ion-grid>
-          <ion-row>
-            <ion-col>Plan</ion-col>
-            <ion-col>{{ licenseProvider.getPlanName() }} ({{  licenseProvider.activePlan
+    <ion-item no-lines text-wrap no-padding>
+      <b>Plan data</b> <br>
+      <ion-grid>
+        <ion-row>
+          <ion-col>Plan</ion-col>
+          <ion-col>{{ licenseProvider.getPlanName() }} ({{  licenseProvider.activePlan
               }})</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col [hidden]="false && licenseProvider.isSubscribed()">Next reset date</ion-col>
-            <!-- <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col> -->
-            <ion-col>{{ getNextChargeDate() }}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Remaining scans</ion-col>
-            <ion-col>{{ getRemainingScans() }}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Max number of smartphones</ion-col>
-            <ion-col>{{ toReadable(licenseProvider.getNOMaxAllowedConnectedDevices()) }}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Max number of output components</ion-col>
-            <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Quantity paramter</ion-col>
-            <ion-col>{{ licenseProvider.canUseQuantityParameter(false) ? 'Yes': 'No' }}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>Append to CSV file</ion-col>
-            <ion-col>{{ licenseProvider.canUseCSVAppend() ? 'Yes': 'No' }}</ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
+        </ion-row>
+        <ion-row>
+          <ion-col [hidden]="false && licenseProvider.isSubscribed()">Next reset date</ion-col>
+          <!-- <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col> -->
+          <ion-col>{{ getNextChargeDate() }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Remaining scans</ion-col>
+          <ion-col>{{ getRemainingScans() }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Max number of smartphones</ion-col>
+          <ion-col>{{ toReadable(licenseProvider.getNOMaxAllowedConnectedDevices()) }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Max number of output components</ion-col>
+          <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Quantity paramter</ion-col>
+          <ion-col>{{ licenseProvider.canUseQuantityParameter(false) ? 'Yes': 'No' }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>Append to CSV file</ion-col>
+          <ion-col>{{ licenseProvider.canUseCSVAppend() ? 'Yes': 'No' }}</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
   </ion-list>
 </ion-content>

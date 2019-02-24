@@ -70,6 +70,11 @@ export class ActivatePage {
     return Config.EMAIL_ORDERS;
   }
 
+  onClearSerialClick() {
+    this.serial = '';
+    this.licenseProvider.deactivate(true);
+  }
+
   toReadable(number: number) {
     if (number == Number.MAX_SAFE_INTEGER) {
       return 'Unlimited'
