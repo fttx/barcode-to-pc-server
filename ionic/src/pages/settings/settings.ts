@@ -1,4 +1,5 @@
 import { Component, HostListener, ViewChild } from '@angular/core';
+import ElectronStore from 'electron-store';
 import { Alert, AlertController, Navbar, NavController, NavParams } from 'ionic-angular';
 import { DragulaService } from "ng2-dragula";
 import { Config } from '../../../../electron/src/config';
@@ -6,7 +7,6 @@ import { SettingsModel } from '../../models/settings.model';
 import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
-import ElectronStore from 'electron-store';
 
 /**
  * Generated class for the SettingsPage page.

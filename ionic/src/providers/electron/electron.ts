@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell } from 'electron';
-import ElectronStore from 'electron-store'
+import ElectronStore from 'electron-store';
 import * as v5 from 'uuid/v5';
-import { Config } from '../../../../electron/src/config';
-import { SettingsModel } from '../../models/settings.model';
 
 declare var window: any;
 // If you import a module but never use any of the imported values other than as TypeScript types,
