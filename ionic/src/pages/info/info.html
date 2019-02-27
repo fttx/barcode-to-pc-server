@@ -21,28 +21,49 @@
 
 
 <ion-content padding text-center>
-  <img src="assets/logo.jpg" alt="logo" class="logo" />
-  <p>
-    <br /> Barcode to PC server {{ getVersion() }}
-    <br />
-    <a (click)="electronProvider.shell.openExternal(getWebSiteUrl())">{{ getWebSiteName() }}</a>
-  </p>
-  <br />
-  <br /> Barcode to PC is an opensource project, contribute on GitHub:
-  <br />
+  <ion-list>
+    <ion-item>
+      <ion-thumbnail item-start>
+        <img src="assets/logo.jpg">
+      </ion-thumbnail>
+      <h1>{{ getAppName() }}</h1>
+    </ion-item>
 
-  <p>
-    <ion-icon name="logo-github"></ion-icon>
-    <a (click)="electronProvider.shell.openExternal(getGitHubServer())">barcode-to-pc-server</a>
-  </p>
+    <ion-item text-wrap> 
+      <ion-thumbnail item-start>
+        <ion-icon [hidden]="updateStatus == 'checkingForUpdate'" style="font-size: 2em; margin: 22px 10px 0 38px;" small
+          [name]="getUpdateIcon()"></ion-icon>
+        <ion-spinner [hidden]="updateStatus != 'checkingForUpdate'" style="font-size: 2em; margin: 22px 10px 0 38px;">
+        </ion-spinner>
+      </ion-thumbnail>
+      <h2>{{ getUpdateStatus() }}</h2>
+      <p>Version: {{ getVersion() }}</p>
+      <p>Last checked: {{ getLastUpdateCheck() }}</p>
+      <button ion-button color="secondary" item-end (click)="onUpdateClick()"
+        [disabled]="updateStatus == 'checkingForUpdate'">{{ getUpdateButtonText() }}</button>
+    </ion-item>
 
-  <p>
-    <ion-icon name="logo-github"></ion-icon>
-    <a (click)="electronProvider.shell.openExternal(getGitHubApp())">barcode-to-pc-app</a>
-  </p>
+    <ion-item text-wrap>
+      <ion-thumbnail item-start></ion-thumbnail>
+      <ion-label>
+        <h2>Enable automatic updates</h2>
+        <p>
+          ⚠️Warning: If you disable automatic updates for the server you also must make sure that the version of the app is still supported from the server. If the app version doesn't match the server's one you may encounter incompatibility issues.
+        </p>
+      </ion-label>
+      <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate" color="secondary"></ion-toggle>
+    </ion-item>
 
-  <p>
-    <ion-icon name="mail"></ion-icon>
-    <a (click)="electronProvider.shell.openExternal(getMail())">Contact me</a>
-  </p>
+    <ion-item>
+      <ion-thumbnail item-start> </ion-thumbnail>
+      <h2>Website</h2>
+      <p><a (click)="electronProvider.shell.openExternal(getWebSiteUrl())">{{ getWebSiteName() }}</a></p>
+    </ion-item>
+
+    <ion-item>
+      <ion-thumbnail item-start> </ion-thumbnail>
+      <h2>Support e-mail</h2>
+      <p><a (click)="electronProvider.shell.openExternal(getMailUrl())">{{ getMail() }}</a></p>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -2,10 +2,10 @@ import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray
 import { autoUpdater } from 'electron-updater';
 import * as _path from 'path';
 import * as WebSocket from 'ws';
-
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
+
 
 export class UiHandler implements Handler {
     public tray: Tray = null;
@@ -15,11 +15,11 @@ export class UiHandler implements Handler {
     /**
      * quitImmediately must be set to TRUE before calling app.quit().
      * 
-     * This variable is used to detect when the user clicks the *close button* of the window:
+     * This variable is used to detect when the user clicks the **close button** of the window:
      * since the 'close' event may fire for various reasons, everytime that quitImmediately is set 
      * to FALSE we can assume that the user has clicked the close button.
      */
-    private quitImmediately = false;
+    public quitImmediately = false;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
@@ -143,6 +143,8 @@ export class UiHandler implements Handler {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         }
+        this.mainWindow.webContents.openDevTools();
+
 
         if (process.platform === 'darwin') {
             let template: MenuItemConstructorOptions[] = [
@@ -221,7 +223,7 @@ export class UiHandler implements Handler {
             if (this.quitImmediately) {
                 return true;
             }
-            
+
             if (this.settingsHandler.enableTray) {
                 event.preventDefault();
                 this.mainWindow.hide();

@@ -56,7 +56,7 @@
 * If you're working on the angular project (src):
 
 ```bash
-# run npm build before
+# npm run build     must be called at least once before executing the commands below:
 
 npm start # run electron with dev tools and the webserver with livereload
 ```
@@ -67,6 +67,10 @@ npm start # run electron with dev tools and the webserver with livereload
 npm run watch # run the webserver with livereload and also watch the electron/main.ts file
 npm run electron:dev # run electron with dev tools or press F5 if you're using VSCode to start debugging
 ```
+
+## Simulate updates
+1. Install minio as explained [here](https://github.com/electron-userland/electron-builder/issues/3053#issuecomment-401001573)
+2. Run `./node_modules/.bin/electron-builder --project ./dist/ -c.compression=store --config.publish.provider=s3 --config.publish.endpoint=http://IP:9000 --config.publish.bucket=test-update`
 
 ## Publishing updates
 

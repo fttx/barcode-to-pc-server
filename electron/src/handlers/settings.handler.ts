@@ -1,5 +1,5 @@
 import { ipcMain } from 'electron';
-import { Subject } from 'rxjs/Subject';
+import { ReplaySubject } from 'rxjs';
 import * as WebSocket from 'ws';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { StringComponentModel } from '../../../ionic/src/models/string-component.model';
@@ -8,7 +8,7 @@ import { Handler } from '../models/handler.model';
 import ElectronStore = require('electron-store');
 
 export class SettingsHandler implements Handler {
-    public onSettingsChanged: Subject<SettingsModel> = new Subject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
+    public onSettingsChanged: ReplaySubject<SettingsModel> = new ReplaySubject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
     private settings: SettingsModel;
 
     private static instance: SettingsHandler;
@@ -30,6 +30,7 @@ export class SettingsHandler implements Handler {
         return SettingsHandler.instance;
     }
 
+    // TODO: remove those pass thrugh methods
     get enableRealtimeStrokes(): boolean {
         return this.settings.enableRealtimeStrokes
     }
@@ -59,6 +60,9 @@ export class SettingsHandler implements Handler {
     }
     get typeMethod() {
         return this.settings.typeMethod
+    }
+    get autoUpdate() {
+        return this.settings.autoUpdate
     }
 
     onWsMessage(ws: WebSocket, message: any) {

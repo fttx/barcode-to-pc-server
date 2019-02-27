@@ -15,4 +15,5 @@ export class SettingsModel {
     csvPath: string;
     typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
     enableAdvancedSettings: boolean = false; 
+    autoUpdate: boolean = true;
 }

@@ -1,6 +1,5 @@
 import { app, ipcMain } from 'electron';
 import * as WebSocket from 'ws';
-
 import { Config } from './config';
 import { ConnectionHandler } from './handlers/connection.handler';
 import { ScansHandler } from './handlers/scans.handler';
@@ -14,7 +13,7 @@ const settingsHandler = SettingsHandler.getInstance();
 const uiHandler = UiHandler.getInstance(settingsHandler);
 const scansHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
 const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandler);
-const updateHandler = UpdateHandler.getInstance();
+const updateHandler = UpdateHandler.getInstance(uiHandler, settingsHandler);
 
 ipcMain
     .on('pageLoad', (event, arg) => { // the renderer will send a 'pageLoad' message once the index.html document is loaded. (implies that the mainWindow exists)       
@@ -23,11 +22,13 @@ ipcMain
         }
 
         let ipcClient = event.sender;
-        
+
         wss = new WebSocket.Server({ port: Config.PORT });
         connectionHandler.announceServer();
+        // TODO: get rid of setIpcClients, they generate unknown of unknowns
         connectionHandler.setIpcClient(ipcClient);
         uiHandler.setIpcClient(ipcClient);
+        updateHandler.setIpcClient(ipcClient);
 
         // wss events should be registered immediately
         wss.on('connection', (ws, req) => {
@@ -69,7 +70,6 @@ ipcMain
             closeServer();
             app.quit(); // TODO: keep the server running (this can't be done at the moment because the scannings are saved in the browserWindow localStorage)
         });
-        updateHandler.checkUpdates();
     })
 
 function closeServer() {

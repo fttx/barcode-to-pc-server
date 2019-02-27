@@ -23,6 +23,7 @@
     "start": "npx gulp --cwd ./ionic/ serve",
     "test": "npx gulp --cwd ./ionic/ test",
     "dist": "npx gulp --cwd ./ionic/ dist",
+    "build": "npx gulp --cwd ./ionic/ build",
     "publish": "npx gulp --cwd ./ionic/ publish",
     "publish-w": "npx gulp --cwd ./ionic/ publish-w",
     "publish-l": "npx gulp --cwd ./ionic/ publish-l",

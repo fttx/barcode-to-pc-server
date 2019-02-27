@@ -43,4 +43,5 @@ export class Config {
     public static STORAGE_FIRST_CONNECTION_DATE = 'storage_first_connection_date';
     public static STORAGE_SCAN_SESSIONS = 'storage_scan_sessions';
     public static STORAGE_SETTINGS = 'storage_settings';
+    public static STORAGE_LAST_VERSION = 'storage_last_version';
 }
