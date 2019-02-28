@@ -1,12 +1,7 @@
 # Changelog
 
-## [Unreleased]
-
-Everything up to date
-
-<!-- ### Security -->
-
-<!-- ## [x.0.0] - 2019-mm-dd
+<!-- 
+## [x.0.0] - Not released yet
 
 ### Added
 
@@ -18,13 +13,28 @@ Everything up to date
 
 ### Fixed
 
-### Security -->
+### Security
+-->
+
+## [v3.0.2] - Not released yet
+
+### Added
+
+* Option to disable automatic updates
+
+### Fixed
+
+* CSV file path auto-resettings issue
+
+### Changed
+
+* Minor UI enhancements
 
 ## [v3.0.1] - 2019-02-22
 
 ### Changed
 
-* Converted Subscription plans to life-time licenses
+* Converted Subscription plans to lifetime licenses
 
 ### Fixed
 
@@ -84,7 +94,7 @@ Everything up to date
 
 * Included the Apple Bonjour installer
 
-[Unreleased]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...HEAD
+[v3.0.2]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.2
 [v3.0.1]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.1
 [v3.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.0
 [v2.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0...v2.0.0
