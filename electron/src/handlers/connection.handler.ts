@@ -54,7 +54,7 @@ export class ConnectionHandler implements Handler {
                 });
             }).on('getHostname', (event, arg) => {
                 event.sender.send('hostname', os.hostname());
-            }).on('kick', (event, data: ({deviceId: number, response: responseModelKick})) => {
+            }).on('kick', (event, data: ({ deviceId: number, response: responseModelKick })) => {
                 console.log('@Kick', data.deviceId)
                 if (data.deviceId in this.wsClients) {
                     this.wsClients[data.deviceId].send(JSON.stringify(data.response));
@@ -90,7 +90,7 @@ export class ConnectionHandler implements Handler {
                 title: 'Error',
                 message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.',
             });
-            this.fallBackBonjour = bonjour.publish({ name: Config.APP_NAME, type: 'http', port: Config.PORT })
+            try { this.fallBackBonjour = bonjour.publish({ name: Config.APP_NAME, type: 'http', port: Config.PORT }) } catch (ex) { }
             this.fallBackBonjour.on('error', err => { // err is never set?
                 dialog.showMessageBox(this.uiHandler.mainWindow, {
                     type: 'error',
