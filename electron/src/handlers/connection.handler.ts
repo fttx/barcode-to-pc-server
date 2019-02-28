@@ -1,6 +1,5 @@
 import * as b from 'bonjour';
 import { app, dialog, ipcMain } from 'electron';
-import * as mdns from 'mdns';
 import * as network from 'network';
 import * as os from 'os';
 import * as WebSocket from 'ws';
@@ -18,13 +17,13 @@ import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 
-const bonjour = b();
-
 export class ConnectionHandler implements Handler {
     public static EVENT_CODE_KICKED_OUT = 4001; // Used when the server kicks out a client
 
     private fallBackBonjour: b.Service;
-    private mdnsAd: mdns.Advertisement;
+    private mdnsAd: any;
+    private bonjour: any;
+
     private wsClients = {};
     private ipcClient;
 
@@ -80,8 +79,8 @@ export class ConnectionHandler implements Handler {
 
     announceServer() {
         try {
+            let mdns = require('mdns');
             this.mdnsAd = mdns.createAdvertisement(mdns.tcp('http'), Config.PORT);
-
             this.mdnsAd.start();
         } catch (ex) {
             console.log('node_mdns error, faillback to bonjour')
@@ -90,20 +89,23 @@ export class ConnectionHandler implements Handler {
                 title: 'Error',
                 message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.',
             });
-            try { this.fallBackBonjour = bonjour.publish({ name: Config.APP_NAME, type: 'http', port: Config.PORT }) } catch (ex) { }
-            this.fallBackBonjour.on('error', err => { // err is never set?
-                dialog.showMessageBox(this.uiHandler.mainWindow, {
-                    type: 'error',
-                    title: 'Error',
-                    message: 'An error occured while announcing the server.'
+            try {
+                this.bonjour = b();
+                this.fallBackBonjour = this.bonjour.publish({ name: Config.APP_NAME, type: 'http', port: Config.PORT })
+                this.fallBackBonjour.on('error', err => { // err is never set?
+                    dialog.showMessageBox(this.uiHandler.mainWindow, {
+                        type: 'error',
+                        title: 'Error',
+                        message: 'An error occured while announcing the server.'
+                    });
                 });
-            });
+            } catch (ex) { }
         }
     }
 
     removeServerAnnounce() {
         if (this.fallBackBonjour) {
-            bonjour.unpublishAll(() => { })
+            this.bonjour.unpublishAll(() => { })
         }
 
         if (this.mdnsAd) {
