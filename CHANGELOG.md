@@ -21,10 +21,12 @@
 ### Added
 
 * Option to disable automatic updates
+* Timeout dialog for continuosMode
 
 ### Fixed
 
 * CSV file path auto-resettings issue
+* DNSServiceRef is not initialized error
 
 ### Changed
 
