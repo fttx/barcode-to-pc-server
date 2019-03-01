@@ -143,8 +143,6 @@ export class UiHandler implements Handler {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         }
-        this.mainWindow.webContents.openDevTools();
-
 
         if (process.platform === 'darwin') {
             let template: MenuItemConstructorOptions[] = [
