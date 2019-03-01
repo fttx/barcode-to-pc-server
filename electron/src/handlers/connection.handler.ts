@@ -87,7 +87,7 @@ export class ConnectionHandler implements Handler {
             dialog.showMessageBox(this.uiHandler.mainWindow, {
                 type: 'warning',
                 title: 'Error',
-                message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.',
+                message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\nIf instead it\'s working, you can ignore this message.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.',
             });
             try {
                 this.bonjour = b();
