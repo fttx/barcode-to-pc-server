@@ -281,7 +281,7 @@ export class LicenseProvider {
     this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
 
     if (count > this.getNOMaxAllowedScansPerMonth()) {
-      let message = 'You\'ve reached the maximum number of monthly scannings for your current subscription plan.';
+      let message = 'You\'ve reached the maximum number of monthly scans for your current plan.';
       this.devicesProvider.kickAllDevices(message);
       this.showUpgradeDialog('limitMonthlyScans', 'Monthly scans limit reached', message)
     }
@@ -301,7 +301,7 @@ export class LicenseProvider {
     }
 
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseQuantityParameter', 'Upgrade', 'The quantity component isn\'t available with your current subscription plan.');
+      this.showUpgradeDialog('canUseQuantityParameter', 'Upgrade', 'The quantity component isn\'t available with your current plan.');
     }
     return available;
   }
@@ -319,7 +319,7 @@ export class LicenseProvider {
       case LicenseProvider.PLAN_UNLIMITED: available = true; break;
     }
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseCSVAppend', 'Upgrade', 'This feature isn\'t available with your current subscription plan.');
+      this.showUpgradeDialog('canUseCSVAppend', 'Upgrade', 'This feature isn\'t available with your current plan.');
     }
     return available;
   }
