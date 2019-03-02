@@ -16,7 +16,7 @@
 ### Security
 -->
 
-## [v3.0.2] - Not released yet
+## [v3.0.2] - 2019-03-02
 
 ### Added
 
