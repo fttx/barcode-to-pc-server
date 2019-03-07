@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v3.0.3] - 2019-03-07
+
+### Fixed
+
+* Multi-smartphone device_name variable
+
 ## [v3.0.2] - 2019-03-02
 
 ### Added
