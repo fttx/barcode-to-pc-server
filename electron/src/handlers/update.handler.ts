@@ -1,11 +1,12 @@
+import { ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import * as http from 'http';
 import * as WebSocket from 'ws';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 import ElectronStore = require('electron-store');
-import { ipcMain } from 'electron';
 
 /**
  * MAIN PROCESS
@@ -95,7 +96,7 @@ export class UpdateHandler implements Handler {
         }
     }
 
-    onWsMessage(ws: WebSocket, message: any) {
+    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
         throw new Error("Method not implemented.");
     }
     onWsClose(ws: WebSocket) {

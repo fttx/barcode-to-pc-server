@@ -6,6 +6,7 @@ import { ScansHandler } from './handlers/scans.handler';
 import { SettingsHandler } from './handlers/settings.handler';
 import { UiHandler } from './handlers/ui.handler';
 import { UpdateHandler } from './handlers/update.handler';
+import * as http from 'http';
 
 
 let wss = null;
@@ -31,7 +32,7 @@ ipcMain
         updateHandler.setIpcClient(ipcClient);
 
         // wss events should be registered immediately
-        wss.on('connection', (ws, req) => {
+        wss.on('connection', (ws, req: http.IncomingMessage) => {
             console.log("ws(incoming connection)", req.connection.remoteAddress)
             // const clientAddress = req.connection.remoteAddress;
 
@@ -45,8 +46,8 @@ ipcMain
 
                 let messageObj = JSON.parse(message.toString());
 
-                scansHandler.onWsMessage(ws, messageObj);
-                connectionHandler.onWsMessage(ws, messageObj);
+                scansHandler.onWsMessage(ws, messageObj, req);
+                connectionHandler.onWsMessage(ws, messageObj, req);
 
                 ipcClient.send(messageObj.action, messageObj); // forward ws messages to ipc
             });

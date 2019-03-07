@@ -1,4 +1,5 @@
 import { ipcMain } from 'electron';
+import * as http from 'http';
 import { ReplaySubject } from 'rxjs';
 import * as WebSocket from 'ws';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
@@ -65,7 +66,7 @@ export class SettingsHandler implements Handler {
         return this.settings.autoUpdate
     }
 
-    onWsMessage(ws: WebSocket, message: any) {
+    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
         throw new Error("Method not implemented.");
     }
     onWsClose(ws: WebSocket) {

@@ -1,17 +1,18 @@
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
+import * as http from 'http';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as WebSocket from 'ws';
-
 import { requestModel, requestModelHelo, requestModelPutScanSessions } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 
+
 export class ScansHandler implements Handler {
-    private deviceName = "unknown";
+    private deviceNames = {};
 
     private static instance: ScansHandler;
     private constructor(
@@ -28,7 +29,7 @@ export class ScansHandler implements Handler {
         return ScansHandler.instance;
     }
 
-    onWsMessage(ws: WebSocket, message: any) {
+    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
         console.log('message', message)
         switch (message.action) {
             case requestModel.ACTION_PUT_SCAN_SESSIONS: {
@@ -71,7 +72,7 @@ export class ScansHandler implements Handler {
                             case 'variable': {
                                 switch (stringComponent.value) {
                                     case 'deviceName': {
-                                        outputString = this.deviceName;
+                                        outputString = this.deviceNames[req.connection.remoteAddress];
                                         break;
                                     }
 
@@ -181,7 +182,7 @@ export class ScansHandler implements Handler {
             case requestModel.ACTION_HELO: {
                 let request: requestModelHelo = message;
                 if (request && request.deviceName) {
-                    this.deviceName = request.deviceName;
+                    this.deviceNames[req.connection.remoteAddress] = request.deviceName;
                 }
                 break;
             }

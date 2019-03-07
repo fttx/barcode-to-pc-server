@@ -1,16 +1,11 @@
 import * as b from 'bonjour';
 import { app, dialog, ipcMain } from 'electron';
+import * as http from 'http';
 import * as network from 'network';
 import * as os from 'os';
 import * as WebSocket from 'ws';
-
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import {
-    responseModelEnableQuantity,
-    responseModelHelo,
-    responseModelKick,
-    responseModelPong,
-} from '../../../ionic/src/models/response.model';
+import { responseModelEnableQuantity, responseModelHelo, responseModelKick, responseModelPong } from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -113,7 +108,7 @@ export class ConnectionHandler implements Handler {
         }
     }
 
-    onWsMessage(ws: WebSocket, message: any) {
+    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
         switch (message.action) {
             case requestModel.ACTION_PING: {
                 ws.send(JSON.stringify(new responseModelPong()));

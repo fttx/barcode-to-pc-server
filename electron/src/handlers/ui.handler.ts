@@ -1,5 +1,6 @@
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
+import * as http from 'http';
 import * as _path from 'path';
 import * as WebSocket from 'ws';
 import { Config } from '../config';
@@ -253,7 +254,7 @@ export class UiHandler implements Handler {
         }
     }
 
-    onWsMessage(ws: WebSocket, message: any) {
+    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
         throw new Error("Method not implemented.");
     }
     onWsClose(ws: WebSocket) {
