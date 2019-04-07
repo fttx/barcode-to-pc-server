@@ -3,10 +3,10 @@ import * as http from 'http';
 import { ReplaySubject } from 'rxjs';
 import * as WebSocket from 'ws';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
-import { StringComponentModel } from '../../../ionic/src/models/string-component.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import ElectronStore = require('electron-store');
+import { OutputProfileModel } from '../../../ionic/src/models/output-profile.model';
 
 export class SettingsHandler implements Handler {
     public onSettingsChanged: ReplaySubject<SettingsModel> = new ReplaySubject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
@@ -38,11 +38,16 @@ export class SettingsHandler implements Handler {
     get enableOpenInBrowser(): boolean {
         return this.settings.enableOpenInBrowser
     }
-    get typedString(): StringComponentModel[] {
-        return this.settings.typedString
+    get outputProfiles(): OutputProfileModel[] {
+        return this.settings.outputProfiles
     }
     get quantityEnabled(): boolean {
-        return this.settings.typedString.findIndex(x => x.value == 'quantity') != -1;
+        for (let profile of this.settings.outputProfiles) {
+            if (profile.outputBlocks.findIndex(x => x.value == 'quantity') != -1) {
+                return true;
+            }
+        }
+        return false;
     }
     get newLineCharacter(): string {
         return this.settings.newLineCharacter

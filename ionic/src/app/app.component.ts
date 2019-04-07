@@ -47,12 +47,15 @@ export class MyApp {
     // see: https://semver.org/
     if (gt(currentVersion, lastVersion) && !lastVersion.compare('0.0.0')) { // update detected (the second proposition is to exclude the first start)
       // new v3 variables fix start
-      let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+      let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
       if (typeof settings.autoUpdate == 'undefined') {
         settings.autoUpdate = true;
       }
       if (typeof settings.csvPath == 'undefined') {
         settings.csvPath = null;
+      }
+      if (typeof settings.outputProfiles == 'undefined') {
+        settings.outputProfiles = new SettingsModel().outputProfiles;
       }
       this.store.set(Config.STORAGE_SETTINGS, JSON.parse(JSON.stringify(settings)));
       // new v3 variables fix end

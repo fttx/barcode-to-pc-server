@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { OutputBlockModel } from '../../models/output-block.model';
 
-import { StringComponentModel } from '../../models/string-component.model';
 
 
 /**
@@ -10,11 +10,11 @@ import { StringComponentModel } from '../../models/string-component.model';
  * Components.
  */
 @Component({
-  selector: 'string-component',
-  templateUrl: 'string-component.html'
+  selector: 'output-block-component',
+  templateUrl: 'output-block-component.html'
 })
-export class StringComponent {
-  @Input() component: StringComponentModel;
+export class OutputBlockComponent {
+  @Input() outputBlock: OutputBlockModel;
 
   public editMode = false;
   public inputValue = '';
@@ -22,27 +22,27 @@ export class StringComponent {
   constructor() { }
 
   ngOnInit() {
-    // this.value = this.component.name;
+    // this.value = this.outputBlock.name;
   }
 
-  onComponentClicked(event) {
+  onOutputBlockClicked(event) {
     event.stopPropagation();
 
-    // if (this.component.type == 'function') {
-    //   this.component.name = this.value;
-    //   this.component.value = this.value;
+    // if (this.outputBlock.type == 'function') {
+    //   this.outputBlock.name = this.value;
+    //   this.outputBlock.value = this.value;
     // } else {
-    // this.component.value = this.inputValue;
+    // this.outputBlock.value = this.inputValue;
     // }
     this.editMode = false;
   }
 
 
   displayedName() {
-    if (this.component.editable && this.component.value && this.component.value.length) {
-      return this.component.value;
+    if (this.outputBlock.editable && this.outputBlock.value && this.outputBlock.value.length) {
+      return this.outputBlock.value;
     }
-    return this.component.name;
+    return this.outputBlock.name;
   }
 
   getVariableColor() {
@@ -61,6 +61,6 @@ export class StringComponent {
     // if (this.customVariable.type == 'text') {
     //   return 'danger'
     // }
-    return 'string-component-' + this.component.type // sass variable name: string-component-barcode: #... in variables.scss file
+    return 'output-block-component-' + this.outputBlock.type // sass variable name: output-block-component-barcode: #... in variables.scss file
   }
 }

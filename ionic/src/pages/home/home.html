@@ -71,19 +71,7 @@
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
-
-                  <ion-grid no-padding>
-                    <ion-row>
-                      <ion-col>
-                        <input class="scan-text" type="text" [value]="scan.text" />
-
-                      </ion-col>
-                      <ion-col col-auto>
-                        <span [hidden]="!scan.quantity">({{ scan?.quantity }})</span>
-                      </ion-col>
-                    </ion-row>
-                  </ion-grid>
-
+                  <input class="scan-text" type="text" [value]="getScanText(scan)" />
                 </ion-col>
                 <ion-col col-auto>
                   <button ion-button clear color="dark" ngxClipboard [cbContent]="scan.text">

@@ -1,12 +1,22 @@
 import * as os from 'os';
-import { StringComponentModel } from './string-component.model';
+import { OutputBlockModel } from './output-block.model';
+import { OutputProfileModel } from './output-profile.model';
 
 export class SettingsModel {
     enableRealtimeStrokes: boolean = true;
     enableOpenInBrowser: boolean = false;
-    typedString: StringComponentModel[] = [
+    /**
+     * @deprecated use outputProfiles instead
+     */
+    typedString: OutputBlockModel[] = [
         { name: 'BARCODE', value: 'barcode', type: 'barcode' },
         { name: 'ENTER', value: 'enter', type: 'key' }
+    ];
+    outputProfiles: OutputProfileModel[] = [
+        {
+            name: "Profile 1",
+            outputBlocks: [{ name: 'BARCODE', value: 'barcode', type: 'barcode' }, { name: 'ENTER', value: 'enter', type: 'key' }]
+        },
     ];
     newLineCharacter: string = os.release().toLowerCase().indexOf('windows') == -1 ? 'LF' : 'CRLF';
     enableQuotes: boolean = true;
@@ -14,6 +24,6 @@ export class SettingsModel {
     appendCSVEnabled: boolean = false;
     csvPath: string;
     typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
-    enableAdvancedSettings: boolean = false; 
+    enableAdvancedSettings: boolean = false;
     autoUpdate: boolean = true;
 }

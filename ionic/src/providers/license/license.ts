@@ -189,12 +189,14 @@ export class LicenseProvider {
       this.activePlan = LicenseProvider.PLAN_FREE;
       this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
 
-      let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+      let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
       if (!this.canUseCSVAppend(false)) {
         settings.appendCSVEnabled = false;
       }
       if (!this.canUseQuantityParameter(false)) {
-        settings.typedString = settings.typedString.filter(x => x.value != 'quantity');
+        for (let i in settings.outputProfiles) {
+          settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'quantity');
+        }
       }
       this.store.set(Config.STORAGE_SETTINGS, settings);
     }
@@ -216,14 +218,21 @@ export class LicenseProvider {
   }
 
   showPricingPage(refer) {
-    // customTypedString
-    let customTypedString = false;
+    // customOutputField
+    let customOutputField = false;
     let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-    if (settings.typedString.length != 2 || settings.typedString.length >= 3) {
-      customTypedString = true;
-    } else if (settings.typedString.length == 2) {
-      let defaultSettings = new SettingsModel();
-      customTypedString = (settings.typedString[0].value != defaultSettings.typedString[0].value || settings.typedString[1].value != defaultSettings.typedString[1].value);
+    let defaultSettings = new SettingsModel();
+    if (settings.outputProfiles.length != 1) {
+      customOutputField = true;
+    } else {
+      if (settings.outputProfiles[0].length != 2) {
+        customOutputField = true;
+      } else {
+        if (settings.outputProfiles[0][0].value != defaultSettings.outputProfiles[0][0].value ||
+          settings.outputProfiles[0][1].value != defaultSettings.outputProfiles[0][1].value) {
+            customOutputField = true;
+        }
+      }
     }
 
     // scanLimitReached
@@ -249,7 +258,7 @@ export class LicenseProvider {
     this.electronProvider.shell.openExternal(
       this.utilsProvider.appendParametersToURL(Config.URL_PRICING, {
         currentPlan: this.activePlan,
-        customTypedString: customTypedString,
+        customOutputField: customOutputField,
         scanLimitReached: scanLimitReached,
         periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
         refer: refer,

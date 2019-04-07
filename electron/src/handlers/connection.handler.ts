@@ -4,8 +4,14 @@ import * as http from 'http';
 import * as network from 'network';
 import * as os from 'os';
 import * as WebSocket from 'ws';
+
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
-import { responseModelEnableQuantity, responseModelHelo, responseModelKick, responseModelPong } from '../../../ionic/src/models/response.model';
+import {
+    responseModelHelo,
+    responseModelKick,
+    responseModelPong,
+    responseModelUpdateOutputProfiles,
+} from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -54,12 +60,12 @@ export class ConnectionHandler implements Handler {
                     this.wsClients[data.deviceId].send(JSON.stringify(data.response));
                 }
             })
-        // send enableQuantity to already connected clients
+        // send updateOutputProfiles to the already connected clients
         settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {
             for (let deviceId in this.wsClients) {
                 let ws = this.wsClients[deviceId];
-                ws.send(JSON.stringify(new responseModelEnableQuantity().fromObject({
-                    enable: this.settingsHandler.quantityEnabled
+                ws.send(JSON.stringify(new responseModelUpdateOutputProfiles().fromObject({
+                    outputProfiles: this.settingsHandler.outputProfiles
                 })));
             }
         });
@@ -120,7 +126,7 @@ export class ConnectionHandler implements Handler {
                 let response = new responseModelHelo();
                 response.fromObject({
                     version: app.getVersion(),
-                    quantityEnabled: this.settingsHandler.quantityEnabled
+                    outputProfiles: this.settingsHandler.outputProfiles
                 });
 
                 if (request && request.deviceId) {

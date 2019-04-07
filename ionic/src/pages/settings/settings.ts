@@ -1,12 +1,13 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component, HostListener, ViewChild, NgZone } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertController, Navbar, NavController, NavParams } from 'ionic-angular';
 import { DragulaService } from "ng2-dragula";
 import { Config } from '../../../../electron/src/config';
 import { SettingsModel } from '../../models/settings.model';
-import { StringComponentModel } from '../../models/string-component.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
+import { OutputBlockModel } from '../../models/output-block.model';
+import { OutputProfileModel } from '../../models/outputProfile.model';
 
 /**
  * Generated class for the SettingsPage page.
@@ -24,13 +25,14 @@ export class SettingsPage {
 
   public unsavedSettingsAlert: Alert;
   public settings: SettingsModel = new SettingsModel();
-  public availableComponents: StringComponentModel[] = this.getAvailableComponents();
+  public availableOutputBlocks: OutputBlockModel[] = this.getAvailableOutputBlocks();
   public openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
 
   private lastSavedSettings: string;
   private store: ElectronStore;
 
-  private getAvailableComponents(): StringComponentModel[] {
+
+  private getAvailableOutputBlocks(): OutputBlockModel[] {
     return [
       { name: 'BACKSPACE', value: 'backspace', type: 'key' },
       { name: 'DELETE', value: 'delete', type: 'key' },
@@ -78,6 +80,7 @@ export class SettingsPage {
     private electronProvider: ElectronProvider,
     private licenseProvider: LicenseProvider,
     private alertCtrl: AlertController,
+    private ngZone: NgZone,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.dragulaService.destroy('dragula-group')
@@ -89,7 +92,7 @@ export class SettingsPage {
         // To avoid dragging from right to left container
         return target.id !== 'left';
       },
-      copyItem: (item: StringComponentModel) => {
+      copyItem: (item: OutputBlockModel) => {
         return JSON.parse(JSON.stringify(item));
       },
       removeOnSpill: true
@@ -98,7 +101,7 @@ export class SettingsPage {
     this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
       if (item.value == 'quantity') {
         if (!this.licenseProvider.canUseQuantityParameter(true)) {
-          setTimeout(() => this.settings.typedString = this.settings.typedString.filter(x => x.value != 'quantity'), 1000)
+          setTimeout(() => this.settings.outputProfiles[0].outputBlocks = this.settings.outputProfiles[0].outputBlocks.filter(x => x.value != 'quantity'), 1000)
         }
       }
     });
@@ -109,11 +112,11 @@ export class SettingsPage {
   }
 
   public canAddMoreComponents() {
-    return this.settings.typedString.length < this.licenseProvider.getNOMaxComponents();
+    return this.settings.outputProfiles[0].outputBlocks.length < this.licenseProvider.getNOMaxComponents();
   }
 
   public onSubscribeClick() {
-    this.licenseProvider.showPricingPage('typedStringOnSubscribeClick');
+    this.licenseProvider.showPricingPage('customOutputFieldOnSubscribeClick');
   }
 
   ionViewDidLoad() {
@@ -152,19 +155,18 @@ export class SettingsPage {
   }
 
   apply() {
-    this.store.set(Config.STORAGE_SETTINGS, this.settings);
-    if (this.electronProvider.isElectron()) {
-      this.electronProvider.app.setLoginItemSettings({
-        openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
-        openAsHidden: this.openAutomatically == 'minimized'
-      })
-    }
-    this.lastSavedSettings = JSON.stringify(this.settings);
-    if (this.electronProvider.isElectron()) {
-      this.electronProvider.ipcRenderer.send('settings');
-    }
+      this.store.set(Config.STORAGE_SETTINGS, this.settings);
+      if (this.electronProvider.isElectron()) {
+        this.electronProvider.app.setLoginItemSettings({
+          openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
+          openAsHidden: this.openAutomatically == 'minimized'
+        })
+      }
+      this.lastSavedSettings = JSON.stringify(this.settings);
+      if (this.electronProvider.isElectron()) {
+        this.electronProvider.ipcRenderer.send('settings');
+      }
   }
-
 
   goBack() {
     if (this.lastSavedSettings == JSON.stringify(this.settings)) { // settings up to date

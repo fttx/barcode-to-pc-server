@@ -371,6 +371,10 @@ export class HomePage {
   public getLocaleDate(date) {
     return new Date(date).toLocaleString();
   }
+
+  public getScanText(scan) {
+    return ScanModel.ToString(scan);
+  }
 }
 
 // ConnectedClientsPopover

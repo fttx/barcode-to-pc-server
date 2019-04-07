@@ -115,17 +115,17 @@
           full
           list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
         </popper-content>
-        <div [hidden]="canAddMoreComponents()" class="components-container-disabled" text-center>
+        <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
-            You've reached the maximum number of components
+            You've reached the maximum number of output blocks
           </h2>
-          <p>Drag out one component from the output field to continue</p>
+          <p>Drag out one output block from the output field to continue</p>
           <div>or</div>
           <button ion-button color="secondary" (click)="onSubscribeClick()">Upgrade</button>
         </div>
-        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableComponents'
-          class="components-container">
-          <string-component *ngFor="let component of availableComponents" [component]="component"></string-component>
+        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks'
+          class="output-blocks-container">
+          <output-block-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock"></output-block-component>
         </div>
       </ion-item>
 
@@ -135,8 +135,8 @@
           class="help-button">
           ?
         </button>
-        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.typedString' class="components-container">
-          <string-component *ngFor="let component of settings.typedString" [component]="component"></string-component>
+        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[0].outputBlocks' class="output-blocks-container">
+          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[0].outputBlocks" [outputBlock]="outputBlock"></output-block-component>
         </div>
       </ion-item>
 
@@ -153,7 +153,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <input [(ngModel)]="settings && settings.csvPath" class="components-container csv-path" type="text"
+              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text"
                 placeholder="Select the file path" />
             </ion-col>
             <ion-col>
