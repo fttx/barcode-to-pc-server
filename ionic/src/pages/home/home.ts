@@ -423,6 +423,7 @@ export class ScanSessionContextMenuPopover {
     public navParams: NavParams,
     public electronProvider: ElectronProvider,
     public events: Events,
+    private alertCtrl: AlertController,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.scanSession = this.navParams.get('scanSession');
@@ -435,16 +436,34 @@ export class ScanSessionContextMenuPopover {
   exportAsCSV(index) {
     this.close()
 
-    let content = [];
-    let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    this.alertCtrl.create({
+      title: 'Export options',
+      // message: '<b>test</b>',
+      inputs: [{ type: 'checkbox', checked: true, label: 'Include only the text components', value: 'onlyTextComponents' }],
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Export', handler: (opts: AlertOptions) => {
+            let content = [];
+            let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
 
-    content.push(Papa.unparse(this.scanSession.scannings.map(x => { return { 'text': x.text } }), {
-      quotes: settings.enableQuotes,
-      delimiter: ",",
-      newline: settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n')
-    }));
-    let file = new Blob(content, { type: 'text/csv;charset=utf-8' });
-    saveAs(file, this.scanSession.name + ".csv");
+            content.push(Papa.unparse(this.scanSession.scannings.map(scan => {
+              if (opts[0] == 'onlyTextComponents') {
+                return scan.outputBlocks
+                  .filter(outputBlock => (outputBlock.type != 'key' && outputBlock.type != 'delay'))
+                  .map(outputBlock => outputBlock.value)
+              }
+              return scan.outputBlocks.map(outputBlock => outputBlock.value);
+            }), {
+                quotes: settings.enableQuotes,
+                delimiter: ",",
+                newline: settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n')
+              }));
+            let file = new Blob(content, { type: 'text/csv;charset=utf-8' });
+            saveAs(file, this.scanSession.name + ".csv");
+          }
+        }]
+    }).present();
   }
 
   delete() {
