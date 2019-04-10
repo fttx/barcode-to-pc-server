@@ -59,6 +59,7 @@
 # npm run build     must be called at least once before executing the commands below:
 
 npm start # run electron with dev tools and the webserver with livereload
+# use cmd.exe on Windows
 ```
 
 * If you're working on the electron/main.ts file:
