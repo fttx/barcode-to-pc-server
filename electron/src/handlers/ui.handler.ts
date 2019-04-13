@@ -252,6 +252,29 @@ export class UiHandler implements Handler {
                 app.dock.show();
             }
         }
+
+        const selectionMenu = Menu.buildFromTemplate([
+            { role: 'copy' },
+            { type: 'separator' },
+            { role: 'selectall' },
+        ]);
+
+        const inputMenu = Menu.buildFromTemplate([
+            { role: 'cut' },
+            { role: 'copy' },
+            { role: 'paste' },
+            { type: 'separator' },
+            { role: 'selectall' },
+        ])
+
+        this.mainWindow.webContents.on('context-menu', (e, props) => {
+            const { selectionText, isEditable } = props;
+            if (isEditable) {
+                inputMenu.popup({ window: this.mainWindow });
+            } else if (selectionText && selectionText.trim() !== '') {
+                selectionMenu.popup({ window: this.mainWindow });
+            }
+        })
     }
 
     onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
