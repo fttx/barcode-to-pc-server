@@ -31,7 +31,7 @@ export class Config {
     public static URL_PAIR = 'http://app.barcodetopc.com';
 
     public static EMAIL_SUPPORT = 'support@barcodetopc.com';
-    public static EMAIL_ORDERS = 'orders@fastspring.com';
+    public static EMAIL_FASTSPRING = 'orders@fastspring.com';
 
     // Constants
     public static STORAGE_SUBSCRIPTION = 'subscription';

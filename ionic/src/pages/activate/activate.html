@@ -20,12 +20,7 @@
 <ion-content padding>
   <ion-list>
     <ion-item no-lines no-padding>
-      See the <a (click)="licenseProvider.showPricingPage('activatePageShowPricing')">pricing</a> page to compare the
-      available plans.
-      <br>
-      <br>
-      For payment methods support: <a (click)="contactOrdersClick()">{{ getOrdersEmail() }}</a><br>
-      For general support: <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a>
+      Click <a (click)="licenseProvider.showPricingPage('activatePageShowPricing')">here</a> to buy a license.
     </ion-item>
 
     <div [hidden]="licenseProvider.isSubscribed()">
@@ -34,9 +29,10 @@
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
 
-      <ion-item no-lines no-padding >
+      <ion-item no-lines no-padding>
         <button ion-button color="secondary" default float-right (click)="onActivationClick()">Activate</button>
-        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">Clear</button>
+        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()"
+          [disabled]="!serial || serial == '' ">Clear</button>
       </ion-item>
     </div>
 
@@ -84,6 +80,11 @@
           <ion-col>{{ licenseProvider.canUseCSVAppend() ? 'Yes': 'No' }}</ion-col>
         </ion-row>
       </ion-grid>
+    </ion-item>
+
+    <ion-item no-lines no-padding>
+      For payment methods issues contact: <a (click)="fastSpringClick()">{{ getFastSpringEmail() }}</a><br>
+      For all the other inquiries: <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a>
     </ion-item>
   </ion-list>
 </ion-content>

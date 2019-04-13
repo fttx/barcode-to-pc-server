@@ -62,12 +62,12 @@ export class ActivatePage {
     return Config.EMAIL_SUPPORT;
   }
 
-  contactOrdersClick() {
-    this.electronProvider.shell.openExternal('mailto:' + Config.EMAIL_ORDERS);
+  fastSpringClick() {
+    this.electronProvider.shell.openExternal('mailto:' + Config.EMAIL_FASTSPRING);
   }
 
-  getOrdersEmail() {
-    return Config.EMAIL_ORDERS;
+  getFastSpringEmail() {
+    return Config.EMAIL_FASTSPRING;
   }
 
   onClearSerialClick() {
