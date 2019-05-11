@@ -49,9 +49,9 @@ export class InfoPage {
       })
     });
 
-    // autoUpdater.checkUpdates() is always called on app start by the main 
+    // autoUpdater.checkUpdates() is always called on app start by the main
     // process in UpdateHandler/constructor/onSettingsChanged
-    // Now i tell the main process to call it once again to check 
+    // Now i tell the main process to call it once again to check
     // to perform an update check when the Info page is opened.
     this.electronProvider.ipcRenderer.send('checkForUpdates');
   }
@@ -88,7 +88,7 @@ export class InfoPage {
   }
 
   getWebSiteName() {
-    return Config.WEB_SITE_NAME;
+    return Config.WEBSITE_NAME;
   }
 
   getGitHubServer() {

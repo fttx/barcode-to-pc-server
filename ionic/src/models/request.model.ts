@@ -44,8 +44,10 @@ export class requestModelHelo extends requestModel {
     action = requestModel.ACTION_HELO;
     deviceName: string;
     deviceId: string;
+    version: string;
 
-    public fromObject(obj: ({ deviceName: string, deviceId: string })) {
+    public fromObject(obj: ({ version: string, deviceName: string, deviceId: string, })) {
+        this.version = obj.version;
         this.deviceName = obj.deviceName;
         this.deviceId = obj.deviceId;
         return this;

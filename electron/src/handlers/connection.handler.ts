@@ -126,7 +126,12 @@ export class ConnectionHandler implements Handler {
                 let response = new responseModelHelo();
                 response.fromObject({
                     version: app.getVersion(),
-                    outputProfiles: this.settingsHandler.outputProfiles
+                    outputProfiles: this.settingsHandler.outputProfiles,
+
+                    /**
+                     * @deprecated
+                     */
+                    quantityEnabled: false,
                 });
 
                 if (request && request.deviceId) {

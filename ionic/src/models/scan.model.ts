@@ -20,6 +20,11 @@ export class ScanModel {
     date: number;
 
     /**
+     * @deprecated use the OutputBlock instead
+     */
+    quantity: string;
+
+    /**
      * This is static because most of the times the ScanModel object is parsed 
      * from a JSON object, so the instance methods won't be available until you 
      * do something like this: scan = Object.assign(new ScanModel(), scan), which

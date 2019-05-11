@@ -18,6 +18,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
+import { gt, SemVer, lt } from 'semver';
 
 /**
  * Generated class for the HomePage page.
@@ -131,11 +132,22 @@ export class HomePage {
     this.checkAccessibilityPermission();
 
     // Those events are inside ionViewDidLoad because they need to be listening
-    // as long as the Home page is alive. Doesn't matter if there is another 
+    // as long as the Home page is alive. Doesn't matter if there is another
     // page on top of it. They get registered only one time whene the Home page
     // loads, so there isn't the need to clear them or perform other checks.
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
       this.ngZone.run(() => this.lastToast.present('A connection was successfully established with ' + request.deviceName));
+
+      // older versions of the app didn't send the version number
+      if (!request.version) {
+        this.showVersionMismatch();
+        return;
+      }
+
+      // let appVersion = new SemVer(request.version);
+      // if (lt(appVersion, 'x.x.x')) {
+      // this.showVersionMismatch();
+      // }
     });
 
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
@@ -167,7 +179,7 @@ export class HomePage {
               console.log('@ scannings array not emtpy -> adding only the new scans')
 
               // I expect to receive the scans sorted by id desc, so i copy
-              // to the local scan list only the scans that have an id  
+              // to the local scan list only the scans that have an id
               // greater than the one that has the lastest received scan.
               let lastReceivedScanId = existingScanSession.scannings[0].id;
               let alreadyExistingScanIndex = newScanSession.scannings.findIndex(newScan => newScan.id <= lastReceivedScanId); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
@@ -208,7 +220,7 @@ export class HomePage {
       //   if (scanIndex == -1) {
       //     this.scanSessions[scanSessionIndex].scannings.unshift(request.scan);
       //   }
-      // } 
+      // }
     })
 
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN, (e, request: requestModelDeleteScan) => {
@@ -374,6 +386,26 @@ export class HomePage {
 
   public getScanText(scan) {
     return ScanModel.ToString(scan);
+  }
+
+  private isVersionMismatchDialogVisible = false;
+  private showVersionMismatch() {
+    if (!this.isVersionMismatchDialogVisible) {
+      let dialog = this.alertCtrl.create({
+        title: 'Server/app version mismatch',
+        message: 'Please update both app and server, otherwise they may not work properly.<br><br>Server can be downloaded at ' + Config.WEBSITE_NAME,
+        buttons: [{ text: 'Cancel', role: 'cancel' }, {
+          text: 'Download', handler: () => {
+            this.electronProvider.shell.openExternal(Config.URL_DOWNLOAD_SERVER)
+          }
+        }]
+      });
+      dialog.didLeave.subscribe(() => {
+        this.isVersionMismatchDialogVisible = false;
+      })
+      this.isVersionMismatchDialogVisible = true;
+      dialog.present();
+    }
   }
 }
 

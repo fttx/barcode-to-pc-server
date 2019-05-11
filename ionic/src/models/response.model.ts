@@ -13,7 +13,8 @@ export abstract class responseModel {
     public static readonly ACTION_PONG = 'pong';
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
     public static readonly ACTION_POPUP = 'action_popup';
-    public static readonly UPDATE_OUTPUT_PROFILES = 'update_output_profiles'
+    public static readonly ACTION_ENABLE_QUANTITY = 'enableQuantity';
+    public static readonly UPDATE_OUTPUT_PROFILES = 'update_output_profiles';
     public static readonly ACTION_REQUEST_SCAN_SESSION_UPDATE = 'requestScanSessionUpdate';
     public static readonly ACTION_KICK = 'kick';
 }
@@ -36,9 +37,15 @@ export class responseModelHelo extends responseModel {
     version: string;
     outputProfiles: OutputProfileModel[];
 
-    public fromObject(obj: ({ version: string, outputProfiles: OutputProfileModel[] })) {
+    /**
+     * @deprecated Use OutputProfiles instead
+     */
+    quantityEnabled: boolean;
+
+    public fromObject(obj: ({ version: string, outputProfiles: OutputProfileModel[], quantityEnabled: boolean })) {
         this.version = obj.version;
         this.outputProfiles = obj.outputProfiles;
+        this.quantityEnabled = obj.quantityEnabled;
         return this;
     }
 }
@@ -71,6 +78,19 @@ export class responseModelPopup extends responseModel {
     public fromObject(obj: ({ title: string, message: string })) {
         this.title = obj.title;
         this.message = obj.message;
+        return this;
+    }
+}
+
+/**
+ * @deprecated For backwards compatibility only, use OutputProfiles instead
+ */
+export class responseModelEnableQuantity extends responseModel {
+    action = responseModel.ACTION_ENABLE_QUANTITY;
+    enable: boolean;
+
+    public fromObject(obj: ({ enable: boolean })) {
+        this.enable = obj.enable;
         return this;
     }
 }

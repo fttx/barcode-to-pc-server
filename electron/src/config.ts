@@ -12,7 +12,7 @@ export class Config {
         title: Config.APP_NAME,
     };
 
-    public static WEB_SITE_NAME = 'barcodetopc.com';
+    public static WEBSITE_NAME = 'barcodetopc.com';
 
     public static URL_WEBSITE = 'https://barcodetopc.com';
 
@@ -21,7 +21,7 @@ export class Config {
     public static URL_ORDER_DEACTIVATE = Config.URL_LICENSE_SERVER + '/order/remove';
 
     public static URL_PRICING = Config.URL_WEBSITE + '/pricing/';
-    public static URL_DOWNLOAD = Config.URL_WEBSITE + '/#download';
+    public static URL_DOWNLOAD_SERVER = Config.URL_WEBSITE + '/#download-server';
     public static URL_FAQ = Config.URL_WEBSITE + '/frequently-asked-questions/';
     public static URL_FAQ_APP_DOESNT_FIND_COMPUTER = Config.URL_FAQ + '#app-doesnt-find-computer';
     public static URL_API = Config.URL_WEBSITE + "http-api.json"

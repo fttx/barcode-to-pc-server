@@ -71,10 +71,10 @@
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
-                  <input class="scan-text" type="text" [value]="getScanText(scan)" />
+                  <input class="scan-text" type="text" [value]="getScanText(scan)" disabled />
                 </ion-col>
                 <ion-col col-auto>
-                  <button ion-button clear color="dark" ngxClipboard [cbContent]="scan.text">
+                  <button ion-button clear color="dark" ngxClipboard [cbContent]="getScanText(scan)">
                     <ion-icon name="copy"></ion-icon>
                   </button>
                 </ion-col>
