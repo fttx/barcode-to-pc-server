@@ -1,7 +1,7 @@
 # Changelog
 
-<!-- 
-## [x.0.0] - Not released yet
+<!--
+## [vx.x.x] - Not released yet
 
 ### Added
 
@@ -15,6 +15,13 @@
 
 ### Security
 -->
+
+
+## [v3.1.0] - 2019-05-19
+
+### Added
+
+Output Profiles support (protocol only)
 
 ## [v3.0.3] - 2019-03-07
 
