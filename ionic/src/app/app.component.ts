@@ -78,12 +78,11 @@ export class MyApp {
         }
 
         // Upgrade output profiles
-        if (typeof settings.outputProfiles == 'undefined' || true) {
+        if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;
           settings.outputProfiles[0].outputBlocks = settings.typedString;
 
           let scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
-          console.log('updating... old = ', scanSessions, JSON.stringify(scanSessions))
           for (let scanSession of scanSessions) {
             for (let scan of scanSession.scannings) {
               let outputBlocks = [];
@@ -113,7 +112,6 @@ export class MyApp {
               scan.outputBlocks = outputBlocks;
             }
           }
-          console.log('new: ', JSON.parse(JSON.stringify(scanSessions)))
           this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
         }
 
