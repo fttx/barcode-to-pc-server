@@ -482,7 +482,15 @@ export class ScanSessionContextMenuPopover {
             content.push(Papa.unparse(this.scanSession.scannings.map(scan => {
               if (opts[0] == 'onlyTextComponents') {
                 return scan.outputBlocks
-                  .filter(outputBlock => (outputBlock.type != 'key' && outputBlock.type != 'delay'))
+                  .filter(outputBlock => (
+                    outputBlock.type != 'key' &&
+                    outputBlock.type != 'delay' &&
+
+                    // if and endif blocks should never reach the server
+                    // these checks are unnecessary:
+                    outputBlock.type != 'if' &&
+                    outputBlock.type != 'endif'
+                    ))
                   .map(outputBlock => outputBlock.value)
               }
               return scan.outputBlocks.map(outputBlock => outputBlock.value);

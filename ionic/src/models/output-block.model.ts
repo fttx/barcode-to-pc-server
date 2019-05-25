@@ -15,7 +15,7 @@ export class OutputBlockModel {
      */
     value: string;
     /**
-     * A block is editable if the user is allowed to edit the component 
+     * A block is editable if the user is allowed to edit the component
      * value through the UI
      */
     editable?: boolean = false;
@@ -27,5 +27,22 @@ export class OutputBlockModel {
      * barcode is ScanModel.barcode
      * delay is like sleep or wait
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif';
+
+
+    static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
+        let skip = 0;
+        for (let i = startFrom; i < outputBlocks.length; i++) {
+            if (outputBlocks[i].type == 'if') {
+                skip++;
+            } else if (outputBlocks[i].type == 'endif') {
+                if (skip == 0) {
+                    return i - 1;
+                } else {
+                    skip--;
+                }
+            }
+        }
+        return -1;
+    }
 }
