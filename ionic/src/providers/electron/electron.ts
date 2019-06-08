@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ipcRenderer, remote, shell, Menu, MenuItem } from 'electron';
+import { ipcRenderer, remote, shell, Menu, MenuItem, clipboard } from 'electron';
 import ElectronStore from 'electron-store';
 import * as v5 from 'uuid/v5';
 
@@ -25,13 +25,13 @@ export class ElectronProvider {
   menuItem: typeof MenuItem;
   ElectronStore: typeof ElectronStore;
   v5: typeof v5;
+  clipboard: typeof clipboard;
 
   constructor(
   ) {
     // console.log('test')
     if (this.isElectron()) {
       let electron = window.require('electron');
-
       this.ipcRenderer = electron.ipcRenderer;
       this.dialog = electron.remote.dialog;
       this.app = electron.remote.app;
@@ -40,6 +40,7 @@ export class ElectronProvider {
       this.remote = electron.remote;
       this.menu = electron.remote.Menu;
       this.menuItem = electron.remote.MenuItem;
+      this.clipboard = electron.clipboard;
       this.ElectronStore = electron.remote.require('electron-store');
       this.v5 = electron.remote.require('uuid/v5');
 
