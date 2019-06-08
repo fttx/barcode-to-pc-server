@@ -442,6 +442,7 @@ export class ConnectedClientsPopover {
     <ion-list>
       <ion-list-header>Options</ion-list-header>
       <button ion-item (click)="exportAsCSV()">Export as CSV</button>
+      <button ion-item (click)="copyAsCSV()">Copy CSV to Clipboard</button>
       <button ion-item (click)="delete()">Delete</button>
     </ion-list>
   `
@@ -469,33 +470,59 @@ export class ScanSessionContextMenuPopover {
     this.close()
 
     this.alertCtrl.create({
-      title: 'Export options',
+      title: 'Export CSV',
       // message: '<b>test</b>',
       inputs: [{ type: 'checkbox', checked: true, label: 'Include only the text components', value: 'onlyTextComponents' }],
       buttons: [
         { text: 'Cancel', role: 'cancel' },
         {
           text: 'Export', handler: (opts: AlertOptions) => {
-            let content = [];
-            let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-
-            content.push(Papa.unparse(this.scanSession.scannings.map(scan => {
-              if (opts[0] == 'onlyTextComponents') {
-                return scan.outputBlocks
-                  .filter(outputBlock => (outputBlock.type != 'key' && outputBlock.type != 'delay'))
-                  .map(outputBlock => outputBlock.value)
-              }
-              return scan.outputBlocks.map(outputBlock => outputBlock.value);
-            }), {
-                quotes: settings.enableQuotes,
-                delimiter: ",",
-                newline: settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n')
-              }));
+            let content = this.createCsvContent(opts);
+            
             let file = new Blob(content, { type: 'text/csv;charset=utf-8' });
             saveAs(file, this.scanSession.name + ".csv");
           }
         }]
     }).present();
+  }
+
+  copyAsCSV() {
+    this.close()
+
+    const clipboard = this.electronProvider.clipboard;
+
+    this.alertCtrl.create({
+      title: 'Copy to Clipboard',
+      // message: '<b>test</b>',
+      inputs: [{ type: 'checkbox', checked: true, label: 'Include only the text components', value: 'onlyTextComponents' }],
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Copy', handler: (opts: AlertOptions) => {
+            const content = this.createCsvContent(opts);
+            
+            clipboard.writeText(content[0]);
+          }
+        }]
+    }).present();
+  }
+
+  createCsvContent(opts: AlertOptions) {
+    let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    let content = [];
+    content.push(Papa.unparse(this.scanSession.scannings.map(scan => {
+      if (opts[0] == 'onlyTextComponents') {
+        return scan.outputBlocks
+          .filter(outputBlock => (outputBlock.type != 'key' && outputBlock.type != 'delay'))
+          .map(outputBlock => outputBlock.value)
+      }
+      return scan.outputBlocks.map(outputBlock => outputBlock.value);
+    }), {
+        quotes: settings.enableQuotes,
+        delimiter: ",",
+        newline: settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n')
+      }));
+    return content;
   }
 
   delete() {
