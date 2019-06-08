@@ -18,7 +18,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-import { gt, SemVer, lt } from 'semver';
+
 
 /**
  * Generated class for the HomePage page.
