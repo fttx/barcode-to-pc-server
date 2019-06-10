@@ -21,8 +21,8 @@
 
 ### Added
 
-Output Profiles support (protocol only)
-Reflect the Output field in the "Export as CSV" option
+* Output Profiles support (protocol only)
+* Reflect the Output field in the "Export as CSV" option
 
 ## [v3.0.3] - 2019-03-07
 
