@@ -32,7 +32,7 @@
     npm install
     ```
     * If you get errors related to cairo.h:  <https://github.com/SuperiorJT/angular2-qrcode#woah-whats-this-npm-error>
-    * If you're building on Windows, you may need to install these packages: 
+    * If you're building on Windows, you may need to install these packages:
         * [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe)
         * [Python 2.7 and Visual C++ Build Environment](https://github.com/nodejs/node-gyp#on-windows)
     * If you're building on macOS, you may need to install these packages: `brew install glib`
@@ -79,9 +79,12 @@ The server implements [electron-update](https://www.electron.build/auto-update).
 
 To publish an update:
 
-1. Increase the version number of the package.json
-2. Commit & push the changes
-3. Add a tag and name it `v<new version number>`
-4. Push the tag
+1. Draft a [new
+   release](https://github.com/fttx/barcode-to-pc-server/releases/new) on GitHub
+   and name it `v<new version number>`
+2. Increase the version number of the package.json
+3. Commit & push the changes
+4. Add a tag and name it `v<new version number>`
+5. Push the tag
 
 Upon the tag push, travis and appveyor will build and sign the new installers. At this point if all looks good the only thing left to do is to publish the Github release draft.
