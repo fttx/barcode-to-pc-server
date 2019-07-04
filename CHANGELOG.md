@@ -16,6 +16,11 @@
 ### Security
 -->
 
+## [v3.1.1] - 2019-07-04
+
+### Fixed
+
+* "Append scan to csv" option enabling issue
 
 ## [v3.1.0] - 2019-05-19
 
@@ -110,6 +115,7 @@
 
 * Included the Apple Bonjour installer
 
+[v3.1.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.0...v3.1.1
 [v3.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.3...v3.1.0
 [v3.0.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.2...v3.0.3
 [v3.0.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.1...v3.0.2
