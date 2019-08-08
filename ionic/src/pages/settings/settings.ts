@@ -1,6 +1,6 @@
 import { Component, HostListener, ViewChild, NgZone } from '@angular/core';
 import ElectronStore from 'electron-store';
-import { Alert, AlertController, Navbar, NavController, NavParams } from 'ionic-angular';
+import { Alert, AlertController, Navbar, NavController, NavParams, AlertButton } from 'ionic-angular';
 import { DragulaService } from "ng2-dragula";
 import { Config } from '../../../../electron/src/config';
 import { SettingsModel } from '../../models/settings.model';
@@ -68,6 +68,8 @@ export class SettingsPage {
       { name: 'Custom text (click to edit)', value: '', type: 'text', editable: true },
 
       { name: 'Custom function', value: '', type: 'function', editable: true },
+      { name: 'IF', value: 'if', type: 'if', editable: true },
+      { name: 'ENDIF', value: 'endif', type: 'endif' },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode' },
     ];
   }
@@ -154,18 +156,37 @@ export class SettingsPage {
     this.apply();
   }
 
-  apply() {
-      this.store.set(Config.STORAGE_SETTINGS, this.settings);
-      if (this.electronProvider.isElectron()) {
-        this.electronProvider.app.setLoginItemSettings({
-          openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
-          openAsHidden: this.openAutomatically == 'minimized'
-        })
+  apply(pop = false) {
+    let noIfs = this.settings.outputProfiles[0].outputBlocks.filter(x => x.type == 'if').length;
+    let noEndIfs = this.settings.outputProfiles[0].outputBlocks.filter(x => x.type == 'endif').length;
+    if (noIfs != noEndIfs) {
+      let buttons: AlertButton[] = [{ text: 'OK', role: 'cancel', },];
+      if (pop) {
+        buttons.unshift({ text: 'Discard', handler: () => { this.navCtrl.pop(); } });
       }
-      this.lastSavedSettings = JSON.stringify(this.settings);
-      if (this.electronProvider.isElectron()) {
-        this.electronProvider.ipcRenderer.send('settings');
-      }
+      this.alertCtrl.create({
+        title: 'Syntax error',
+        message: 'The number of IF output blocks should be the same of the ENDIF',
+        buttons: buttons
+      }).present();
+      return false;
+    }
+
+    this.store.set(Config.STORAGE_SETTINGS, this.settings);
+    if (this.electronProvider.isElectron()) {
+      this.electronProvider.app.setLoginItemSettings({
+        openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
+        openAsHidden: this.openAutomatically == 'minimized'
+      })
+    }
+    this.lastSavedSettings = JSON.stringify(this.settings);
+    if (this.electronProvider.isElectron()) {
+      this.electronProvider.ipcRenderer.send('settings');
+    }
+
+    if (pop) {
+      this.navCtrl.pop();
+    }
   }
 
   goBack() {
@@ -186,8 +207,7 @@ export class SettingsPage {
           {
             text: 'Save & Apply',
             handler: () => {
-              this.apply();
-              this.navCtrl.pop();
+              this.apply(true);
             }
           }
         ]
@@ -221,7 +241,7 @@ export class SettingsPage {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     console.log('esc');
-    if (event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) { // esc 
+    if (event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) { // esc
       this.goBack();
     }
   }
