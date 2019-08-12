@@ -16,6 +16,25 @@
 ### Security
 -->
 
+## [v3.1.2] - 2019-08-13
+
+### Added
+
+* "IF" and "ENDIF" Output components
+* Option to choose the CSV delimiter
+* Option to exclude non-text components from CSV
+
+### Changed
+
+* "Append to CSV" and "Export as CSV" now share the same options in the settings
+
+### Fixed
+
+* Issue with the DATE_TIME Output component
+* Output template not updating when the app is inside the scanSession page
+
+### Security
+
 ## [v3.1.1] - 2019-07-04
 
 ### Fixed
@@ -115,6 +134,7 @@
 
 * Included the Apple Bonjour installer
 
+[v3.1.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.1...v3.1.2
 [v3.1.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.0...v3.1.1
 [v3.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.3...v3.1.0
 [v3.0.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.2...v3.0.3
