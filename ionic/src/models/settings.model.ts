@@ -26,6 +26,8 @@ export class SettingsModel {
         },
     ];
     newLineCharacter: string = os.release().toLowerCase().indexOf('windows') == -1 ? 'LF' : 'CRLF';
+    csvDelimiter: string = ",";
+    exportOnlyText: boolean = true;
     enableQuotes: boolean = true;
     enableTray: boolean = true;
     appendCSVEnabled: boolean = false;

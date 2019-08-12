@@ -52,6 +52,12 @@ export class SettingsHandler implements Handler {
     get newLineCharacter(): string {
         return this.settings.newLineCharacter
     }
+    get csvDelimiter(): string {
+        return this.settings.csvDelimiter
+    }
+    get exportOnlyText(): boolean {
+        return this.settings.exportOnlyText
+    }
     get enableQuotes(): boolean {
         return this.settings.enableQuotes
     }

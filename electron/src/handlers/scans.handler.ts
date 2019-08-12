@@ -10,7 +10,7 @@ import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
-
+import * as Papa from 'papaparse';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -40,10 +40,11 @@ export class ScansHandler implements Handler {
                     return;
                 }
 
-                // At the moment the server supports only one scanSession and one scan per request
+                // at the moment the server supports only one scanSession and one scan per request
                 let scanSession = request.scanSessions[0];
                 let scan = scanSession.scannings[0];
 
+                // keyboard emulation
                 (async () => {
                     for (let outputBlock of scan.outputBlocks) {
                         switch (outputBlock.type) {
@@ -62,12 +63,17 @@ export class ScansHandler implements Handler {
                     } // end for
                 })();
 
-                if (this.settingsHandler.appendCSVEnabled) {
+                // append to csv
+                if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
                     let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
-                    if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
-                        let text = ScanModel.ToString(scan) + newLineCharacter;
-                        fs.appendFileSync(this.settingsHandler.csvPath, text);
-                    }
+                    let rows = ScanModel.ToCSV(
+                        scanSession.scannings,
+                        this.settingsHandler.exportOnlyText,
+                        this.settingsHandler.enableQuotes,
+                        this.settingsHandler.csvDelimiter,
+                        newLineCharacter
+                    );
+                    fs.appendFileSync(this.settingsHandler.csvPath, rows + newLineCharacter);
                 }
 
                 if (this.settingsHandler.enableOpenInBrowser) {

@@ -76,6 +76,12 @@ export class MyApp {
         if (typeof settings.csvPath == 'undefined') {
           settings.csvPath = null;
         }
+        if (typeof settings.csvDelimiter == 'undefined') {
+          settings.csvDelimiter = ',';
+        }
+        if (typeof settings.exportOnlyText == 'undefined') {
+          settings.exportOnlyText = true;
+        }
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {

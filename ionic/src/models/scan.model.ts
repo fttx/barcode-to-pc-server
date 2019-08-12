@@ -1,3 +1,4 @@
+import * as Papa from 'papaparse';
 import { OutputBlockModel } from "./output-block.model";
 
 export class ScanModel {
@@ -25,12 +26,12 @@ export class ScanModel {
     quantity: string;
 
     /**
-     * This is static because most of the times the ScanModel object is parsed 
-     * from a JSON object, so the instance methods won't be available until you 
+     * This is static because most of the times the ScanModel object is parsed
+     * from a JSON object, so the instance methods won't be available until you
      * do something like this: scan = Object.assign(new ScanModel(), scan), which
      * can degrade the peformance.
-     * @param scan 
-     * @param fieldSeparator 
+     * @param scan
+     * @param fieldSeparator
      */
     static ToString(scan: ScanModel, fieldSeparator = '') {
         // TODO: maybe a cache of the "ToString" value is a good idea?
@@ -56,5 +57,36 @@ export class ScanModel {
                 default: return '';
             }
         }).join(fieldSeparator);
+    }
+
+
+    /**
+     * This is static because it's shared between the main and renderer process,
+     * and in each process we obtain the settings in a different way, so we need
+     * to pass them as parameter. Also note that the Parse module is installed
+     * in both main and renderer project (remember to keep them at the same
+     * version)
+     *
+     * @param newLineCharacter must be composed by \n and \r(s). Be carrefoul,
+     * because it's stored as 'LF' and 'CR'(s) in the settings.
+     */
+    static ToCSV(scannings: ScanModel[], exportOnlyText: boolean, enableQuotes: boolean, csvDelimiter: string, newLineCharacter: string): string {
+        return Papa.unparse(scannings.map(scan => {
+            if (exportOnlyText) {
+                return scan.outputBlocks
+                    .filter(outputBlock => (
+                        outputBlock.type != 'key' &&
+                        outputBlock.type != 'delay'
+                        // 'if' and 'endif' bloks never reach
+                        // the server because they're stripped on the app side
+                    ))
+                    .map(outputBlock => outputBlock.value)
+            }
+            return scan.outputBlocks.map(outputBlock => outputBlock.value);
+        }), {
+                quotes: enableQuotes,
+                delimiter: csvDelimiter,
+                newline: newLineCharacter
+            });
     }
 }

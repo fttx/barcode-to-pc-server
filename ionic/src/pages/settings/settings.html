@@ -165,8 +165,19 @@
 
 
       <ion-item no-lines>
+        <ion-label>Export only text components</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.exportOnlyText"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines>
         <ion-label>Enable quotes</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableQuotes"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines>
+          <label for="csvDelimiter">Delimiter</label>
+          <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter" id="csvDelimiter" type="text"
+                placeholder="Eg. ," />
       </ion-item>
 
       <!-- <ion-item no-lines>
