@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v3.1.3] - 2019-08-21
+
+### Fixed
+
+* Fix Android 9 connection issue
+
 ## [v3.1.2] - 2019-08-13
 
 ### Added
@@ -32,8 +38,6 @@
 
 * Issue with the DATE_TIME Output component
 * Output template not updating when the app is inside the scanSession page
-
-### Security
 
 ## [v3.1.1] - 2019-07-04
 
@@ -134,6 +138,7 @@
 
 * Included the Apple Bonjour installer
 
+[v3.1.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.2...v3.1.3
 [v3.1.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.1...v3.1.2
 [v3.1.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.0...v3.1.1
 [v3.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.3...v3.1.0
