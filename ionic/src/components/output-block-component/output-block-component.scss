@@ -24,6 +24,15 @@ output-block-component {
         height: 27.3px;
         line-height: 27.3px;
     }
-  
-    
+
+    .custom-text-editor input[type=checkbox]{
+        float: left;
+    }
+
+    .skip-output {
+        width: 88px;
+        display: inline-block;
+        text-align: left;
+        margin: 7px 0 0 5px;
+    }
 }

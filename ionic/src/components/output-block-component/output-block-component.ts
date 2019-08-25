@@ -63,4 +63,14 @@ export class OutputBlockComponent {
     // }
     return 'output-block-component-' + this.outputBlock.type // sass variable name: output-block-component-barcode: #... in variables.scss file
   }
+
+  isSkippable(outputBlock: OutputBlockModel) {
+    if (outputBlock.type == 'barcode') {
+      return true;
+    }
+    if (outputBlock.type == 'variable' && outputBlock.value == 'quantity') {
+      return true;
+    }
+    return false;
+  }
 }

@@ -16,13 +16,13 @@ export class SettingsModel {
      * @deprecated use outputProfiles instead
      */
     typedString: OutputBlockModel[] = [
-        { name: 'BARCODE', value: 'barcode', type: 'barcode' },
+        { name: 'BARCODE', value: 'barcode', type: 'barcode', editable: true, skipOutput: false },
         { name: 'ENTER', value: 'enter', type: 'key' }
     ];
     outputProfiles: OutputProfileModel[] = [
         {
             name: "Profile 1",
-            outputBlocks: [{ name: 'BARCODE', value: 'barcode', type: 'barcode' }, { name: 'ENTER', value: 'enter', type: 'key' }]
+            outputBlocks: [{ name: 'BARCODE', value: 'barcode', type: 'barcode', editable: true, skipOutput: false }, { name: 'ENTER', value: 'enter', type: 'key' }]
         },
     ];
     newLineCharacter: string = os.release().toLowerCase().indexOf('windows') == -1 ? 'LF' : 'CRLF';

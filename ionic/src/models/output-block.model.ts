@@ -1,5 +1,6 @@
 /**
- * It's an element of the Output field
+ * It's an element of the Output field.
+ * Sometimes i also refer to it as Output component
  */
 export class OutputBlockModel {
     /**
@@ -28,6 +29,12 @@ export class OutputBlockModel {
      * delay is like sleep or wait
      */
     type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif';
+    /**
+     * When true means that the user doesn't want to type or append to files
+     * the component value but instead he wants to acquire the data, and use it
+     * later with other components like a 'function' component.
+     */
+    skipOutput?: boolean = false;
 
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
@@ -37,7 +44,7 @@ export class OutputBlockModel {
                 skip++;
             } else if (outputBlocks[i].type == 'endif') {
                 if (skip == 0) {
-                    return i - 1;
+                    return i;
                 } else {
                     skip--;
                 }
