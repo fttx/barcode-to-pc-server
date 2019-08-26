@@ -16,6 +16,13 @@
 ### Security
 -->
 
+## [v3.1.4] - 2019-08-26
+
+### Added
+
+* SkipOutput option for BARCODE and QUANTITY components
+* Infinite loop detection
+
 ## [v3.1.3] - 2019-08-21
 
 ### Fixed
@@ -138,6 +145,7 @@
 
 * Included the Apple Bonjour installer
 
+[v3.1.4]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.3...v3.1.4
 [v3.1.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.2...v3.1.3
 [v3.1.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.1...v3.1.2
 [v3.1.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.0...v3.1.1
