@@ -414,6 +414,10 @@ export class HomePage {
     }
     return this.selectedScanSession.scannings;
   }
+
+  public virtualTrackById(index, scan: ScanModel) {
+    return scan.id;
+  }
 }
 
 // ConnectedClientsPopover

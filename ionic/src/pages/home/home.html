@@ -65,7 +65,7 @@
 
     <!-- the main content -->
     <ion-content main #scanSessionsContainer>
-      <ion-list class="child-container scans-list" [virtualScroll]="getScannings()" bufferRatio="10">
+      <ion-list class="child-container scans-list" [virtualScroll]="getScannings()" [virtualTrackBy]="virtualTrackById" approxItemHeight="45px">
         <ion-item *virtualItem="let scan; let i = index" [ngClass]="canAnimate(i) ? 'scan-text-animate' : ''">
           <ion-grid no-padding>
             <ion-row>
