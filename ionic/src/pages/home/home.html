@@ -9,7 +9,7 @@
   <ion-navbar color="secondary">
     <ion-title>{{ getTitle() }}</ion-title>
     <ion-buttons end>
-      <button  ion-button icon-only solid color="secondary" class="clear-all-button" (click)="onClearAllClick()">
+      <button ion-button icon-only solid color="secondary" class="clear-all-button" (click)="onClearAllClick()">
         <ion-icon name="trash"></ion-icon>
       </button>
 
@@ -30,13 +30,15 @@
     <ion-menu [content]="scanSessionsContainer">
       <ion-content class="child-container">
         <ion-list class="scan-sessions-list">
-          <ion-item *ngFor="let scanSession of filteredScanSessions(); let i = index;" [color]="getItemBackgroundColor(scanSession)"
-            [id]="scanSession.id" (click)="onScanSessionClick(scanSession);">
+          <ion-item *ngFor="let scanSession of filteredScanSessions(); let i = index;"
+            [color]="getItemBackgroundColor(scanSession)" [id]="scanSession.id"
+            (click)="onScanSessionClick(scanSession);">
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
                   <ion-avatar item-left>
-                    <circle-text [value]="scanSession.name" [checked]="scanSession.selected">{{ scanSession.name }}</circle-text>
+                    <circle-text [value]="scanSession.name" [checked]="scanSession.selected">{{ scanSession.name }}
+                    </circle-text>
                   </ion-avatar>
                   <h2>{{ scanSession.name }}</h2>
                   <p>Created: {{ getLocaleDate(scanSession.date) }}</p>
@@ -63,25 +65,21 @@
 
     <!-- the main content -->
     <ion-content main #scanSessionsContainer>
-      <ion-list class="child-container scans-list">
-        <div *ngIf="selectedScanSession">
-          <!-- <button ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" (click)="onItemClicked(scan, i)" (press)="onItemPressed(scan, i)" -->
-
-          <ion-item *ngFor="let scan of selectedScanSession.scannings; let i = index" [ngClass]="canAnimate(i) ? 'scan-text-animate' : ''">
-            <ion-grid no-padding>
-              <ion-row>
-                <ion-col no-lines ion-item>
-                  <input class="scan-text" type="text" [value]="getScanText(scan)" disabled />
-                </ion-col>
-                <ion-col col-auto>
-                  <button ion-button clear color="dark" ngxClipboard [cbContent]="getScanText(scan)">
-                    <ion-icon name="copy"></ion-icon>
-                  </button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-item>
-        </div>
+      <ion-list class="child-container scans-list" [virtualScroll]="getScannings()" bufferRatio="10">
+        <ion-item *virtualItem="let scan; let i = index" [ngClass]="canAnimate(i) ? 'scan-text-animate' : ''">
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col no-lines ion-item>
+                <input class="scan-text" type="text" [value]="getScanText(scan)" disabled />
+              </ion-col>
+              <ion-col col-auto>
+                <button ion-button clear color="dark" ngxClipboard [cbContent]="getScanText(scan)">
+                  <ion-icon name="copy"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
 
         <div class="empty" *ngIf="!selectedScanSession" text-center>
           Please select a scan session

@@ -407,6 +407,13 @@ export class HomePage {
       dialog.present();
     }
   }
+
+  public getScannings() {
+    if (this.selectedScanSession == null) {
+      return [];
+    }
+    return this.selectedScanSession.scannings;
+  }
 }
 
 // ConnectedClientsPopover
