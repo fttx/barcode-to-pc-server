@@ -43,12 +43,8 @@ export class HomePage {
   @ViewChild('searchbar') searchbar: Searchbar;
 
   private connectedClientPopover: Popover = null;
-
   private store: ElectronStore;
-
-  onScanSessionClick(scanSession) {
-    this.selectedScanSession = scanSession;
-  }
+  private saveDebounceTimeout = null;
 
   constructor(
     public navCtrl: NavController,
@@ -97,6 +93,20 @@ export class HomePage {
     if (event.keyCode == 27) {
       this.onSearchCancel(null);
     }
+  }
+
+  save() {
+    // console.log('save()', this.scanSessions);
+    if (this.saveDebounceTimeout != null) clearTimeout(this.saveDebounceTimeout);
+
+    this.saveDebounceTimeout = setTimeout(() => {
+      // console.log('save()');
+      this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
+    }, 500)
+  }
+
+  onScanSessionClick(scanSession) {
+    this.selectedScanSession = scanSession;
   }
 
   onSearch(event) {
@@ -330,11 +340,6 @@ export class HomePage {
 
   canAnimate() {
     return this.animateLast;
-  }
-
-  save() {
-    console.log('save()', this.scanSessions);
-    this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
   }
 
   getItemBackgroundColor(scanSession) {
