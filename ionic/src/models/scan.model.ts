@@ -6,14 +6,15 @@ export class ScanModel {
     cancelled: boolean;
     repeated: boolean;
 
-    /**
-     * @deprecated use the ToString method
-     */
-    text: string;
-
     outputBlocks: OutputBlockModel[];
     ack: boolean;
     id: number;
+
+    /**
+     * This field should be set when the scan is created. Like this:
+     * scan.displayValue = ScanModel.ToString(scan);
+     */
+    displayValue: string;
 
     /**
      * @deprecated use the OutputBlock instead
@@ -26,6 +27,11 @@ export class ScanModel {
     quantity: string;
 
     /**
+     * @deprecated use the ToString method
+     */
+    text: string;
+
+     /**
      * This is static because most of the times the ScanModel object is parsed
      * from a JSON object, so the instance methods won't be available until you
      * do something like this: scan = Object.assign(new ScanModel(), scan), which
@@ -34,7 +40,6 @@ export class ScanModel {
      * @param fieldSeparator
      */
     static ToString(scan: ScanModel, fieldSeparator = '') {
-        // TODO: maybe a cache of the "ToString" value is a good idea?
         if (!scan || !scan.outputBlocks) {
             return '';
         }

@@ -124,7 +124,7 @@ export class HomePage {
     return this.scanSessions.filter(scanSession =>
       scanSession.name.toLowerCase().indexOf(searchTerms) > -1
       ||
-      scanSession.scannings.findIndex(scan => scan.text.toLowerCase().indexOf(searchTerms) > -1) > -1
+      scanSession.scannings.findIndex(scan => scan.displayValue.toLowerCase().indexOf(searchTerms) > -1) > -1
     )
   }
 
@@ -383,10 +383,6 @@ export class HomePage {
 
   public getLocaleDate(date) {
     return new Date(date).toLocaleString();
-  }
-
-  public getScanText(scan) {
-    return ScanModel.ToString(scan);
   }
 
   private isVersionMismatchDialogVisible = false;
