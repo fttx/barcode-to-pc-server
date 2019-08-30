@@ -25,7 +25,7 @@ page-home {
         background: rgba(183, 28, 28, 0.4);
         border-radius: 5px;
     }
-    .scan-text-animate {
+    .scan-text-animate ion-item[aria-posinset="1"] {
         animation: scanAnimation 1000ms linear 1
     }
     @keyframes scanAnimation {
@@ -47,6 +47,9 @@ page-home {
     }
     .scan-sessions-list .label-md {
         margin: 3px
+    }
+    .scan-sessions-list ion-item:hover {
+        background-color: #f9f9f9
     }
     .scans-list .label-md {
         margin: 0

@@ -42,7 +42,6 @@ export class HomePage {
   @ViewChild('scanSessionsContainer') scanSessionsContainer: Content;
   @ViewChild('searchbar') searchbar: Searchbar;
 
-  private lastInsertedScanIndex = 0;
   private connectedClientPopover: Popover = null;
 
   private store: ElectronStore;
@@ -171,9 +170,6 @@ export class HomePage {
                 // I don't know why unshift doesn't work, so i'll use concat even though it is less performant
                 // existingScanSession.scannings.unshift(newScan)
                 existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings);
-                this.lastInsertedScanIndex = 0;
-              } else {
-                this.lastInsertedScanIndex = alreadyExistingScanIndex;
               }
             } else {
               console.log('@ scannings array not emtpy -> adding only the new scans')
@@ -332,8 +328,8 @@ export class HomePage {
     return s;
   }
 
-  canAnimate(i: number) {
-    return this.animateLast && i == this.lastInsertedScanIndex;
+  canAnimate() {
+    return this.animateLast;
   }
 
   save() {

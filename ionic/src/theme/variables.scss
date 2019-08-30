@@ -99,3 +99,8 @@ html {
 ion-header ion-icon.back-button-icon.icon {
   color: map-get($colors, light);
 }
+
+ion-item {
+  -webkit-transition: none !important;
+  transition: none !important;
+}
