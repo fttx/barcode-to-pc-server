@@ -61,7 +61,7 @@ import { ActivatePage } from '../pages/activate/activate';
         // iconMode: 'ios',
         // modalEnter: 'modal-slide-in',
         // modalLeave: 'modal-slide-out',
-        // activator: 'highlight',
+        activator: 'highlight',
         // pageTransition: 'wp-transition',
       }),
     ComponentsModule,
