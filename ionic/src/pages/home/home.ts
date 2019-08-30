@@ -45,6 +45,7 @@ export class HomePage {
   private connectedClientPopover: Popover = null;
   private store: ElectronStore;
   private saveDebounceTimeout = null;
+  private noBounces = 0;
 
   constructor(
     public navCtrl: NavController,
@@ -97,7 +98,16 @@ export class HomePage {
 
   save() {
     // console.log('save()', this.scanSessions);
-    if (this.saveDebounceTimeout != null) clearTimeout(this.saveDebounceTimeout);
+    if (this.saveDebounceTimeout != null) {
+      clearTimeout(this.saveDebounceTimeout);
+      this.noBounces++;
+
+      if (this.noBounces > 15) {
+        this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
+        this.noBounces = 0;
+        // console.log('save()');
+      }
+    }
 
     this.saveDebounceTimeout = setTimeout(() => {
       // console.log('save()');
