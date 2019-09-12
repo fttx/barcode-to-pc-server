@@ -47,8 +47,14 @@ export class OutputBlockComponent {
         inputs.push({ type: 'text', label: 'Text', value: 'custom text' });
         break;
       }
-      case 'delay':
+      case 'delay': {
         inputs.push({ type: 'number', label: 'Milliseconds', value: '1000' });
+        break;
+      }
+      case 'http': {
+        inputs.push({ type: 'text', label: 'URL', value: this.outputBlock.value || 'https://www.google.com/' });
+        break;
+      }
       case 'if':
       case 'endif':
       default: { break; }
@@ -77,16 +83,22 @@ export class OutputBlockComponent {
                 break;
               }
               case 'variable':
-                case 'barcode': {
-                  this.outputBlock.skipOutput = (opts == 'skipOutput');
-                  break;
+              case 'barcode': {
+                this.outputBlock.skipOutput = (opts == 'skipOutput');
+                break;
               }
               case 'text': {
                 this.outputBlock.value = opts[0];
                 break;
               }
-              case 'delay':
+              case 'delay': {
                 this.outputBlock.value = opts[0];
+                break;
+              }
+              case 'http': {
+                this.outputBlock.value = opts[0];
+                break;
+              }
               case 'if':
               case 'endif':
               default: { break; }

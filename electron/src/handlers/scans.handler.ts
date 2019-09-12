@@ -11,6 +11,7 @@ import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
 import * as Papa from 'papaparse';
+import axios from 'axios';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -57,6 +58,10 @@ export class ScansHandler implements Handler {
                                 if (isNumeric(outputBlock.value)) {
                                     await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
                                 }
+                                break;
+                            }
+                            case 'http': {
+                                axios.request({url: outputBlock.value, method: outputBlock.method});
                                 break;
                             }
                         } // end switch

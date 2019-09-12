@@ -71,6 +71,8 @@ export class SettingsPage {
       { name: 'IF', value: 'if', type: 'if', editable: true },
       { name: 'ENDIF', value: 'endif', type: 'endif' },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true , skipOutput: false},
+
+      { name: 'HTTP', value: '', type: 'http', editable: true},
     ];
   }
 
