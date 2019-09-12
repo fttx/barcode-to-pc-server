@@ -1,0 +1,18 @@
+edit-output-block-pop-over {
+
+    .inline-input {
+        display: block;
+        width: 100%;
+        line-height: 28px;
+        height: 28px;
+        margin-top: 15px;
+        border: 1px solid #b5b5b5;
+    }
+
+    .variable-name {
+        border: none;
+        margin-left: 12px;
+        font-style: italic;
+        color: #969696;
+    }
+}

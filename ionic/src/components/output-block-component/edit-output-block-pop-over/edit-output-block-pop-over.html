@@ -1,0 +1,138 @@
+<ion-header>
+    <ion-navbar [color]="color">
+        <ion-title>{{ outputBlock.name }}</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-end icon-only solid [color]="color" (click)="onCloseClick()">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding text-center>
+    <!-- {{ outputBlock | json }} -->
+    <ion-list>
+        <ion-item text-wrap [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' ">
+            <ion-label>
+                <h2 color="dark">Skip output</h2>
+                <p>
+                    Disables the Keyboard emulation and CSV output for this component.<br>
+                    This option is useful when you only want to acquire the data, and use it later with a "JavaScript
+                    Function"
+                    component, or an "IF" component.
+                </p>
+            </ion-label>
+            <ion-toggle [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
+        </ion-item>
+
+
+        <div [hidden]="outputBlock.type != 'key'">
+            <ion-item [hidden]="outputBlock.editable !== true">
+                <label for="_valueCustomKey" color="dark">
+                    <h2>Key identifier</h2>
+                    <p>Insert one identifier present in <a
+                            (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">this
+                            list</a>.</p>
+                </label>
+                <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
+                    placeholder="eg. numpad_9" />
+            </ion-item>
+
+            <ion-item no-lines>
+                <h2>Modifier keys</h2>
+                <p>Select the modifier keys that you want to be pressed along with the {{ outputBlock.name }} key</p>
+            </ion-item>
+
+            <ion-item>
+                <ion-label color="dark">Alt</ion-label>
+                <ion-checkbox [(ngModel)]="modifiers[0]" (ionChange)="onModifierChange()"></ion-checkbox>
+            </ion-item>
+
+            <ion-item>
+                <ion-label color="dark">Command</ion-label>
+                <ion-checkbox [(ngModel)]="modifiers[1]" (ionChange)="onModifierChange()"></ion-checkbox>
+            </ion-item>
+
+            <ion-item>
+                <ion-label color="dark">Control</ion-label>
+                <ion-checkbox [(ngModel)]="modifiers[2]" (ionChange)="onModifierChange()"></ion-checkbox>
+            </ion-item>
+
+            <ion-item>
+                <ion-label color="dark">Shift</ion-label>
+                <ion-checkbox [(ngModel)]="modifiers[3]" (ionChange)="onModifierChange()"></ion-checkbox>
+            </ion-item>
+        </div>
+
+
+        <ion-item [hidden]="outputBlock.type != 'function'">
+            <!-- <ion-label color="dark">JavaScript</ion-label> -->
+            <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->
+            <label for="_valuejs">
+                <h2 color="dark">JavaScript</h2>
+                <p>
+                    The expression should return a string.<br><br>
+                    You can use the following variables:
+                </p>
+                <input type="text" value="barcode" disabled class="variable-name" /> <br>
+                <input type="text" value="quantity" disabled class="variable-name" /> <br>
+                <input type="text" value="timestamp" disabled class="variable-name" /> <br>
+                <input type="text" value="device_name" disabled class="variable-name" /> <br>
+            </label>
+
+            <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
+                placeholder="barcode.replace('a','b')" />
+        </ion-item>
+
+
+        <ion-item [hidden]="outputBlock.type != 'text'">
+            <label for="_valueText">
+                <h2 color="dark">Text</h2>
+            </label>
+            <input id="_valueText" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
+                placeholder="Lorem ipsum" />
+        </ion-item>
+
+        <ion-item [hidden]="outputBlock.type != 'delay'">
+            <label for="_valueMs" color="dark">
+                <h2 color="dark">Milliseconds</h2>
+                <p>
+                    Time interval to wait in milliseconds<br><br>
+                    1000 milliseconds = 1 second
+                </p>
+            </label>
+            <input id="_valueMs" class="inline-input" type="number" [(ngModel)]="outputBlock.value"
+                placeholder="1000" />
+        </ion-item>
+
+        <ion-item [hidden]="outputBlock.type != 'http'">
+            <label for="_valueMs" color="dark">
+                <h2 color="dark">URL</h2>
+            </label>
+            <input id="_valueMs" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
+                placeholder="https://www.google.com/" />
+        </ion-item>
+
+        <ion-item [hidden]="outputBlock.type != 'if'">
+            <label for="_valueIf" color="dark">
+                <h2 color="dark">JavaScript boolean expression</h2>
+                <p>
+                    The expression should return a boolean.<br><br>
+                    You can use the following variables:
+                </p>
+                <input type="text" value="barcode" disabled class="variable-name" /> <br>
+                <input type="text" value="quantity" disabled class="variable-name" /> <br>
+                <input type="text" value="timestamp" disabled class="variable-name" /> <br>
+                <input type="text" value="device_name" disabled class="variable-name" /> <br>
+            </label>
+            <input id="_valueIf" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
+                placeholder="eg. quantity == 1" />
+        </ion-item>
+    </ion-list>
+
+    <ion-item [hidden]="outputBlock.type != 'endif'" no-lines>
+        Use this component to close the IF component counterpart.
+    </ion-item>
+</ion-content>

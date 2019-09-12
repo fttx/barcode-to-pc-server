@@ -28,6 +28,7 @@ import { LicenseProvider } from '../providers/license/license';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
 import { ActivatePage } from '../pages/activate/activate';
+import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ActivatePage } from '../pages/activate/activate';
     HomePage,
     WelcomePage,
     InfoPage,
+    EditOutputBlockPage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
@@ -73,6 +75,7 @@ import { ActivatePage } from '../pages/activate/activate';
     HomePage,
     WelcomePage,
     InfoPage,
+    EditOutputBlockPage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
