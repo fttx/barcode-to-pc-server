@@ -103,7 +103,6 @@ export class OutputBlockComponent {
               case 'endif':
               default: { break; }
             }
-            console.log('@modifiers', 'edited component: ', this.outputBlock)
           }
         }]
     }).present();

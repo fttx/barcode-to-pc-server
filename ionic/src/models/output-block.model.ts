@@ -49,11 +49,6 @@ export class OutputBlockModel {
      */
     modifiers?: string[];
 
-    /**
-     * HTTP request method
-     */
-    method?: 'get' | 'post';
-
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;
         for (let i = startFrom; i < outputBlocks.length; i++) {
