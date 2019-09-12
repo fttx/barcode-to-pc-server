@@ -48,7 +48,7 @@ export class ScansHandler implements Handler {
                 (async () => {
                     for (let outputBlock of scan.outputBlocks) {
                         switch (outputBlock.type) {
-                            case 'key': this.keyTap(outputBlock.value); break;
+                            case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
                             case 'text': this.typeString(outputBlock.value); break;
                             case 'variable': this.typeString(outputBlock.value); break;
                             case 'function': this.typeString(outputBlock.value); break;
@@ -98,11 +98,11 @@ export class ScansHandler implements Handler {
         }
     }
 
-    keyTap(key) {
+    keyTap(key, modifiers) {
         if (!this.settingsHandler.enableRealtimeStrokes || !key) {
             return;
         }
-        robotjs.keyTap(key);
+        robotjs.keyTap(key, modifiers);
     }
 
     typeString(string) {

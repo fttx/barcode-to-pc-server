@@ -1,14 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { OutputBlockModel } from '../../models/output-block.model';
+import { AlertController, AlertOptions } from 'ionic-angular';
 
 
-
-/**
- * Generated class for the CustomVariableComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'output-block-component',
   templateUrl: 'output-block-component.html'
@@ -16,27 +10,92 @@ import { OutputBlockModel } from '../../models/output-block.model';
 export class OutputBlockComponent {
   @Input() outputBlock: OutputBlockModel;
 
-  public editMode = false;
-  public inputValue = '';
-
-  constructor() { }
+  constructor(
+    private alertCtrl: AlertController,
+  ) { }
 
   ngOnInit() {
     // this.value = this.outputBlock.name;
   }
 
-  onOutputBlockClicked(event) {
+  onClick(event) {
     event.stopPropagation();
 
-    // if (this.outputBlock.type == 'function') {
-    //   this.outputBlock.name = this.value;
-    //   this.outputBlock.value = this.value;
-    // } else {
-    // this.outputBlock.value = this.inputValue;
-    // }
-    this.editMode = false;
-  }
+    let inputs = [];
+    switch (this.outputBlock.type) {
+      case 'key': {
+        inputs.push(
+          { type: 'checkbox', checked: this.outputBlock.modifiers.findIndex(x => x == 'alt') != -1, label: 'Alt', value: 'alt' },
+          { type: 'checkbox', checked: this.outputBlock.modifiers.findIndex(x => x == 'command') != -1, label: 'Command', value: 'command' },
+          { type: 'checkbox', checked: this.outputBlock.modifiers.findIndex(x => x == 'control') != -1, label: 'Control', value: 'control' },
+          { type: 'checkbox', checked: this.outputBlock.modifiers.findIndex(x => x == 'shift') != -1, label: 'Shift', value: 'shift' }
+        );
+        break;
+      }
+      case 'function': {
+        inputs.push(
+          { type: 'text', label: 'Function', value: 'barcode.replace("a", "b")' },
+        );
+        break;
+      }
+      case 'variable':
+      case 'barcode': {
+        inputs.push({ type: 'checkbox', checked: this.outputBlock.skipOutput, label: 'Skip output', value: 'skipOutput' });
+        break;
+      }
+      case 'text': {
+        inputs.push({ type: 'text', label: 'Text', value: 'custom text' });
+        break;
+      }
+      case 'delay':
+        inputs.push({ type: 'number', label: 'Milliseconds', value: '1000' });
+      case 'if':
+      case 'endif':
+      default: { break; }
+    }
 
+    this.alertCtrl.create({
+      // title: this.outputBlock.name.charAt(0) + this.outputBlock.name.slice(1).toLocaleLowerCase() + ' options',
+      title: this.outputBlock.name,
+      message: inputs.length == 0 ? 'No options available for this component' : null,
+      inputs: inputs,
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Save',
+          // handler: (opts: AlertOptions) => {
+          handler: (opts: any) => {
+            console.log(opts);
+
+            switch (this.outputBlock.type) {
+              case 'key': {
+                this.outputBlock.modifiers = opts;
+                break;
+              }
+              case 'function': {
+                this.outputBlock.value = opts[0];
+                break;
+              }
+              case 'variable':
+                case 'barcode': {
+                  this.outputBlock.skipOutput = (opts == 'skipOutput');
+                  break;
+              }
+              case 'text': {
+                this.outputBlock.value = opts[0];
+                break;
+              }
+              case 'delay':
+                this.outputBlock.value = opts[0];
+              case 'if':
+              case 'endif':
+              default: { break; }
+            }
+            console.log('@modifiers', 'edited component: ', this.outputBlock)
+          }
+        }]
+    }).present();
+  }
 
   displayedName() {
     if (this.outputBlock.editable && this.outputBlock.value && this.outputBlock.value.length) {
@@ -62,15 +121,5 @@ export class OutputBlockComponent {
     //   return 'danger'
     // }
     return 'output-block-component-' + this.outputBlock.type // sass variable name: output-block-component-barcode: #... in variables.scss file
-  }
-
-  isSkippable(outputBlock: OutputBlockModel) {
-    if (outputBlock.type == 'barcode') {
-      return true;
-    }
-    if (outputBlock.type == 'variable' && outputBlock.value == 'quantity') {
-      return true;
-    }
-    return false;
   }
 }

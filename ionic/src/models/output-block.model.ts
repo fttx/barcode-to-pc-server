@@ -19,7 +19,7 @@ export class OutputBlockModel {
      * A block is editable if the user is allowed to edit the component
      * value through the UI
      */
-    editable?: boolean = false;
+    editable?: boolean;
     /**
      * key is a key that can be pressed
      * text is a string that can be set beforehand
@@ -34,8 +34,12 @@ export class OutputBlockModel {
      * the component value but instead he wants to acquire the data, and use it
      * later with other components like a 'function' component.
      */
-    skipOutput?: boolean = false;
+    skipOutput?: boolean;
 
+    /**
+     * Modifier keys to press along with the component
+     */
+    modifiers?: string[];
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

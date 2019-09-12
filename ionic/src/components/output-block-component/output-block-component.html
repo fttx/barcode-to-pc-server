@@ -2,30 +2,8 @@
     ion-button small
     class="main-button"
     [color]="getVariableColor()"
-    (click)="outputBlock.editable ? editMode=true : false;">
+    (click)="onClick($event)">
 
-    <span [hidden]="isSkippable(outputBlock)">
-        <span [hidden]="editMode == true" [innerHTML]="displayedName()"></span>
-        <span [hidden]="editMode == false" class="custom-text-editor">
-            <input [(ngModel)]="outputBlock.value" type="text" />
-            <button ion-button small color="primary"
-                (click)="onOutputBlockClicked($event)">
-                Done
-            </button>
-        </span>
-    </span>
-
-    <span [hidden]="!isSkippable(outputBlock)">
-        <span [hidden]="editMode == true" [innerHTML]="displayedName()"></span>
-        <span [hidden]="editMode == false" class="custom-text-editor">
-            <input [(ngModel)]="outputBlock.skipOutput" type="checkbox"/>
-            <label class="skip-output">Skip output</label>
-            <button ion-button small color="primary"
-                (click)="onOutputBlockClicked($event)">
-                Done
-            </button>
-        </span>
-    </span>
-
+    <span [innerHTML]="displayedName()"></span>
 
 </button>
