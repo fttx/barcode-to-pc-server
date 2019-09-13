@@ -61,8 +61,7 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                             case 'http': {
-                                // axios.request({url: outputBlock.value, method: outputBlock.method});
-                                axios.get(outputBlock.value);
+                                axios.request({url: outputBlock.value, method: outputBlock.method});
                                 break;
                             }
                         } // end switch

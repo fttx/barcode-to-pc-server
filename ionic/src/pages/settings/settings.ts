@@ -73,7 +73,7 @@ export class SettingsPage {
       { name: 'IF', value: '', type: 'if', editable: true },
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
-      { name: 'HTTP', value: '', type: 'http', editable: true},
+      { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true},
     ];
   }
 

@@ -107,13 +107,25 @@
                 placeholder="1000" />
         </ion-item>
 
-        <ion-item [hidden]="outputBlock.type != 'http'">
-            <label for="_valueMs" color="dark">
-                <h2 color="dark">URL</h2>
-            </label>
-            <input id="_valueMs" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
-                placeholder="https://www.google.com/" />
-        </ion-item>
+        <div [hidden]="outputBlock.type != 'http'">
+            <ion-item>
+                <label for="_valueMs" color="dark">
+                    <h2 color="dark">URL</h2>
+                </label>
+                <input id="_valueMs" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
+                    placeholder="https://www.google.com/" />
+            </ion-item>
+
+            <ion-item>
+                <label for="_valueMethod" color="dark">
+                    <h2 color="dark">Method</h2>
+                </label>
+                <select id="_valueMethod" [(ngModel)]="outputBlock.method">
+                    <option selected value="get">GET</option>
+                    <option value="post">POST</option>
+                </select>
+            </ion-item>
+        </div>
 
         <ion-item [hidden]="outputBlock.type != 'if'">
             <label for="_valueIf" color="dark">
