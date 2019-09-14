@@ -70,20 +70,22 @@
         <ion-item [hidden]="outputBlock.type != 'function'">
             <!-- <ion-label color="dark">JavaScript</ion-label> -->
             <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->
-            <label for="_valuejs">
-                <h2 color="dark">JavaScript</h2>
-                <p>
-                    The expression should return a string.<br><br>
-                    You can use the following variables:
-                </p>
+            <label for="_valuejs">JavaScript</label>
+
+            <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
+                placeholder="barcode.replace('a','b')" />
+
+            <br>
+            <p>
+                The expression should return a string.<br><br>
+                You can use the following variables:
+            </p>
+            <code>
                 <input type="text" value="barcode" disabled class="variable-name" /> <br>
                 <input type="text" value="quantity" disabled class="variable-name" /> <br>
                 <input type="text" value="timestamp" disabled class="variable-name" /> <br>
                 <input type="text" value="device_name" disabled class="variable-name" /> <br>
-            </label>
-
-            <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
-                placeholder="barcode.replace('a','b')" />
+            </code>
         </ion-item>
 
 
@@ -96,15 +98,14 @@
         </ion-item>
 
         <ion-item [hidden]="outputBlock.type != 'delay'">
-            <label for="_valueMs" color="dark">
-                <h2 color="dark">Milliseconds</h2>
-                <p>
-                    Time interval to wait in milliseconds<br><br>
-                    1000 milliseconds = 1 second
-                </p>
-            </label>
+            <label for="_valueMs" color="dark">Milliseconds</label>
             <input id="_valueMs" class="inline-input" type="number" [(ngModel)]="outputBlock.value"
                 placeholder="1000" />
+            <br>
+            <p>
+                Time interval to wait in milliseconds<br><br>
+                1000 milliseconds = 1 second
+            </p>
         </ion-item>
 
         <div [hidden]="outputBlock.type != 'http'">
@@ -125,7 +126,7 @@
                     </code><br>
 
                     Example:<br>
-                    <code ngNonBindable>https://www.example.com/item={{ barcode }}</code><br>
+                    <code ngNonBindable>https://www.example.com/?item={{ barcode }}</code><br>
                 </p>
             </ion-item>
 
@@ -141,19 +142,28 @@
         </div>
 
         <ion-item [hidden]="outputBlock.type != 'if'">
-            <label for="_valueIf" color="dark">
-                <h2 color="dark">JavaScript boolean expression</h2>
-                <p>
-                    The expression should return a boolean.<br><br>
-                    You can use the following variables:
-                </p>
-                <input type="text" value="barcode" disabled class="variable-name" /> <br>
-                <input type="text" value="quantity" disabled class="variable-name" /> <br>
-                <input type="text" value="timestamp" disabled class="variable-name" /> <br>
-                <input type="text" value="device_name" disabled class="variable-name" /> <br>
-            </label>
-            <input id="_valueIf" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
-                placeholder="eg. quantity == 1" />
+            <label for="_valueIf" color="dark">JavaScript boolean expression</label>
+
+            <input id="_valueIf" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="true" />
+
+            <br>
+            <p>
+                The expression must return a boolean.<br><br>
+
+                Example 1:<br>
+                <code ngNonBindable>barcode.startsWith("1")</code><br><br>
+
+                Example 2:<br>
+                <code ngNonBindable>quantity == 3</code><br><br>
+
+                You can use the following variables:<br>
+                <code>
+                    <input type="text" value="barcode" disabled class="variable-name" /> <br>
+                    <input type="text" value="quantity" disabled class="variable-name" /> <br>
+                    <input type="text" value="timestamp" disabled class="variable-name" /> <br>
+                    <input type="text" value="device_name" disabled class="variable-name" /> <br>
+                </code>
+            </p>
         </ion-item>
     </ion-list>
 
