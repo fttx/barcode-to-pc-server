@@ -14,18 +14,22 @@
 <ion-content padding text-center>
     <!-- {{ outputBlock | json }} -->
     <ion-list>
-        <ion-item text-wrap [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' ">
-            <ion-label>
-                <h2 color="dark">Skip output</h2>
+
+        <div [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' ">
+            <ion-item text-wrap no-lines>
+                <ion-label for="_valueSkipOutput">Skip output</ion-label>
+                <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
+                <br>
+            </ion-item>
+
+            <ion-item text-wrap>
                 <p>
-                    Disables the Keyboard emulation and CSV output for this component.<br>
+                    Disables the Keyboard emulation and CSV output for this component.<br><br>
                     This option is useful when you only want to acquire the data, and use it later with a "JavaScript
-                    Function"
-                    component, or an "IF" component.
+                    Function" component, an "IF" component, or as a parameter for the CSV file name.
                 </p>
-            </ion-label>
-            <ion-toggle [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
-        </ion-item>
+            </ion-item>
+        </div>
 
 
         <div [hidden]="outputBlock.type != 'key'">
@@ -40,7 +44,7 @@
                     placeholder="eg. numpad_9" />
             </ion-item>
 
-            <ion-item no-lines>
+            <ion-item no-lines text-wrap>
                 <h2>Modifier keys</h2>
                 <p>Select the modifier keys that you want to be pressed along with the {{ outputBlock.name }} key</p>
             </ion-item>
