@@ -12,6 +12,8 @@ import { UiHandler } from './ui.handler';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
 import * as Papa from 'papaparse';
 import axios from 'axios';
+import * as Supplant from 'supplant';
+import { strict } from 'assert';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -61,7 +63,7 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                             case 'http': {
-                                axios.request({url: outputBlock.value, method: outputBlock.method});
+                                axios.request({ url: outputBlock.value, method: outputBlock.method });
                                 break;
                             }
                         } // end switch
@@ -78,7 +80,22 @@ export class ScansHandler implements Handler {
                         this.settingsHandler.csvDelimiter,
                         newLineCharacter
                     );
-                    fs.appendFileSync(this.settingsHandler.csvPath, rows + newLineCharacter);
+
+                    // prepare device_name variable
+                    let deviceName = 'Please add a DEVICE_NAME component to the Output template';
+                    let deviceNameOutputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == 'device_name');
+                    if (typeof (deviceNameOutputBlock) != "undefined") {
+                        deviceName = deviceNameOutputBlock.value;
+                    }
+
+                    // inject variables to the path
+                    let path = new Supplant().text(this.settingsHandler.csvPath, {
+                        scan_session_name: this.sanitize(scanSession.name),
+                        device_name: this.sanitize(deviceName),
+                        date: this.sanitize(new Date(scanSession.date).toISOString().slice(0, 10).replace(/-/g, ""))
+                    })
+
+                    fs.appendFileSync(path, rows + newLineCharacter);
                 }
 
                 if (this.settingsHandler.enableOpenInBrowser) {
@@ -130,5 +147,15 @@ export class ScansHandler implements Handler {
 
     onWsError(ws: WebSocket, err: Error) {
         throw new Error("Method not implemented.");
+    }
+
+    /**
+     * Returns the str without special characters only numbers, letters and
+     * spaces.
+     *
+     * @param str String to sanitize
+     */
+    sanitize(str) {
+        return str.replace(/[^a-z0-9\s]/gi, '');
     }
 }

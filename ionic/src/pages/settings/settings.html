@@ -158,6 +158,19 @@
             </ion-col>
           </ion-row>
         </ion-grid>
+
+
+        <p class="csv-description">
+          You can use the following variables in your file name: <br>
+          <code>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+          </code><br>
+
+          Example:<br>
+          <code ngNonBindable>C:\\Users\\admin\\Desktop\\{{ date }}.csv</code><br>
+        </p>
       </ion-item>
 
 
