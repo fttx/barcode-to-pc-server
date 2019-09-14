@@ -109,11 +109,24 @@
 
         <div [hidden]="outputBlock.type != 'http'">
             <ion-item>
-                <label for="_valueMs" color="dark">
-                    <h2 color="dark">URL</h2>
-                </label>
-                <input id="_valueMs" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
-                    placeholder="https://www.google.com/" />
+                <label for="_valueUrl">URL</label>
+                <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
+                    placeholder="https://www.example.com/" />
+                <br>
+                <p>
+                    The expression must return a string.<br><br>
+                    Use the double curly braces syntax to inject a variables.<br><br>
+                    Available variables: <br>
+                    <code>
+                        <input type="text" value="barcode" disabled class="variable-name" /> <br>
+                        <input type="text" value="quantity" disabled class="variable-name" /> <br>
+                        <input type="text" value="timestamp" disabled class="variable-name" /> <br>
+                        <input type="text" value="device_name" disabled class="variable-name" /><br>
+                    </code><br>
+
+                    Example:<br>
+                    <code ngNonBindable>https://www.example.com/item={{ barcode }}</code><br>
+                </p>
             </ion-item>
 
             <ion-item>
