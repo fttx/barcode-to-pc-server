@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import ElectronStore from 'electron-store';
-import { Platform } from 'ionic-angular';
+import { AlertController, Platform } from 'ionic-angular';
 import { gt, SemVer } from 'semver';
 import { Config } from '../../../electron/src/config';
-import { ScanSessionModel } from '../models/scan-session.model';
+import { ScanModel } from '../models/scan.model';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
 import { WelcomePage } from '../pages/welcome/welcome';
@@ -28,6 +28,7 @@ export class MyApp {
     splashScreen: SplashScreen,
     public electronProvider: ElectronProvider,
     public devicesProvider: DevicesProvider,
+    private alertCtrl: AlertController,
     utils: UtilsProvider
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -92,38 +93,53 @@ export class MyApp {
           for (let scanSession of scanSessions) {
             for (let scan of scanSession.scannings) {
               let outputBlocks = [];
-              outputBlocks.push({
-                editable: false,
-                name: 'BARCODE',
-                value: scan.text,
-                type: 'barcode'
-              });
-
+              outputBlocks.push({ name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false });
               if (scan.quantity) {
-                outputBlocks.push({
-                  editable: false,
-                  name: 'QUANTITY',
-                  value: scan.quantity,
-                  type: 'variable'
-                });
+                outputBlocks.push({ editable: false, name: 'QUANTITY', value: scan.quantity, type: 'variable', modifiers: [] });
               }
-
-              outputBlocks.push({
-                editable: false,
-                name: 'ENTER',
-                value: 'enter',
-                type: 'key'
-              });
-
+              outputBlocks.push({ name: 'ENTER', value: 'enter', type: 'key', modifiers: [] });
               scan.outputBlocks = outputBlocks;
             }
           }
           this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
-        }
+        } // Upgrade output profiles end
+
+
+        // Upgrade displayValue
+        if (
+          // if it's upgrading from an older version, and the upgrade was never started (null)
+          (lastVersion.compare('3.1.5') == -1 && this.store.get('upgraded_displayValue', null) == null)
+          || // or
+          // if the update has been started, but not completed (null)
+          this.store.get('upgraded_displayValue', null) === false) {
+
+          // mark the update as "started"
+          this.store.set('upgraded_displayValue', false);
+
+          let alert = this.alertCtrl.create({
+            title: 'Updating database',
+            message: 'The server database is updating, <b>do not close</b> it.<br><br>It may take few minutes, please wait...',
+            enableBackdropDismiss: false,
+          });
+
+          // upgrade db
+          alert.present();
+          let scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
+          for (let scanSession of scanSessions) {
+            for (let scan of scanSession.scannings) {
+              scan.displayValue = ScanModel.ToString(scan);
+            }
+          }
+          this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
+          alert.dismiss();
+
+          // mark the update as "finished" (true)
+          this.store.set('upgraded_displayValue', true);
+        } // Upgrade displayName end
 
 
         this.store.set(Config.STORAGE_SETTINGS, JSON.parse(JSON.stringify(settings)));
-      }
+      } // on update detected end
       this.store.set(Config.STORAGE_LAST_VERSION, currentVersion.version)
       resolve();
     })
