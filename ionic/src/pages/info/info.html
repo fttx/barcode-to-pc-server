@@ -29,7 +29,7 @@
       <h1>{{ getAppName() }}</h1>
     </ion-item>
 
-    <ion-item text-wrap> 
+    <ion-item text-wrap>
       <ion-thumbnail item-start>
         <ion-icon [hidden]="updateStatus == 'checkingForUpdate'" style="font-size: 2em; margin: 22px 10px 0 38px;" small
           [name]="getUpdateIcon()"></ion-icon>
@@ -48,10 +48,25 @@
       <ion-label>
         <h2>Enable automatic updates</h2>
         <p>
-          ⚠️Warning: If you disable automatic updates for the server you also must make sure that the version of the app is still supported from the server. If the app version doesn't match the server's one you may encounter incompatibility issues.
+          ⚠️Warning: If you disable automatic updates for the server you also must make sure that the version of the app
+          is still supported from the server. If the app version doesn't match the server's one you may encounter
+          incompatibility issues.
         </p>
       </ion-label>
-      <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate" color="secondary"></ion-toggle>
+      <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate"
+        color="secondary"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-thumbnail item-start></ion-thumbnail>
+      <ion-label>
+        <h2>Rebuild database cache</h2>
+        <p text-wrap>
+          Updates the old scannings display value (it can take several minutes).<br>
+          Do it only if you know what your doing.
+        </p>
+      </ion-label>
+      <button ion-button color="secondary" item-end  (click)="utils.upgradeDisplayValue(true)">Rebuild</button>
     </ion-item>
 
     <ion-item>

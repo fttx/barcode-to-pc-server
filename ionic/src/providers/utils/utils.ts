@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import ElectronStore from 'electron-store';
+import { AlertController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
-import { ElectronProvider } from '../electron/electron';
+import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
+import { ElectronProvider } from '../electron/electron';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -17,6 +19,7 @@ export class UtilsProvider {
 
   constructor(
     private electronProvider: ElectronProvider,
+    private alertCtrl: AlertController,
     public storage: Storage
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -125,5 +128,42 @@ export class UtilsProvider {
       this.store.set(Config.STORAGE_SETTINGS, newSettings);
       localStorage.removeItem(SETTINGS);
     }
+  }
+
+  public upgradeDisplayValue(requireRestart = false) {
+    return new Promise((resolve, reject) => {
+      // mark the update as "started"
+      this.store.set('upgraded_displayValue', false);
+
+      let alert = this.alertCtrl.create({
+        title: 'Updating database',
+        message: 'The server database is updating, <b>do not close</b> it.<br><br>It may take few minutes, please wait...',
+        enableBackdropDismiss: false,
+      });
+
+      // upgrade db
+      alert.present();
+      let scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
+      for (let scanSession of scanSessions) {
+        for (let scan of scanSession.scannings) {
+          scan.displayValue = ScanModel.ToString(scan);
+        }
+      }
+      this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
+      alert.dismiss();
+
+      // mark the update as "finished" (true)
+      this.store.set('upgraded_displayValue', true);
+
+      if (requireRestart) {
+        this.alertCtrl.create({
+          title: 'Database update completed',
+          message: 'Please restart the server.<br> (Close it from the tray icon)',
+          enableBackdropDismiss: false,
+        }).present();
+      }
+
+      resolve();
+    });
   }
 }

@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import ElectronStore from 'electron-store';
-import { AlertController, Platform } from 'ionic-angular';
+import { Platform } from 'ionic-angular';
 import { gt, SemVer } from 'semver';
 import { Config } from '../../../electron/src/config';
-import { ScanModel } from '../models/scan.model';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
 import { WelcomePage } from '../pages/welcome/welcome';
@@ -28,8 +27,7 @@ export class MyApp {
     splashScreen: SplashScreen,
     public electronProvider: ElectronProvider,
     public devicesProvider: DevicesProvider,
-    private alertCtrl: AlertController,
-    utils: UtilsProvider
+    public utils: UtilsProvider
   ) {
     this.store = new this.electronProvider.ElectronStore();
 
@@ -59,7 +57,7 @@ export class MyApp {
   }
 
   upgrade() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       let lastVersion = new SemVer(this.store.get(Config.STORAGE_LAST_VERSION, '0.0.0'));
       let currentVersion = new SemVer(this.electronProvider.app.getVersion());
       // Given a version number MAJOR.MINOR.PATCH, increment the:
@@ -112,31 +110,9 @@ export class MyApp {
           || // or
           // if the update has been started, but not completed (null)
           this.store.get('upgraded_displayValue', null) === false) {
-
-          // mark the update as "started"
-          this.store.set('upgraded_displayValue', false);
-
-          let alert = this.alertCtrl.create({
-            title: 'Updating database',
-            message: 'The server database is updating, <b>do not close</b> it.<br><br>It may take few minutes, please wait...',
-            enableBackdropDismiss: false,
-          });
-
-          // upgrade db
-          alert.present();
-          let scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
-          for (let scanSession of scanSessions) {
-            for (let scan of scanSession.scannings) {
-              scan.displayValue = ScanModel.ToString(scan);
-            }
-          }
-          this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
-          alert.dismiss();
-
-          // mark the update as "finished" (true)
-          this.store.set('upgraded_displayValue', true);
+          // then
+          await this.utils.upgradeDisplayValue();
         } // Upgrade displayName end
-
 
         this.store.set(Config.STORAGE_SETTINGS, JSON.parse(JSON.stringify(settings)));
       } // on update detected end

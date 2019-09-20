@@ -4,6 +4,7 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
+import { UtilsProvider } from '../../providers/utils/utils';
 
 /**
  * Generated class for the InfoPage page.
@@ -31,6 +32,7 @@ export class InfoPage {
     public viewCtrl: ViewController,
     public electronProvider: ElectronProvider,
     public ngZone: NgZone,
+    public utils: UtilsProvider,
   ) {
     this.store = new this.electronProvider.ElectronStore();
   }
