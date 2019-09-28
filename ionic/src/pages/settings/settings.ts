@@ -34,6 +34,7 @@ export class SettingsPage {
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
     return [
+      // KEYS
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
       { name: 'DELETE', value: 'delete', type: 'key', modifiers: [] },
       { name: 'ALT', value: 'ALT', type: 'key', modifiers: [] },
@@ -56,23 +57,30 @@ export class SettingsPage {
       { name: 'SPACE', value: 'space', type: 'key', modifiers: [] },
       { name: 'Custom key', value: '', type: 'key', modifiers: [], editable: true },
 
+      // VARIABLES
       { name: 'TIMESTAMP', value: 'timestamp', type: 'variable' },
       { name: 'DATE', value: 'date', type: 'variable' },
       { name: 'TIME', value: 'time', type: 'variable' },
       { name: 'DATE_TIME', value: 'date_time', type: 'variable' },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
-      { name: 'QUANTITY', value: 'quantity', type: 'variable', editable: true, skipOutput: false },
-      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true , skipOutput: false},
+      { name: 'QUANTITY', value: 'quantity', type: 'variable', editable: true, skipOutput: false, label: null },
+      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true , skipOutput: false, label: null},
 
-      { name: 'Delay', value: '', type: 'delay', editable: true },
-
+      // VARIABLE
       { name: 'Static text', value: '', type: 'text', editable: true },
 
+      // DELAY
+      { name: 'Delay', value: '', type: 'delay', editable: true },
+
+      // FUNTINOS
       { name: 'JavaScript function', value: '', type: 'function', editable: true },
+
+      // CONSTRUCTS
       { name: 'IF', value: '', type: 'if', editable: true },
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
+      // OTHER
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true},
     ];
   }

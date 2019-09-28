@@ -25,8 +25,24 @@
             <ion-item text-wrap>
                 <p>
                     Disables the Keyboard emulation and CSV output for this component.<br><br>
-                    This option is useful when you only want to acquire the data, and use it later with components like "JavaScript
+                    This option is useful when you only want to acquire the data, and use it later with components like
+                    "JavaScript
                     Function", "IF", "HTTP", or as a parameter for the CSV file name.
+                </p>
+            </ion-item>
+
+            <ion-item no-lines>
+                <label for="_labelValue">
+                    <h2 color="dark">Label</h2>
+                </label>
+                <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text"
+                    placeholder="(optional)" />
+            </ion-item>
+
+            <ion-item text-wrap>
+                <p>
+                    Provide a short description such as "Tracking number" or "Product ID".<br>
+                    The label will be shown in the app while acquiring the data.
                 </p>
             </ion-item>
         </div>
@@ -123,7 +139,8 @@
                     The request will be performed by the server once the scan is received.<br><br>
                     Use the double curly braces syntax to inject a variables.<br><br>
                     Example:<br>
-                    <code ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
+                    <code
+                        ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
                     Available variables: <br>
                     <code>
                         <input type="text" value="barcode" disabled class="example-variable" /> <br>
