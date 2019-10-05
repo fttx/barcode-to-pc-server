@@ -65,7 +65,8 @@
       <ion-item no-lines>
         <ion-label>
           Enable keyboard emulation
-          <button ion-button small color="light" popper="Enable this option to automatically type the barcodes" class="help-button">
+          <button ion-button small color="light" popper="Enable this option to automatically type the barcodes"
+            class="help-button">
             ?
           </button>
         </ion-label>
@@ -94,13 +95,14 @@
 
       <ion-item no-lines text-wrap>
         Available components
-        <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content" class="help-button">
+        <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content"
+          class="help-button">
           ?
         </button>
         <popper-content #popper1Content>
-          To edit the emulated keyboard output drag & drop one element from the <br><b>Available components</b> box to
+          To edit the emulated keyboard output drag &amp; drop one element from the <br><b>Available components</b> box to
           the
-          <b>Output</b> box by keeping pressed your mouse button.
+          <b>Output template</b> box by keeping pressed your mouse button.
           <br> If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full
           list
           is avaialable
@@ -109,8 +111,8 @@
           to apply a custom function like a character replacement<br> or transform the barcode to uppercase, you can
           use
           the <b>CUSTOM FUNCTION</b> component with the following syntax:<br> <i>barcode.replace('a', 'b')</i>. The
-          full
-          list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
+          full list of the avaialable function is <a
+            (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
         </popper-content>
         <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
@@ -120,20 +122,24 @@
           <div>or</div>
           <button ion-button color="secondary" (click)="onSubscribeClick()">Upgrade</button>
         </div>
-        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks'
-          class="output-blocks-container">
-          <output-block-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock"></output-block-component>
+        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group"
+          [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
+          <output-block-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock">
+          </output-block-component>
         </div>
       </ion-item>
 
       <ion-item no-lines text-wrap>
         Output template
-        <button ion-button small color="light" popperPlacement="right-start" popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button."
+        <button ion-button small color="light" popperPlacement="right-start"
+          popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button."
           class="help-button">
           ?
         </button>
-        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[0].outputBlocks' class="output-blocks-container">
-          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[0].outputBlocks" [outputBlock]="outputBlock"></output-block-component>
+        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[0].outputBlocks'
+          class="output-blocks-container">
+          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[0].outputBlocks"
+            [outputBlock]="outputBlock"></output-block-component>
         </div>
       </ion-item>
 
@@ -185,9 +191,9 @@
       </ion-item>
 
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-          <label for="csvDelimiter">Delimiter</label>
-          <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter" id="csvDelimiter" type="text"
-                placeholder="Eg. ," />
+        <label for="csvDelimiter">Delimiter</label>
+        <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter"
+          id="csvDelimiter" type="text" placeholder="Eg. ," />
       </ion-item>
 
       <!-- <ion-item no-lines>
