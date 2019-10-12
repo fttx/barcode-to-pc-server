@@ -45,4 +45,46 @@ page-settings {
     .csv-description {
         margin-left: 10px;
     }
+
+
+    .select-output-template {
+        display: inline-block;
+        margin: 0 0 0 .8rem;
+    }
+
+    .container-select-output-template {
+        padding: 0;
+        margin: 0;
+        line-height: 35px;
+        height: 35px;
+        vertical-align: middle;
+
+        label, ion-label {
+            padding: 0;
+            margin: 0;
+        }
+
+        button {
+            margin-top: -5px;
+            height: 21px;
+            text-transform: none;
+        }
+
+        .btn-new-output-template {
+            height: 20px;
+            margin: 0;
+        }
+
+        .item-inner {
+            padding: 0 !important;
+        }
+    }
+
+    .output-template-title > span{
+        font-size: 1.6rem;
+        font-weight: 500;
+        color: color($colors, dark)
+    }
+
+    .output-template-title button { margin: -4px 0 0 4px}
 }

@@ -21,7 +21,7 @@ export class SettingsModel {
     ];
     outputProfiles: OutputProfileModel[] = [
         {
-            name: "Profile 1",
+            name: "Output template 1",
             outputBlocks: [
                 { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false },
                 { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] }

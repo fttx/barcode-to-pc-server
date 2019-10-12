@@ -94,13 +94,16 @@
       </ion-item-divider>
 
       <ion-item no-lines text-wrap>
-        Available components
-        <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content"
-          class="help-button">
-          ?
-        </button>
+        <div class="output-template-title">
+          <span>Available components</span>
+          <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content"
+            class="help-button">
+            ?
+          </button>
+        </div>
         <popper-content #popper1Content>
-          To edit the emulated keyboard output drag &amp; drop one element from the <br><b>Available components</b> box to
+          To edit the emulated keyboard output drag &amp; drop one element from the <br><b>Available components</b> box
+          to
           the
           <b>Output template</b> box by keeping pressed your mouse button.
           <br> If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full
@@ -130,15 +133,39 @@
       </ion-item>
 
       <ion-item no-lines text-wrap>
-        Output template
-        <button ion-button small color="light" popperPlacement="right-start"
-          popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button."
-          class="help-button">
-          ?
-        </button>
-        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[0].outputBlocks'
+        <div class="output-template-title">
+          <span>Output template</span>
+          <button ion-button small color="light" popperPlacement="right-start"
+            popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button."
+            class="help-button">
+            ?
+          </button>
+        </div>
+
+        <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
+          Selected Output template
+
+          <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
+            <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">{{ outputProfile.name }}</option>
+          </select>
+
+          <button ion-button small icon-only clear color="dark" (click)="onEditOutputProfileNameClick()">
+            <ion-icon name="create"></ion-icon>
+          </button>
+
+          <button ion-button small icon-only clear color="dark" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputProfileClick()">
+            <ion-icon name="trash"></ion-icon>
+          </button>
+
+          <button ion-button small icon-start color="favorite" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
+            <ion-icon name="add"></ion-icon>
+            New Output template
+          </button>
+        </ion-item>
+
+        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks'
           class="output-blocks-container">
-          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[0].outputBlocks"
+          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks"
             [outputBlock]="outputBlock"></output-block-component>
         </div>
       </ion-item>

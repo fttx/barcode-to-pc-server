@@ -23,7 +23,7 @@ import { UtilsProvider } from '../utils/utils';
  * the future use and inform the user about it through dialogs.
  *
  * LicenseProvider also provides other methods to show to the user
- * license-related dialogs and pages. 
+ * license-related dialogs and pages.
  *
  * // TODO: remove StorageProvider and use only ElectronStore ✅, this way should
  * be possible to convert all methods that looks like canUseX to limitFeatureX
@@ -76,18 +76,18 @@ export class LicenseProvider {
 
   /**
    * This method finds out if there is an active subscription for the current
-   * machine and saves it locally by contacting the btp-license-server. 
-   * 
+   * machine and saves it locally by contacting the btp-license-server.
+   *
    * Once it has been executed the other methods of this class will return the
    * corresponding max allowed values for the active subscription plan (eg.
    * getMaxComponentsNumber will return different values based on the active
    * subscription).
-   * 
+   *
    * This method should be called as soon as the app starts
-   * 
+   *
    * If no serial is passed it'll try to load it from the storage and silently
    * perform the checks
-   * 
+   *
    * If the serial is passed it'll prompt the user with dialogs
    */
   updateSubscriptionStatus(serial: string = '') {
@@ -147,7 +147,7 @@ export class LicenseProvider {
       if (serial) {
         // if (error.status == 503) {
         //   this.utilsProvider.showErrorNativeDialog('Unable to fetch the subscription information, try later (FS problem)');
-        // } 
+        // }
         this.deactivate();
         this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
       } else {
@@ -170,17 +170,17 @@ export class LicenseProvider {
 
   /**
    * Resets the subscription plan to FREE.
-   * 
+   *
    * @param clearSerial If TRUE the serial number is removed from the storage.
    * The serial should be cleared only if the user explicitely deactivates the
-   * plan from the UI. 
-   * 
+   * plan from the UI.
+   *
    * In all other cases clearSerial should always be set to FALSE in order to
    * give the system the opportunity to reactivate itself when for example the
    * connection comes back on after that the system wasn't able to contact the
    * license server, or even when the subscription fails to renew and the user
    * updates his payment information.
-   * 
+   *
    * When clearSerial is TRUE it's required an internet connection to complete
    * the deactivation process.
    */
@@ -222,15 +222,16 @@ export class LicenseProvider {
     let customOutputField = false;
     let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
     let defaultSettings = new SettingsModel();
+
     if (settings.outputProfiles.length != 1) {
       customOutputField = true;
     } else {
-      if (settings.outputProfiles[0].length != 2) {
+      if (settings.outputProfiles[0].outputBlocks.length != 2) {
         customOutputField = true;
       } else {
-        if (settings.outputProfiles[0][0].value != defaultSettings.outputProfiles[0][0].value ||
-          settings.outputProfiles[0][1].value != defaultSettings.outputProfiles[0][1].value) {
-            customOutputField = true;
+        if (settings.outputProfiles[0].outputBlocks[0].value != defaultSettings.outputProfiles[0].outputBlocks[0].value ||
+          settings.outputProfiles[0].outputBlocks[1].value != defaultSettings.outputProfiles[0].outputBlocks[1].value) {
+          customOutputField = true;
         }
       }
     }
@@ -395,6 +396,6 @@ export class LicenseProvider {
   }
 
   private generateNextChargeDate(): number {
-    return new Date().getTime() + 1000 * 60 * 60 * 24 * 31; // NOW() + 1 month      
+    return new Date().getTime() + 1000 * 60 * 60 * 24 * 31; // NOW() + 1 month
   }
 }

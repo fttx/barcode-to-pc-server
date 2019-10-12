@@ -7,7 +7,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { OutputBlockModel } from '../../models/output-block.model';
-import { OutputProfileModel } from '../../models/outputProfile.model';
+import { OutputProfileModel } from '../../models/output-profile.model';
 
 /**
  * Generated class for the SettingsPage page.
@@ -30,6 +30,8 @@ export class SettingsPage {
 
   private lastSavedSettings: string;
   private store: ElectronStore;
+
+  public selectedOutputProfile = 0;
 
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
@@ -66,7 +68,7 @@ export class SettingsPage {
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
       { name: 'QUANTITY', value: 'quantity', type: 'variable', editable: true, skipOutput: false, label: null },
-      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true , skipOutput: false, label: null},
+      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null },
 
       // VARIABLE
       { name: 'Static text', value: '', type: 'text', editable: true },
@@ -82,7 +84,7 @@ export class SettingsPage {
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
       // OTHER
-      { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true},
+      { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true },
     ];
   }
 
@@ -115,7 +117,7 @@ export class SettingsPage {
     this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
       if (item.value == 'quantity') {
         if (!this.licenseProvider.canUseQuantityParameter(true)) {
-          setTimeout(() => this.settings.outputProfiles[0].outputBlocks = this.settings.outputProfiles[0].outputBlocks.filter(x => x.value != 'quantity'), 1000)
+          setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.value != 'quantity'), 1000)
         }
       }
     });
@@ -126,7 +128,7 @@ export class SettingsPage {
   }
 
   public canAddMoreComponents() {
-    return this.settings.outputProfiles[0].outputBlocks.length < this.licenseProvider.getNOMaxComponents();
+    return this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.length < this.licenseProvider.getNOMaxComponents();
   }
 
   public onSubscribeClick() {
@@ -169,8 +171,8 @@ export class SettingsPage {
   }
 
   apply(pop = false) {
-    let noIfs = this.settings.outputProfiles[0].outputBlocks.filter(x => x.type == 'if').length;
-    let noEndIfs = this.settings.outputProfiles[0].outputBlocks.filter(x => x.type == 'endif').length;
+    let noIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'if').length;
+    let noEndIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'endif').length;
     if (noIfs != noEndIfs) {
       let buttons: AlertButton[] = [{ text: 'OK', role: 'cancel', },];
       if (pop) {
@@ -199,6 +201,75 @@ export class SettingsPage {
     if (pop) {
       this.navCtrl.pop();
     }
+  }
+
+  onEditOutputProfileNameClick() {
+    let currentProfile = this.settings.outputProfiles[this.selectedOutputProfile];
+    this.alertCtrl.create({
+      title: 'Output template name',
+      // message: 'Inse',
+      enableBackdropDismiss: false,
+      inputs: [{ name: 'name', type: 'text', placeholder: 'Output template 1', value: currentProfile.name }],
+      buttons: [{
+        text: 'Ok',
+        handler: data => {
+          this.settings.outputProfiles[this.selectedOutputProfile].name = data.name;
+        }
+      }, {
+        role: 'cancel', text: 'Cancel',
+        handler: () => { }
+      }]
+    }).present();
+  }
+
+  onDeleteOutputProfileClick() {
+    if (this.settings.outputProfiles.length <= 1) {
+      return;
+    }
+
+    this.alertCtrl.create({
+      title: 'Delete Output template',
+      message: 'Are you sure?',
+      buttons: [{
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
+      }, {
+        text: 'Yes',
+        handler: () => {
+          // change the selected OutputProfile
+          let selectedIndex = this.selectedOutputProfile;
+          this.selectedOutputProfile = selectedIndex == 0 ? selectedIndex : selectedIndex - 1;
+
+          // remove the selected OutputProfile
+          this.settings.outputProfiles = this.settings.outputProfiles.filter((x, index) => index != selectedIndex);
+        }
+      }]
+    }).present();
+  }
+
+  onNewOutputTemplateClick() {
+    this.alertCtrl.create({
+      title: 'New Output template',
+      message: 'Insert the Output template name',
+      enableBackdropDismiss: false,
+      inputs: [{ name: 'name', type: 'text', placeholder: 'Output template ' + (this.settings.outputProfiles.length + 1) }],
+      buttons: [{
+        text: 'Ok',
+        handler: data => {
+          let outputProfile: OutputProfileModel = {
+            name: data.name,
+            outputBlocks: new SettingsModel().outputProfiles[0].outputBlocks
+          };
+          // push isn't working, so we're using the spread operator
+          this.settings.outputProfiles = [...this.settings.outputProfiles, outputProfile];
+          this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
+        }
+      }, {
+        role: 'cancel', text: 'Cancel',
+        handler: () => { }
+      }]
+    }).present();
   }
 
   goBack() {
