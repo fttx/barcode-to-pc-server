@@ -211,13 +211,13 @@ export class SettingsPage {
       enableBackdropDismiss: false,
       inputs: [{ name: 'name', type: 'text', placeholder: 'Output template 1', value: currentProfile.name }],
       buttons: [{
+        role: 'cancel', text: 'Cancel',
+        handler: () => { }
+      }, {
         text: 'Ok',
         handler: data => {
           this.settings.outputProfiles[this.selectedOutputProfile].name = data.name;
         }
-      }, {
-        role: 'cancel', text: 'Cancel',
-        handler: () => { }
       }]
     }).present();
   }
@@ -231,10 +231,6 @@ export class SettingsPage {
       title: 'Delete Output template',
       message: 'Are you sure?',
       buttons: [{
-        text: 'Cancel',
-        role: 'cancel',
-        handler: () => { }
-      }, {
         text: 'Yes',
         handler: () => {
           // change the selected OutputProfile
@@ -244,6 +240,10 @@ export class SettingsPage {
           // remove the selected OutputProfile
           this.settings.outputProfiles = this.settings.outputProfiles.filter((x, index) => index != selectedIndex);
         }
+      }, {
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => { }
       }]
     }).present();
   }
@@ -255,6 +255,9 @@ export class SettingsPage {
       enableBackdropDismiss: false,
       inputs: [{ name: 'name', type: 'text', placeholder: 'Output template ' + (this.settings.outputProfiles.length + 1) }],
       buttons: [{
+        role: 'cancel', text: 'Cancel',
+        handler: () => { }
+      }, {
         text: 'Ok',
         handler: data => {
           let outputProfile: OutputProfileModel = {
@@ -265,9 +268,6 @@ export class SettingsPage {
           this.settings.outputProfiles = [...this.settings.outputProfiles, outputProfile];
           this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
         }
-      }, {
-        role: 'cancel', text: 'Cancel',
-        handler: () => { }
       }]
     }).present();
   }
@@ -279,21 +279,18 @@ export class SettingsPage {
       this.unsavedSettingsAlert = this.alertCtrl.create({
         title: 'Unsaved settings',
         message: 'Do you want to save and apply the settings?',
-        buttons: [
-          {
-            text: 'Discard',
-            role: 'cancel',
-            handler: () => {
-              this.navCtrl.pop();
-            }
-          },
-          {
-            text: 'Save & Apply',
-            handler: () => {
-              this.apply(true);
-            }
+        buttons: [{
+          text: 'Save & Apply',
+          handler: () => {
+            this.apply(true);
           }
-        ]
+        }, {
+          text: 'Discard',
+          role: 'cancel',
+          handler: () => {
+            this.navCtrl.pop();
+          }
+        }]
       });
       this.unsavedSettingsAlert.present();
     }
