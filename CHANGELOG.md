@@ -16,6 +16,19 @@
 ### Security
 -->
 
+## [v3.3.0] - 2019-10-17
+
+### Added
+
+- Output profiles support
+- SCAN_SESSION_NAME component
+- Label for the QUANTITY and BARCODE component
+- "Keep display on" option
+
+### Changed
+
+- Improve Send button reactiveness
+
 ## [v3.2.0] - 2019-09-20
 
 ### Added
@@ -157,6 +170,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.3.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.2.0...v3.3.0
 [v3.2.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.4...v3.2.0
 [v3.1.4]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.3...v3.1.4
 [v3.1.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.2...v3.1.3
