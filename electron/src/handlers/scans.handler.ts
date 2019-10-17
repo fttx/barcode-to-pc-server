@@ -53,7 +53,7 @@ export class ScansHandler implements Handler {
                         if (outputBlock.skipOutput) {
                             continue;
                         }
-                        
+
                         switch (outputBlock.type) {
                             case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
                             case 'text': this.typeString(outputBlock.value); break;
@@ -85,7 +85,7 @@ export class ScansHandler implements Handler {
                         newLineCharacter
                     );
 
-                    // prepare device_name variable
+                    // Prepare device_name variable for file name injection
                     let deviceName = 'Please add a DEVICE_NAME component to the Output template';
                     let deviceNameOutputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == 'device_name');
                     if (typeof (deviceNameOutputBlock) != "undefined") {

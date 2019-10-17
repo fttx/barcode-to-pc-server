@@ -60,16 +60,13 @@ export class SettingsPage {
       { name: 'Custom key', value: '', type: 'key', modifiers: [], editable: true },
 
       // VARIABLES
-      { name: 'TIMESTAMP', value: 'timestamp', type: 'variable' },
-      { name: 'DATE', value: 'date', type: 'variable' },
-      { name: 'TIME', value: 'time', type: 'variable' },
-      { name: 'DATE_TIME', value: 'date_time', type: 'variable' },
-      { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable' },
-      // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
-      { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
-
-      // Only Quantity and Barcode have the skipOutput option. 
-      // If you add this option to another component you also must update the scans.handler.ts and scan.model.ts/ToString,ToCSV files
+      { name: 'TIMESTAMP', value: 'timestamp', type: 'variable', skipOutput: false },
+      { name: 'DATE', value: 'date', type: 'variable', skipOutput: false },
+      { name: 'TIME', value: 'time', type: 'variable', skipOutput: false },
+      { name: 'DATE_TIME', value: 'date_time', type: 'variable', skipOutput: false },
+      { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable', skipOutput: false },
+      // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable', skipOutput: false },
+      { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable', skipOutput: false },
       { name: 'QUANTITY', value: 'quantity', type: 'variable', editable: true, skipOutput: false, label: null },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null },
 

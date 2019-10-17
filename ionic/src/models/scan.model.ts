@@ -45,7 +45,7 @@ export class ScanModel {
         }
         return scan.outputBlocks.map(block => {
             if (block.skipOutput) {
-                return; // acts like a continue inside a cycle
+                return ''; // acts like a continue inside a cycle
             }
             switch (block.type) {
                 case 'key': {
