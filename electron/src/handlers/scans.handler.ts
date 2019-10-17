@@ -50,6 +50,10 @@ export class ScansHandler implements Handler {
                 // keyboard emulation
                 (async () => {
                     for (let outputBlock of scan.outputBlocks) {
+                        if (outputBlock.skipOutput) {
+                            continue;
+                        }
+                        
                         switch (outputBlock.type) {
                             case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
                             case 'text': this.typeString(outputBlock.value); break;

@@ -44,6 +44,9 @@ export class ScanModel {
             return '';
         }
         return scan.outputBlocks.map(block => {
+            if (block.skipOutput) {
+                return; // acts like a continue inside a cycle
+            }
             switch (block.type) {
                 case 'key': {
                     if (block.value == 'tab') {
@@ -81,9 +84,11 @@ export class ScanModel {
                 return scan.outputBlocks
                     .filter(outputBlock => (
                         outputBlock.type != 'key' &&
-                        outputBlock.type != 'delay'
+                        outputBlock.type != 'delay' &&
                         // 'if' and 'endif' bloks never reach
                         // the server because they're stripped on the app side
+
+                        !outputBlock.skipOutput
                     ))
                     .map(outputBlock => outputBlock.value)
             }

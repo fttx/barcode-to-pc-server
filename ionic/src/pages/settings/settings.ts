@@ -67,6 +67,9 @@ export class SettingsPage {
       { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable' },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable' },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable' },
+
+      // Only Quantity and Barcode have the skipOutput option. 
+      // If you add this option to another component you also must update the scans.handler.ts and scan.model.ts/ToString,ToCSV files
       { name: 'QUANTITY', value: 'quantity', type: 'variable', editable: true, skipOutput: false, label: null },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null },
 
