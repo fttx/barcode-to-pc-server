@@ -29,6 +29,10 @@
 
 - Improve Send button reactiveness
 
+### Fixed
+
+- "Skip output" option
+
 ## [v3.2.0] - 2019-09-20
 
 ### Added
