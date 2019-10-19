@@ -142,30 +142,36 @@
           </button>
         </div>
 
-        <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
+        <ion-item no-lines no-padding class="container-select-output-template"
+          [hidden]="!(settings && settings.enableAdvancedSettings)">
           Selected Output template
 
           <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
-            <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">{{ outputProfile.name }}</option>
+            <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">
+              {{ outputProfile.name }}</option>
           </select>
 
           <button ion-button small icon-only clear color="dark" (click)="onEditOutputProfileNameClick()">
             <ion-icon name="create"></ion-icon>
           </button>
 
-          <button ion-button small icon-only clear color="dark" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputProfileClick()">
+          <button ion-button small icon-only clear color="dark" [disabled]="this.settings.outputProfiles.length <= 1"
+            (click)="onDeleteOutputProfileClick()">
             <ion-icon name="trash"></ion-icon>
           </button>
 
-          <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
+          <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template"
+            (click)="onNewOutputTemplateClick()">
             <ion-icon name="add"></ion-icon>
             New Output template
           </button>
         </ion-item>
 
-        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks'
+        <div id="right" dragula="dragula-group"
+          [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks'
           class="output-blocks-container">
-          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks"
+          <output-block-component
+            *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks"
             [outputBlock]="outputBlock"></output-block-component>
         </div>
       </ion-item>
@@ -192,18 +198,20 @@
           </ion-row>
         </ion-grid>
 
-
-        <p class="csv-description">
+        <info-box title="Info">
           You can use the following variables in your file name: <br>
           <code>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="device_name" disabled class="example-variable" /><br>
-            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-          </code><br>
+                    <input type="text" value="date" disabled />
+                    <input type="text" value="device_name" disabled />
+                    <input type="text" value="scan_session_name" disabled />
+              </code><br>
 
           Example:<br>
-          <code ngNonBindable>C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.csv</code><br>
-        </p>
+          <code ngNonBindable>
+            <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.csv" disabled />
+          </code><br>
+        </info-box>
+
       </ion-item>
 
 

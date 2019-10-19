@@ -23,7 +23,12 @@ page-settings {
         margin-top: 4px;
         padding-left: 5px;
     }
-    .csv-select-path-form * {
+    .csv-select-path-form input,
+    .csv-select-path-form ion-grid,
+    .csv-select-path-form ion-col,
+    .csv-select-path-form ion-label,
+    .csv-select-path-form button,
+    .csv-select-path-form ion-row {
         padding-top: 0;
         margin-top: 0;
     }
@@ -41,11 +46,6 @@ page-settings {
         width: 20px;
         font-size: .7em;
     }
-
-    .csv-description {
-        margin-left: 10px;
-    }
-
 
     .select-output-template {
         display: inline-block;
@@ -87,4 +87,9 @@ page-settings {
     }
 
     .output-template-title button { margin: -4px 0 0 4px}
+
+    info-box {
+        margin: 0 0 0 9px;
+        display: block;
+    }
 }
