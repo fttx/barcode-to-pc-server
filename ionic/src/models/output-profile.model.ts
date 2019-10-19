@@ -1,7 +1,7 @@
 import { OutputBlockModel } from "./output-block.model";
 
 /**
- * It's a set of OutputBlocks
+ * It's a set of OutputBlocks, also called "Ouput template" in the UI
  */
 export class OutputProfileModel {
     public name: string;

@@ -209,14 +209,16 @@ export class SettingsPage {
       title: 'Output template name',
       // message: 'Inse',
       enableBackdropDismiss: false,
-      inputs: [{ name: 'name', type: 'text', placeholder: 'Output template 1', value: currentProfile.name }],
+      inputs: [{ name: 'name', type: 'text', placeholder: currentProfile.name, value: currentProfile.name }],
       buttons: [{
         role: 'cancel', text: 'Cancel',
         handler: () => { }
       }, {
         text: 'Ok',
         handler: data => {
-          this.settings.outputProfiles[this.selectedOutputProfile].name = data.name;
+          if (data.name != "") {
+            this.settings.outputProfiles[this.selectedOutputProfile].name = data.name;
+          }
         }
       }]
     }).present();
@@ -249,19 +251,23 @@ export class SettingsPage {
   }
 
   onNewOutputTemplateClick() {
+    let newTemplateName = 'Output template ' + (this.settings.outputProfiles.length + 1);
     this.alertCtrl.create({
       title: 'New Output template',
       message: 'Insert the Output template name',
       enableBackdropDismiss: false,
-      inputs: [{ name: 'name', type: 'text', placeholder: 'Output template ' + (this.settings.outputProfiles.length + 1) }],
+      inputs: [{ name: 'name', type: 'text', placeholder: newTemplateName }],
       buttons: [{
         role: 'cancel', text: 'Cancel',
         handler: () => { }
       }, {
         text: 'Ok',
         handler: data => {
+          if (data.name != "") {
+            newTemplateName = data.name;
+          }
           let outputProfile: OutputProfileModel = {
-            name: data.name,
+            name: newTemplateName,
             outputBlocks: new SettingsModel().outputProfiles[0].outputBlocks
           };
           // push isn't working, so we're using the spread operator

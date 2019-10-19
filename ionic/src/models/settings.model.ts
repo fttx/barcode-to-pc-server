@@ -21,6 +21,7 @@ export class SettingsModel {
     ];
     outputProfiles: OutputProfileModel[] = [
         {
+            // Keep in sync with settings.ts, and barcode-to-pc-app/settings.ts/generateDefaultOutputProfiles()
             name: "Output template 1",
             outputBlocks: [
                 { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false },
