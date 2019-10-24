@@ -31,20 +31,22 @@
                 </p>
             </ion-item>
 
-            <ion-item no-lines>
-                <label for="_labelValue">
-                    <h2 color="dark">Label</h2>
-                </label>
-                <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text"
-                    placeholder="(optional)" />
-            </ion-item>
+            <div [hidden]="outputBlock.label === undefined">
+                <ion-item no-lines>
+                    <label for="_labelValue">
+                        <h2 color="dark">Label</h2>
+                    </label>
+                    <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text"
+                        placeholder="(optional)" />
+                </ion-item>
 
-            <ion-item text-wrap>
-                <p>
-                    Provide a short description such as "Tracking number" or "Product ID".<br>
-                    The label will be shown in the app while acquiring the data.
-                </p>
-            </ion-item>
+                <ion-item text-wrap>
+                    <p>
+                        Provide a short description such as "Tracking number" or "Product ID".<br>
+                        The label will be shown in the app while acquiring the data.
+                    </p>
+                </ion-item>
+            </div>
         </div>
 
 
