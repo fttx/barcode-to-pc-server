@@ -339,6 +339,10 @@ export class HomePage {
     return Config.APP_NAME;
   }
 
+  getUrlKeyboardEmulationTutorial() {
+    return Config.URL_TUTORIAL_KEYBOARD_EMULATION;
+  }
+
   private randomScan() {
     let s = new ScanModel();
     s.format = "QR_CODE";

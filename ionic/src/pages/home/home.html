@@ -65,7 +65,8 @@
 
     <!-- the main content -->
     <ion-content main #scanSessionsContainer>
-      <ion-list class="child-container scans-list" [virtualScroll]="getScannings()" [virtualTrackBy]="virtualTrackById" [approxItemHeight]="'44px'" [bufferRatio]="5"  [ngClass]="canAnimate() ? 'scan-text-animate' : ''">
+      <ion-list class="child-container scans-list" [virtualScroll]="getScannings()" [virtualTrackBy]="virtualTrackById"
+        [approxItemHeight]="'44px'" [bufferRatio]="5" [ngClass]="canAnimate() ? 'scan-text-animate' : ''">
         <ion-item *virtualItem="let scan">
           <ion-grid no-padding>
             <ion-row>
@@ -114,4 +115,7 @@
     </button>
   </status-bar>
 
+  <notification title="Tip" [hidden]="false" [hideAfter]="120000" [cta]="getUrlKeyboardEmulationTutorial()">
+    To type barcodes in your programs minimize Barcode to PC and put the cursor inside a text field.
+  </notification>
 </ion-content>

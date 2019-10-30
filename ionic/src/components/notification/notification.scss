@@ -1,0 +1,21 @@
+notification {
+    .container {
+        z-index: 9999;
+        position: fixed;
+        bottom: 0;
+        right: 0;
+        background-color: map-get($colors, notification-bg);
+        bottom: 3rem;
+        right: 1rem;
+        width: 36rem;
+    }
+    
+    .cta {
+        padding: 0;
+        margin-bottom: 0;
+    }
+
+    // ion-card-content {
+    //     text-align: justify;
+    // }
+}

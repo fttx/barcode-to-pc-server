@@ -1,0 +1,16 @@
+<!-- Generated template for the NotificationComponent component -->
+<ion-card class="container" [hidden]="hidden">
+  <button ion-button icon-only clear color="dark" class="btn-close" float-right (click)="hide()">
+    <ion-icon name="close"></ion-icon>
+  </button>
+  <ion-card-header>
+    <b>{{ title }}</b>
+  </ion-card-header>
+  <ion-card-content>
+    <ng-content></ng-content>
+
+    <button ion-button clear class="cta" (click)="onCtaClick()">
+      Learn more
+    </button>
+  </ion-card-content>
+</ion-card>
