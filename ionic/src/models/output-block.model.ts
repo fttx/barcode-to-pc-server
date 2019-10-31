@@ -36,7 +36,7 @@ export class OutputBlockModel {
      * delay is like sleep or wait
      * http for http requests
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it

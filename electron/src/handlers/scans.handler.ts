@@ -1,19 +1,18 @@
-import { clipboard, dialog, shell } from 'electron';
+import axios from 'axios';
+import { exec } from 'child_process';
+import { clipboard, shell } from 'electron';
 import * as fs from 'fs';
 import * as http from 'http';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
+import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
 import { requestModel, requestModelHelo, requestModelPutScanSessions } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
+import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
-import { ScanModel } from '../../../ionic/src/models/scan.model';
-import * as Papa from 'papaparse';
-import axios from 'axios';
-import * as Supplant from 'supplant';
-import { strict } from 'assert';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -68,6 +67,10 @@ export class ScansHandler implements Handler {
                             }
                             case 'http': {
                                 axios.request({ url: outputBlock.value, method: outputBlock.method });
+                                break;
+                            }
+                            case 'run': {
+                                exec(outputBlock.value)
                                 break;
                             }
                         } // end switch

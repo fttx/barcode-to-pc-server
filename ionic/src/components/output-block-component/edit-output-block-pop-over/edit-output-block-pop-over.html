@@ -164,6 +164,28 @@
             </ion-item>
         </div>
 
+        <div [hidden]="outputBlock.type != 'run'">
+            <ion-item>
+                <label for="_valueRun">Command</label>
+                <input id="_valueRun" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
+                    placeholder="C:&#92;program.exe" />
+                <br>
+                <p>
+                    Use the double curly braces syntax to inject a variables.<br><br>
+                    Example:<br>
+                    <code
+                        ngNonBindable>C:&#92;program.exe --tracking-number &#123;&#123; barcode &#125;&#125;</code><br><br>
+                    Available variables: <br>
+                    <code>
+                        <input type="text" value="barcode" disabled class="example-variable" /> <br>
+                        <input type="text" value="quantity" disabled class="example-variable" /> <br>
+                        <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+                        <input type="text" value="device_name" disabled class="example-variable" /><br>
+                    </code><br>
+                </p>
+            </ion-item>
+        </div>
+
         <ion-item [hidden]="outputBlock.type != 'if'">
             <label for="_valueIf" color="dark">JavaScript boolean expression</label>
 

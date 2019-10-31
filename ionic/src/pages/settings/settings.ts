@@ -85,6 +85,7 @@ export class SettingsPage {
 
       // OTHER
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true },
+      { name: 'RUN', value: '', type: 'run', editable: true },
     ];
   }
 
