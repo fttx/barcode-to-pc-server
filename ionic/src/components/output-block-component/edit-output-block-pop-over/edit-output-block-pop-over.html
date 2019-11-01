@@ -171,10 +171,13 @@
                     placeholder="C:&#92;program.exe" />
                 <br>
                 <p>
+                    The working directory is set to the user home directory.<br><br>
                     Use the double curly braces syntax to inject a variables.<br><br>
                     Example:<br>
                     <code
                         ngNonBindable>C:&#92;program.exe --tracking-number &#123;&#123; barcode &#125;&#125;</code><br><br>
+                    Example: <br>
+                    <code ngNonBindable>cmd.exe /c C:&#92;script.bat &#123;&#123; barcode &#125;&#125;</code><br><br>
                     Available variables: <br>
                     <code>
                         <input type="text" value="barcode" disabled class="example-variable" /> <br>
