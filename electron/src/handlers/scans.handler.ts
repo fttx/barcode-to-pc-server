@@ -2,6 +2,7 @@ import axios from 'axios';
 import { exec } from 'child_process';
 import { clipboard, shell } from 'electron';
 import * as fs from 'fs';
+import * as os from 'os';
 import * as http from 'http';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
@@ -70,7 +71,7 @@ export class ScansHandler implements Handler {
                                 break;
                             }
                             case 'run': {
-                                exec(outputBlock.value)
+                                exec(outputBlock.value, { cwd: os.homedir() })
                                 break;
                             }
                         } // end switch
