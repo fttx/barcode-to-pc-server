@@ -85,10 +85,15 @@ export class ConnectionHandler implements Handler {
             this.mdnsAd.start();
         } catch (ex) {
             console.log('node_mdns error, faillback to bonjour')
+            let message = 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\nIf instead it\'s working, you can ignore this message.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.';
+            if (process.platform != 'darwin' && process.platform != 'win32') {
+                message = 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\nTo remove this alert please install these packages: avahi-daemon avahi-discover libnss-mdns libavahi-compat-libdnssd1';
+            }
             dialog.showMessageBox(this.uiHandler.mainWindow, {
                 type: 'warning',
                 title: 'Error',
-                message: 'Apple Bonjour is missing.\nThe app may fail to detect automatically the server.\nIf instead it\'s working, you can ignore this message.\n\nTo remove this alert try to install ' + Config.APP_NAME + ' again with an administrator account and reboot your system.',
+                buttons: ['OK'],
+                message: message,
             });
             try {
                 this.bonjour = b();
@@ -97,6 +102,7 @@ export class ConnectionHandler implements Handler {
                     dialog.showMessageBox(this.uiHandler.mainWindow, {
                         type: 'error',
                         title: 'Error',
+                        buttons: ['OK'],
                         message: 'An error occured while announcing the server.'
                     });
                 });
