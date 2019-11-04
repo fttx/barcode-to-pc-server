@@ -2,6 +2,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions } from 'ionic-angular';
+import { interval } from 'rxjs/observable/interval';
+import { throttle } from 'rxjs/operators';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { SettingsModel } from '../../models/settings.model';
@@ -56,7 +58,7 @@ export class LicenseProvider {
       this.limitNOMaxConnectedDevices(lastDevice, devicesList);
     })
 
-    this.devicesProvider.onDeviceDisconnect().subscribe(device => {
+    this.devicesProvider.onDeviceDisconnect().pipe(throttle(ev => interval(1000 * 60))).subscribe(device => {
       if (this.activePlan == LicenseProvider.PLAN_FREE) {
         this.showUpgradeDialog('commercialUse', 'Free plan', 'Your current plan is for non-commercial use only. Please switch to a paid plan if you are using Barcode to PC for commercial purposes')
       }
