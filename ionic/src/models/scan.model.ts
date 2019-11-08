@@ -31,14 +31,14 @@ export class ScanModel {
      */
     text: string;
 
-     /**
-     * This is static because most of the times the ScanModel object is parsed
-     * from a JSON object, so the instance methods won't be available until you
-     * do something like this: scan = Object.assign(new ScanModel(), scan), which
-     * can degrade the peformance.
-     * @param scan
-     * @param fieldSeparator
-     */
+    /**
+    * This is static because most of the times the ScanModel object is parsed
+    * from a JSON object, so the instance methods won't be available until you
+    * do something like this: scan = Object.assign(new ScanModel(), scan), which
+    * can degrade the peformance.
+    * @param scan
+    * @param fieldSeparator
+    */
     static ToString(scan: ScanModel, fieldSeparator = '') {
         if (!scan || !scan.outputBlocks) {
             return '';
@@ -47,6 +47,8 @@ export class ScanModel {
             if (block.skipOutput) {
                 return ''; // acts like a continue inside a cycle
             }
+
+            // Warning: update Server/SettingsPage/getAvailableOutputBlocks() when changing the switch below
             switch (block.type) {
                 case 'key': {
                     if (block.value == 'tab') {
@@ -59,6 +61,7 @@ export class ScanModel {
                 }
                 case 'text': return block.value;
                 case 'variable': return block.value;
+                case 'select_option': return block.value;
                 case 'function': return block.value;
                 case 'barcode': return block.value;
                 case 'delay': return ''

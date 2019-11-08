@@ -35,6 +35,7 @@ export class SettingsPage {
 
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
+    // Warning: update scan.model.ts when changing the array below
     return [
       // KEYS
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
@@ -76,14 +77,14 @@ export class SettingsPage {
       // DELAY
       { name: 'Delay', value: '', type: 'delay', editable: true },
 
-      // FUNTINOS
-      { name: 'JavaScript function', value: '', type: 'function', editable: true },
 
       // CONSTRUCTS
       { name: 'IF', value: '', type: 'if', editable: true },
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
       // OTHER
+      { name: 'JavaScript function', value: '', type: 'function', editable: true },
+      { name: 'Select option', value: '', type: 'select_option', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true },
       { name: 'RUN', value: '', type: 'run', editable: true },
     ];

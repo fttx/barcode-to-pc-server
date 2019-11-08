@@ -35,8 +35,9 @@ export class OutputBlockModel {
      * barcode is ScanModel.barcode
      * delay is like sleep or wait
      * http for http requests
+     * select_options is used to store CSV values
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it

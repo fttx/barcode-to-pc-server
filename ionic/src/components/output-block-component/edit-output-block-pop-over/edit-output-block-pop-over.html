@@ -189,6 +189,31 @@
             </ion-item>
         </div>
 
+        <div [hidden]="outputBlock.type != 'select_option'">
+            <ion-item>
+                <label for="_valueSelectOption">Options list</label>
+                <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
+                    placeholder="Option 1,Option 2,Option 3" />
+                <br>
+                <p>
+                    Specify the possible options separed by the comma character<br><br>
+                    Use the double curly braces syntax to inject a variables.<br><br>
+
+                    Example 1: <code ngNonBindable>yes,no</code><br><br>
+                    Example 2: <code ngNonBindable>created,processing,completed</code><br><br>
+                    Example 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
+                    
+                    Available variables: <br>
+                    <code>
+                        <input type="text" value="barcode" disabled class="example-variable" /> <br>
+                        <input type="text" value="quantity" disabled class="example-variable" /> <br>
+                        <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+                        <input type="text" value="device_name" disabled class="example-variable" /><br>
+                    </code><br>
+                </p>
+            </ion-item>
+        </div>
+
         <ion-item [hidden]="outputBlock.type != 'if'">
             <label for="_valueIf" color="dark">JavaScript boolean expression</label>
 
