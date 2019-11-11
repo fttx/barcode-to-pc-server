@@ -16,6 +16,30 @@
 ### Security
 -->
 
+
+## [v3.4.0] - 2019-11-13
+
+### Added
+
+- RUN Output component
+- SELECT_OPTION Output component
+- "Start the app in Scan mode" option
+
+### Changed
+
+- Minor UX improvements
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+- Apple Bonjour error on Linux
+- QUANTITY parameter Alert issue
+
+### Security
+
 ## [v3.3.0] - 2019-10-17
 
 ### Added
@@ -32,7 +56,6 @@
 ### Fixed
 
 - "Skip output" option
-- QUANTITY parameter Alert issue
 
 ## [v3.2.0] - 2019-09-20
 
@@ -175,6 +198,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.4.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.3.0...v3.4.0
 [v3.3.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.2.0...v3.3.0
 [v3.2.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.4...v3.2.0
 [v3.1.4]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.3...v3.1.4
