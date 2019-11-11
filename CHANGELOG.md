@@ -29,16 +29,10 @@
 
 - Minor UX improvements
 
-### Deprecated
-
-### Removed
-
 ### Fixed
 
 - Apple Bonjour error on Linux
 - QUANTITY parameter Alert issue
-
-### Security
 
 ## [v3.3.0] - 2019-10-17
 
