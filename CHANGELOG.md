@@ -32,6 +32,7 @@
 ### Fixed
 
 - "Skip output" option
+- QUANTITY parameter Alert issue
 
 ## [v3.2.0] - 2019-09-20
 
