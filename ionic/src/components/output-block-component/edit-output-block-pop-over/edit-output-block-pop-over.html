@@ -100,6 +100,8 @@
             <br>
             <p>
                 The expression should return a string.<br><br>
+                You can manipulate the variables with any JavaScript method that is listed:
+                <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>.<br><br>
                 You can use the following variables:
             </p>
             <code>
@@ -202,7 +204,7 @@
                     Example 1: <code ngNonBindable>yes,no</code><br><br>
                     Example 2: <code ngNonBindable>created,processing,completed</code><br><br>
                     Example 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
-                    
+
                     Available variables: <br>
                     <code>
                         <input type="text" value="barcode" disabled class="example-variable" /> <br>
