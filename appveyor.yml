@@ -66,5 +66,5 @@ deploy:
   tag: $(APPVEYOR_REPO_TAG_NAME)
   on:
     branch: master
-    APPVEYOR_REPO_TAG: true
+    appveyor_repo_tag: true
 test: off
