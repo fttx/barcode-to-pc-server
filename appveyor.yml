@@ -20,7 +20,7 @@ image: Visual Studio 2015
 install:
   - ps: Install-Product node $env:nodejs_version x64
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
- 
+
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron/electron-resources/Bonjour64.msi?raw=true
   - msiexec /i Bonjour64.msi /qn
   - del Bonjour64.msi
@@ -34,7 +34,7 @@ install:
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
-  - curl -fsSL -o C:\Certificates.p12 %CERTIFICATE_DOWNLOAD% 
+  - curl -fsSL -o C:\Certificates.p12 %CERTIFICATE_DOWNLOAD%
   - npm cache verify
   - npm install --unsafe-perm
   - cd ionic
@@ -45,12 +45,12 @@ install:
   # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
   # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
   # - set PATH=%APPVEYOR_BUILD_FOLDER%;%PATH%
-  - set ECHO=ON 
+  - set ECHO=ON
   - echo "%PATH%"
   - echo "%NODE_ENV%"
   - node --version
   - npm --version
-  - npm run tsc --version  
+  - npm run tsc --version
 build_script:
   - cmd: npm run publish
 artifacts:
@@ -63,6 +63,7 @@ deploy:
     secure: sCY/WHG4lyNQtpYUYMFTTzNvgpmCoCsjHKzF/ZfJWn6Ux6K4/S7UNSJTcTqwgVla
   artifact: barcode-to-pc-server
   draft: true
+  tag: $(APPVEYOR_REPO_TAG_NAME)
   on:
     branch: master
     APPVEYOR_REPO_TAG: true
