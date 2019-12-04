@@ -3,7 +3,7 @@ branches:
   only:
   - master
   - /^v[0-9]+.[0-9]+.[0-9]+$/
-skip_non_tags: true
+skip_non_tags: false
 clone_depth: 1
 environment:
   nodejs_version: "8"
