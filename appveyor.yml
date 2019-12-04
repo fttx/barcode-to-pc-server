@@ -53,7 +53,8 @@ install:
   - npm run tsc --version  
 build_script:
   - cmd: npm run publish
-# artifacts:
-#   - path: /dist\\dist\\nsis-web\.*\.exe/
-#   - path: /dist\\dist\\nsis-web\.*\.7z/
+artifacts:
+  - path: \dist\dist
+    name: Barcode to PC
+    type: zip
 test: off
