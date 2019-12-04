@@ -54,14 +54,14 @@ install:
 build_script:
   - cmd: npm run publish
 artifacts:
-  - path: \dist\dist
-    name: barcode-to-pc-server
+  - path: \dist\dist\nsis-web
+    name: barcode-to-pc-server.$(APPVEYOR_REPO_TAG_NAME).win.offline.installer
     type: zip
 deploy:
   provider: GitHub
   auth_token:
     secure: sCY/WHG4lyNQtpYUYMFTTzNvgpmCoCsjHKzF/ZfJWn6Ux6K4/S7UNSJTcTqwgVla
-  artifact: barcode-to-pc-server
+  artifact: barcode-to-pc-server.$(APPVEYOR_REPO_TAG_NAME).win.offline.installer
   draft: true
   tag: $(APPVEYOR_REPO_TAG_NAME)
   on:
