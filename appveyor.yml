@@ -55,6 +55,6 @@ build_script:
   - cmd: npm run publish
 artifacts:
   - path: \dist\dist
-    name: Barcode to PC
+    name: barcode-to-pc-server
     type: zip
 test: off
