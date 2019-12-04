@@ -57,4 +57,13 @@ artifacts:
   - path: \dist\dist
     name: barcode-to-pc-server
     type: zip
+deploy:
+  provider: GitHub
+  auth_token:
+    secure: sCY/WHG4lyNQtpYUYMFTTzNvgpmCoCsjHKzF/ZfJWn6Ux6K4/S7UNSJTcTqwgVla
+  artifact: barcode-to-pc-server
+  draft: true
+  on:
+    branch: master
+    APPVEYOR_REPO_TAG: true
 test: off
