@@ -16,6 +16,14 @@
 ### Security
 -->
 
+## [v3.5.0] - 2019-12-05
+
+### Added
+
+- Option to skip the scan session name dialog
+- CSV exporting options (app side)
+- Offline server installer for Windows
+
 ## [v3.4.2] - 2019-11-17
 
 ### Fixed
@@ -197,6 +205,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.5.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.4.2...v3.5.0
 [v3.4.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.4.0...v3.4.2
 [v3.4.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.3.0...v3.4.0
 [v3.3.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.2.0...v3.3.0
