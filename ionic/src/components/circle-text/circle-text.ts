@@ -39,7 +39,19 @@ export class CircleTextComponent implements OnInit {
   }
 
   getRenderLetters() {
-    return this.checked ? '' : (this.value[0] + this.value[1]);
+    if (this.checked) {
+      return '';
+    }
+
+    if (this.value.length >= 2) {
+      return this.value.substr(0,2);
+    }
+
+    if (this.value.length == 1) {
+      return this.value[0];
+    }
+
+    return '';
   }
 
   private hashCode(key) {
