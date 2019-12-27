@@ -16,11 +16,12 @@
 ### Security
 -->
 
-## [v3.5.0] - 2019-12-05
+## [v3.5.0] - 2019-12-27
 
 ### Added
 
 - Option to skip the scan session name dialog
+- Option to turn the torch on automatically
 - CSV exporting options (app side)
 - Offline server installer for Windows
 
