@@ -25,7 +25,6 @@
     "dist": "npx gulp --cwd ./ionic/ dist",
     "build": "npx gulp --cwd ./ionic/ build",
     "publish": "npx gulp --cwd ./ionic/ publish",
-    "publish-w": "npx gulp --cwd ./ionic/ publish-w",
     "publish-l": "npx gulp --cwd ./ionic/ publish-l",
     "tsc": "tsc",
     "mocha": "mocha",
