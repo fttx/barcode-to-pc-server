@@ -96,7 +96,7 @@ gulp.task('publish', ['build'], () => {
 })
 
 gulp.task('publish-l', ['build'], () => {
-  return electronBuilder.build({ projectDir: '../dist', publish: 'always', targets: Platform.LINUX.createTarget("appimage") });
+  return electronBuilder.build({ projectDir: '../dist', publish: 'always', targets: electronBuilder.Platform.LINUX.createTarget("appimage") });
 })
 
 gulp.task('test', ['build'], () => {
