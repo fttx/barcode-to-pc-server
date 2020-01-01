@@ -62,12 +62,8 @@ export class ActivatePage {
     return Config.EMAIL_SUPPORT;
   }
 
-  fastSpringClick() {
-    this.electronProvider.shell.openExternal('mailto:' + Config.EMAIL_FASTSPRING);
-  }
-
-  getFastSpringEmail() {
-    return Config.EMAIL_FASTSPRING;
+  ordersSupportClick() {
+    this.electronProvider.shell.openExternal(Config.URL_ORDERS_SUPPORT);
   }
 
   onClearSerialClick() {

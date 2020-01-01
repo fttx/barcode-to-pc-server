@@ -27,13 +27,13 @@ export class Config {
     public static URL_API = Config.URL_WEBSITE + "http-api.json"
     public static URL_GITHUB_SERVER = 'https://github.com/fttx/barcode-to-pc-server';
     public static URL_GITHUB_APP = 'https://github.com/fttx/barcode-to-pc-app';
-    
+    public static URL_ORDERS_SUPPORT = 'https://questionacharge.com/';
+
     public static URL_TUTORIAL_KEYBOARD_EMULATION = Config.URL_WEBSITE + '/tutorial/keyboard-emulation/';
     
     public static URL_PAIR = 'http://app.barcodetopc.com';
 
     public static EMAIL_SUPPORT = 'support@barcodetopc.com';
-    public static EMAIL_FASTSPRING = 'orders@fastspring.com';
 
     // Constants
     public static STORAGE_SUBSCRIPTION = 'subscription';
