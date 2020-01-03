@@ -363,7 +363,7 @@ export class HomePage {
 
   onClearAllClick() {
     this.alertCtrl.create({
-      title: 'Delete all scan sessions?', message: 'The scans session will be deleted from the server. You can send them again from your smartphone.', buttons: [{ text: 'Cancel', role: 'cancel' }, {
+      title: 'Delete all scan sessions?', message: 'The scans sessions will be deleted from the server. You can send them again from your smartphone.', buttons: [{ text: 'Cancel', role: 'cancel' }, {
         text: 'Delete all', handler: (opts: AlertOptions) => {
           this.scanSessions = [];
           this.selectedScanSession = null;
