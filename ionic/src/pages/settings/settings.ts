@@ -182,7 +182,7 @@ export class SettingsPage {
       }
       this.alertCtrl.create({
         title: 'Syntax error',
-        message: 'The number of IF output blocks should be the same of the ENDIF',
+        message: 'The number of IF output components should be the same of the ENDIFs',
         buttons: buttons
       }).present();
       return false;
