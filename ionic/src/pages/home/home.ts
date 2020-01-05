@@ -32,7 +32,7 @@ import { SettingsPage } from '../settings/settings';
 export class HomePage {
   public animateLast: boolean = false;
   public scanSessions: ScanSessionModel[] = [];
-  public selectedScanSession: ScanSessionModel = null;
+  public selectedScanSessionIndex: number = null;
   public connectedDevices: DeviceModel[] = [];
   public hideSearchBar = true;
   public searchTerms = ''
@@ -63,10 +63,10 @@ export class HomePage {
     this.store = new this.electronProvider.ElectronStore();
 
     this.events.subscribe('delete:scanSession', (scanSession) => {
-      var index = this.scanSessions.indexOf(scanSession, 0);
+      var index = this.scanSessions.indexOf(scanSession);
       if (index > -1) {
-        if (this.selectedScanSession && scanSession.id == this.selectedScanSession.id) {
-          this.selectedScanSession = null;
+        if (this.selectedScanSessionIndex != null && this.selectedScanSessionIndex == index) {
+          this.selectedScanSessionIndex = null;
         }
         this.scanSessions.splice(index, 1);
         this.save();
@@ -116,17 +116,17 @@ export class HomePage {
     }, 600)
   }
 
-  onScanSessionClick(scanSession) {
-    this.selectedScanSession = scanSession;
+  onScanSessionClick(index) {
+    this.selectedScanSessionIndex = index;
   }
 
   onSearch(event) {
-    this.selectedScanSession = null;
+    this.selectedScanSessionIndex = null;
   }
 
   onSearchCancel(event) {
     this.hideSearchBar = true;
-    this.selectedScanSession = null;
+    this.selectedScanSessionIndex = null;
     this.searchTerms = '';
   }
 
@@ -218,12 +218,12 @@ export class HomePage {
           }
         } else {
           this.scanSessions.unshift(newScanSession);
-          this.selectedScanSession = this.scanSessions[0];
+          this.selectedScanSessionIndex = 0;
           if (this.scanSessionsContainer) {
             this.scanSessionsContainer.scrollToTop();
           }
         }
-        this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
+        this.selectedScanSessionIndex = scanSessionIndex == -1 ? 0 : scanSessionIndex;
       })
 
       // Uncomment this section when there will be support for multiple scanSessions per event
@@ -255,8 +255,8 @@ export class HomePage {
 
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_DELETE_SCAN_SESSION, (e, request: requestModelDeleteScanSessions) => {
       this.ngZone.run(() => {
-        if (this.selectedScanSession && request.scanSessionIds.findIndex(x => x == this.selectedScanSession.id) != -1) {
-          this.selectedScanSession = null;
+        if (this.selectedScanSessionIndex != null && request.scanSessionIds.findIndex(x => x == this.scanSessions[this.selectedScanSessionIndex].id) != -1) {
+          this.selectedScanSessionIndex = null;
         }
         this.scanSessions = this.scanSessions.filter(x => request.scanSessionIds.indexOf(x.id) < 0);
         this.save();
@@ -335,8 +335,9 @@ export class HomePage {
   }
 
   getTitle() {
-    if (this.selectedScanSession) {
-      return this.selectedScanSession.name;
+    let selectedScanSession = this.getSelectedScanSession();
+    if (selectedScanSession != null) {
+      return selectedScanSession.name;
     }
     return Config.APP_NAME;
   }
@@ -358,17 +359,16 @@ export class HomePage {
     return this.animateLast;
   }
 
-  getItemBackgroundColor(scanSession) {
-    return scanSession == this.selectedScanSession ? 'selected' : 'default';
+  getScanSessionBackgroundColor(index) {
+    return index == this.selectedScanSessionIndex ? 'selected' : 'default';
   }
-
 
   onClearAllClick() {
     this.alertCtrl.create({
       title: 'Delete all scan sessions?', message: 'The scans sessions will be deleted from the server. You can send them again from your smartphone.', buttons: [{ text: 'Cancel', role: 'cancel' }, {
         text: 'Delete all', handler: (opts: AlertOptions) => {
           this.scanSessions = [];
-          this.selectedScanSession = null;
+          this.selectedScanSessionIndex = null;
           this.save();
         }
       }]
@@ -421,11 +421,19 @@ export class HomePage {
     }
   }
 
+  public getSelectedScanSession() {
+    if (this.selectedScanSessionIndex != null && this.scanSessions[this.selectedScanSessionIndex]) {
+      return this.scanSessions[this.selectedScanSessionIndex]
+    }
+    return null
+  }
+
   public getScannings() {
-    if (this.selectedScanSession == null) {
+    let selectedScanSession = this.getSelectedScanSession();
+    if (selectedScanSession == null) {
       return [];
     }
-    return this.selectedScanSession.scannings;
+    return selectedScanSession.scannings;
   }
 
   public virtualTrackById(index, scan: ScanModel) {

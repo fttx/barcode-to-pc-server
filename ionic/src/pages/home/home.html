@@ -31,8 +31,8 @@
       <ion-content class="child-container">
         <ion-list class="scan-sessions-list">
           <ion-item *ngFor="let scanSession of filteredScanSessions(); let i = index;"
-            [color]="getItemBackgroundColor(scanSession)" [id]="scanSession.id"
-            (click)="onScanSessionClick(scanSession);">
+            [color]="getScanSessionBackgroundColor(i)" [id]="scanSession.id"
+            (click)="onScanSessionClick(i);">
             <ion-grid no-padding>
               <ion-row>
                 <ion-col no-lines ion-item>
