@@ -3,7 +3,6 @@ import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
 import { saveAs } from 'file-saver';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
-import * as Papa from 'papaparse';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession } from '../../models/request.model';
@@ -18,7 +17,6 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-import { gt, SemVer, lt } from 'semver';
 
 /**
  * Generated class for the HomePage page.
@@ -86,33 +84,36 @@ export class HomePage {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    // console.log(event)
-    // if (event.keyCode == 70 && event.ctrlKey == true) { // ctrl+f, doesn't work on macos + karabiner
-
-    // }
-
     if (event.keyCode == 27) {
       this.onSearchCancel(null);
     }
   }
 
   save() {
-    // console.log('save()', this.scanSessions);
+    let doSave = () => {
+      this.ngZone.run(() => {
+        this.animateLast = !!this.animateLast
+        setTimeout(() => this.animateLast = false, 1200);
+      })
+      this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
+      this.noBounces = 0;
+    }
+
     if (this.saveDebounceTimeout != null) {
       clearTimeout(this.saveDebounceTimeout);
-      this.noBounces++;
-
-      if (this.noBounces > 15) {
-        this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
-        this.noBounces = 0;
+      if (this.noBounces == 0) {
+        // console.log('animate')
+      } else if (this.noBounces > 50) {
+        doSave();
         // console.log('save()');
       }
+      this.noBounces++;
     }
 
     this.saveDebounceTimeout = setTimeout(() => {
       // console.log('save()');
-      this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
-    }, 500)
+      doSave();
+    }, 600)
   }
 
   onScanSessionClick(scanSession) {
@@ -170,66 +171,67 @@ export class HomePage {
     });
 
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
-      this.ngZone.run(() => {
-        let initialNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
-        request.scanSessions.forEach(newScanSession => {
-          let scanSessionIndex = this.scanSessions.findIndex(x => x.id == newScanSession.id); // this is O(n^2) but i don't care since we don't have > 500 scan sessions, and the scanSessions array gets traversed all the way to the end only for the new created scan sessions
-          if (scanSessionIndex != -1) {
-            console.log('@ Scan session already present, merging the scannings')
-            let existingScanSession = this.scanSessions[scanSessionIndex];
+      // Uncomment this line when there will be support for multiple scanSessions per event
+      // let initialNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
+      request.scanSessions.forEach(newScanSession => {
+        let scanSessionIndex = this.scanSessions.findIndex(x => x.id == newScanSession.id); // this is O(n^2) but i don't care since we don't have > 500 scan sessions, and the scanSessions array gets traversed all the way to the end only for the new created scan sessions
+        if (scanSessionIndex != -1) {
+          console.log('@ Scan session already present, merging the scannings')
+          let existingScanSession = this.scanSessions[scanSessionIndex];
 
-            if (existingScanSession.scannings.length == 0) {
-              console.log('@ scannings array emtpy -> assigning the whole array')
-              existingScanSession.scannings = newScanSession.scannings;
-            } else if (existingScanSession.scannings.length != 0 && newScanSession.scannings.length == 1) {
-              console.log('@ scannings array not emtpy -> adding only the new scans (the new scansession contains only one scan -> unshift)')
-              let newScan = newScanSession.scannings[0];
-              let alreadyExistingScanIndex = existingScanSession.scannings.findIndex(x => x.id == newScan.id); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
+          if (existingScanSession.scannings.length == 0) {
+            console.log('@ scannings array emtpy -> assigning the whole array')
+            existingScanSession.scannings = newScanSession.scannings;
+          } else if (existingScanSession.scannings.length != 0 && newScanSession.scannings.length == 1) {
+            console.log('@ scannings array not emtpy -> adding only the new scans (the new scansession contains only one scan -> unshift)')
+            let newScan = newScanSession.scannings[0];
+            let alreadyExistingScanIndex = existingScanSession.scannings.findIndex(x => x.id == newScan.id); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
 
-              if (alreadyExistingScanIndex == -1) {
-                // I don't know why unshift doesn't work, so i'll use concat even though it is less performant
-                // existingScanSession.scannings.unshift(newScan)
-                existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings);
-              }
-            } else {
-              console.log('@ scannings array not emtpy -> adding only the new scans')
-
-              // I expect to receive the scans sorted by id desc, so i copy
-              // to the local scan list only the scans that have an id
-              // greater than the one that has the lastest received scan.
-              let lastReceivedScanId = existingScanSession.scannings[0].id;
-              let alreadyExistingScanIndex = newScanSession.scannings.findIndex(newScan => newScan.id <= lastReceivedScanId); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
-
-              console.log('@ lastReceivedScanId = ' + lastReceivedScanId + ' alreadyExistingScanIndex = ' + alreadyExistingScanIndex)
-
-              if (alreadyExistingScanIndex != -1) { // if some scan is already present => i do not include them
-                console.log('@ the list of the received scans includes scans that are already present, slicing the array from 0 to ' + alreadyExistingScanIndex)
-
-                let newScans: ScanModel[] = newScanSession.scannings.slice(0, alreadyExistingScanIndex);
-                existingScanSession.scannings = newScans.concat(existingScanSession.scannings)
-              } else { // if the scans are all new, i copy all of them
-                console.log('@ merging the scans as they are: ', newScanSession.scannings, existingScanSession.scannings)
-
-                existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings)
-                // what if newScanSession.scannings is empty?
-              }
+            if (alreadyExistingScanIndex == -1) {
+              // I don't know why unshift doesn't work, so i'll use concat even though it is less performant
+              // existingScanSession.scannings.unshift(newScan)
+              existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings);
+              this.animateLast = true;
             }
           } else {
-            this.scanSessions.unshift(newScanSession);
-            this.selectedScanSession = this.scanSessions[0];
-            if (this.scanSessionsContainer) {
-              this.scanSessionsContainer.scrollToTop();
+            console.log('@ scannings array not emtpy -> adding only the new scans')
+
+            // I expect to receive the scans sorted by id desc, so i copy
+            // to the local scan list only the scans that have an id
+            // greater than the one that has the lastest received scan.
+            let lastReceivedScanId = existingScanSession.scannings[0].id;
+            let alreadyExistingScanIndex = newScanSession.scannings.findIndex(newScan => newScan.id <= lastReceivedScanId); // performance can improved by reversing the scannings array, but the findIndex will return a complementar index
+
+            console.log('@ lastReceivedScanId = ' + lastReceivedScanId + ' alreadyExistingScanIndex = ' + alreadyExistingScanIndex)
+
+            if (alreadyExistingScanIndex != -1) { // if some scan is already present => i do not include them
+              console.log('@ the list of the received scans includes scans that are already present, slicing the array from 0 to ' + alreadyExistingScanIndex)
+
+              let newScans: ScanModel[] = newScanSession.scannings.slice(0, alreadyExistingScanIndex);
+              existingScanSession.scannings = newScans.concat(existingScanSession.scannings)
+            } else { // if the scans are all new, i copy all of them
+              console.log('@ merging the scans as they are: ', newScanSession.scannings, existingScanSession.scannings)
+
+              existingScanSession.scannings = newScanSession.scannings.concat(existingScanSession.scannings)
+              // what if newScanSession.scannings is empty?
             }
           }
-          this.animateLast = true; setTimeout(() => this.animateLast = false, 1200);
-          this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
-        })
+        } else {
+          this.scanSessions.unshift(newScanSession);
+          this.selectedScanSession = this.scanSessions[0];
+          if (this.scanSessionsContainer) {
+            this.scanSessionsContainer.scrollToTop();
+          }
+        }
+        this.selectedScanSession = this.scanSessions[scanSessionIndex == -1 ? 0 : scanSessionIndex];
+      })
 
-        let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
-        this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
+      // Uncomment this section when there will be support for multiple scanSessions per event
+      // let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
+      // this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
+      this.licenseProvider.limitMonthlyScans(1);
 
-        this.save();
-      }); // ngZone
+      this.save();
 
       // if (request.scan.repeated) {
       //   let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
@@ -431,6 +433,7 @@ export class HomePage {
   }
 }
 
+
 // ConnectedClientsPopover
 @Component({
   template: `
@@ -509,7 +512,6 @@ export class ScanSessionContextMenuPopover {
 }
 
 
-
 // MainMenuPopover
 @Component({
   template: `
@@ -546,6 +548,7 @@ export class MainMenuPopover {
     this.modalCtrl.create(ActivatePage).present();
   }
 }
+
 
 @Component({
   templateUrl: 'pop-over-qrcode.html'
