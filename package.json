@@ -38,11 +38,18 @@
     "compression": "maximum",
     "appId": "com.barcodetopc.server",
     "productName": "Barcode to PC server",
+    "afterSign": "../electron/notarize.js",
     "mac": {
       "category": "public.app-category.utilities",
+      "hardenedRuntime": true,
+      "entitlements": "../electron/electron-resources/entitlements.mac.plist",
+      "gatekeeperAssess": false,
       "extendInfo": {
         "LSUIElement": 1
       }
+    },
+    "dmg": {
+      "sign": false
     },
     "win": {
       "target": [
@@ -89,6 +96,7 @@
     "electron": "4.0.3",
     "electron-builder": "^21.2.0",
     "electron-log": "^3.0.0",
+    "electron-notarize": "^0.2.1",
     "gulp": "^3.9.1",
     "mocha": "^5.2.0",
     "npx": "^10.2.0",
