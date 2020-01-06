@@ -15,9 +15,9 @@ export class UiHandler implements Handler {
     private ipcClient;
     /**
      * quitImmediately must be set to TRUE before calling app.quit().
-     * 
+     *
      * This variable is used to detect when the user clicks the **close button** of the window:
-     * since the 'close' event may fire for various reasons, everytime that quitImmediately is set 
+     * since the 'close' event may fire for various reasons, everytime that quitImmediately is set
      * to FALSE we can assume that the user has clicked the close button.
      */
     public quitImmediately = false;
@@ -41,7 +41,7 @@ export class UiHandler implements Handler {
         app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
             this.createWindow();
         });
-        app.on('window-all-closed', () => {  // Quit when all windows are closed.            
+        app.on('window-all-closed', () => {  // Quit when all windows are closed.
             // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode to PC needs the browser windows to perform operation on the localStorage this is not allowed
             app.quit()
             // }
@@ -72,7 +72,7 @@ export class UiHandler implements Handler {
         if (this.settingsHandler.enableTray) {
             if (this.tray == null) {
                 let menuItems: MenuItemConstructorOptions[] = [
-                    // { label: 'Enable realtime ', type: 'radio', checked: false },        
+                    // { label: 'Enable realtime ', type: 'radio', checked: false },
                     {
                         label: 'Exit', click: () => {
                             this.quitImmediately = true;
@@ -139,7 +139,8 @@ export class UiHandler implements Handler {
             this.mainWindow.webContents.on('did-fail-load', () => {
                 setTimeout(() => this.mainWindow.reload(), 2000);
             })
-            this.mainWindow.loadURL('http://localhost:8200/');
+            this.mainWindow.webContents.openDevTools();
+            this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         } else {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
