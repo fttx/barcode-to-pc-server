@@ -60,6 +60,7 @@ export class ScansHandler implements Handler {
                             case 'variable': this.typeString(outputBlock.value); break;
                             case 'function': this.typeString(outputBlock.value); break;
                             case 'barcode': this.typeString(outputBlock.value); break;
+                            case 'select_option': this.typeString(outputBlock.value); break;
                             case 'delay': {
                                 if (isNumeric(outputBlock.value)) {
                                     await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
