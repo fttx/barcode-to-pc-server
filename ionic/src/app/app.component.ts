@@ -74,8 +74,11 @@ export class MyApp {
         let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
 
         // Changelog alert
+        // remove urls
+        let render = this.markdownService.renderer;
+        render.link = function (href, title, text) { return '<b>' + text + '</b>' };
         let httpRes = await this.http.get(Config.URL_GITHUB_CHANGELOG).toPromise();
-        let changelog = 'Please make you sure to update also the app on your smatphone.<div style="font-size: .1em">' + this.markdownService.compile(httpRes.text()) + '</div>';
+        let changelog = 'Please make you sure to update also the app on your smatphone.<div style="font-size: .1em">' + this.markdownService.compile(httpRes.text(), { renderer: render }) + '</div>';
         this.alertCtrl.create({
           title: 'The server has been updated',
           message: changelog,
