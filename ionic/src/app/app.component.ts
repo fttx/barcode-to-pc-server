@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import ElectronStore from 'electron-store';
-import { Platform } from 'ionic-angular';
+import { AlertController, Platform } from 'ionic-angular';
+import { MarkdownService } from 'ngx-markdown';
 import { gt, SemVer } from 'semver';
 import { Config } from '../../../electron/src/config';
 import { SettingsModel } from '../models/settings.model';
@@ -27,6 +29,9 @@ export class MyApp {
     splashScreen: SplashScreen,
     public electronProvider: ElectronProvider,
     public devicesProvider: DevicesProvider,
+    public http: Http,
+    public alertCtrl: AlertController,
+    public markdownService: MarkdownService,
     public utils: UtilsProvider
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -67,6 +72,16 @@ export class MyApp {
       // see: https://semver.org/
       if (gt(currentVersion, lastVersion) && lastVersion.compare('0.0.0') != 0) { // update detected (the second proposition is to exclude the first start)
         let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+
+        // Changelog alert
+        let httpRes = await this.http.get(Config.URL_GITHUB_CHANGELOG).toPromise();
+        let changelog = 'Please make you sure to update also the app on your smatphone.<div style="font-size: .1em">' + this.markdownService.compile(httpRes.text()) + '</div>';
+        this.alertCtrl.create({
+          title: 'The server has been updated',
+          message: changelog,
+          buttons: ['Ok'],
+          cssClass: 'changelog'
+        }).present();
 
         // v3 upgrade
         if (typeof settings.autoUpdate == 'undefined') {

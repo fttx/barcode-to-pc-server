@@ -29,6 +29,8 @@ import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
 import { ActivatePage } from '../pages/activate/activate';
 import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
+import { HttpModule } from '@angular/http';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -50,6 +52,7 @@ import { EditOutputBlockPage } from '../components/output-block-component/edit-o
     QRCodeModule,
     ClipboardModule,
     HttpClientModule,
+    HttpModule,
     NgxPopperModule.forRoot({
       trigger: Triggers.CLICK,
       hideOnClickOutside: true,
@@ -68,6 +71,7 @@ import { EditOutputBlockPage } from '../components/output-block-component/edit-o
       }),
     ComponentsModule,
     DragulaModule.forRoot(),
+    MarkdownModule.forRoot(),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
