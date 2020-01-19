@@ -29,6 +29,7 @@ export class SettingsPage {
   public openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
 
   private lastSavedSettings: string;
+  private lastSavedOpenAutomatically;
   private store: ElectronStore;
 
   public selectedOutputProfile = 0;
@@ -152,8 +153,8 @@ export class SettingsPage {
         this.openAutomatically = 'no';
       }
     }
-
     this.lastSavedSettings = JSON.stringify(this.settings);
+    this.lastSavedOpenAutomatically = this.openAutomatically;
 
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.goBack();
@@ -196,6 +197,7 @@ export class SettingsPage {
       })
     }
     this.lastSavedSettings = JSON.stringify(this.settings);
+    this.lastSavedOpenAutomatically = this.openAutomatically;
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.send('settings');
     }
@@ -280,8 +282,12 @@ export class SettingsPage {
     }).present();
   }
 
+  settingsChanged() {
+    return this.lastSavedSettings != JSON.stringify(this.settings) || this.lastSavedOpenAutomatically != this.openAutomatically;
+  }
+
   goBack() {
-    if (this.lastSavedSettings == JSON.stringify(this.settings)) { // settings up to date
+    if (!this.settingsChanged()) { // settings up to date
       this.navCtrl.pop();
     } else { // usnaved settings
       this.unsavedSettingsAlert = this.alertCtrl.create({

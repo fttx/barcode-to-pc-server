@@ -15,7 +15,7 @@
         <ion-icon name="refresh"></ion-icon>
       </button>
 
-      <button ion-button icon-end solid color="secondary" (click)="onApplyClick()">
+      <button ion-button icon-end solid color="secondary" [disabled]="!settingsChanged()" (click)="onApplyClick()">
         Save &amp; Apply
         <ion-icon name="checkmark"></ion-icon>
       </button>
