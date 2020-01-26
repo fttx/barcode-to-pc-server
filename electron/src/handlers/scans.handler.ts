@@ -109,9 +109,9 @@ export class ScansHandler implements Handler {
                     } catch (e) {
                         dialog.showMessageBox(this.uiHandler.mainWindow, {
                             type: 'error',
-                            title: 'Error',
+                            title: 'Write error',
                             buttons: ['OK'],
-                            message: 'An error occured while announcing the server.'
+                            message: "An error occurred while appending the scan to the specified CSV file. Please make you sure that the file name doesn't contain special characters and that the server has the write permissions to that path"
                         });
                     }
                 }
