@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { exec } from 'child_process';
-import { clipboard, shell } from 'electron';
+import { clipboard, shell, dialog } from 'electron';
 import * as fs from 'fs';
 import * as os from 'os';
 import * as http from 'http';
@@ -99,12 +99,21 @@ export class ScansHandler implements Handler {
 
                     // inject variables to the path
                     let path = new Supplant().text(this.settingsHandler.csvPath, {
-                        scan_session_name: this.sanitize(scanSession.name),
-                        device_name: this.sanitize(deviceName),
-                        date: this.sanitize(new Date(scanSession.date).toISOString().slice(0, 10).replace(/-/g, ""))
+                        scan_session_name: scanSession.name,
+                        device_name: deviceName,
+                        date: new Date(scanSession.date).toISOString().slice(0, 10)
                     })
 
-                    fs.appendFileSync(path, rows + newLineCharacter);
+                    try {
+                        fs.appendFileSync(path, rows + newLineCharacter);
+                    } catch (e) {
+                        dialog.showMessageBox(this.uiHandler.mainWindow, {
+                            type: 'error',
+                            title: 'Error',
+                            buttons: ['OK'],
+                            message: 'An error occured while announcing the server.'
+                        });
+                    }
                 }
 
                 if (this.settingsHandler.enableOpenInBrowser) {
@@ -156,15 +165,5 @@ export class ScansHandler implements Handler {
 
     onWsError(ws: WebSocket, err: Error) {
         throw new Error("Method not implemented.");
-    }
-
-    /**
-     * Returns the str without special characters only numbers, letters and
-     * spaces.
-     *
-     * @param str String to sanitize
-     */
-    sanitize(str) {
-        return str.replace(/[^a-z0-9\s]/gi, '');
     }
 }
