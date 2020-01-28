@@ -63,9 +63,6 @@
       ],
       "icon": "build/icon.ico"
     },
-    "linux": {
-      "target": "AppImage"
-    },
     "nsisWeb": {
       "oneClick": false,
       "perMachine": true,
@@ -84,7 +81,7 @@
     "network": "^0.4.1",
     "papaparse": "^4.4.0",
     "requirejs": "^2.3.5",
-    "robotjs": "^0.6.0",
+    "robotjs": "^0.5.1",
     "rxjs": "^5.5.6",
     "supplant": "^0.2.0",
     "systemjs": "^0.21.0",
@@ -97,7 +94,7 @@
     "@types/mdns": "0.0.33",
     "@types/uuid": "^3.4.4",
     "electron": "4.0.3",
-    "electron-builder": "^22.3.2",
+    "electron-builder": "^21.2.0",
     "electron-log": "^3.0.0",
     "electron-notarize": "^0.2.1",
     "gulp": "^3.9.1",
