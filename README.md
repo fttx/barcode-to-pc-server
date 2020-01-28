@@ -85,6 +85,6 @@ To publish an update:
 4. Add a tag and name it `v<new version number>`
 5. Push the tag
 
-Note: for macOS delete the `electron/electron-reosurces` folder and run: `npm run publish`
+Note: for macOS delete the `electron/electron-resources/*.rtf` folder and run: `npm run publish`
 
 Upon the tag push, travis and appveyor will build and sign the new installers. At this point if all looks good the only thing left to do is to publish the Github release draft.
