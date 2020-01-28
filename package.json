@@ -63,6 +63,9 @@
       ],
       "icon": "build/icon.ico"
     },
+    "linux": {
+      "target": "AppImage"
+    },
     "nsisWeb": {
       "oneClick": false,
       "perMachine": true,
