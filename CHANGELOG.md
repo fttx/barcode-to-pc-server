@@ -27,7 +27,7 @@
 ### Changed
 
 - Improve performance when the server is minimized to tray
-- Imrove Save &amp; Apply button
+- Improve Save &amp; Apply button
 
 ### Fixed
 
