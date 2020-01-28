@@ -16,6 +16,24 @@
 ### Security
 -->
 
+## [v3.6.0] - 2020-01-28
+
+### Added
+
+- Changelog dialog
+- macOS executable notarization
+- Support for special characters in the "Append to .CSV file" option
+
+### Changed
+
+- Improve performance when the server is minimized to tray
+- Imrove Save &amp; Apply button
+
+### Fixed
+
+- "Infinite loop" message false positives
+- SELECT_OPTION empty output
+
 ## [v3.5.0] - 2019-12-28
 
 ### Added
@@ -206,6 +224,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.6.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.5.0...v3.6.0
 [v3.5.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.4.2...v3.5.0
 [v3.4.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.4.0...v3.4.2
 [v3.4.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.3.0...v3.4.0
