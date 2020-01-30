@@ -14,8 +14,7 @@ export class InfoBoxComponent {
   @Input('title') title: string;
 
   constructor() {
-    console.log('Hello InfoBoxComponent Component');
-    this.title= 'Hello World';
+    this.title= '';
   }
 
 }
