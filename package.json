@@ -40,6 +40,7 @@
       {
         "ext": "btpt",
         "name": "Barcode to PC Output Template",
+        "description": "Barcode to PC Output Template",
         "role": "Editor"
       }
     ],
