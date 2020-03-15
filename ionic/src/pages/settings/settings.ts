@@ -1,6 +1,6 @@
 import { Component, HostListener, ViewChild, NgZone } from '@angular/core';
 import ElectronStore from 'electron-store';
-import { Alert, AlertController, Navbar, NavController, NavParams, AlertButton } from 'ionic-angular';
+import { Alert, AlertController, Navbar, NavController, NavParams, AlertButton, Events } from 'ionic-angular';
 import { DragulaService } from "ng2-dragula";
 import { Config } from '../../../../electron/src/config';
 import { SettingsModel } from '../../models/settings.model';
@@ -8,6 +8,7 @@ import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
+import { saveAs } from 'file-saver';
 
 /**
  * Generated class for the SettingsPage page.
@@ -99,6 +100,7 @@ export class SettingsPage {
     private electronProvider: ElectronProvider,
     private licenseProvider: LicenseProvider,
     private alertCtrl: AlertController,
+    public events: Events,
     private ngZone: NgZone,
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -228,7 +230,7 @@ export class SettingsPage {
     }).present();
   }
 
-  onDeleteOutputProfileClick() {
+  onDeleteOutputTemplateClick() {
     if (this.settings.outputProfiles.length <= 1) {
       return;
     }
@@ -254,6 +256,30 @@ export class SettingsPage {
     }).present();
   }
 
+  onExportOutputTemplateClick() {
+    let outputProfile = this.settings.outputProfiles[this.selectedOutputProfile];
+    outputProfile.version = this.electronProvider.app.getVersion()
+
+    let file = new Blob([JSON.stringify(outputProfile)], { type: 'application/json;charset=utf-8' });
+    saveAs(file, outputProfile.name + ".btpt");
+  }
+
+  onImportOutputTemplateClick() {
+    let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
+      title: 'Select the Output Template file',
+      buttonLabel: 'Select',
+      defaultPath: this.electronProvider.app.getPath('desktop'),
+      filters: [{ name: 'Output Template Files', extensions: ['btpt'] }],
+      properties: ['openFile', 'createDirectory', 'promptToCreate',]
+    });
+
+    const fs = this.electronProvider.remote.require('fs');
+    fs.readFile(filePaths[0], 'utf8', (err, data) => {
+      if (err) return console.log(err);
+      this.addOutputTemplate(JSON.parse(data));
+    });
+  }
+
   onNewOutputTemplateClick() {
     let newTemplateName = 'Output template ' + (this.settings.outputProfiles.length + 1);
     this.alertCtrl.create({
@@ -270,16 +296,21 @@ export class SettingsPage {
           if (data.name != "") {
             newTemplateName = data.name;
           }
-          let outputProfile: OutputProfileModel = {
+          let outputTemplate: OutputProfileModel = {
             name: newTemplateName,
+            version: null,
             outputBlocks: new SettingsModel().outputProfiles[0].outputBlocks
           };
-          // push isn't working, so we're using the spread operator
-          this.settings.outputProfiles = [...this.settings.outputProfiles, outputProfile];
-          this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
+          this.addOutputTemplate(outputTemplate)
         }
       }]
     }).present();
+  }
+
+  addOutputTemplate(outputTemplate) {
+    // push isn't working, so we're using the spread operator (duplicated issue on the app.compoennt.ts file)
+    this.settings.outputProfiles = [...this.settings.outputProfiles, outputTemplate];
+    this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
   }
 
   settingsChanged() {

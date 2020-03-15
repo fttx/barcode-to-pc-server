@@ -3,7 +3,7 @@ import { Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import ElectronStore from 'electron-store';
-import { AlertController, Platform } from 'ionic-angular';
+import { AlertController, Platform, Events } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { gt, SemVer } from 'semver';
 import { Config } from '../../../electron/src/config';
@@ -32,6 +32,7 @@ export class MyApp {
     public http: Http,
     public alertCtrl: AlertController,
     public markdownService: MarkdownService,
+    public events: Events,
     public utils: UtilsProvider
   ) {
     this.store = new this.electronProvider.ElectronStore();
@@ -42,6 +43,63 @@ export class MyApp {
       statusBar.styleDefault();
       splashScreen.hide();
       electronProvider.sendReadyToMainProcess();
+
+      // The publishing can happen by drag-n-drop, file path as argv,
+      this.events.subscribe('file:template', (path) => {
+
+        const fs = this.electronProvider.remote.require('fs');
+        let file = fs.readFileSync(path, 'utf-8');
+        let outputTemplate = JSON.parse(file);
+
+        this.alertCtrl.create({
+          title: 'Import Output template',
+          message: 'Do you want to import ' + outputTemplate.name + ' profile?',
+          buttons: [{
+            text: 'Yes',
+            handler: () => {
+              let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+              // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
+              settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
+              this.store.set(Config.STORAGE_SETTINGS, settings);
+              if (this.electronProvider.isElectron()) {
+                this.electronProvider.ipcRenderer.send('settings');
+              }
+            }
+          }, {
+            text: 'Cancel',
+            role: 'cancel',
+            handler: () => { }
+          }]
+        }).present();
+      })
+
+
+      window.ondragover = (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'copy';
+        return false;
+      };
+
+      window.ondrop = (e) => {
+        e.preventDefault();
+        for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+          let path = e.dataTransfer.files[i].path;
+          this.events.publish('file:template', path)
+        }
+        return false;
+      };
+
+      window.ondragleave = () => {
+        return false;
+      };
+
+      // When a .btpt file is clicked, Windows passes the file path string to the
+      // executable as parameter.
+      // If is this the case, get-argv-file-path, will return such path.
+      let path = this.electronProvider.ipcRenderer.sendSync('get-argv-file-path');
+      if (path !== null) {
+        this.events.publish('file:template', path)
+      }
     });
 
     this.upgrade().then(() => {

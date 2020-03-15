@@ -36,6 +36,13 @@
   "build": {
     "compression": "maximum",
     "appId": "com.barcodetopc.server",
+    "fileAssociations": [
+      {
+        "ext": "btpt",
+        "name": "Barcode to PC Output Template",
+        "role": "Editor"
+      }
+    ],
     "productName": "Barcode to PC server",
     "afterSign": "../electron/notarize.js",
     "mac": {

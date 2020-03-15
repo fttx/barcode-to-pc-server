@@ -17,7 +17,7 @@ const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandl
 const updateHandler = UpdateHandler.getInstance(uiHandler, settingsHandler);
 
 ipcMain
-    .on('pageLoad', (event, arg) => { // the renderer will send a 'pageLoad' message once the index.html document is loaded. (implies that the mainWindow exists)       
+    .on('pageLoad', (event, arg) => { // the renderer will send a 'pageLoad' message once the index.html document is loaded. (implies that the mainWindow exists)
         if (wss != null || event.sender == null) {
             return;
         }
@@ -72,6 +72,18 @@ ipcMain
             app.quit(); // TODO: keep the server running (this can't be done at the moment because the scannings are saved in the browserWindow localStorage)
         });
     })
+
+// Used to open files (double click)
+// On Windows when double-clicking, the system passes the file path
+// of the clicked file to the main exectutable.
+//
+// Used inside ionic/src/app/app.component.ts
+ipcMain.on('get-argv-file-path', (event) => {
+    if (process.platform == 'win32' && process.argv.length >= 2) {
+        event.returnValue = process.argv[1];
+    }
+    event.returnValue = null;
+});
 
 function closeServer() {
     console.log('closing server')
