@@ -79,11 +79,13 @@ ipcMain
 //
 // Used inside ionic/src/app/app.component.ts
 ipcMain.on('get-argv-file-path', (event) => {
+    console.log('@@ event: get-argv-file-path', process.argv)
     if (process.platform == 'win32' && process.argv.length >= 2) {
         event.returnValue = process.argv[1];
     }
     event.returnValue = null;
 });
+console.log('@@ argv: ', process.argv)
 
 function closeServer() {
     console.log('closing server')
