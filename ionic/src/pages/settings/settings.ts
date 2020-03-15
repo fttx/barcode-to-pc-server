@@ -274,7 +274,7 @@ export class SettingsPage {
     });
 
     const fs = this.electronProvider.remote.require('fs');
-    fs.readFile(filePaths[0], 'utf8', (err, data) => {
+    fs.readFile(filePaths[0], 'utf-8', (err, data) => {
       if (err) return console.log(err);
       this.addOutputTemplate(JSON.parse(data));
     });
