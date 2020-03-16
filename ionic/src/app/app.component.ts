@@ -3,12 +3,13 @@ import { Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import ElectronStore from 'electron-store';
-import { AlertController, Platform, Events } from 'ionic-angular';
+import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { gt, SemVer } from 'semver';
 import { Config } from '../../../electron/src/config';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
+import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
@@ -34,6 +35,7 @@ export class MyApp {
     public markdownService: MarkdownService,
     public events: Events,
     public utils: UtilsProvider,
+    public app: App,
   ) {
     this.store = new this.electronProvider.ElectronStore();
 
@@ -44,12 +46,32 @@ export class MyApp {
       splashScreen.hide();
       electronProvider.sendReadyToMainProcess();
 
-      // The publishing can happen by drag-n-drop, file path as argv,
-      this.events.subscribe('file:template', (path) => {
+      // The publishing can happen by a drag-n-drop or a double click of a .btpt file
+      this.events.subscribe('import_btpt', (path) => {
 
+        // Prevent importing files when the SettingsPage is active
+        if (this.app.getActiveNav().getActive().component == SettingsPage) {
+          this.alertCtrl.create({
+            title: 'Error',
+            message: "You must close the Settings page before opening a .btpt file.",
+            buttons: [{ text: 'Ok', role: 'cancel', }]
+          }).present();
+          return;
+        }
+
+        // Read the file content
         const fs = this.electronProvider.remote.require('fs');
-        let file = fs.readFileSync(path, 'utf-8');
-        let outputTemplate = JSON.parse(file);
+        let outputTemplate;
+        try {
+          outputTemplate = JSON.parse(fs.readFileSync(path, 'utf-8'));
+        } catch {
+          this.alertCtrl.create({
+            title: 'Cannot import the file',
+            message: "The " + path + " file is corrupted or the server doesn't have the read permissions.",
+            buttons: [{ text: 'Ok', role: 'cancel', }]
+          }).present();
+          return;
+        }
 
         this.alertCtrl.create({
           title: 'Import Output template',
@@ -73,7 +95,6 @@ export class MyApp {
         }).present();
       })
 
-
       window.ondragover = (e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = 'copy';
@@ -84,7 +105,7 @@ export class MyApp {
         e.preventDefault();
         for (var i = 0; i < e.dataTransfer.files.length; ++i) {
           let path = e.dataTransfer.files[i].path;
-          this.events.publish('file:template', path)
+          this.events.publish('import_btpt', path)
         }
         return false;
       };
@@ -97,13 +118,13 @@ export class MyApp {
       let process = this.electronProvider.remote.process;
       let checkArgv = (argv) => {
         if (argv.length >= 2) { // process.platform == 'win32' &&
-          this.events.publish('file:template', argv[1])
+          this.events.publish('import_btpt', argv[1])
         }
       }
       checkArgv(process.argv);
       this.electronProvider.ipcRenderer.on('second-instance-open', (event, argv) => {
         checkArgv(argv)
-       })
+      })
     });
 
     this.upgrade().then(() => {
