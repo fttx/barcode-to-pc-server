@@ -73,20 +73,6 @@ ipcMain
         });
     })
 
-// Used to open files (double click)
-// On Windows when double-clicking, the system passes the file path
-// of the clicked file to the main exectutable.
-//
-// Used inside ionic/src/app/app.component.ts
-ipcMain.on('get-argv-file-path', (event) => {
-    console.log('@@ event: get-argv-file-path', process.argv)
-    if (process.platform == 'win32' && process.argv.length >= 2) {
-        event.returnValue = process.argv[1];
-    }
-    event.returnValue = null;
-});
-console.log('@@ argv: ', process.argv)
-
 function closeServer() {
     console.log('closing server')
     if (wss) {

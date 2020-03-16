@@ -29,8 +29,12 @@ export class UiHandler implements Handler {
             app.quit();
             return;
         }
-        app.on('second-instance', (event, commandLine, workingDirectory) => {
-            this.bringWindowUp(); // Someone tried to run a second instance, we should focus our window.
+        app.on('second-instance', (event, argv, workingDirectory) => {
+            // Send the second instance' argv value, so that it can grab the file
+            // parameter if there is one (.btpt)
+            this.mainWindow.webContents.send('second-instance-open', argv)
+            // Someone tried to run a second instance, we should focus the main window.
+            this.bringWindowUp();
         })
 
         this.settingsHandler = settingsHandler;

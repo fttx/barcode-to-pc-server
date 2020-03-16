@@ -33,7 +33,7 @@ export class MyApp {
     public alertCtrl: AlertController,
     public markdownService: MarkdownService,
     public events: Events,
-    public utils: UtilsProvider
+    public utils: UtilsProvider,
   ) {
     this.store = new this.electronProvider.ElectronStore();
 
@@ -89,17 +89,21 @@ export class MyApp {
         return false;
       };
 
-      window.ondragleave = () => {
-        return false;
-      };
+      window.ondragleave = () => { return false; };
 
-      // When a .btpt file is clicked, Windows passes the file path string to the
-      // executable as parameter.
-      // If is this the case, get-argv-file-path, will return such path.
-      let path = this.electronProvider.ipcRenderer.sendSync('get-argv-file-path');
-      if (path !== null) {
-        this.events.publish('file:template', path)
+      // Used to open files (double click)
+      // On Windows when double-clicking, the system passes the file path
+      // of the clicked file to the main exectutable.
+      let process = this.electronProvider.remote.process;
+      let checkArgv = (argv) => {
+        if (argv.length >= 2) { // process.platform == 'win32' &&
+          this.events.publish('file:template', argv[1])
+        }
       }
+      checkArgv(process.argv);
+      this.electronProvider.ipcRenderer.on('second-instance-open', (event, argv) => {
+        checkArgv(argv)
+       })
     });
 
     this.upgrade().then(() => {
