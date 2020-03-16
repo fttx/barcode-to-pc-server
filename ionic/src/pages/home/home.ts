@@ -1,7 +1,6 @@
 import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
-import { saveAs } from 'file-saver';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
@@ -509,8 +508,17 @@ export class ScanSessionContextMenuPopover {
       settings.csvDelimiter,
       newLineCharacter
     );
-    let file = new Blob([rows], { type: 'text/csv;charset=utf-8' });
-    saveAs(file, this.scanSession.name + ".csv");
+
+    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+      title: "Select the location",
+      defaultPath: this.scanSession.name + ".csv",
+      buttonLabel: "Save",
+      filters: [{ name: 'CSV File', extensions: ['csv','txt'] }],
+    }, (filename, bookmark) => {
+      if (!filename) return;
+      const fs = this.electronProvider.remote.require('fs');
+      fs.writeFileSync(filename, rows, 'utf-8');
+    });
   }
 
   delete() {

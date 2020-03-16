@@ -8,7 +8,6 @@ import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
-import { saveAs } from 'file-saver';
 
 /**
  * Generated class for the SettingsPage page.
@@ -260,8 +259,16 @@ export class SettingsPage {
     let outputProfile = this.settings.outputProfiles[this.selectedOutputProfile];
     outputProfile.version = this.electronProvider.app.getVersion()
 
-    let file = new Blob([JSON.stringify(outputProfile)], { type: 'application/json;charset=utf-8' });
-    saveAs(file, outputProfile.name + ".btpt");
+    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+      title: "Select the location",
+      defaultPath: outputProfile.name + '.btpt',
+      buttonLabel: "Save",
+      filters: [{ name: 'Barcode to PC Output Template', extensions: ['btpt',] }],
+    }, (filename, bookmark) => {
+      if (!filename) return;
+      const fs = this.electronProvider.remote.require('fs');
+      fs.writeFileSync(filename, JSON.stringify(outputProfile), 'utf-8');
+    });
   }
 
   onImportOutputTemplateClick() {
