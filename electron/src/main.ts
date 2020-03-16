@@ -1,4 +1,4 @@
-import { app, ipcMain } from 'electron';
+import { app, ipcMain, ipcRenderer } from 'electron';
 import * as WebSocket from 'ws';
 import { Config } from './config';
 import { ConnectionHandler } from './handlers/connection.handler';
@@ -16,13 +16,23 @@ const scansHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
 const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandler);
 const updateHandler = UpdateHandler.getInstance(uiHandler, settingsHandler);
 
+let ipcClient, lastArgv;
+
 ipcMain
     .on('pageLoad', (event, arg) => { // the renderer will send a 'pageLoad' message once the index.html document is loaded. (implies that the mainWindow exists)
         if (wss != null || event.sender == null) {
             return;
         }
 
-        let ipcClient = event.sender;
+        ipcClient = event.sender;
+
+        // The open-file event can be triggered before pageLoad event, so we
+        // need to save the last argv value, so that we can send them to the
+        // ionic project when the app finally loads. (macOS only)
+        if (lastArgv) {
+          ipcClient.send('second-instance-open', lastArgv);
+          lastArgv = null;
+        }
 
         wss = new WebSocket.Server({ port: Config.PORT });
         connectionHandler.announceServer();
@@ -72,6 +82,21 @@ ipcMain
             app.quit(); // TODO: keep the server running (this can't be done at the moment because the scannings are saved in the browserWindow localStorage)
         });
     })
+
+// On macOS when you open an associated file (eg. btpt) electron emits
+// the 'open-file' event.
+// On Windows, instead, will be opened a second instance of the app, and
+// it is handled on the ui.handler.ts file.
+app.on('will-finish-launching', () => {
+    app.on('open-file', (event, path) => {
+        event.preventDefault();
+        let argv = ['', path];
+        lastArgv = argv;
+        if (ipcClient) {
+          ipcClient.send('second-instance-open', argv);
+        }
+    });
+})
 
 function closeServer() {
     console.log('closing server')

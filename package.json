@@ -38,7 +38,7 @@
     "appId": "com.barcodetopc.server",
     "fileAssociations": [
       {
-        "ext": "btpt",
+        "ext": ["btpt"],
         "name": "Barcode to PC Output Template",
         "description": "Barcode to PC Output Template",
         "role": "Editor"

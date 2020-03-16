@@ -48,7 +48,6 @@ export class MyApp {
 
       // The publishing can happen by a drag-n-drop or a double click of a .btpt file
       this.events.subscribe('import_btpt', (path) => {
-
         // Prevent importing files when the SettingsPage is active
         if (this.app.getActiveNav().getActive().component == SettingsPage) {
           this.alertCtrl.create({

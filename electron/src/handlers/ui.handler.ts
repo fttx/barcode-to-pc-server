@@ -31,7 +31,10 @@ export class UiHandler implements Handler {
         }
         app.on('second-instance', (event, argv, workingDirectory) => {
             // Send the second instance' argv value, so that it can grab the file
-            // parameter if there is one (.btpt)
+            // parameter, if there is one (.btpt)
+            //
+            // On macOS the file opening is handled differently, see the
+            // main.ts>open-file event
             this.mainWindow.webContents.send('second-instance-open', argv)
             // Someone tried to run a second instance, we should focus the main window.
             this.bringWindowUp();
