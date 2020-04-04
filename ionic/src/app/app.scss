@@ -36,3 +36,12 @@
 .changelog .alert-wrapper {
   min-width: 50%;
 }
+
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  text-decoration: underline;
+}

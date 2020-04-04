@@ -1,248 +1,243 @@
 <ion-header>
-    <ion-navbar [color]="color">
-        <ion-title>{{ outputBlock.name }}</ion-title>
+  <ion-navbar [color]="color">
+    <ion-title>{{ outputBlock.name }}</ion-title>
 
-        <ion-buttons end>
-            <button ion-button icon-end icon-only solid [color]="color" (click)="onCloseClick()">
-                <ion-icon name="close"></ion-icon>
-            </button>
-        </ion-buttons>
+    <ion-buttons end>
+      <button ion-button icon-end icon-only solid [color]="color" (click)="onCloseClick()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
 
-    </ion-navbar>
+  </ion-navbar>
 </ion-header>
 
 <ion-content padding text-center>
-    <!-- {{ outputBlock | json }} -->
-    <ion-list>
+  <!-- {{ outputBlock | json }} -->
+  <ion-list>
 
-        <div [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' ">
-            <ion-item text-wrap no-lines>
-                <ion-label for="_valueSkipOutput">Skip output</ion-label>
-                <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
-                <br>
-            </ion-item>
+    <div [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' ">
+      <ion-item text-wrap no-lines>
+        <ion-label for="_valueSkipOutput">Skip output</ion-label>
+        <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
+        <br>
+      </ion-item>
 
-            <ion-item text-wrap>
-                <p>
-                    Disables the Keyboard emulation and CSV output for this component.<br><br>
-                    This option is useful when you only want to acquire the data, and use it later with components like
-                    "JavaScript
-                    Function", "IF", "HTTP", or as a parameter for the CSV file name.
-                </p>
-            </ion-item>
+      <ion-item text-wrap>
+        <p>
+          Disables the Keyboard emulation and CSV output for this component.<br><br>
+          This option is useful when you only want to acquire the data, and use it later with components like
+          "JavaScript
+          Function", "IF", "HTTP", or as a parameter for the CSV file name.
+        </p>
+      </ion-item>
 
-            <div [hidden]="outputBlock.label === undefined">
-                <ion-item no-lines>
-                    <label for="_labelValue">
-                        <h2 color="dark">Label</h2>
-                    </label>
-                    <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text"
-                        placeholder="(optional)" />
-                </ion-item>
-
-                <ion-item text-wrap>
-                    <p>
-                        Provide a short description such as "Tracking number" or "Product ID".<br>
-                        The label will be shown in the app while acquiring the data.
-                    </p>
-                </ion-item>
-            </div>
-        </div>
-
-
-        <div [hidden]="outputBlock.type != 'key'">
-            <ion-item [hidden]="outputBlock.editable !== true">
-                <label for="_valueCustomKey" color="dark">
-                    <h2>Key identifier</h2>
-                    <p>Insert one identifier present in <a
-                            (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">this
-                            list</a>.</p>
-                </label>
-                <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
-                    placeholder="eg. numpad_9" />
-            </ion-item>
-
-            <ion-item no-lines text-wrap>
-                <h2>Modifier keys</h2>
-                <p>Select the modifier keys that you want to be pressed along with the {{ outputBlock.name }} key</p>
-            </ion-item>
-
-            <ion-item>
-                <ion-label color="dark">Alt</ion-label>
-                <ion-checkbox [(ngModel)]="modifiers[0]" (ionChange)="onModifierChange()"></ion-checkbox>
-            </ion-item>
-
-            <ion-item>
-                <ion-label color="dark">Command</ion-label>
-                <ion-checkbox [(ngModel)]="modifiers[1]" (ionChange)="onModifierChange()"></ion-checkbox>
-            </ion-item>
-
-            <ion-item>
-                <ion-label color="dark">Control</ion-label>
-                <ion-checkbox [(ngModel)]="modifiers[2]" (ionChange)="onModifierChange()"></ion-checkbox>
-            </ion-item>
-
-            <ion-item>
-                <ion-label color="dark">Shift</ion-label>
-                <ion-checkbox [(ngModel)]="modifiers[3]" (ionChange)="onModifierChange()"></ion-checkbox>
-            </ion-item>
-        </div>
-
-
-        <ion-item [hidden]="outputBlock.type != 'function'">
-            <!-- <ion-label color="dark">JavaScript</ion-label> -->
-            <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->
-            <label for="_valuejs">JavaScript</label>
-
-            <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
-                placeholder="barcode.replace('a','b')" />
-
-            <br>
-            <p>
-                The expression should return a string.<br><br>
-                You can manipulate the variables with any JavaScript method that is listed:
-                <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>.<br><br>
-                You can use the following variables (lowercase):
-            </p>
-            <code>
-                <input type="text" value="barcode" disabled class="example-variable" /> <br>
-                <input type="text" value="quantity" disabled class="example-variable" /> <br>
-                <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-                <input type="text" value="device_name" disabled class="example-variable" /> <br>
-            </code>
+      <div [hidden]="outputBlock.label === undefined">
+        <ion-item no-lines>
+          <label for="_labelValue">
+            <h2 color="dark">Label</h2>
+          </label>
+          <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
         </ion-item>
 
-
-        <ion-item [hidden]="outputBlock.type != 'text'">
-            <label for="_valueText">
-                <h2 color="dark">Text</h2>
-            </label>
-            <input id="_valueText" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
-                placeholder="Lorem ipsum" />
+        <ion-item text-wrap>
+          <p>
+            Provide a short description such as "Tracking number" or "Product ID".<br>
+            The label will be shown in the app while acquiring the data.
+          </p>
         </ion-item>
+      </div>
+    </div>
 
-        <ion-item [hidden]="outputBlock.type != 'delay'">
-            <label for="_valueMs" color="dark">Milliseconds</label>
-            <input id="_valueMs" class="inline-input" type="number" [(ngModel)]="outputBlock.value"
-                placeholder="1000" />
-            <br>
-            <p>
-                Time interval to wait in milliseconds<br><br>
-                1000 milliseconds = 1 second
-            </p>
-        </ion-item>
 
-        <div [hidden]="outputBlock.type != 'http'">
-            <ion-item>
-                <label for="_valueUrl">URL</label>
-                <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url"
-                    placeholder="https://www.example.com/" />
-                <br>
-                <p>
-                    The expression must return a string.<br>
-                    The request will be performed by the server once the scan is received.<br><br>
-                    Use the double curly braces syntax to inject a variables.<br><br>
-                    Example:<br>
-                    <code
-                        ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
-                    You can use the following variables (lowercase): <br>
-                    <code>
+    <div [hidden]="outputBlock.type != 'key'">
+      <ion-item [hidden]="outputBlock.editable !== true">
+        <label for="_valueCustomKey" color="dark">
+          <h2>Key identifier</h2>
+          <p>Insert one identifier present in <a class="clickable" (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">this list</a>.</p>
+        </label>
+        <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="eg. numpad_9" />
+      </ion-item>
+
+      <ion-item no-lines text-wrap>
+        <h2>Modifier keys</h2>
+        <p>Select the modifier keys that you want to be pressed along with the {{ outputBlock.name }} key</p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="dark">Alt</ion-label>
+        <ion-checkbox [(ngModel)]="modifiers[0]" (ionChange)="onModifierChange()"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="dark">Command</ion-label>
+        <ion-checkbox [(ngModel)]="modifiers[1]" (ionChange)="onModifierChange()"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="dark">Control</ion-label>
+        <ion-checkbox [(ngModel)]="modifiers[2]" (ionChange)="onModifierChange()"></ion-checkbox>
+      </ion-item>
+
+      <ion-item>
+        <ion-label color="dark">Shift</ion-label>
+        <ion-checkbox [(ngModel)]="modifiers[3]" (ionChange)="onModifierChange()"></ion-checkbox>
+      </ion-item>
+    </div>
+
+
+    <ion-item [hidden]="outputBlock.type != 'function'">
+      <!-- <ion-label color="dark">JavaScript</ion-label> -->
+      <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->
+      <label for="_valuejs">JavaScript</label>
+
+      <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="barcode.replace('a','b')" />
+
+      <br>
+      <p>
+        The expression should return a string.<br><br>
+        You can manipulate the variables with any JavaScript method that is listed:
+        <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>.<br><br>
+        You can use the following variables (lowercase):
+      </p>
+      <code>
+        <input type="text" value="barcode" disabled class="example-variable" /> <br>
+        <input type="text" value="quantity" disabled class="example-variable" /> <br>
+        <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+        <input type="text" value="device_name" disabled class="example-variable" /> <br>
+      </code>
+    </ion-item>
+
+    <ion-item [hidden]="outputBlock.type != 'text'">
+      <label for="_valueText">
+        <h2 color="dark">Text</h2>
+      </label>
+      <input id="_valueText" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Lorem ipsum" />
+    </ion-item>
+
+    <ion-item [hidden]="outputBlock.type != 'delay'">
+      <label for="_valueMs" color="dark">Milliseconds</label>
+      <input id="_valueMs" class="inline-input" type="number" [(ngModel)]="outputBlock.value" placeholder="1000" />
+      <br>
+      <p>
+        Time interval to wait in milliseconds<br><br>
+        1000 milliseconds = 1 second
+      </p>
+    </ion-item>
+
+    <div [hidden]="outputBlock.type != 'http'">
+      <ion-item>
+        <label for="_valueUrl">URL</label>
+        <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="https://www.example.com/" />
+        <br>
+        <p>
+          The expression must return a string.<br>
+          The request will be performed by the server once the scan is received.<br><br>
+          Use the double curly braces syntax to inject a variables.<br><br>
+          Example:<br>
+          <code ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
+          You can use the following variables (lowercase): <br>
+          <code>
                         <input type="text" value="barcode" disabled class="example-variable" /> <br>
                         <input type="text" value="quantity" disabled class="example-variable" /> <br>
                         <input type="text" value="timestamp" disabled class="example-variable" /> <br>
                         <input type="text" value="device_name" disabled class="example-variable" /><br>
                     </code><br>
-                </p>
-            </ion-item>
+        </p>
+      </ion-item>
 
-            <ion-item>
-                <label for="_valueMethod" color="dark">
-                    <h2 color="dark">Method</h2>
-                </label>
-                <select id="_valueMethod" [(ngModel)]="outputBlock.method">
-                    <option selected value="get">GET</option>
-                    <option value="post">POST</option>
-                </select>
-            </ion-item>
-        </div>
+      <ion-item>
+        <label for="_valueMethod" color="dark">
+          <h2 color="dark">Method</h2>
+        </label>
+        <select id="_valueMethod" [(ngModel)]="outputBlock.method">
+          <option selected value="get">GET</option>
+          <option value="post">POST</option>
+        </select>
+      </ion-item>
+    </div>
 
-        <div [hidden]="outputBlock.type != 'run'">
-            <ion-item>
-                <label for="_valueRun">Command</label>
-                <input id="_valueRun" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
-                    placeholder="C:&#92;program.exe" />
-                <br>
-                <p>
-                    The working directory is set to the user home directory.<br><br>
-                    Use the double curly braces syntax to inject a variables.<br><br>
-                    Example:<br>
-                    <code
-                        ngNonBindable>C:&#92;program.exe --tracking-number &#123;&#123; barcode &#125;&#125;</code><br><br>
-                    Example: <br>
-                    <code ngNonBindable>cmd.exe /c C:&#92;script.bat &#123;&#123; barcode &#125;&#125;</code><br><br>
-                    You can use the following variables (lowercase): <br>
-                    <code>
+    <div [hidden]="outputBlock.type != 'run'">
+      <ion-item>
+        <label for="_valueRun">Command</label>
+        <input id="_valueRun" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
+        <br>
+        <p>
+          The working directory is set to the user home directory.<br><br>
+          Use the double curly braces syntax to inject a variables.<br><br>
+          Example:<br>
+          <code ngNonBindable>C:&#92;program.exe --tracking-number &#123;&#123; barcode &#125;&#125;</code><br><br>
+          Example: <br>
+          <code ngNonBindable>cmd.exe /c C:&#92;script.bat &#123;&#123; barcode &#125;&#125;</code><br><br>
+          You can use the following variables (lowercase): <br>
+          <code>
                         <input type="text" value="barcode" disabled class="example-variable" /> <br>
                         <input type="text" value="quantity" disabled class="example-variable" /> <br>
                         <input type="text" value="timestamp" disabled class="example-variable" /> <br>
                         <input type="text" value="device_name" disabled class="example-variable" /><br>
                     </code><br>
-                </p>
-            </ion-item>
-        </div>
+        </p>
+      </ion-item>
+    </div>
 
-        <div [hidden]="outputBlock.type != 'select_option'">
-            <ion-item>
-                <label for="_valueSelectOption">Options list</label>
-                <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text"
-                    placeholder="Option 1,Option 2,Option 3" />
-                <br>
-                <p>
-                    Specify the possible options separed by the comma character<br><br>
-                    Use the double curly braces syntax to inject a variables.<br><br>
+    <div [hidden]="outputBlock.type != 'select_option'">
+      <ion-item>
+        <label for="_valueSelectOption">Options list</label>
+        <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
+        <br>
+        <p>
+          Specify the possible options separed by the comma character<br><br>
+          Use the double curly braces syntax to inject a variables.<br><br>
 
-                    Example 1: <code ngNonBindable>yes,no</code><br><br>
-                    Example 2: <code ngNonBindable>created,processing,completed</code><br><br>
-                    Example 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
+          Example 1: <code ngNonBindable>yes,no</code><br><br>
+          Example 2: <code ngNonBindable>created,processing,completed</code><br><br>
+          Example 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
 
-                    You can use the following variables (lowercase): <br>
-                    <code>
+          You can use the following variables (lowercase): <br>
+          <code>
                         <input type="text" value="barcode" disabled class="example-variable" /> <br>
                         <input type="text" value="quantity" disabled class="example-variable" /> <br>
                         <input type="text" value="timestamp" disabled class="example-variable" /> <br>
                         <input type="text" value="device_name" disabled class="example-variable" /><br>
                     </code><br>
-                </p>
-            </ion-item>
-        </div>
+        </p>
+      </ion-item>
+    </div>
 
-        <ion-item [hidden]="outputBlock.type != 'if'">
-            <label for="_valueIf" color="dark">JavaScript boolean expression</label>
+    <ion-item [hidden]="outputBlock.type != 'if'">
+      <label for="_valueIf" color="dark">JavaScript boolean expression</label>
 
-            <input id="_valueIf" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="true" />
+      <input id="_valueIf" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="true" />
 
-            <br>
-            <p>
-                The expression must return a boolean.<br><br>
+      <br>
+      <p>
+        The expression must return a boolean.<br><br>
 
-                Example 1:<br>
-                <code ngNonBindable>barcode.startsWith("1")</code><br><br>
+        Example 1:<br>
+        <code ngNonBindable>barcode.startsWith("1")</code><br><br>
 
-                Example 2:<br>
-                <code ngNonBindable>quantity == 3</code><br><br>
+        Example 2:<br>
+        <code ngNonBindable>quantity == 3</code><br><br>
 
-                You can use the following variables (lowercase):<br>
-                <code>
+        You can use the following variables (lowercase):<br>
+        <code>
                     <input type="text" value="barcode" disabled class="example-variable" /> <br>
                     <input type="text" value="quantity" disabled class="example-variable" /> <br>
                     <input type="text" value="timestamp" disabled class="example-variable" /> <br>
                     <input type="text" value="device_name" disabled class="example-variable" /> <br>
                 </code>
-            </p>
-        </ion-item>
-    </ion-list>
-
-    <ion-item [hidden]="outputBlock.type != 'endif'" no-lines>
-        Use this component to close the IF component counterpart.
+      </p>
     </ion-item>
+  </ion-list>
+
+  <ion-item [hidden]="outputBlock.type != 'endif'" no-lines>
+    Use this component to close the IF component counterpart.
+  </ion-item>
+
+  <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
+  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'run')">
+    <info-box title="Info">
+      To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.<br><br>
+      See <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialUseVariables())">this example</a>.
+    </info-box>
+  </ion-item>
 </ion-content>

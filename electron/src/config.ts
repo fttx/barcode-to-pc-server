@@ -31,6 +31,7 @@ export class Config {
   public static URL_GITHUB_CHANGELOG = 'https://raw.githubusercontent.com/fttx/barcode-to-pc-server/master/CHANGELOG.md';
 
   public static URL_TUTORIAL_KEYBOARD_EMULATION = Config.URL_WEBSITE + '/tutorial/keyboard-emulation/';
+  public static URL_TUTORIAL_USE_VARIABLES = Config.URL_WEBSITE + '/tutorial/how-to-use-the-javascript-function-component/';
 
   public static URL_PAIR = 'http://app.barcodetopc.com';
 

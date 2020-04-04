@@ -1,4 +1,6 @@
 info-box {
+    display: block;
+
     div {
         background-color: #e2f1f8;
         border: 1px solid #bdd6e0;
@@ -6,6 +8,8 @@ info-box {
         padding: 2rem;
         width: none;
         color: #31383b !important;
+        word-wrap: break-word;
+        white-space: normal;
     }
 
     h5 {
@@ -37,6 +41,4 @@ info-box {
         margin-top: .5rem;
         cursor: text !important;
     }
-
-    display: block;
 }

@@ -2,6 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
+import { Config } from '../../../../../electron/src/config';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class EditOutputBlockPage {
     public navParams: NavParams,
     public viewCtrl: ViewController,
     public ngZone: NgZone,
-    private electronProvider: ElectronProvider,
+    private electronProvider: ElectronProvider, // required from the template
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
     this.color = this.navParams.get('color');
@@ -43,5 +44,9 @@ export class EditOutputBlockPage {
 
   onCloseClick() {
     this.viewCtrl.dismiss();
+  }
+
+  getUrlTutorialUseVariables() {
+    return Config.URL_TUTORIAL_USE_VARIABLES;
   }
 }
