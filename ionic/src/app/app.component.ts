@@ -47,7 +47,7 @@ export class MyApp {
       electronProvider.sendReadyToMainProcess();
 
       // The publishing can happen by a drag-n-drop or a double click of a .btpt file
-      this.events.subscribe('import_btpt', (path) => {
+      this.events.subscribe('import_btpt', (filePath) => {
         // Prevent importing files when the SettingsPage is active
         if (this.app.getActiveNav().getActive().component == SettingsPage) {
           this.alertCtrl.create({
@@ -60,13 +60,14 @@ export class MyApp {
 
         // Read the file content
         const fs = this.electronProvider.remote.require('fs');
+        const path = this.electronProvider.remote.require('path');
         let outputTemplate;
         try {
-          outputTemplate = JSON.parse(fs.readFileSync(path, 'utf-8'));
+          outputTemplate = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         } catch {
           this.alertCtrl.create({
-            title: 'Cannot import the file',
-            message: "The " + path + " file is corrupted or the server doesn't have the read permissions.",
+            title: 'Cannot open the file',
+            message: "The <b>" + path.basename(filePath) + "</b> file is corrupted or the server doesn't have the read permissions.",
             buttons: [{ text: 'Ok', role: 'cancel', }]
           }).present();
           return;
