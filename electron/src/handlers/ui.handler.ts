@@ -61,7 +61,11 @@ export class UiHandler implements Handler {
                 // On Windows, instead, the wasOpenedAsHidden parameter is not
                 // present so we must check the settings
                 if (UiHandler.FirstInstanceLaunch && this.settingsHandler.openAutomatically == 'minimized') {
-                    this.minimize();
+                    if (this.settingsHandler.enableTray) {
+                        this.mainWindow.minimize();
+                    } else {
+                        this.mainWindow.hide();
+                    }
                 }
                 UiHandler.FirstInstanceLaunch = false;
             }
@@ -256,7 +260,10 @@ export class UiHandler implements Handler {
 
             if (this.settingsHandler.enableTray) {
                 event.preventDefault();
-                this.minimize();
+                this.mainWindow.hide();
+                if (app.dock != null) {
+                    app.dock.hide();
+                }
                 event.returnValue = false
                 return false;
             }
@@ -317,12 +324,5 @@ export class UiHandler implements Handler {
 
     setIpcClient(ipcClient) {
         this.ipcClient = ipcClient;
-    }
-
-    minimize() {
-        this.mainWindow.hide();
-        if (app.dock != null && this.settingsHandler.enableTray) {
-            app.dock.hide();
-        }
     }
 }
