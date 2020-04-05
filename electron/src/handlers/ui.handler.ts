@@ -49,16 +49,8 @@ export class UiHandler implements Handler {
         this.settingsHandler = settingsHandler;
         settingsHandler.onSettingsChanged.subscribe((settings) => {
             this.updateTray();
-        });
-
-        app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
-            this.createWindow();
 
             // Start minimized option
-            //
-            // We use the 'ready' event because we need to make sure that the
-            // settings are loaded and that at the sametime the window has been
-            // created
             if (process.platform !== 'darwin') {
                 // wasOpenedAsHidden is generated when the app is started on
                 // macOS only, and it minimizes the app natively.
@@ -70,6 +62,11 @@ export class UiHandler implements Handler {
                 }
             }
         });
+
+        app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
+            this.createWindow();
+        });
+
         app.on('window-all-closed', () => {  // Quit when all windows are closed.
             // if (process.platform !== 'darwin') { // On OS X it is common for applications and their menu bar to stay active until the user quits explicitly with Cmd + Q, but since Barcode to PC needs the browser windows to perform operation on the localStorage this is not allowed
             app.quit()
