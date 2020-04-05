@@ -321,7 +321,7 @@ export class UiHandler implements Handler {
 
     minimize() {
         this.mainWindow.hide();
-        if (app.dock != null) {
+        if (app.dock != null && this.settingsHandler.enableTray) {
             app.dock.hide();
         }
     }
