@@ -10,7 +10,13 @@ import { SettingsHandler } from './settings.handler';
 
 export class UiHandler implements Handler {
     public tray: Tray = null;
-    public mainWindow: BrowserWindow; // Keep a global reference of the window object, if you don't, the window will be closed automatically when the JavaScript object is garbage collected.
+    // Keep a global reference of the window object, if you don't, the window
+    // will be closed automatically when the JavaScript object is garbage
+    // collected.
+    public mainWindow: BrowserWindow;
+    // Used to hold the server settings, shared between the main and renderer
+    // process.
+    // Warning: wait for the onSettingsChanged event before reading values!
     private settingsHandler: SettingsHandler;
     private ipcClient;
     /**
@@ -43,6 +49,18 @@ export class UiHandler implements Handler {
         this.settingsHandler = settingsHandler;
         settingsHandler.onSettingsChanged.subscribe((settings) => {
             this.updateTray();
+
+            // Start minimized option
+            if (process.platform !== 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin) {
+                // wasOpenedAsHidden is generated when the app is started on
+                // macOS only, and it minimizes the app natively.
+                //
+                // On Windows, instead, the wasOpenedAsHidden parameter is not
+                // present so we must check the settings
+                if (this.settingsHandler.openAutomatically == 'minimized') {
+                    this.minimize();
+                }
+            }
         });
 
         app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
@@ -280,17 +298,6 @@ export class UiHandler implements Handler {
                 selectionMenu.popup({ window: this.mainWindow });
             }
         })
-
-        if (process.platform !== 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin) {
-            // wasOpenedAsHidden is generated when the app is started on
-            // macOS only, and it minimizes the app natively.
-            //
-            // On Windows, instead, the wasOpenedAsHidden parameter is not
-            // present so we must check the settings
-            if (this.settingsHandler.openAutomatically == 'minimized') {
-                this.minimize();
-            }
-        }
     }
 
     onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
