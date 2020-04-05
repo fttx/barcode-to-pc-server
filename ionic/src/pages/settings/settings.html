@@ -65,8 +65,7 @@
       <ion-item no-lines>
         <ion-label>
           Enable keyboard emulation
-          <button ion-button small color="light" popper="Enable this option to automatically type the barcodes"
-            class="help-button">
+          <button ion-button small color="light" popper="Enable this option to automatically type the barcodes" class="help-button">
             ?
           </button>
         </ion-label>
@@ -96,8 +95,7 @@
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
           <span>Available components</span>
-          <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content"
-            class="help-button">
+          <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content" class="help-button">
             ?
           </button>
         </div>
@@ -114,8 +112,7 @@
           to apply a custom function like a character replacement<br> or transform the barcode to uppercase, you can
           use
           the <b>CUSTOM FUNCTION</b> component with the following syntax:<br> <i>barcode.replace('a', 'b')</i>. The
-          full list of the avaialable function is <a
-            (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
+          full list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
         </popper-content>
         <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
@@ -125,8 +122,7 @@
           <div>or</div>
           <button ion-button color="secondary" (click)="onSubscribeClick()">Upgrade</button>
         </div>
-        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group"
-          [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
+        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
           <output-block-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock">
           </output-block-component>
         </div>
@@ -135,15 +131,12 @@
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
           <span>Output template</span>
-          <button ion-button small color="light" popperPlacement="right-start"
-            popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button."
-            class="help-button">
+          <button ion-button small color="light" popperPlacement="right-start" popper="It's the template that will be used to type barcodes with the emulated keyboard. You can rearrange the elements<br> by dragging them. To remove an element drag it outside by keeping pressed your mouse button." class="help-button">
             ?
           </button>
         </div>
 
-        <ion-item no-lines no-padding class="container-select-output-template"
-          [hidden]="!(settings && settings.enableAdvancedSettings)">
+        <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
           Selected Output template:
 
           <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
@@ -161,32 +154,25 @@
             Export
           </button>
 
-          <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1"
-            (click)="onDeleteOutputTemplateClick()">
+          <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()">
             <ion-icon name="trash"></ion-icon>
             Delete
           </button>
 
-          <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template"
-            (click)="onNewOutputTemplateClick()">
+          <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
             <ion-icon name="add"></ion-icon>
             New Output template
           </button>
 
-          <button ion-button small icon-start color="light" float-right class="btn-new-output-template"
-          (click)="onImportOutputTemplateClick()">
+          <button ion-button small icon-start color="light" float-right class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
             <ion-icon name="ios-download"></ion-icon>
             Import
           </button>
 
         </ion-item>
 
-        <div id="right" dragula="dragula-group"
-          [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks'
-          class="output-blocks-container">
-          <output-block-component
-            *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks"
-            [outputBlock]="outputBlock"></output-block-component>
+        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container">
+          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-block-component>
         </div>
       </ion-item>
 
@@ -203,8 +189,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text"
-                placeholder="Select the file path" />
+              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text" placeholder="Select the file path" />
             </ion-col>
             <ion-col>
               <button ion-button small color="light" (click)="onSelectCSVPathClick()">Select</button>
@@ -241,8 +226,7 @@
 
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <label for="csvDelimiter">Delimiter</label>
-        <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter"
-          id="csvDelimiter" type="text" placeholder="Eg. ," />
+        <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter" id="csvDelimiter" type="text" placeholder="Eg. ," />
       </ion-item>
 
       <!-- <ion-item no-lines>

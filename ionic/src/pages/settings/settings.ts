@@ -321,7 +321,7 @@ export class SettingsPage {
   }
 
   settingsChanged() {
-    return this.lastSavedSettings != JSON.stringify(this.settings) || this.lastSavedOpenAutomatically != this.openAutomatically;
+    return this.lastSavedOpenAutomatically != this.openAutomatically || this.lastSavedSettings != JSON.stringify(this.settings);
   }
 
   goBack() {
