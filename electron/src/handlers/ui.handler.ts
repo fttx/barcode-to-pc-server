@@ -28,6 +28,9 @@ export class UiHandler implements Handler {
      */
     public quitImmediately = false;
 
+    // Used to trigger the automatic window minimization only on the first launch
+    static FirstInstanceLaunch = true;
+
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
         if (!app.requestSingleInstanceLock()) {
@@ -57,8 +60,9 @@ export class UiHandler implements Handler {
                 //
                 // On Windows, instead, the wasOpenedAsHidden parameter is not
                 // present so we must check the settings
-                if (this.settingsHandler.openAutomatically == 'minimized') {
+                if (UiHandler.FirstInstanceLaunch && this.settingsHandler.openAutomatically == 'minimized') {
                     this.minimize();
+                    UiHandler.FirstInstanceLaunch = false;
                 }
             }
         });
