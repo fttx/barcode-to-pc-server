@@ -5,8 +5,6 @@ branches:
   - /^v[0-9]+.[0-9]+.[0-9]+$/
 skip_non_tags: true
 clone_depth: 1
-build_cloud: DESKTOP-AE9USQ2
-image: Windows
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
@@ -14,6 +12,7 @@ environment:
     secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
   CERTIFICATE_DOWNLOAD:
     secure: 1uWToJLKf6uUn0/fsVHbrc3lRWTNOmtHhBTGUj/INODqPtCb0s1TJICTpUiwpzWRL27o6pvHUKP9VwlYx1wy3A==
+build_cloud: DESKTOP-AE9USQ2
 image: Visual Studio 2015
 # init:
 #  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
