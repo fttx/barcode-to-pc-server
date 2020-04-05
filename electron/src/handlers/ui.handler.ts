@@ -233,10 +233,7 @@ export class UiHandler implements Handler {
 
             if (this.settingsHandler.enableTray) {
                 event.preventDefault();
-                this.mainWindow.hide();
-                if (app.dock != null) {
-                    app.dock.hide();
-                }
+                this.minimize();
                 event.returnValue = false
                 return false;
             }
@@ -284,20 +281,14 @@ export class UiHandler implements Handler {
             }
         })
 
-        let loginItemSettings = app.getLoginItemSettings();
-
-        if (loginItemSettings.wasOpenedAtLogin) {
-            if (process.platform === 'darwin') {
-                // wasOpenedAsHidden is generated when the app is started
-                if (loginItemSettings.wasOpenedAsHidden) {
-                    this.mainWindow.emit('close')
-                }
-            } else {
-                // wasOpenedAsHidden parameter is present only on macOS, so we
-                // must check the settings to understand what to do
-                if (this.settingsHandler.openAutomatically == 'minimized') {
-                    this.mainWindow.emit('close')
-                }
+        if (process.platform !== 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin) {
+            // wasOpenedAsHidden is generated when the app is started on
+            // macOS only, and it minimizes the app natively.
+            //
+            // On Windows, instead, the wasOpenedAsHidden parameter is not
+            // present so we must check the settings
+            if (this.settingsHandler.openAutomatically == 'minimized') {
+                this.minimize();
             }
         }
     }
@@ -314,5 +305,12 @@ export class UiHandler implements Handler {
 
     setIpcClient(ipcClient) {
         this.ipcClient = ipcClient;
+    }
+
+    minimize() {
+        this.mainWindow.hide();
+        if (app.dock != null) {
+            app.dock.hide();
+        }
     }
 }
