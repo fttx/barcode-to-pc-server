@@ -49,10 +49,8 @@ export class UiHandler implements Handler {
             this.bringWindowUp();
         })
 
-        this.settingsHandler = settingsHandler;
-        settingsHandler.onSettingsChanged.subscribe((settings) => {
-            this.updateTray();
-
+        // onLaunch waits for the settings to be read and the 'ready' event to be sent
+        let onLaunch = () => {
             // Start minimized option
             if (process.platform !== 'darwin') {
                 // wasOpenedAsHidden is generated when the app is started on
@@ -69,10 +67,21 @@ export class UiHandler implements Handler {
                 }
                 UiHandler.FirstInstanceLaunch = false;
             }
+        }
+
+        let canTriggerLaunchCounter = 0;
+        this.settingsHandler = settingsHandler;
+
+        settingsHandler.onSettingsChanged.subscribe((settings) => {
+            this.updateTray();
+            canTriggerLaunchCounter++;
+            if (canTriggerLaunchCounter == 2) onLaunch()
         });
 
         app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
             this.createWindow();
+            canTriggerLaunchCounter++;
+            if (canTriggerLaunchCounter == 2) onLaunch()
         });
 
         app.on('window-all-closed', () => {  // Quit when all windows are closed.
