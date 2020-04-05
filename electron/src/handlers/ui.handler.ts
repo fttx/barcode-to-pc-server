@@ -62,8 +62,8 @@ export class UiHandler implements Handler {
                 // present so we must check the settings
                 if (UiHandler.FirstInstanceLaunch && this.settingsHandler.openAutomatically == 'minimized') {
                     this.minimize();
-                    UiHandler.FirstInstanceLaunch = false;
                 }
+                UiHandler.FirstInstanceLaunch = false;
             }
         });
 
