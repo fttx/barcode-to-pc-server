@@ -153,11 +153,6 @@ export class UiHandler implements Handler {
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
         }
 
-        let loginItemSettings = app.getLoginItemSettings();
-        if (loginItemSettings.wasOpenedAsHidden && loginItemSettings.wasOpenedAtLogin) {
-            this.mainWindow.emit('close')
-        }
-
         if (process.platform === 'darwin') {
             let template: MenuItemConstructorOptions[] = [
                 {
@@ -288,6 +283,11 @@ export class UiHandler implements Handler {
                 selectionMenu.popup({ window: this.mainWindow });
             }
         })
+
+        let loginItemSettings = app.getLoginItemSettings();
+        if (loginItemSettings.wasOpenedAsHidden && loginItemSettings.wasOpenedAtLogin) {
+            this.mainWindow.emit('close')
+        }
     }
 
     onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
