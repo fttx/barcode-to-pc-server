@@ -64,6 +64,9 @@ export class SettingsHandler implements Handler {
     get enableTray(): boolean {
         return this.settings.enableTray
     }
+    get openAutomatically(): ('yes' | 'no' | 'minimized') {
+        return this.settings.openAutomatically
+    }
     get csvPath(): string {
         return this.settings.csvPath
     }

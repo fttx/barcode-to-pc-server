@@ -285,8 +285,20 @@ export class UiHandler implements Handler {
         })
 
         let loginItemSettings = app.getLoginItemSettings();
-        if (loginItemSettings.wasOpenedAsHidden && loginItemSettings.wasOpenedAtLogin) {
-            this.mainWindow.emit('close')
+
+        if (loginItemSettings.wasOpenedAtLogin) {
+            if (process.platform === 'darwin') {
+                // wasOpenedAsHidden is generated when the app is started
+                if (loginItemSettings.wasOpenedAsHidden) {
+                    this.mainWindow.emit('close')
+                }
+            } else {
+                // wasOpenedAsHidden parameter is present only on macOS, so we
+                // must check the settings to understand what to do
+                if (this.settingsHandler.openAutomatically == 'minimized') {
+                    this.mainWindow.emit('close')
+                }
+            }
         }
     }
 

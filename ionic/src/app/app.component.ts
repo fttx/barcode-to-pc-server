@@ -183,6 +183,21 @@ export class MyApp {
           settings.exportOnlyText = true;
         }
 
+        // v3.7.0 upgrade
+        if (typeof settings.openAutomatically == 'undefined') {
+          let openAtLogin = this.electronProvider.app.getLoginItemSettings().openAtLogin;
+          let openAsHidden = this.electronProvider.app.getLoginItemSettings().openAsHidden;
+          if (openAtLogin) {
+            if (openAsHidden) {
+              settings.openAutomatically = 'minimized';
+            } else {
+              settings.openAutomatically = 'yes';
+            }
+          } else {
+            settings.openAutomatically = 'no';
+          }
+        }
+
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;

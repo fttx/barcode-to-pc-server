@@ -42,7 +42,7 @@
               <i>{{ getAppName() }}</i> automatically after you log into the computer&nbsp;
             </ion-col>
             <ion-col>
-              <select [(ngModel)]="openAutomatically">
+              <select [(ngModel)]="settings && settings.openAutomatically">
                 <option value="no">No</option>
                 <option selected value="yes">Yes</option>
                 <option value="minimized">Minimized</option>

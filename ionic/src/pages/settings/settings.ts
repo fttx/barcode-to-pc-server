@@ -26,10 +26,8 @@ export class SettingsPage {
   public unsavedSettingsAlert: Alert;
   public settings: SettingsModel = new SettingsModel();
   public availableOutputBlocks: OutputBlockModel[] = this.getAvailableOutputBlocks();
-  public openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
 
   private lastSavedSettings: string;
-  private lastSavedOpenAutomatically;
   private store: ElectronStore;
 
   public selectedOutputProfile = 0;
@@ -141,22 +139,7 @@ export class SettingsPage {
 
   ionViewDidLoad() {
     this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-
-    if (this.electronProvider.isElectron()) {
-      let openAtLogin = this.electronProvider.app.getLoginItemSettings().openAtLogin;
-      let openAsHidden = this.electronProvider.app.getLoginItemSettings().openAsHidden;
-
-      if (openAsHidden) {
-        this.openAutomatically = 'minimized';
-      } else if (openAtLogin) {
-        this.openAutomatically = 'yes';
-      } else {
-        this.openAutomatically = 'no';
-      }
-    }
     this.lastSavedSettings = JSON.stringify(this.settings);
-    this.lastSavedOpenAutomatically = this.openAutomatically;
-
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.goBack();
     }
@@ -170,7 +153,6 @@ export class SettingsPage {
 
   onRestoreDefaultSettingsClick() {
     this.settings = new SettingsModel();
-    this.openAutomatically = 'no'
     this.apply();
   }
 
@@ -193,12 +175,11 @@ export class SettingsPage {
     this.store.set(Config.STORAGE_SETTINGS, this.settings);
     if (this.electronProvider.isElectron()) {
       this.electronProvider.app.setLoginItemSettings({
-        openAtLogin: (this.openAutomatically == 'yes' || this.openAutomatically == 'minimized'),
-        openAsHidden: this.openAutomatically == 'minimized'
+        openAtLogin: (this.settings.openAutomatically == 'yes' || this.settings.openAutomatically == 'minimized'),
+        openAsHidden: this.settings.openAutomatically == 'minimized'
       })
     }
     this.lastSavedSettings = JSON.stringify(this.settings);
-    this.lastSavedOpenAutomatically = this.openAutomatically;
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.send('settings');
     }
@@ -321,7 +302,7 @@ export class SettingsPage {
   }
 
   settingsChanged() {
-    return this.lastSavedOpenAutomatically != this.openAutomatically || this.lastSavedSettings != JSON.stringify(this.settings);
+    return this.lastSavedSettings != JSON.stringify(this.settings);
   }
 
   goBack() {
