@@ -5,6 +5,8 @@ branches:
   - /^v[0-9]+.[0-9]+.[0-9]+$/
 skip_non_tags: true
 clone_depth: 1
+build_cloud: DESKTOP-AE9USQ2
+image: Windows
 environment:
   nodejs_version: "8"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
