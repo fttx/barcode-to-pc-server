@@ -59,7 +59,7 @@ export class UiHandler implements Handler {
             // We use the 'ready' event because we need to make sure that the
             // settings are loaded and that at the sametime the window has been
             // created
-            if (process.platform !== 'darwin' && app.getLoginItemSettings().wasOpenedAtLogin) {
+            if (process.platform !== 'darwin') {
                 // wasOpenedAsHidden is generated when the app is started on
                 // macOS only, and it minimizes the app natively.
                 //
