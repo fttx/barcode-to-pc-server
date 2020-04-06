@@ -288,6 +288,10 @@ export class LicenseProvider {
    * has been exceeded
    */
   limitMonthlyScans(noNewScans = 1) {
+    if (this.activePlan == LicenseProvider.PLAN_UNLIMITED) {
+      return;
+    }
+
     let count = this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
     count += noNewScans;
     this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
