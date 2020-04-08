@@ -29,7 +29,7 @@ export class UiHandler implements Handler {
     public quitImmediately = false;
 
     // Used to trigger the automatic window minimization only on the first launch
-    static FirstInstanceLaunch = true;
+    static IsFirstInstanceLaunch = true;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler, ) {
@@ -49,39 +49,19 @@ export class UiHandler implements Handler {
             this.bringWindowUp();
         })
 
-        // onLaunch waits for the settings to be read and the 'ready' event to be sent
-        let onLaunch = () => {
-            // Start minimized option
-            if (process.platform !== 'darwin') {
-                // wasOpenedAsHidden is generated when the app is started on
-                // macOS only, and it minimizes the app natively.
-                //
-                // On Windows, instead, the wasOpenedAsHidden parameter is not
-                // present so we must check the settings
-                if (UiHandler.FirstInstanceLaunch && this.settingsHandler.openAutomatically == 'minimized') {
-                    if (this.settingsHandler.enableTray) {
-                        this.mainWindow.hide();
-                    } else {
-                        this.mainWindow.minimize();
-                    }
-                }
-                UiHandler.FirstInstanceLaunch = false;
-            }
-        }
-
-        let canTriggerLaunchCounter = 0;
+        let canTriggerSettingsReadyCounter = 0;
         this.settingsHandler = settingsHandler;
 
         settingsHandler.onSettingsChanged.subscribe((settings) => {
             this.updateTray();
-            canTriggerLaunchCounter++;
-            if (canTriggerLaunchCounter == 2) onLaunch()
+            canTriggerSettingsReadyCounter++;
+            if (canTriggerSettingsReadyCounter == 2) this.onSettingsReady()
         });
 
         app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
             this.createWindow();
-            canTriggerLaunchCounter++;
-            if (canTriggerLaunchCounter == 2) onLaunch()
+            canTriggerSettingsReadyCounter++;
+            if (canTriggerSettingsReadyCounter == 2) this.onSettingsReady()
         });
 
         app.on('window-all-closed', () => {  // Quit when all windows are closed.
@@ -102,6 +82,11 @@ export class UiHandler implements Handler {
                 credits: Config.AUTHOR,
             });
         }
+    }
+
+    // Waits for the settings to be read and the 'ready' event to be sent
+    public onSettingsReady() {
+        this.autoMinimize();
     }
 
     static getInstance(settingsHandler: SettingsHandler) {
@@ -163,6 +148,31 @@ export class UiHandler implements Handler {
                 app.dock.show();
             }
         }
+    }
+
+    private autoMinimize() {
+        if (!UiHandler.IsFirstInstanceLaunch) {
+            return;
+        }
+
+        // macOS sets the wasOpenedAsHidden parameter based on the system settings
+        if (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden && this.settingsHandler.enableTray) {
+            this.mainWindow.hide(); // corresponds to CMD+H, minimize() corresponds to clicking the yellow reduce to icon button
+            if (app.dock != null) {
+                app.dock.hide();
+            }
+        }
+
+        // Windows and Linux do not have any minimization system settings, so
+        // we have to read it from our settings
+        if (process.platform !== 'darwin' && this.settingsHandler.openAutomatically == 'minimized') {
+            if (this.settingsHandler.enableTray) {
+                this.mainWindow.hide(); // removes the app from the taskbar
+            } else {
+                this.mainWindow.minimize(); // corresponds to clicking the reduce to icon button
+            }
+        }
+        UiHandler.IsFirstInstanceLaunch = false;
     }
 
     private createWindow() {
