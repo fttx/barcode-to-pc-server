@@ -6,7 +6,7 @@
     "app",
     "remote"
   ],
-  "version": "3.6.1",
+  "version": "3.7.0",
   "license": "MIT",
   "author": {
     "name": "Filippo Tortomasi",
@@ -38,7 +38,9 @@
     "appId": "com.barcodetopc.server",
     "fileAssociations": [
       {
-        "ext": ["btpt"],
+        "ext": [
+          "btpt"
+        ],
         "name": "Barcode to PC Output Template",
         "description": "Barcode to PC Output Template",
         "role": "Editor"
