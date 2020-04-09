@@ -81,6 +81,7 @@ export class MyApp {
             handler: () => {
               let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
               // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
+              settings.enableAdvancedSettings = true;
               settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
               this.store.set(Config.STORAGE_SETTINGS, settings);
               if (this.electronProvider.isElectron()) {
