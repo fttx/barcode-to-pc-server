@@ -31,16 +31,14 @@
 
     <ion-item text-wrap>
       <ion-thumbnail item-start>
-        <ion-icon [hidden]="updateStatus == 'checkingForUpdate'" style="font-size: 2em; margin: 22px 10px 0 38px;" small
-          [name]="getUpdateIcon()"></ion-icon>
+        <ion-icon [hidden]="updateStatus == 'checkingForUpdate'" style="font-size: 2em; margin: 22px 10px 0 38px;" small [name]="getUpdateIcon()"></ion-icon>
         <ion-spinner [hidden]="updateStatus != 'checkingForUpdate'" style="font-size: 2em; margin: 22px 10px 0 38px;">
         </ion-spinner>
       </ion-thumbnail>
       <h2>{{ getUpdateStatus() }}</h2>
       <p>Version: {{ getVersion() }}</p>
       <p>Last checked: {{ getLastUpdateCheck() }}</p>
-      <button ion-button color="secondary" item-end (click)="onUpdateClick()"
-        [disabled]="updateStatus == 'checkingForUpdate'">{{ getUpdateButtonText() }}</button>
+      <button ion-button color="secondary" item-end (click)="onUpdateClick()" [disabled]="updateStatus == 'checkingForUpdate'">{{ getUpdateButtonText() }}</button>
     </ion-item>
 
     <ion-item text-wrap>
@@ -48,13 +46,12 @@
       <ion-label>
         <h2>Enable automatic updates</h2>
         <p>
-          ⚠️Warning: If you disable automatic updates for the server you also must make sure that the version of the app
-          is still supported from the server. If the app version doesn't match the server's one you may encounter
-          incompatibility issues.
+          ⚠️Warning: Disabling automatic updates you may encounter incompatibility issues.
+          Make you sure that at least the first number matches the one of the app.
+          Eg. v<b>3</b>.0.0 is compatible with v<b>3</b>.2.0, but not with v<b>2</b>.0.0.
         </p>
       </ion-label>
-      <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate"
-        color="secondary"></ion-toggle>
+      <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate" color="secondary"></ion-toggle>
     </ion-item>
 
     <ion-item>
@@ -66,7 +63,7 @@
           Do it only if you know what your doing.
         </p>
       </ion-label>
-      <button ion-button color="secondary" item-end  (click)="utils.upgradeDisplayValue(true)">Rebuild</button>
+      <button ion-button color="secondary" item-end (click)="utils.upgradeDisplayValue(true)">Rebuild</button>
     </ion-item>
 
     <ion-item>
