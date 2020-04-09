@@ -16,6 +16,17 @@
 ### Security
 -->
 
+
+## [v3.7.0] - 2020-04-09
+
+### Added
+
+- Option to import and export Output templates
+
+### Fixed
+
+- Open the server "Minimized" option
+
 ## [v3.6.1] - 2020-02-01
 
 ### Fixed
