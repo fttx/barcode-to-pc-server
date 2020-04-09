@@ -50,10 +50,11 @@
 
 
     <div [hidden]="outputBlock.type != 'key'">
+      <!-- CUSTOM KEY Only -->
       <ion-item [hidden]="outputBlock.editable !== true">
         <label for="_valueCustomKey" color="dark">
           <h2>Key identifier</h2>
-          <p>Insert one identifier present in <a class="clickable" (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">this list</a>.</p>
+          <p>Insert one identifier present in <a class="clickable" (click)="electronProvider.shell.openExternal('https://barcodetopc.com/supported-key-identifiers/')">this list</a>.</p>
         </label>
         <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="eg. numpad_9" />
       </ion-item>

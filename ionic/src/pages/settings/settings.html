@@ -100,19 +100,12 @@
           </button>
         </div>
         <popper-content #popper1Content>
-          To edit the emulated keyboard output drag &amp; drop one element from the <br><b>Available components</b> box
-          to
-          the
-          <b>Output template</b> box by keeping pressed your mouse button.
-          <br> If the key that you're looking for isn't present you can use the <b>OTHER KEY</b> component,<br>the full
-          list
-          is avaialable
-          <a (click)="electronProvider.shell.openExternal('http://robotjs.io/docs/syntax#keyboard')">here</a>. If you
-          want
-          to apply a custom function like a character replacement<br> or transform the barcode to uppercase, you can
-          use
-          the <b>CUSTOM FUNCTION</b> component with the following syntax:<br> <i>barcode.replace('a', 'b')</i>. The
-          full list of the avaialable function is <a (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>
+          To edit the emulated keyboard output drag &amp; drop one element from the <br>
+          <b>Available components</b> field to the <b>Output template</b> box by <br>
+          keeping pressed your mouse button.<br>
+          If the key that you're looking for isn't present you can use the <b>CUSTOM KEY</b> component.<br>
+          If you want to apply a custom function like a character replacement or transform the barcode<br>
+          to uppercase, you can use the <b>JAVASCRIPT FUNCTION</b>
         </popper-content>
         <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
