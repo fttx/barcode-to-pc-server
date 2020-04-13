@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray } from 'electron';
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray, systemPreferences } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
 import * as _path from 'path';
@@ -82,6 +82,7 @@ export class UiHandler implements Handler {
                 credits: Config.AUTHOR,
             });
         }
+        systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => { this.updateTray(true); })
     }
 
     // Waits for the settings to be read and the 'ready' event to be sent
@@ -96,8 +97,29 @@ export class UiHandler implements Handler {
         return UiHandler.instance;
     }
 
-    private updateTray() {
+    private setMacOSTray() {
+        let black = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/icon.png'));
+        let white = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconHighlight.png'));
+        if (systemPreferences.isDarkMode()) {
+            if (this.tray == null) {
+                this.tray = new Tray(white);
+            } else {
+                this.tray.setImage(white);
+            }
+            this.tray.setPressedImage(white);
+        } else {
+            if (this.tray == null) {
+                this.tray = new Tray(black);
+            } else {
+                this.tray.setImage(black);
+            }
+            this.tray.setPressedImage(white);
+        }
+    }
+
+    private updateTray(forceMacOSUpdate = false) {
         if (this.settingsHandler.enableTray) {
+            if (forceMacOSUpdate) this.setMacOSTray();
             if (this.tray == null) {
                 let menuItems: MenuItemConstructorOptions[] = [
                     // { label: 'Enable realtime ', type: 'radio', checked: false },
@@ -109,9 +131,7 @@ export class UiHandler implements Handler {
                     },
                 ];
                 if (process.platform == 'darwin') {
-                    // console.log(_path.join(__dirname, '/../assets/tray/macos/iconTemplate.png'))
-                    this.tray = new Tray(nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconTemplate.png')));
-                    this.tray.setPressedImage(nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconHighlight.png')));
+                    this.setMacOSTray();
                     menuItems.unshift({ label: 'Hide', role: 'hide' });
                     menuItems.unshift({
                         label: 'Show', click: () => {
