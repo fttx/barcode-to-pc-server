@@ -154,7 +154,7 @@ export class SettingsPage {
   onRestoreDefaultSettingsClick() {
     this.alertCtrl.create({
       title: 'Are you sure?', message: 'Do you really want to restore the default settings? This cannot be undone', buttons: [{ text: 'Cancel', role: 'cancel' }, {
-        text: 'Reset', handler: (opts) => {
+        text: 'Restore', handler: (opts) => {
           this.settings = new SettingsModel();
           this.apply();
         }
