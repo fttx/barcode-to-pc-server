@@ -7,7 +7,7 @@ node_js:
   - 8
 os:
   - osx
-osx_image: xcode9.1
+osx_image: xcode11.3
 before_install:
   # - brew update
   - npm i -g npm@6.4.1
