@@ -26,6 +26,7 @@
 ### Fixed
 
 - Open the server "Minimized" option
+- Issue with Manual Input that ignores the Enter key from OTG devices
 
 ## [v3.6.1] - 2020-02-01
 
