@@ -204,9 +204,6 @@ export class UiHandler implements Handler {
             })
             this.mainWindow.loadURL('http://localhost:8200/');
             this.mainWindow.webContents.openDevTools();
-            const log = require("electron-log")
-            log.transports.file.level = "info"
-            autoUpdater.logger = log
         } else if (Config.IS_TEST_MODE) {
             console.log('test mode on')
             this.mainWindow.webContents.on('did-fail-load', () => {
@@ -229,7 +226,7 @@ export class UiHandler implements Handler {
                         { role: 'services', submenu: [] },
                         { type: 'separator' },
                         { role: 'hide' },
-                        { role: 'hideothers' },
+                        { role: 'hideOthers' },
                         { role: 'unhide' },
                         { type: 'separator' },
                         {
@@ -260,9 +257,9 @@ export class UiHandler implements Handler {
                 {
                     label: 'View',
                     submenu: [
-                        { role: 'resetzoom' },
-                        { role: 'zoomin' },
-                        { role: 'zoomout' },
+                        { role: 'resetZoom' },
+                        { role: 'zoomIn' },
+                        { role: 'zoomOut' },
                         { type: 'separator' },
                         { role: 'togglefullscreen' }
                     ]
@@ -330,7 +327,7 @@ export class UiHandler implements Handler {
         const selectionMenu = Menu.buildFromTemplate([
             { role: 'copy' },
             { type: 'separator' },
-            { role: 'selectall' },
+            { role: 'selectAll' },
         ]);
 
         const inputMenu = Menu.buildFromTemplate([
@@ -338,7 +335,7 @@ export class UiHandler implements Handler {
             { role: 'copy' },
             { role: 'paste' },
             { type: 'separator' },
-            { role: 'selectall' },
+            { role: 'selectAll' },
         ])
 
         this.mainWindow.webContents.on('context-menu', (e, props) => {

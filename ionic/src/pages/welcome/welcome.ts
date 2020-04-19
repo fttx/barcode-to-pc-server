@@ -2,11 +2,11 @@ import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
-import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { HomePage } from '../home/home';
+import { Config } from '../../config';
 
 /**
  * Generated class for the WelcomePage page.
@@ -32,9 +32,9 @@ export class WelcomePage {
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.once(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
-          ngZone.run(() => {
-            this.navCtrl.setRoot(HomePage);
-          })
+        ngZone.run(() => {
+          this.navCtrl.setRoot(HomePage);
+        })
       });
     }
     this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);

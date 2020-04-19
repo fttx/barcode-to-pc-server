@@ -2,12 +2,12 @@ import { Component, HostListener, ViewChild, NgZone } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertController, Navbar, NavController, NavParams, AlertButton, Events } from 'ionic-angular';
 import { DragulaService } from "ng2-dragula";
-import { Config } from '../../../../electron/src/config';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
+import { Config } from '../../config';
 
 /**
  * Generated class for the SettingsPage page.
@@ -246,16 +246,16 @@ export class SettingsPage {
     let outputProfile = this.settings.outputProfiles[this.selectedOutputProfile];
     outputProfile.version = this.electronProvider.app.getVersion()
 
-    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
-      title: "Select the location",
-      defaultPath: outputProfile.name + '.btpt',
-      buttonLabel: "Save",
-      filters: [{ name: 'Barcode to PC Output Template', extensions: ['btpt',] }],
-    }, (filename, bookmark) => {
-      if (!filename) return;
-      const fs = this.electronProvider.remote.require('fs');
-      fs.writeFileSync(filename, JSON.stringify(outputProfile), 'utf-8');
-    });
+    // this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+    //   title: "Select the location",
+    //   defaultPath: outputProfile.name + '.btpt',
+    //   buttonLabel: "Save",
+    //   filters: [{ name: 'Barcode to PC Output Template', extensions: ['btpt',] }],
+    // }, (filename, bookmark) => {
+    //   if (!filename) return;
+    //   const fs = this.electronProvider.remote.require('fs');
+    //   fs.writeFileSync(filename, JSON.stringify(outputProfile), 'utf-8');
+    // });
   }
 
   onImportOutputTemplateClick() {
@@ -352,9 +352,9 @@ export class SettingsPage {
       properties: ['openFile', 'createDirectory', 'promptToCreate',]
     });
 
-    if (filePaths && filePaths.length) {
-      this.settings.csvPath = filePaths[0];
-    }
+    // if (filePaths && filePaths.length) {
+    //   this.settings.csvPath = filePaths[0];
+    // }
   }
 
   @HostListener('window:keyup', ['$event'])

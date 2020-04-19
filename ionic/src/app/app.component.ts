@@ -6,7 +6,6 @@ import ElectronStore from 'electron-store';
 import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { gt, SemVer } from 'semver';
-import { Config } from '../../../electron/src/config';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
 import { SettingsPage } from '../pages/settings/settings';
@@ -14,6 +13,7 @@ import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { UtilsProvider } from '../providers/utils/utils';
+import { Config } from '../config';
 
 @Component({
   templateUrl: 'app.html'
@@ -104,10 +104,10 @@ export class MyApp {
 
       window.ondrop = (e) => {
         e.preventDefault();
-        for (var i = 0; i < e.dataTransfer.files.length; ++i) {
-          let path = e.dataTransfer.files[i].path;
-          this.events.publish('import_btpt', path)
-        }
+        // for (var i = 0; i < e.dataTransfer.files.length; ++i) {
+        //   let path = e.dataTransfer.files[i].path;
+        //   this.events.publish('import_btpt', path)
+        // }
         return false;
       };
 

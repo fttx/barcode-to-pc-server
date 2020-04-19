@@ -12,10 +12,7 @@
       ]
     },
     "files": [
-      "./src/main.ts"
+        "./src/main.ts"
     ],
-    "exclude": [
-      "ionic",
-      "ionic/**/*"
-    ]
-  }
+    "exclude": []
+}

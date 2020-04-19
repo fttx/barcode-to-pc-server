@@ -1,10 +1,10 @@
 import { Component, NgZone } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { Config } from '../../config';
 
 /**
  * Generated class for the InfoPage page.

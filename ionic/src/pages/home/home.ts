@@ -2,7 +2,6 @@ import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
@@ -16,6 +15,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
+import { Config } from '../../config';
 
 /**
  * Generated class for the HomePage page.
@@ -509,16 +509,16 @@ export class ScanSessionContextMenuPopover {
       newLineCharacter
     );
 
-    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
-      title: "Select the location",
-      defaultPath: this.scanSession.name + ".csv",
-      buttonLabel: "Save",
-      filters: [{ name: 'CSV File', extensions: ['csv','txt'] }],
-    }, (filename, bookmark) => {
-      if (!filename) return;
-      const fs = this.electronProvider.remote.require('fs');
-      fs.writeFileSync(filename, rows, 'utf-8');
-    });
+    // this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+    //   title: "Select the location",
+    //   defaultPath: this.scanSession.name + ".csv",
+    //   buttonLabel: "Save",
+    //   filters: [{ name: 'CSV File', extensions: ['csv', 'txt'] }],
+    // }, (filename, bookmark) => {
+    //   if (!filename) return;
+    //   const fs = this.electronProvider.remote.require('fs');
+    //   fs.writeFileSync(filename, rows, 'utf-8');
+    // });
   }
 
   delete() {

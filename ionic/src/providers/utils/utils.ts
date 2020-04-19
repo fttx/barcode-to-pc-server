@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import ElectronStore from 'electron-store';
 import { AlertController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';

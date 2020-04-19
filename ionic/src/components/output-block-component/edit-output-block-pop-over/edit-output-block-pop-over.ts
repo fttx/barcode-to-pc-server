@@ -2,7 +2,7 @@ import { Component, NgZone } from '@angular/core';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
-import { Config } from '../../../../../electron/src/config';
+import { Config } from '../../../config';
 
 
 @Component({
