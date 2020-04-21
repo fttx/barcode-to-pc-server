@@ -41,14 +41,6 @@ export class SettingsHandler implements Handler {
     get outputProfiles(): OutputProfileModel[] {
         return this.settings.outputProfiles
     }
-    get quantityEnabled(): boolean {
-        for (let profile of this.settings.outputProfiles) {
-            if (profile.outputBlocks.findIndex(x => x.value == 'quantity') != -1) {
-                return true;
-            }
-        }
-        return false;
-    }
     get newLineCharacter(): string {
         return this.settings.newLineCharacter
     }

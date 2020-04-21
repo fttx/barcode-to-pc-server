@@ -31,8 +31,7 @@
 
       <ion-item no-lines no-padding>
         <button ion-button color="secondary" default float-right (click)="onActivationClick()">Activate</button>
-        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()"
-          [disabled]="!serial || serial == '' ">Clear</button>
+        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">Clear</button>
       </ion-item>
     </div>
 
@@ -72,8 +71,8 @@
           <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>Quantity paramter</ion-col>
-          <ion-col>{{ licenseProvider.canUseQuantityParameter(false) ? 'Yes': 'No' }}</ion-col>
+          <ion-col>Number paramter</ion-col>
+          <ion-col>{{ licenseProvider.canUseNumberParameter(false) ? 'Yes': 'No' }}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>Append to CSV file</ion-col>

@@ -12,13 +12,28 @@ export class OutputProfileModel {
     public version: string;
     public outputBlocks: OutputBlockModel[] = [];
 
-    static HasQuantityBlocks(outputProfile: OutputProfileModel) {
-        return outputProfile.outputBlocks.findIndex(x => x.value == 'quantity') != -1;
+    /**
+     * @returns TRUE when the outputProfile contains components such as NUMBER or TEXT
+     */
+    static ContainsDialogComponents(outputProfile: OutputProfileModel): boolean {
+        return outputProfile.outputBlocks.findIndex(x =>
+            x.value == 'number' || x.value == 'text' ||
+            /**
+             * @deprecated for update transition only
+             */
+            x.value == 'quantity'
+        ) != -1;
     }
     /**
-     * @returns true when there is a block that requires the interaction with the UI
+     * @returns TRUE when there is a block that requires the interaction with the UI
      */
-    static HasBlockingOutputComponents(outputProfile: OutputProfileModel): boolean {
-      return outputProfile.outputBlocks.findIndex(x => x.value == 'quantity' || x.type == 'select_option') != -1;
-  }
+    static ContainsBlockingComponents(outputProfile: OutputProfileModel): boolean {
+        return outputProfile.outputBlocks.findIndex(x =>
+            x.value == 'number' || x.value == 'text' || x.type == 'select_option' ||
+            /**
+             * @deprecated for update transition only
+             */
+            x.value == 'quantity'
+        ) != -1;
+    }
 }

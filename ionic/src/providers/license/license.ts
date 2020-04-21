@@ -195,9 +195,9 @@ export class LicenseProvider {
       if (!this.canUseCSVAppend(false)) {
         settings.appendCSVEnabled = false;
       }
-      if (!this.canUseQuantityParameter(false)) {
+      if (!this.canUseNumberParameter(false)) {
         for (let i in settings.outputProfiles) {
-          settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'quantity');
+          settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'number');
         }
       }
       this.store.set(Config.STORAGE_SETTINGS, settings);
@@ -304,10 +304,10 @@ export class LicenseProvider {
   }
 
   /**
-   * Shuld be called when the user tries to drag'n drop the quantity component.
+   * Shuld be called when the user tries to drag'n drop the number component.
    * @returns FALSE if the feature should be limited
    */
-  canUseQuantityParameter(showUpgradeDialog = true): boolean {
+  canUseNumberParameter(showUpgradeDialog = true): boolean {
     let available = false;
     switch (this.activePlan) {
       case LicenseProvider.PLAN_FREE: available = false; break;
@@ -317,7 +317,7 @@ export class LicenseProvider {
     }
 
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseQuantityParameter', 'Upgrade', 'The quantity component isn\'t available with your current plan.');
+      this.showUpgradeDialog('canUseNumberParameter', 'Upgrade', 'The number component isn\'t available with your current plan.');
     }
     return available;
   }

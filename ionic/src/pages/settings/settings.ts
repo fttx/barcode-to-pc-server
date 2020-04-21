@@ -67,7 +67,8 @@ export class SettingsPage {
       { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable', skipOutput: false },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable', skipOutput: false },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable', skipOutput: false },
-      { name: 'QUANTITY', value: 'quantity', type: 'variable', editable: true, skipOutput: false, label: null },
+      { name: 'NUMBER', value: 'number', type: 'variable', editable: true, skipOutput: false, label: null },
+      { name: 'TEXT', value: 'text', type: 'variable', editable: true, skipOutput: false, label: null },
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null },
 
       // VARIABLE
@@ -117,9 +118,9 @@ export class SettingsPage {
     });
 
     this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
-      if (item.value == 'quantity') {
-        if (!this.licenseProvider.canUseQuantityParameter(true)) {
-          setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.value != 'quantity'), 1000)
+      if (item.value == 'number') {
+        if (!this.licenseProvider.canUseNumberParameter(true)) {
+          setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.value != 'number'), 1000)
         }
       }
     });

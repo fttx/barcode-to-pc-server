@@ -49,7 +49,8 @@ export class MyApp {
       // The publishing can happen by a drag-n-drop or a double click of a .btpt file
       this.events.subscribe('import_btpt', (filePath) => {
         // Prevent importing files when the SettingsPage is active
-        if (this.app.getActiveNav().getActive().component == SettingsPage) {
+        let activeNav = this.app.getActiveNav();
+        if (activeNav && activeNav.getActive().component == SettingsPage) {
           this.alertCtrl.create({
             title: 'Error',
             message: "You must close the Settings page before opening a .btpt file.",
@@ -210,7 +211,7 @@ export class MyApp {
               let outputBlocks = [];
               outputBlocks.push({ name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false });
               if (scan.quantity) {
-                outputBlocks.push({ editable: false, name: 'QUANTITY', value: scan.quantity, type: 'variable', modifiers: [] });
+                outputBlocks.push({ editable: false, name: 'NUMBER', value: scan.quantity, type: 'variable', modifiers: [] });
               }
               outputBlocks.push({ name: 'ENTER', value: 'enter', type: 'key', modifiers: [] });
               scan.outputBlocks = outputBlocks;
