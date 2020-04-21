@@ -194,10 +194,13 @@
           You can use the following variables in your file name (lowercase): <br>
           <code>
                     <input type="text" value="date" disabled />
+                    <input type="text" value="time" disabled />
+                    <input type="text" value="timestamp" disabled />
                     <input type="text" value="device_name" disabled />
                     <input type="text" value="scan_session_name" disabled />
               </code><br>
-
+          Note:
+          <p style="margin-left: 13px">The date and time variables refer to the scan session creation date</p><br>
           Example:<br>
           <code ngNonBindable>
             <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.csv" disabled />

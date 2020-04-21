@@ -101,7 +101,9 @@ export class ScansHandler implements Handler {
                     let path = new Supplant().text(this.settingsHandler.csvPath, {
                         scan_session_name: scanSession.name,
                         device_name: deviceName,
-                        date: new Date(scanSession.date).toISOString().slice(0, 10)
+                        date: new Date(scanSession.date).toISOString().slice(0, 10),
+                        time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
+                        timestamp: (scanSession.date * 1000),
                     })
 
                     try {
