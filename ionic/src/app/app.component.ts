@@ -50,7 +50,7 @@ export class MyApp {
       this.events.subscribe('import_btpt', (filePath) => {
         // Prevent importing files when the SettingsPage is active
         let activeNav = this.app.getActiveNav();
-        if (activeNav && activeNav.getActive().component == SettingsPage) {
+        if (activeNav && activeNav.getActive() && activeNav.getActive().component == SettingsPage) {
           this.alertCtrl.create({
             title: 'Error',
             message: "You must close the Settings page before opening a .btpt file.",

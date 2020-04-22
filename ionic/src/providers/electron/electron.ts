@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell, Menu, MenuItem } from 'electron';
 import ElectronStore from 'electron-store';
-import * as v5 from 'uuid/v5';
 
 declare var window: any;
 // If you import a module but never use any of the imported values other than as TypeScript types,
@@ -24,7 +23,7 @@ export class ElectronProvider {
   menu: typeof Menu;
   menuItem: typeof MenuItem;
   ElectronStore: typeof ElectronStore;
-  v5: typeof v5;
+  nodeMachineId;
 
   constructor(
   ) {
@@ -41,9 +40,9 @@ export class ElectronProvider {
       this.menu = electron.remote.Menu;
       this.menuItem = electron.remote.MenuItem;
       this.ElectronStore = electron.remote.require('electron-store');
-      this.v5 = electron.remote.require('uuid/v5');
+      this.nodeMachineId = electron.remote.require('node-machine-id');
 
-      this.uuid = v5('license.barcodetopc.com', v5.DNS);
+      this.uuid = this.nodeMachineId.machineIdSync();
     }
   }
 
