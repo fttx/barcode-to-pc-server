@@ -69,7 +69,7 @@ export class SettingsPage {
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable', skipOutput: false },
       { name: 'NUMBER', value: 'number', type: 'variable', editable: true, skipOutput: false, label: null },
       { name: 'TEXT', value: 'text', type: 'variable', editable: true, skipOutput: false, label: null },
-      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null },
+      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [] },
 
       // VARIABLE
       { name: 'Static text', value: '', type: 'text', editable: true },

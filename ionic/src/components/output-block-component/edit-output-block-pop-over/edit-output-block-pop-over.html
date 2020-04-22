@@ -48,6 +48,25 @@
       </div>
     </div>
 
+    <div [hidden]="outputBlock.type != 'barcode'">
+      <ion-item text-wrap no-lines>
+        <ion-label>
+          <h2 color="dark">Limit barcode formats</h2>
+          <p>
+            Use this setting to keep enabled only the barcode formats that you scan.
+            It may improve the scanning speed and the overall reliability.
+          </p>
+        </ion-label>
+        <ion-toggle [(ngModel)]="enableLimitBarcodeFormats" (ionChange)="onEnableLimitBarcodeFormatsChange()"></ion-toggle>
+      </ion-item>
+
+      <div [hidden]="!enableLimitBarcodeFormats" padding-left>
+        <ion-item *ngFor="let barcodeFormat of barcodeFormats">
+          <ion-label color="dark">{{ barcodeFormat.name }}</ion-label>
+          <ion-toggle [(ngModel)]="barcodeFormat.enabled" (ionChange)="onBarcodeFormatsChange()"></ion-toggle>
+        </ion-item>
+      </div>
+    </div>
 
     <div [hidden]="outputBlock.type != 'key'">
       <!-- CUSTOM KEY Only -->

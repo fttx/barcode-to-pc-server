@@ -200,6 +200,16 @@ export class MyApp {
           }
         }
 
+        // v3.8.0 upgrade
+        settings.outputProfiles.forEach(outputProfile => {
+          outputProfile.outputBlocks.forEach(outputBlock => {
+            if (outputBlock.type == 'barcode' && typeof outputBlock.enabledFormats == 'undefined') {
+              outputBlock.enabledFormats = [];
+            }
+          })
+        })
+
+
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;

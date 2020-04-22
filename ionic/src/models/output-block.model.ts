@@ -65,6 +65,12 @@ export class OutputBlockModel {
      */
     method?: 'get' | 'post';
 
+    /**
+     * Enabled formats for the BARCODE component.
+     * When the array is empty, then all barcode formats are enabled.
+    */
+    enabledFormats?: string[];
+
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;
         for (let i = startFrom; i < outputBlocks.length; i++) {
