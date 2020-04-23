@@ -16,7 +16,7 @@ export class SettingsModel {
      * @deprecated use outputProfiles instead
      */
     typedString: OutputBlockModel[] = [
-        { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false },
+        { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [] },
         { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] }
     ];
     outputProfiles: OutputProfileModel[] = [
@@ -25,7 +25,7 @@ export class SettingsModel {
             name: "Output template 1",
             version: null,
             outputBlocks: [
-                { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false },
+                { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [] },
                 { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] }
             ]
         },
