@@ -16,6 +16,23 @@
 ### Security
 -->
 
+## [v3.8.0] - 2020-04-24
+
+### Added
+
+- TEXT component
+- time and timestamp variables
+- "Limit barcode formats" option for the BARCODE component
+
+### Changed
+
+- Renamed QUANTITY component to NUMBER
+- UUID generation library
+- Minor UX improvements
+
+### Fixed
+
+- macOS tray icon color
 
 ## [v3.7.0] - 2020-04-09
 
@@ -242,6 +259,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.7.0...v3.8.0
 [v3.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.1...v3.7.0
 [v3.6.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.0...v3.6.1
 [v3.6.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.5.0...v3.6.0
