@@ -47,7 +47,12 @@ export class MyApp {
       electronProvider.sendReadyToMainProcess();
 
       // The publishing can happen by a drag-n-drop or a double click of a .btpt file
-      this.events.subscribe('import_btpt', (filePath) => {
+      this.events.subscribe('import_btpt', (filePath: string) => {
+        // prevent --parameters to be interpreted as file paths
+        if (filePath.startsWith('-')) {
+          return
+        }
+
         // Prevent importing files when the SettingsPage is active
         let activeNav = this.app.getActiveNav();
         if (activeNav && activeNav.getActive() && activeNav.getActive().component == SettingsPage) {
