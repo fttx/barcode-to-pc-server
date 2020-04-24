@@ -82,7 +82,9 @@ export class UiHandler implements Handler {
                 credits: Config.AUTHOR,
             });
         }
-        systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => { this.updateTray(true); })
+        if (process.platform == 'darwin') {
+            systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => { this.updateTray(true); })
+        }
     }
 
     // Waits for the settings to be read and the 'ready' event to be sent
