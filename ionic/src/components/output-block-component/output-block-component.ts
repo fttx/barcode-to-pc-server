@@ -22,9 +22,6 @@ export class OutputBlockComponent {
   }
 
   displayedName() {
-    if (this.outputBlock.editable === true && this.outputBlock.value) {
-      return this.outputBlock.value;
-    }
     return this.outputBlock.name;
   }
 

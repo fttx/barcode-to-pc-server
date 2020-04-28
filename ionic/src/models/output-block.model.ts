@@ -1,6 +1,6 @@
 /**
- * It's an element of the Output field.
- * Sometimes i also refer to it as Output component
+ * It's an element of the Output template field.
+ * It's also called Output component in the UI
  */
 export class OutputBlockModel {
     /**
@@ -13,6 +13,7 @@ export class OutputBlockModel {
      * Eg.
      *  if type == 'text' => value will contain the barcode value
      *  if type == 'key'  => value will contain the key identifier
+     *  if type == 'beep'  => value will contain the file name to play
      */
     value: string;
     /**
@@ -37,7 +38,7 @@ export class OutputBlockModel {
      * http for http requests
      * select_options is used to store CSV values
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -70,6 +71,12 @@ export class OutputBlockModel {
      * When the array is empty, then all barcode formats are enabled.
     */
     enabledFormats?: string[];
+
+    /**
+     * Params for the BEEP component
+     */
+    beepsNumber?: number;
+    beepSpeed?: 'low' | 'medium' | 'fast';
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

@@ -87,6 +87,7 @@ export class SettingsPage {
       { name: 'Select option', value: '', type: 'select_option', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true },
       { name: 'RUN', value: '', type: 'run', editable: true },
+      { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
     ];
   }
 

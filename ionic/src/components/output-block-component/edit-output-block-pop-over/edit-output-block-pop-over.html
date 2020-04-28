@@ -212,6 +212,50 @@
       </ion-item>
     </div>
 
+    <div [hidden]="outputBlock.type != 'beep'">
+      <ion-item no-lines text-wrap>
+        <p>
+          The beep sound will be played on the smartphone.<br>
+          Make you sure that the smartphone Media volume is turned on.<br><br>
+          <b>Note</b>: to disable the beep when you scan a barcode use the "Enable camera beep" option present in the app settings
+        </p>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Sound</ion-label>
+        <ion-select [(ngModel)]="outputBlock.value">
+          <ion-option value="beep">Beep</ion-option>
+          <ion-option value="beep_double">Double beep</ion-option>
+          <ion-option value="beep_two_tone">Two tone beep</ion-option>
+          <ion-option value="beep_low">Low beep</ion-option>
+          <ion-option value="beep_high">High beep</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Number of beeps</ion-label>
+        <ion-select [(ngModel)]="outputBlock.beepsNumber">
+          <ion-option value="1">1</ion-option>
+          <ion-option value="2">2</ion-option>
+          <ion-option value="3">3</ion-option>
+          <ion-option value="4">4</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Speed</ion-label>
+        <ion-select [(ngModel)]="outputBlock.beepSpeed">
+          <ion-option value="low">Low</ion-option>
+          <ion-option value="medium">Medium</ion-option>
+          <ion-option value="fast">Fast</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item no-lines text-center padding-top>
+        <button ion-button (click)="testAudio()" color="output-block-component-beep">Test audio</button>
+      </ion-item>
+    </div>
+
     <div [hidden]="outputBlock.type != 'select_option'">
       <ion-item>
         <label for="_valueSelectOption">Options list</label>
