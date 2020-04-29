@@ -15,7 +15,7 @@
   <!-- {{ outputBlock | json }} -->
   <ion-list>
 
-    <div [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' ">
+    <div [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' && outputBlock.type != 'select_option' ">
       <ion-item text-wrap no-lines>
         <ion-label for="_valueSkipOutput">Skip output</ion-label>
         <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
@@ -129,6 +129,7 @@
         <input type="text" value="time" disabled class="example-variable" /> <br>
         <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
         <input type="text" value="device_name" disabled class="example-variable" /> <br>
+        <input type="text" value="select_option" disabled class="example-variable" /> <br>
       </code>
     </ion-item>
 
@@ -170,6 +171,7 @@
               <input type="text" value="time" disabled class="example-variable" /> <br>
               <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
               <input type="text" value="device_name" disabled class="example-variable" /><br>
+              <input type="text" value="select_option" disabled class="example-variable" /> <br>
           </code><br>
         </p>
       </ion-item>
@@ -207,6 +209,7 @@
                         <input type="text" value="time" disabled class="example-variable" /> <br>
                         <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
                         <input type="text" value="device_name" disabled class="example-variable" /><br>
+                        <input type="text" value="select_option" disabled class="example-variable" /> <br>
                     </code><br>
         </p>
       </ion-item>
@@ -279,6 +282,7 @@
                         <input type="text" value="time" disabled class="example-variable" /> <br>
                         <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
                         <input type="text" value="device_name" disabled class="example-variable" /><br>
+                        <input type="text" value="select_option" disabled class="example-variable" /> <br>
                     </code><br>
         </p>
       </ion-item>
@@ -309,6 +313,7 @@
                     <input type="text" value="time" disabled class="example-variable" /> <br>
                     <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
                     <input type="text" value="device_name" disabled class="example-variable" /> <br>
+                    <input type="text" value="select_option" disabled class="example-variable" /> <br>
                 </code>
       </p>
     </ion-item>

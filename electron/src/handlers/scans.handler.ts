@@ -83,28 +83,40 @@ export class ScansHandler implements Handler {
                 if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
                     let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
                     let rows = ScanModel.ToCSV(
-                        scanSession.scannings,
+                        scanSession.scannings, // Warning: contains only the last scan
                         this.settingsHandler.exportOnlyText,
                         this.settingsHandler.enableQuotes,
                         this.settingsHandler.csvDelimiter,
                         newLineCharacter
                     );
 
-                    // Prepare device_name variable for file name injection
-                    let deviceName = 'Please add a DEVICE_NAME component to the Output template';
-                    let deviceNameOutputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == 'device_name');
-                    if (typeof (deviceNameOutputBlock) != "undefined") {
-                        deviceName = deviceNameOutputBlock.value;
-                    }
-
                     // inject variables to the path
-                    let path = new Supplant().text(this.settingsHandler.csvPath, {
-                        scan_session_name: scanSession.name,
-                        device_name: deviceName,
+                    let variables = {
+                        barcode: null, // ''
+                        // barcodes: [],
+                        number: null,
+                        text: null,
+                        timestamp: (scanSession.date * 1000),
                         date: new Date(scanSession.date).toISOString().slice(0, 10),
                         time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
-                        timestamp: (scanSession.date * 1000),
-                    })
+                        scan_session_name: scanSession.name,
+                        device_name: null,
+                        select_option: null,
+                    };
+                    let keys = Object.keys(variables);
+                    for (let i = 0; i < keys.length; i++) {
+                        let key = keys[i];
+                        // Search if there is a corresponding Output component to assign to the NULL variables
+                        if (variables[key] === null) {
+                            let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
+                            let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
+                            if (typeof (outputBlock) != "undefined") {
+                                value = outputBlock.value;
+                            }
+                            variables[key] = value;
+                        }
+                    }
+                    let path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
                     try {
                         fs.appendFileSync(path, rows + newLineCharacter);

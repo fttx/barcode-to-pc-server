@@ -35,6 +35,8 @@ export class SettingsPage {
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
     // Warning: update scan.model.ts when changing the array below
+    // and also enforce compatibility with the previous versions by adding an
+    // upgrade script in the app.component.ts/upgrade() method.
     return [
       // KEYS
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
@@ -84,7 +86,7 @@ export class SettingsPage {
 
       // OTHER
       { name: 'JavaScript function', value: '', type: 'function', editable: true },
-      { name: 'Select option', value: '', type: 'select_option', skipOutput: false },
+      { name: 'SELECT_OPTION', value: '', type: 'select_option', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true },
       { name: 'RUN', value: '', type: 'run', editable: true },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },

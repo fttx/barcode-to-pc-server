@@ -219,6 +219,14 @@ export class MyApp {
           })
         })
 
+        // v3.9.0 upgrade
+        settings.outputProfiles.forEach(outputProfile => {
+          outputProfile.outputBlocks.forEach(outputBlock => {
+            if (outputBlock.type == 'select_option') {
+              outputBlock.name = 'SELECT_OPTION';
+            }
+          })
+        })
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {

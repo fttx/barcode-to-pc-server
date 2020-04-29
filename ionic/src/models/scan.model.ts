@@ -88,6 +88,9 @@ export class ScanModel {
                     .filter(outputBlock => (
                         outputBlock.type != 'key' &&
                         outputBlock.type != 'delay' &&
+                        outputBlock.type != 'http' &&
+                        outputBlock.type != 'run' &&
+                        outputBlock.type != 'beep' &&
                         // 'if' and 'endif' bloks never reach
                         // the server because they're stripped on the app side
 
@@ -97,9 +100,9 @@ export class ScanModel {
             }
             return scan.outputBlocks.map(outputBlock => outputBlock.value);
         }), {
-                quotes: enableQuotes,
-                delimiter: csvDelimiter,
-                newline: newLineCharacter
-            });
+            quotes: enableQuotes,
+            delimiter: csvDelimiter,
+            newline: newLineCharacter
+        });
     }
 }

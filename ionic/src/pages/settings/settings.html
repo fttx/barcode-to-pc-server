@@ -193,14 +193,20 @@
         <info-box title="Info">
           You can use the following variables in your file name (lowercase): <br>
           <code>
-                    <input type="text" value="date" disabled />
-                    <input type="text" value="time" disabled />
-                    <input type="text" value="timestamp" disabled />
-                    <input type="text" value="device_name" disabled />
-                    <input type="text" value="scan_session_name" disabled />
-              </code><br>
-          Note:
-          <p style="margin-left: 13px">The date and time variables refer to the scan session creation date</p><br>
+            <input type="text" value="barcode" disabled />
+            <input type="text" value="number" disabled />
+            <input type="text" value="text" disabled />
+            <input type="text" value="timestamp" disabled />
+            <input type="text" value="date" disabled />
+            <input type="text" value="time" disabled />
+            <input type="text" value="scan_session_name" disabled />
+            <input type="text" value="device_name" disabled />
+            <input type="text" value="select_option" disabled />
+          </code><br>
+          Note 1:
+          <p style="margin-left: 13px">To use the variables acquired from the smartphone it's required to put a correspoinding Output Component in the Output template field</p><br>
+          Note 2:
+          <p style="margin-left: 13px">The <i>timestamp</i>, <i>date</i> and <i>time</i> variables refer to the scan session creation date</p><br>
           Example:<br>
           <code ngNonBindable>
             <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.csv" disabled />
