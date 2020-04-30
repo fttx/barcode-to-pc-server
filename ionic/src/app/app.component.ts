@@ -49,7 +49,7 @@ export class MyApp {
       // The publishing can happen by a drag-n-drop or a double click of a .btpt file
       this.events.subscribe('import_btpt', (filePath: string) => {
         // Prevent --parameters to be interpreted as file paths
-        if (filePath.startsWith('-')) {
+        if (filePath.startsWith('-') || !filePath.endsWith('.btpt')) {
           return
         }
 
