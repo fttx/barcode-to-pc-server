@@ -225,7 +225,10 @@ export class MyApp {
             if (outputBlock.type == 'select_option') {
               outputBlock.name = 'SELECT_OPTION';
             }
-          })
+          });
+          if (typeof settings.onSmartphoneChargeCommand == 'undefined') {
+            settings.onSmartphoneChargeCommand = '';
+          }
         })
 
         // Upgrade output profiles

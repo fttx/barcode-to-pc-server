@@ -41,4 +41,5 @@ export class SettingsModel {
     typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
     enableAdvancedSettings: boolean = false;
     autoUpdate: boolean = true;
+    onSmartphoneChargeCommand: string = '';
 }

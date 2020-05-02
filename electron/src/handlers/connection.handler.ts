@@ -10,7 +10,8 @@ import {
     responseModelHelo,
     responseModelKick,
     responseModelPong,
-    responseModelUpdateOutputProfiles,
+    responseModelUpdateSettings,
+    responseModel,
 } from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
@@ -60,15 +61,29 @@ export class ConnectionHandler implements Handler {
                     this.wsClients[data.deviceId].send(JSON.stringify(data.response));
                 }
             })
-        // send updateOutputProfiles to the already connected clients
+        // Send the new settings to the already connected clients
+        // The settings are also sent in the HELO request.
         settingsHandler.onSettingsChanged.subscribe((settings: SettingsModel) => {
             for (let deviceId in this.wsClients) {
                 let ws = this.wsClients[deviceId];
-                ws.send(JSON.stringify(new responseModelUpdateOutputProfiles().fromObject({
-                    outputProfiles: this.settingsHandler.outputProfiles
+                ws.send(JSON.stringify(new responseModelUpdateSettings().fromObject({
+                    outputProfiles: this.settingsHandler.outputProfiles,
+                    events: this.getEnabledEvents(),
                 })));
             }
         });
+    }
+
+    /**
+     * Generates an array of enabled events basend on the server settings, like this:
+     * ['on_smartphone_charge', 'on_scansession_archieved']
+     */
+    getEnabledEvents(): string[] {
+        let enabledEvents: string[] = [];
+        if (this.settingsHandler.onSmartphoneChargeCommand) {
+            enabledEvents.push(responseModel.EVENT_ON_SMARTPHONE_CHARGE);
+        }
+        return enabledEvents;
     }
 
     static getInstance(uiHandler: UiHandler, settingsHandler: SettingsHandler) {
@@ -133,7 +148,7 @@ export class ConnectionHandler implements Handler {
                 response.fromObject({
                     version: app.getVersion(),
                     outputProfiles: this.settingsHandler.outputProfiles,
-
+                    events: this.getEnabledEvents(),
                     /**
                      * @deprecated
                      */

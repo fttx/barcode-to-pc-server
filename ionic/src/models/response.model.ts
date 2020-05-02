@@ -14,9 +14,10 @@ export abstract class responseModel {
     public static readonly ACTION_PUT_SCAN_ACK = 'putScanAck';
     public static readonly ACTION_POPUP = 'action_popup';
     public static readonly ACTION_ENABLE_QUANTITY = 'enableQuantity';
-    public static readonly UPDATE_OUTPUT_PROFILES = 'update_output_profiles';
+    public static readonly ACTION_UPDATE_SETTINGS = 'update_output_profiles';
     public static readonly ACTION_REQUEST_SCAN_SESSION_UPDATE = 'requestScanSessionUpdate';
     public static readonly ACTION_KICK = 'kick';
+    public static readonly EVENT_ON_SMARTPHONE_CHARGE = 'on_smartphone_charge';
 }
 
 /**
@@ -36,13 +37,20 @@ export class responseModelHelo extends responseModel {
     action = responseModel.ACTION_HELO;
     version: string;
     outputProfiles: OutputProfileModel[];
+    events: string[];
 
     /**
      * @deprecated Use OutputProfiles instead
      */
     quantityEnabled: boolean;
 
-    public fromObject(obj: ({ version: string, outputProfiles: OutputProfileModel[], quantityEnabled: boolean })) {
+    public fromObject(obj: ({ version: string, outputProfiles: OutputProfileModel[], quantityEnabled: boolean, events: string[] })) {
+        this.outputProfiles = obj.outputProfiles;
+        if (obj.events) {
+            this.events = obj.events;
+        } else {
+            this.events = [];
+        }
         this.version = obj.version;
         this.outputProfiles = obj.outputProfiles;
         this.quantityEnabled = obj.quantityEnabled;
@@ -95,12 +103,20 @@ export class responseModelEnableQuantity extends responseModel {
     }
 }
 
-export class responseModelUpdateOutputProfiles extends responseModel {
-    action = responseModel.UPDATE_OUTPUT_PROFILES;
-    outputProfiles: OutputProfileModel[];
+export class responseModelUpdateSettings extends responseModel {
+    action = responseModel.ACTION_UPDATE_SETTINGS;
 
-    public fromObject(obj: ({ outputProfiles: OutputProfileModel[] })) {
+    // Warning: these same settings are also communicated in the HELO response
+    outputProfiles: OutputProfileModel[];
+    events: string[];
+
+    public fromObject(obj: ({ outputProfiles: OutputProfileModel[], events: string[] })) {
         this.outputProfiles = obj.outputProfiles;
+        if (obj.events) {
+            this.events = obj.events;
+        } else {
+            this.events = [];
+        }
         return this;
     }
 }

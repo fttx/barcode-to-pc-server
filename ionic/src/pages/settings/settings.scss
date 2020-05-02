@@ -17,6 +17,7 @@ page-settings {
         font-weight: bold !important;
         font-size: 1.4em !important;
         color: black !important;
+        margin-top: 36px;
     }
     .csv-path {
         width: 100%;
@@ -96,5 +97,14 @@ page-settings {
     info-box {
         margin: 0 0 0 9px;
         display: block;
+    }
+
+    .inline-input {
+      display: block;
+      width: 100%;
+      line-height: 28px;
+      height: 28px;
+      margin-top: 15px;
+      border: 1px solid #b5b5b5;
     }
 }

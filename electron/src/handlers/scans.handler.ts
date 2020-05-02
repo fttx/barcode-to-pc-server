@@ -8,7 +8,7 @@ import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
-import { requestModel, requestModelHelo, requestModelPutScanSessions } from '../../../ionic/src/models/request.model';
+import { requestModel, requestModelHelo, requestModelPutScanSessions, requestModelOnSmartphoneCharge } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
@@ -144,6 +144,11 @@ export class ScansHandler implements Handler {
                 // END ACK
                 break;
             }
+
+            case requestModel.ACTION_ON_SMARTPHONE_CHARGE:
+                let request: requestModelOnSmartphoneCharge = message;
+                exec(this.settingsHandler.onSmartphoneChargeCommand, { cwd: os.homedir() })
+                break;
 
             case requestModel.ACTION_HELO: {
                 let request: requestModelHelo = message;

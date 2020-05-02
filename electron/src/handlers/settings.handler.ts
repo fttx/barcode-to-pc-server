@@ -7,6 +7,7 @@ import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import ElectronStore = require('electron-store');
 import { OutputProfileModel } from '../../../ionic/src/models/output-profile.model';
+import { responseModel } from '../../../ionic/src/models/response.model';
 
 export class SettingsHandler implements Handler {
     public onSettingsChanged: ReplaySubject<SettingsModel> = new ReplaySubject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
@@ -70,6 +71,9 @@ export class SettingsHandler implements Handler {
     }
     get autoUpdate() {
         return this.settings.autoUpdate
+    }
+    get onSmartphoneChargeCommand() {
+        return this.settings.onSmartphoneChargeCommand
     }
 
     onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
