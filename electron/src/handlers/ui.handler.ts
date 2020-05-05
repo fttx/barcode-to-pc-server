@@ -178,9 +178,9 @@ export class UiHandler implements Handler {
         }
 
         // macOS sets the wasOpenedAsHidden parameter based on the system settings
-        if (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden && this.settingsHandler.enableTray) {
+        if (process.platform === 'darwin' && app.getLoginItemSettings().wasOpenedAsHidden) {
             this.mainWindow.hide(); // corresponds to CMD+H, minimize() corresponds to clicking the yellow reduce to icon button
-            if (app.dock != null) {
+            if (this.settingsHandler.enableTray && app.dock != null) {
                 app.dock.hide();
             }
         }
