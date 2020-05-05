@@ -34,9 +34,9 @@ export class SettingsPage {
 
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
-    // Warning: update scan.model.ts when changing the array below
-    // and also enforce compatibility with the previous versions by adding an
-    // upgrade script in the app.component.ts/upgrade() method.
+    // Warning: update scan.model.ts/ToString() and ToCSV() when changing the
+    // array below and also enforce compatibility with the previous versions by
+    // adding an upgrade script in the app.component.ts/upgrade() method.
     return [
       // KEYS
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },

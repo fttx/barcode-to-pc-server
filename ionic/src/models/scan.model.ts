@@ -39,7 +39,7 @@ export class ScanModel {
     * @param scan
     * @param fieldSeparator
     */
-    static ToString(scan: ScanModel, fieldSeparator = '') {
+    static ToString(scan: ScanModel, fieldSeparator = ' ') {
         if (!scan || !scan.outputBlocks) {
             return '';
         }
@@ -67,7 +67,7 @@ export class ScanModel {
                 case 'delay': return ''
                 default: return '';
             }
-        }).join(fieldSeparator);
+        }).join(fieldSeparator).replace(/\s+/g, ' ');
     }
 
 
