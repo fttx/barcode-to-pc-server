@@ -4,7 +4,7 @@ import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
-import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession } from '../../models/request.model';
+import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession, requestModelUndoInfiniteLoop } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
@@ -288,6 +288,10 @@ export class HomePage {
         }, 250)
       })
     });
+
+    this.electronProvider.ipcRenderer.on(requestModel.UNDO_INFINITE_LOOP, (e, request: requestModelUndoInfiniteLoop) => {
+      this.licenseProvider.limitMonthlyScans(-request.count);
+    });
   }
 
   private accessibilityAlert: Alert;
@@ -513,7 +517,7 @@ export class ScanSessionContextMenuPopover {
       title: "Select the location",
       defaultPath: this.scanSession.name + ".csv",
       buttonLabel: "Save",
-      filters: [{ name: 'CSV File', extensions: ['csv','txt'] }],
+      filters: [{ name: 'CSV File', extensions: ['csv', 'txt'] }],
     }, (filename, bookmark) => {
       if (!filename) return;
       const fs = this.electronProvider.remote.require('fs');

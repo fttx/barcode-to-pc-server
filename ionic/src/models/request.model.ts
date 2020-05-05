@@ -20,6 +20,7 @@ export abstract class requestModel {
     public static readonly ACTION_UPDATE_SCAN_SESSION = 'updateScanSession';
     public static readonly ACTION_CLEAR_SCAN_SESSIONS = 'clearScanSessions';
     public static readonly ACTION_ON_SMARTPHONE_CHARGE = 'action_on_smartphone_charge';
+    public static readonly UNDO_INFINITE_LOOP = 'undo_infinite_loop';
 }
 
 /**
@@ -115,6 +116,16 @@ export class requestModelClearScanSessions extends requestModel {
 export class requestModelOnSmartphoneCharge extends requestModel {
     action = requestModel.ACTION_ON_SMARTPHONE_CHARGE;
     public fromObject(obj: ({})) {
+        return this;
+    }
+}
+
+export class requestModelUndoInfiniteLoop extends requestModel {
+    action = requestModel.UNDO_INFINITE_LOOP;
+    count: number;
+
+    public fromObject(obj: ({ count: number })) {
+        this.count = obj.count;
         return this;
     }
 }
