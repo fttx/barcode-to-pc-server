@@ -376,4 +376,10 @@ export class SettingsPage {
       }
     }
   }
+
+  onOpenAutomaticallyChange() {
+    if (this.settings.openAutomatically == 'minimized' && this.electronProvider.process.platform === 'darwin') {
+      this.settings.enableTray = true;
+    }
+  }
 }
