@@ -140,7 +140,7 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.title.setTitle(Config.APP_NAME);
-    this.scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
+    this.scanSessions = JSON.parse(JSON.stringify(this.store.get(Config.STORAGE_SCAN_SESSIONS, [])));
 
     // If the app isn't package inside electron it will never
     // receive these events, so i won't subscribe to them
