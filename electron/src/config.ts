@@ -7,7 +7,7 @@ export class Config {
   public static IS_TEST_MODE = process.argv.slice(1).some(val => val === '--test');
   public static AUTHOR = 'Filippo Tortomasi';
   public static WINDOW_OPTIONS: BrowserWindowConstructorOptions = {
-    width: 1024, height: 720,
+    width: 1024, height: 768,
     minWidth: 800, minHeight: 600,
     title: Config.APP_NAME,
   };
