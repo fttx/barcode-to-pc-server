@@ -1,8 +1,8 @@
 version: v{build} # doesn't matter because gets overwritten later on with the package.json value
 branches:
   only:
-  - master
-  - /^v[0-9]+.[0-9]+.[0-9]+$/
+    - master
+    - /^v[0-9]+.[0-9]+.[0-9]+$/
 skip_non_tags: true
 clone_depth: 1
 environment:
@@ -19,7 +19,7 @@ image: Visual Studio 2015
 #   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: Install-Product node $env:nodejs_version x64
-  - ps: npm install -g npm@6.11.3
+  - ps: npm ci -g npm@6.11.3
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
 
   - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron/electron-resources/Bonjour64.msi?raw=true
