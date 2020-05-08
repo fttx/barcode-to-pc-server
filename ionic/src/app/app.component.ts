@@ -206,30 +206,35 @@ export class MyApp {
         }
 
         // v3.8.0 upgrade
-        settings.outputProfiles.forEach(outputProfile => {
-          outputProfile.outputBlocks.forEach(outputBlock => {
-            if (outputBlock.type == 'barcode') {
-              if (typeof outputBlock.enabledFormats == 'undefined') {
-                outputBlock.enabledFormats = [];
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'barcode') {
+                if (typeof outputBlock.enabledFormats == 'undefined') {
+                  outputBlock.enabledFormats = [];
+                }
+                if (typeof outputBlock.label == 'undefined') {
+                  outputBlock.label = null;
+                }
               }
-              if (typeof outputBlock.label == 'undefined') {
-                outputBlock.label = null;
-              }
-            }
+            })
           })
-        })
+        }
 
         // v3.9.0 upgrade
-        settings.outputProfiles.forEach(outputProfile => {
-          outputProfile.outputBlocks.forEach(outputBlock => {
-            if (outputBlock.type == 'select_option') {
-              outputBlock.name = 'SELECT_OPTION';
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'select_option') {
+                outputBlock.name = 'SELECT_OPTION';
+              }
+            });
+            if (typeof settings.onSmartphoneChargeCommand == 'undefined') {
+              settings.onSmartphoneChargeCommand = '';
             }
-          });
-          if (typeof settings.onSmartphoneChargeCommand == 'undefined') {
-            settings.onSmartphoneChargeCommand = '';
-          }
-        })
+          })
+        }
+
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
