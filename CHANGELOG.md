@@ -16,6 +16,26 @@
 ### Security
 -->
 
+## [v3.9.0] - 2020-05-09
+
+### Added
+
+- BEEP Output Component
+- SELECT_OPTION variable
+- Option to execute commands when the smartphone power cord is plugged in
+- More variables for the "Append to .csv file" option
+
+### Changed
+
+- The app will always display a space between Output components
+- HTTP and RUN Components are now considered non-readable components
+- The app will find only the servers that are the same subnet
+- Improve UI performance when there are more scan sessions
+
+### Fixed
+
+- macOS window minimization issue
+
 ## [v3.8.0] - 2020-04-24
 
 ### Added
@@ -259,6 +279,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.9.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.8.0...v3.9.0
 [v3.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.7.0...v3.8.0
 [v3.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.1...v3.7.0
 [v3.6.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.0...v3.6.1
