@@ -235,6 +235,22 @@ export class MyApp {
           })
         }
 
+        // v3.10.0 upgrade
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'select_option' && typeof outputBlock.skipOutput == 'undefined') {
+                outputBlock.skipOutput = false;
+              } else if (outputBlock.type == 'http' && typeof outputBlock.skipOutput == 'undefined') {
+                outputBlock.skipOutput = true;
+              } else if (outputBlock.type == 'run' && typeof outputBlock.skipOutput == 'undefined') {
+                outputBlock.skipOutput = true;
+              } else if (outputBlock.type == 'function' && typeof outputBlock.skipOutput == 'undefined') {
+                outputBlock.skipOutput = false;
+              }
+            });
+          })
+        }
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {

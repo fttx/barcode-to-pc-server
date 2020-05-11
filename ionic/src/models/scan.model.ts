@@ -2,6 +2,9 @@ import * as Papa from 'papaparse';
 import { OutputBlockModel } from "./output-block.model";
 
 export class ScanModel {
+    /**
+     * @deprecated
+     */
     format: 'QR_CODE' | 'DATA_MATRIX' | 'UPC_E' | 'UPC_A' | 'EAN_8' | 'EAN_13' | 'CODE_128' | 'CODE_39' | 'CODE_93' | 'CODABAR' | 'ITF' | 'RSS14' | 'RSS_EXPANDED' | 'PDF_417' | 'AZTEC' | 'MSI';
     cancelled: boolean;
     repeated: boolean;
@@ -63,6 +66,8 @@ export class ScanModel {
                 case 'variable': return block.value;
                 case 'select_option': return block.value;
                 case 'function': return block.value;
+                case 'http': return block.value;
+                case 'run': return block.value;
                 case 'barcode': return block.value;
                 case 'delay': return ''
                 default: return '';
@@ -88,8 +93,6 @@ export class ScanModel {
                     .filter(outputBlock => (
                         outputBlock.type != 'key' &&
                         outputBlock.type != 'delay' &&
-                        outputBlock.type != 'http' &&
-                        outputBlock.type != 'run' &&
                         outputBlock.type != 'beep' &&
                         // 'if' and 'endif' bloks never reach
                         // the server because they're stripped on the app side

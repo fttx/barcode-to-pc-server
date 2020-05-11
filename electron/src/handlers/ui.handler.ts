@@ -353,8 +353,9 @@ export class UiHandler implements Handler {
         })
     }
 
-    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
+    async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         throw new Error("Method not implemented.");
+        return message;
     }
     onWsClose(ws: WebSocket) {
         throw new Error("Method not implemented.");

@@ -30,8 +30,8 @@ ipcMain
         // need to save the last argv value, so that we can send them to the
         // ionic project when the app finally loads. (macOS only)
         if (lastArgv) {
-          ipcClient.send('second-instance-open', lastArgv);
-          lastArgv = null;
+            ipcClient.send('second-instance-open', lastArgv);
+            lastArgv = null;
         }
 
         wss = new WebSocket.Server({ port: Config.PORT });
@@ -46,7 +46,7 @@ ipcMain
             console.log("ws(incoming connection)", req.connection.remoteAddress)
             // const clientAddress = req.connection.remoteAddress;
 
-            ws.on('message', message => {
+            ws.on('message', async message => {
                 console.log('ws(message): ', message)
                 // TODO: da sempre false, perchè?
                 // è necessario questo controllo?
@@ -56,8 +56,8 @@ ipcMain
 
                 let messageObj = JSON.parse(message.toString());
 
-                scansHandler.onWsMessage(ws, messageObj, req);
-                connectionHandler.onWsMessage(ws, messageObj, req);
+                messageObj = await scansHandler.onWsMessage(ws, messageObj, req);
+                messageObj = await connectionHandler.onWsMessage(ws, messageObj, req);
 
                 ipcClient.send(messageObj.action, messageObj); // forward ws messages to ipc
             });
@@ -93,7 +93,7 @@ app.on('will-finish-launching', () => {
         let argv = ['', path];
         lastArgv = argv;
         if (ipcClient) {
-          ipcClient.send('second-instance-open', argv);
+            ipcClient.send('second-instance-open', argv);
         }
     });
 })

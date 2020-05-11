@@ -1,14 +1,14 @@
 import axios from 'axios';
-import { exec } from 'child_process';
-import { clipboard, shell, dialog } from 'electron';
+import { exec, execSync } from 'child_process';
+import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
-import * as os from 'os';
 import * as http from 'http';
+import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
-import { requestModel, requestModelHelo, requestModelPutScanSessions, requestModelOnSmartphoneCharge } from '../../../ionic/src/models/request.model';
+import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
@@ -17,6 +17,7 @@ import { UiHandler } from './ui.handler';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
+
     private constructor(
         private settingsHandler: SettingsHandler,
         private uiHandler: UiHandler,
@@ -31,7 +32,7 @@ export class ScansHandler implements Handler {
         return ScansHandler.instance;
     }
 
-    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
+    async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         // console.log('message', message)
         switch (message.action) {
             case requestModel.ACTION_PUT_SCAN_SESSIONS: {
@@ -47,37 +48,66 @@ export class ScansHandler implements Handler {
                 let scanSession = request.scanSessions[0];
                 let scan = scanSession.scannings[0];
 
-                // keyboard emulation
-                (async () => {
-                    for (let outputBlock of scan.outputBlocks) {
-                        if (outputBlock.skipOutput) {
-                            continue;
-                        }
+                // Set this variable to TRUE when an outputBlock.value is changed from the server
+                // This way the ACK response will communicate to the app the updated scan value.
+                let outputBloksValueChanged = false;
 
-                        switch (outputBlock.type) {
-                            case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
-                            case 'text': this.typeString(outputBlock.value); break;
-                            case 'variable': this.typeString(outputBlock.value); break;
-                            case 'function': this.typeString(outputBlock.value); break;
-                            case 'barcode': this.typeString(outputBlock.value); break;
-                            case 'select_option': this.typeString(outputBlock.value); break;
-                            case 'delay': {
-                                if (isNumeric(outputBlock.value)) {
-                                    await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
+                // keyboard emulation
+                for (let outputBlock of scan.outputBlocks) {
+                    if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run') {
+                        continue;
+                    }
+
+                    switch (outputBlock.type) {
+                        case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
+                        case 'text': this.typeString(outputBlock.value); break;
+                        case 'variable': this.typeString(outputBlock.value); break;
+                        case 'function': this.typeString(outputBlock.value); break;
+                        case 'barcode': this.typeString(outputBlock.value); break;
+                        case 'select_option': this.typeString(outputBlock.value); break;
+                        case 'delay': {
+                            if (isNumeric(outputBlock.value)) {
+                                await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
+                            }
+                            break;
+                        }
+                        case 'http': {
+                            console.log('HTTP: ', outputBlock)
+                            if (outputBlock.skipOutput) {
+                                axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 });
+                            } else {
+                                try {
+                                    outputBlock.value = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
+                                    message = request;
+                                } catch (error) {
+                                    // Do not change the value when the request fails to allow the Send again feature to work
+                                    // if (error.code) {
+                                    //      if (error.code == 'ECONNREFUSED') outputBlock.value = 'Connection refused';
+                                    // }
                                 }
-                                break;
+                                outputBloksValueChanged = true;
                             }
-                            case 'http': {
-                                axios.request({ url: outputBlock.value, method: outputBlock.method });
-                                break;
+                            break;
+                        }
+                        case 'run': {
+                            if (outputBlock.skipOutput) {
+                                exec(outputBlock.value, { cwd: os.homedir(), timeout: 10000 })
+                            } else {
+                                try {
+                                    outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                                } catch (error) {
+                                    // Do not change the value when the command fails to allow the Send again feature to work
+                                    // if (error.code) {
+                                    //     if (error.code == 'ETIMEDOUT') outputBlock.value = 'Timeout. Max allowed 10 seconds';
+                                    //     if (error.code == 'ENOBUFS') outputBlock.value = 'Too much output. Max allowed 1024 bytes';
+                                    // }
+                                }
+                                outputBloksValueChanged = true;
                             }
-                            case 'run': {
-                                exec(outputBlock.value, { cwd: os.homedir() })
-                                break;
-                            }
-                        } // end switch
-                    } // end for
-                })();
+                            break;
+                        }
+                    } // end switch
+                } // end for
 
                 // append to csv
                 if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
@@ -134,11 +164,19 @@ export class ScansHandler implements Handler {
                     shell.openExternal(ScanModel.ToString(scan));
                 }
 
+                let updatedOutputBloks = null;
+                if (outputBloksValueChanged) {
+                    updatedOutputBloks = scan.outputBlocks;
+                    scan.displayValue = ScanModel.ToString(scan);
+                    message = request;
+                }
+
                 // ACK
                 let response = new responseModelPutScanAck();
                 response.fromObject({
                     scanId: scan.id,
-                    scanSessionId: scanSession.id
+                    scanSessionId: scanSession.id,
+                    outputBlocks: updatedOutputBloks,
                 });
                 ws.send(JSON.stringify(response));
                 // END ACK
@@ -155,6 +193,7 @@ export class ScansHandler implements Handler {
                 break;
             }
         }
+        return message;
     }
 
     keyTap(key, modifiers) {

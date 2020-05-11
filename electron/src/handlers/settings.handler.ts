@@ -76,8 +76,9 @@ export class SettingsHandler implements Handler {
         return this.settings.onSmartphoneChargeCommand
     }
 
-    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
+    async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         throw new Error("Method not implemented.");
+        return message;
     }
     onWsClose(ws: WebSocket) {
         throw new Error("Method not implemented.");

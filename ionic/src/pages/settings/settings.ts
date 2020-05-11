@@ -85,10 +85,10 @@ export class SettingsPage {
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
       // OTHER
-      { name: 'JavaScript function', value: '', type: 'function', editable: true },
+      { name: 'JavaScript function', value: '', type: 'function', editable: true, skipOutput: false },
       { name: 'SELECT_OPTION', value: '', type: 'select_option', skipOutput: false },
-      { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true },
-      { name: 'RUN', value: '', type: 'run', editable: true },
+      { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true, skipOutput: false },
+      { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
     ];
   }

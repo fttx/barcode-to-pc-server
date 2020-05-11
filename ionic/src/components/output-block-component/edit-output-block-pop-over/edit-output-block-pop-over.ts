@@ -107,4 +107,8 @@ export class EditOutputBlockPage {
     };
     for (let i = 0; i < this.outputBlock.beepsNumber; i++) { await beep(); }
   }
+
+  hideSkipOutput(outputBlock: OutputBlockModel) {
+    return typeof (outputBlock.skipOutput) == 'undefined';
+  }
 }

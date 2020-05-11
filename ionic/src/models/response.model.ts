@@ -1,4 +1,5 @@
 import { OutputProfileModel } from "./output-profile.model";
+import { OutputBlockModel } from "./output-block.model";
 
 /**
  * When editing this file rember to reflect the same changes to
@@ -70,10 +71,12 @@ export class responseModelPutScanAck extends responseModel {
     action = responseModel.ACTION_PUT_SCAN_ACK;
     scanSessionId: number;
     scanId: number;
+    outputBlocks: OutputBlockModel[];
 
-    public fromObject(obj: ({ scanSessionId: number, scanId: number })) {
+    public fromObject(obj: ({ scanSessionId: number, scanId: number, outputBlocks: OutputBlockModel[] })) {
         this.scanSessionId = obj.scanSessionId;
         this.scanId = obj.scanId;
+        this.outputBlocks = obj.outputBlocks;
         return this;
     }
 }

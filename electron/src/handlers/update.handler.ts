@@ -10,13 +10,13 @@ import ElectronStore = require('electron-store');
 
 /**
  * MAIN PROCESS
- * 
+ *
  * This class is pretty much a pass through for the renderer process, in order
  * to communicate with the autoUpdater module that is available only in the main process.
- * 
- * Every time that an update event occurs the main process sends the value of **updateStatus** 
+ *
+ * Every time that an update event occurs the main process sends the value of **updateStatus**
  * to the renderer.
- * 
+ *
  * When the user wants to update the app the renderer sends to the main process the message
  * 'checkForUpdates' or 'quitAndInstall'
  */
@@ -96,8 +96,9 @@ export class UpdateHandler implements Handler {
         }
     }
 
-    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
+    async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         throw new Error("Method not implemented.");
+        return message;
     }
     onWsClose(ws: WebSocket) {
         throw new Error("Method not implemented.");

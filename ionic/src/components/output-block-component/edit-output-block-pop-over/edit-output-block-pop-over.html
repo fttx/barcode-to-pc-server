@@ -15,7 +15,7 @@
   <!-- {{ outputBlock | json }} -->
   <ion-list>
 
-    <div [hidden]="outputBlock.type != 'barcode' && outputBlock.type != 'variable' && outputBlock.type != 'select_option' ">
+    <div [hidden]="hideSkipOutput(outputBlock)">
       <ion-item text-wrap no-lines>
         <ion-label for="_valueSkipOutput">Skip output</ion-label>
         <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>

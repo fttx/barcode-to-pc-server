@@ -4,7 +4,7 @@ import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
-import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUpdateScanSession, requestModelUndoInfiniteLoop } from '../../models/request.model';
+import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUndoInfiniteLoop, requestModelUpdateScanSession } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';

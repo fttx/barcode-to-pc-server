@@ -135,7 +135,7 @@ export class ConnectionHandler implements Handler {
         }
     }
 
-    onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage) {
+    async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         switch (message.action) {
             case requestModel.ACTION_PING: {
                 ws.send(JSON.stringify(new responseModelPong()));
@@ -162,6 +162,7 @@ export class ConnectionHandler implements Handler {
                 break;
             }
         }
+        return message;
     }
 
     onWsClose(ws: WebSocket) {
