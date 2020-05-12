@@ -77,8 +77,13 @@ export class ScansHandler implements Handler {
                                 axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 });
                             } else {
                                 try {
-                                    outputBlock.value = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
+                                    let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
+                                    if (typeof response == 'object') {
+                                        response = JSON.stringify(response);
+                                    }
+                                    outputBlock.value = response;
                                     message = request;
+                                    this.typeString(outputBlock.value)
                                 } catch (error) {
                                     // Do not change the value when the request fails to allow the Send again feature to work
                                     // if (error.code) {
@@ -95,6 +100,7 @@ export class ScansHandler implements Handler {
                             } else {
                                 try {
                                     outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                                    this.typeString(outputBlock.value)
                                 } catch (error) {
                                     // Do not change the value when the command fails to allow the Send again feature to work
                                     // if (error.code) {
