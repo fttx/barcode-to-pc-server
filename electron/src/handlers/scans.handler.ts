@@ -115,7 +115,7 @@ export class ScansHandler implements Handler {
                     } // end switch
                 } // end for
 
-                // append to csv
+                // Append to csv
                 if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
                     let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
                     let rows = ScanModel.ToCSV(
@@ -126,7 +126,7 @@ export class ScansHandler implements Handler {
                         newLineCharacter
                     );
 
-                    // inject variables to the path
+                    // Inject variables to the file path
                     let variables = {
                         barcode: null, // ''
                         // barcodes: [],
@@ -139,10 +139,10 @@ export class ScansHandler implements Handler {
                         device_name: null,
                         select_option: null,
                     };
+                    // Search if there is a corresponding Output component to assign to the NULL variables
                     let keys = Object.keys(variables);
                     for (let i = 0; i < keys.length; i++) {
                         let key = keys[i];
-                        // Search if there is a corresponding Output component to assign to the NULL variables
                         if (variables[key] === null) {
                             let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
                             let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
@@ -152,6 +152,7 @@ export class ScansHandler implements Handler {
                             variables[key] = value;
                         }
                     }
+                    // Finally supplant the variables to the file path
                     let path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
                     try {
