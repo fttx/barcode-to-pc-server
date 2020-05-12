@@ -52,6 +52,17 @@ export class ScansHandler implements Handler {
                 // This way the ACK response will communicate to the app the updated scan value.
                 let outputBloksValueChanged = false;
 
+
+                // HTTP and RUN value is computed server-side, and to allow sharing
+                // the results of these components between them we inject the variables
+                // Note: other components like SELECT_OPTION can't access to those
+                // variables because the HTTP and RUN value is communicated to the app
+                // after that the output template is complete.
+                let variables = {
+                    http: null,
+                    run: null,
+                };
+
                 // keyboard emulation
                 for (let outputBlock of scan.outputBlocks) {
                     if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run') {
@@ -72,50 +83,49 @@ export class ScansHandler implements Handler {
                             break;
                         }
                         case 'http': {
-                            console.log('HTTP: ', outputBlock)
-                            if (outputBlock.skipOutput) {
-                                axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 });
-                            } else {
-                                try {
-                                    let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
-                                    if (typeof response == 'object') {
-                                        response = JSON.stringify(response);
-                                    }
-                                    outputBlock.value = response;
-                                    message = request;
-                                    this.typeString(outputBlock.value)
-                                } catch (error) {
-                                    // Do not change the value when the request fails to allow the Send again feature to work
-                                    // if (error.code) {
-                                    //      if (error.code == 'ECONNREFUSED') outputBlock.value = 'Connection refused';
-                                    // }
+                            outputBlock.value = new Supplant().text(outputBlock.value, variables);
+                            try {
+                                let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
+                                if (typeof response == 'object') {
+                                    response = JSON.stringify(response);
                                 }
-                                outputBloksValueChanged = true;
+                                outputBlock.value = response;
+                                variables.http = outputBlock.value;
+                                message = request;
+                                if (!outputBlock.skipOutput) {
+                                    this.typeString(outputBlock.value)
+                                }
+                            } catch (error) {
+                                // Do not change the value when the request fails to allow the Send again feature to work
+                                // if (error.code) {
+                                //      if (error.code == 'ECONNREFUSED') outputBlock.value = 'Connection refused';
+                                // }
                             }
+                            outputBloksValueChanged = true;
                             break;
                         }
                         case 'run': {
-                            if (outputBlock.skipOutput) {
-                                exec(outputBlock.value, { cwd: os.homedir(), timeout: 10000 })
-                            } else {
-                                try {
-                                    outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                            outputBlock.value = new Supplant().text(outputBlock.value, variables);
+                            try {
+                                outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                                variables.run = outputBlock.value;
+                                if (!outputBlock.skipOutput) {
                                     this.typeString(outputBlock.value)
-                                } catch (error) {
-                                    // Do not change the value when the command fails to allow the Send again feature to work
-                                    // if (error.code) {
-                                    //     if (error.code == 'ETIMEDOUT') outputBlock.value = 'Timeout. Max allowed 10 seconds';
-                                    //     if (error.code == 'ENOBUFS') outputBlock.value = 'Too much output. Max allowed 1024 bytes';
-                                    // }
                                 }
-                                outputBloksValueChanged = true;
+                            } catch (error) {
+                                // Do not change the value when the command fails to allow the Send again feature to work
+                                // if (error.code) {
+                                //     if (error.code == 'ETIMEDOUT') outputBlock.value = 'Timeout. Max allowed 10 seconds';
+                                //     if (error.code == 'ENOBUFS') outputBlock.value = 'Too much output. Max allowed 1024 bytes';
+                                // }
                             }
+                            outputBloksValueChanged = true;
                             break;
                         }
                     } // end switch
                 } // end for
 
-                // append to csv
+                // Append to csv
                 if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
                     let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
                     let rows = ScanModel.ToCSV(
@@ -126,7 +136,7 @@ export class ScansHandler implements Handler {
                         newLineCharacter
                     );
 
-                    // inject variables to the path
+                    // Inject variables to the file path
                     let variables = {
                         barcode: null, // ''
                         // barcodes: [],
@@ -138,11 +148,13 @@ export class ScansHandler implements Handler {
                         scan_session_name: scanSession.name,
                         device_name: null,
                         select_option: null,
+                        http: null,
+                        run: null,
                     };
+                    // Search if there is a corresponding Output component to assign to the NULL variables
                     let keys = Object.keys(variables);
                     for (let i = 0; i < keys.length; i++) {
                         let key = keys[i];
-                        // Search if there is a corresponding Output component to assign to the NULL variables
                         if (variables[key] === null) {
                             let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
                             let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
@@ -152,6 +164,7 @@ export class ScansHandler implements Handler {
                             variables[key] = value;
                         }
                     }
+                    // Finally supplant the variables to the file path
                     let path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
                     try {
