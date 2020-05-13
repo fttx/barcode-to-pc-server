@@ -156,7 +156,9 @@ export class ScansHandler implements Handler {
                     let path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
                     try {
-                        fs.appendFileSync(path, rows + newLineCharacter);
+                        if (rows.length != 0) {
+                            fs.appendFileSync(path, rows + newLineCharacter);
+                        }
                     } catch (e) {
                         dialog.showMessageBox(this.uiHandler.mainWindow, {
                             type: 'error',
