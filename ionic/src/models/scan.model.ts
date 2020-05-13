@@ -2,23 +2,21 @@ import * as Papa from 'papaparse';
 import { OutputBlockModel } from "./output-block.model";
 
 export class ScanModel {
-    /**
-     * @deprecated
-     */
-    format: 'QR_CODE' | 'DATA_MATRIX' | 'UPC_E' | 'UPC_A' | 'EAN_8' | 'EAN_13' | 'CODE_128' | 'CODE_39' | 'CODE_93' | 'CODABAR' | 'ITF' | 'RSS14' | 'RSS_EXPANDED' | 'PDF_417' | 'AZTEC' | 'MSI';
+    id: number;
+    outputBlocks: OutputBlockModel[];
     cancelled: boolean;
     repeated: boolean;
-
-    outputBlocks: OutputBlockModel[];
     ack: boolean;
-    id: number;
-
     /**
      * This field should be set when the scan is created. Like this:
      * scan.displayValue = ScanModel.ToString(scan);
      */
     displayValue: string;
 
+    /**
+     * @deprecated
+     */
+    format: 'QR_CODE' | 'DATA_MATRIX' | 'UPC_E' | 'UPC_A' | 'EAN_8' | 'EAN_13' | 'CODE_128' | 'CODE_39' | 'CODE_93' | 'CODABAR' | 'ITF' | 'RSS14' | 'RSS_EXPANDED' | 'PDF_417' | 'AZTEC' | 'MSI';
     /**
      * @deprecated use the OutputBlock instead
      */

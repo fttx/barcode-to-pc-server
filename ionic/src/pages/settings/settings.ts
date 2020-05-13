@@ -42,6 +42,7 @@ export class SettingsPage {
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
       { name: 'DELETE', value: 'delete', type: 'key', modifiers: [] },
       { name: 'ALT', value: 'ALT', type: 'key', modifiers: [] },
+      // Warning: keep in sync with settings.model.ts
       { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] },
       { name: 'TAB', value: 'tab', type: 'key', modifiers: [] },
       { name: 'ESCAPE', value: 'escape', type: 'key', modifiers: [] },
@@ -69,9 +70,10 @@ export class SettingsPage {
       { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable', skipOutput: false },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable', skipOutput: false },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable', skipOutput: false },
-      { name: 'NUMBER', value: 'number', type: 'variable', editable: true, skipOutput: false, label: null },
-      { name: 'TEXT', value: 'text', type: 'variable', editable: true, skipOutput: false, label: null },
-      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [] },
+      { name: 'NUMBER', value: 'number', type: 'variable', editable: true, skipOutput: false, label: null, filter: null, errorMessage: null },
+      { name: 'TEXT', value: 'text', type: 'variable', editable: true, skipOutput: false, label: null, filter: null, errorMessage: null },
+      // Warning: keep in sync with settings.model.ts
+      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [], filter: null, errorMessage: null },
 
       // VARIABLE
       { name: 'Static text', value: '', type: 'text', editable: true },

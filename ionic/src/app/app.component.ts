@@ -248,6 +248,10 @@ export class MyApp {
               } else if (outputBlock.type == 'function' && typeof outputBlock.skipOutput == 'undefined') {
                 outputBlock.skipOutput = false;
               }
+              if ((outputBlock.type == 'barcode' || outputBlock.value == 'number' || outputBlock.value == 'text') && typeof outputBlock.filter == 'undefined') {
+                outputBlock.filter = null;
+                outputBlock.errorMessage = null;
+              }
             });
           })
         }

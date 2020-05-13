@@ -25,7 +25,7 @@ export class SettingsModel {
             name: "Output template 1",
             version: null,
             outputBlocks: [
-                { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [] },
+                { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [], filter: null, errorMessage: null },
                 { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] }
             ]
         },

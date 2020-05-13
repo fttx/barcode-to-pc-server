@@ -73,10 +73,16 @@ export class OutputBlockModel {
     enabledFormats?: string[];
 
     /**
-     * Params for the BEEP component
+     * Parameters for the BEEP component
      */
     beepsNumber?: number;
     beepSpeed?: 'low' | 'medium' | 'fast';
+
+    /**
+     * Parameters for the BARCODE, TEXT and NUMBER components
+     */
+    filter?: string;
+    errorMessage?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

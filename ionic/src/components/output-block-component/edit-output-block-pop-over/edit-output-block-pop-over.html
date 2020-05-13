@@ -15,7 +15,7 @@
   <!-- {{ outputBlock | json }} -->
   <ion-list>
 
-    <div [hidden]="hideSkipOutput(outputBlock)">
+    <div [hidden]="outputBlock.skipOutput === undefined">
       <ion-item text-wrap no-lines>
         <ion-label for="_valueSkipOutput">Skip output</ion-label>
         <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
@@ -30,22 +30,53 @@
           Function", "IF", "HTTP", or as a parameter for the CSV file name.
         </p>
       </ion-item>
+    </div>
 
-      <div [hidden]="outputBlock.label === undefined">
-        <ion-item no-lines>
-          <label for="_labelValue">
-            <h2 color="dark">Label</h2>
-          </label>
-          <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
-        </ion-item>
+    <div [hidden]="outputBlock.label === undefined">
+      <ion-item no-lines>
+        <label for="_labelValue">
+          <h2 color="dark">Label</h2>
+        </label>
+        <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
 
-        <ion-item text-wrap>
-          <p>
-            Provide a short description such as "Tracking number" or "Product ID".<br>
-            The label will be shown in the app while acquiring the data.
-          </p>
-        </ion-item>
-      </div>
+      <ion-item text-wrap>
+        <p>
+          Provide a short description such as "Tracking number" or "Product ID".<br>
+          The label will be shown in the app while acquiring the data.
+        </p>
+      </ion-item>
+    </div>
+
+    <div [hidden]="outputBlock.filter === undefined">
+      <ion-item no-lines>
+        <label for="_filterValue">
+          <h2 color="dark">Filter</h2>
+        </label>
+        <input id="_filterValue" [(ngModel)]="outputBlock.filter" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p>
+          Define a regular expression to restrict the possible values of this Output Component.<br>
+          It is recommended to use the "Multiple scans" mode when applying filters.
+        </p>
+      </ion-item>
+    </div>
+
+    <div [hidden]="outputBlock.errorMessage === undefined">
+      <ion-item no-lines>
+        <label for="_errorMessage">
+          <h2 color="dark">Error Message</h2>
+        </label>
+        <input id="_errorMessage" [(ngModel)]="outputBlock.errorMessage" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p>
+          The error message to show when the acquired value doesn't match the Filter regular expression
+        </p>
+      </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'barcode'">
