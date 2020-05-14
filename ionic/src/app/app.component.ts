@@ -239,6 +239,7 @@ export class MyApp {
         if (settings.outputProfiles) {
           settings.outputProfiles.forEach(outputProfile => {
             outputProfile.outputBlocks.forEach(outputBlock => {
+              // skip output
               if (outputBlock.type == 'select_option' && typeof outputBlock.skipOutput == 'undefined') {
                 outputBlock.skipOutput = false;
               } else if (outputBlock.type == 'http' && typeof outputBlock.skipOutput == 'undefined') {
@@ -248,9 +249,20 @@ export class MyApp {
               } else if (outputBlock.type == 'function' && typeof outputBlock.skipOutput == 'undefined') {
                 outputBlock.skipOutput = false;
               }
+
+              // filter
               if ((outputBlock.type == 'barcode' || outputBlock.value == 'number' || outputBlock.value == 'text') && typeof outputBlock.filter == 'undefined') {
                 outputBlock.filter = null;
                 outputBlock.errorMessage = null;
+              }
+
+              // default value
+              if (typeof outputBlock.defaultValue == 'undefined') {
+                if (outputBlock.value == 'number') {
+                  outputBlock.defaultValue = '1';
+                } else if (outputBlock.value == 'text') {
+                  outputBlock.defaultValue = null;
+                }
               }
             });
           })

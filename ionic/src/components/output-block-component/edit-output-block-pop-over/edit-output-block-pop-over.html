@@ -48,6 +48,21 @@
       </ion-item>
     </div>
 
+    <div [hidden]="outputBlock.defaultValue === undefined">
+      <ion-item no-lines>
+        <label for="_defaultValue">
+          <h2 color="dark">Default Value</h2>
+        </label>
+        <input id="_defaultValue" [(ngModel)]="outputBlock.defaultValue" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p>
+          The value that should be used when no input is provided
+        </p>
+      </ion-item>
+    </div>
+
     <div [hidden]="outputBlock.filter === undefined">
       <ion-item no-lines>
         <label for="_filterValue">

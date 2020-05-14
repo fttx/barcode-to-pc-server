@@ -17,6 +17,11 @@ export class OutputBlockModel {
      */
     value: string;
     /**
+     * Used in components like TEXT and NUMBER, where the user can choose to not
+     * enter the data by pressing the OK button
+     */
+    defaultValue?: string;
+    /**
      * A block is editable if the user is allowed to edit the component
      * value through the UI
      */
