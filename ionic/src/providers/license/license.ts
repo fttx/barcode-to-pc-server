@@ -136,6 +136,11 @@ export class LicenseProvider {
         }
 
         if (serial) {
+          let everActivated = this.store.get(Config.STORAGE_LICENSE_EVER_ACTIVATED, false);
+          if (!everActivated) {
+            this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+          }
+          this.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
           this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
         }
       } else {
