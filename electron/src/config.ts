@@ -48,4 +48,5 @@ export class Config {
   public static STORAGE_SCAN_SESSIONS = 'storage_scan_sessions';
   public static STORAGE_SETTINGS = 'storage_settings';
   public static STORAGE_LAST_VERSION = 'storage_last_version';
+  public static STORAGE_LICENSE_EVER_ACTIVATED = 'storage_license_ever_activated';
 }
