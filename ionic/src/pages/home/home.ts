@@ -289,7 +289,7 @@ export class HomePage {
       })
     });
 
-    this.electronProvider.ipcRenderer.on(requestModel.UNDO_INFINITE_LOOP, (e, request: requestModelUndoInfiniteLoop) => {
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_UNDO_INFINITE_LOOP, (e, request: requestModelUndoInfiniteLoop) => {
       this.licenseProvider.limitMonthlyScans(-request.count);
     });
   }
