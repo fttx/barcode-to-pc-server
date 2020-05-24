@@ -1,4 +1,5 @@
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, Tray, systemPreferences } from 'electron';
+import { execFileSync } from 'child_process';
+import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, systemPreferences, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
 import * as _path from 'path';
@@ -102,21 +103,22 @@ export class UiHandler implements Handler {
     private setMacOSTray() {
         let black = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/icon.png'));
         let white = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconHighlight.png'));
-        if (systemPreferences.isDarkMode()) {
-            if (this.tray == null) {
-                this.tray = new Tray(white);
-            } else {
-                this.tray.setImage(white);
-            }
-            this.tray.setPressedImage(white);
+        // systemPreferences.isDarkMode() is not reilable with electron@4.0.3
+        // For this reason we use an external executable to check the settings
+        // See: https://github.com/fttx/read-darkmode
+        let readDarkModeExecutable = _path.join(__dirname, '/../../../read-darkmode').replace('app.asar', 'app.asar.unpacked');
+        let result = execFileSync(readDarkModeExecutable).toString().trim();
+        console.log(readDarkModeExecutable)
+        if (result == 'dark') {
+            if (this.tray == null) this.tray = new Tray(white);
+            // Always update the icon image: we don't know if it's the first
+            // time that setMacOSTray() is called.
+            this.tray.setImage(white);
         } else {
-            if (this.tray == null) {
-                this.tray = new Tray(black);
-            } else {
-                this.tray.setImage(black);
-            }
-            this.tray.setPressedImage(white);
+            if (this.tray == null) this.tray = new Tray(black);
+            this.tray.setImage(black);
         }
+        this.tray.setPressedImage(white);
     }
 
     private updateTray(forceMacOSUpdate = false) {

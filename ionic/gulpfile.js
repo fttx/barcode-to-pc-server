@@ -79,13 +79,18 @@ gulp.task('ionic:build', ['mkdir', 'ionic:install'], () => {
 });
 
 gulp.task('electron:assets', ['mkdir'], () => {
-  return gulp // when this task is used as dependency from another task it will wait for this task to complete
+  return gulp  // when this task is used as dependency from another task it will wait for this task to complete
     .src(['../electron/src/assets/**/*'])
-    .pipe(gulp.dest('../dist/electron/src/assets/'))
+    .pipe(gulp.dest('../dist/electron/src/assets/'));
 });
 
+gulp.task('electron:executables', ['mkdir'], async () => {
+  return gulp
+    .src(['../electron/read-darkmode'])
+    .pipe(gulp.dest('../dist'))
+});
 
-gulp.task('build', ['electron:resources', 'electron:tsc', 'ionic:build', 'electron:assets']);
+gulp.task('build', ['electron:resources', 'electron:tsc', 'ionic:build', 'electron:assets', 'electron:executables']);
 
 gulp.task('dist', ['build'], () => {
   return electronBuilder.build({ projectDir: '../dist' });
