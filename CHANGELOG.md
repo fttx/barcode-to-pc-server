@@ -16,6 +16,25 @@
 ### Security
 -->
 
+## [v3.10.0] - 2020-05-30
+
+### Added
+
+- "Default value" parameter for the NUMBER and TEXT components
+- Filters for the BARCODE, NUMBER and TEXT components
+- "Skip Output" option for the SELECT_OPTION component
+
+### Changed
+
+- HTTP component will now output the response data
+- RUN component will now output the stdout value
+- Improve UI usability & consistency
+- Disable the CSV quotes by default
+
+### Fixed
+
+- Empty CSV lines issue
+
 ## [v3.9.0] - 2020-05-09
 
 ### Added
@@ -279,6 +298,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.10.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.9.0...v3.10.0
 [v3.9.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.8.0...v3.9.0
 [v3.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.7.0...v3.8.0
 [v3.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.1...v3.7.0
