@@ -43,7 +43,7 @@ export class OutputBlockModel {
      * http for http requests
      * select_options is used to store CSV values
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -88,6 +88,14 @@ export class OutputBlockModel {
      */
     filter?: string;
     errorMessage?: string;
+
+    /**
+     * Parameters for the CSV_LOOKUP component
+     */
+    csvFile?: string;
+    searchColumn?: number;
+    resultColumn?: number;
+    notFoundValue?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

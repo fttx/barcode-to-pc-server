@@ -91,6 +91,7 @@ export class SettingsPage {
       { name: 'SELECT_OPTION', value: '', type: 'select_option', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true, skipOutput: false },
       { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false },
+      { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '' },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
     ];
   }

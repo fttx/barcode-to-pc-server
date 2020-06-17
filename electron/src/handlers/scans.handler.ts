@@ -14,6 +14,7 @@ import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
+import * as parse from 'csv-parse/lib/sync'
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -112,6 +113,23 @@ export class ScansHandler implements Handler {
                             }
                             break;
                         }
+                        case 'csv_lookup': {
+                            try {
+                                const content = fs.readFileSync(outputBlock.csvFile).toString().replace(/^\ufeff/, '')
+                                const records: any[] = parse(content, { columns: false, ltrim: true, rtrim: true, });
+                                const resultRow = records.find(x => x[outputBlock.searchColumn - 1] == outputBlock.value);
+                                outputBlock.value = resultRow[outputBlock.resultColumn - 1];
+                                this.typeString(outputBlock.value)
+                            } catch (error) {
+                                // If there is an error opening the file: do nothing
+                                if (error.code == 'ENOENT') continue;
+
+                                // If there is an error finding the desired columns
+                                outputBlock.value = outputBlock.notFoundValue;
+                            }
+                            outputBloksValueChanged = true;
+                            break;
+                        }
                     } // end switch
                 } // end for
 
@@ -138,6 +156,9 @@ export class ScansHandler implements Handler {
                         scan_session_name: scanSession.name,
                         device_name: null,
                         select_option: null,
+                        run: null,
+                        http: null,
+                        csv_lookup: null,
                     };
                     // Search if there is a corresponding Output component to assign to the NULL variables
                     let keys = Object.keys(variables);

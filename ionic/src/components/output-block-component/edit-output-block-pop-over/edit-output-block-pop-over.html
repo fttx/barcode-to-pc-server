@@ -261,6 +261,64 @@
       </ion-item>
     </div>
 
+    <div [hidden]="outputBlock.type != 'csv_lookup'">
+      <ion-item no-lines text-wrap>
+        <p>
+          Allows you to match field values inside CSV files and then output the corresponding field value of another column.
+        </p>
+      </ion-item>
+
+      <ion-item>
+        <label for="_searchValue">Search value</label>
+        <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. Field1" />
+      </ion-item>
+      <ion-item text-wrap>
+        <p>
+          The text or number to search in the CSV file. You can use the variables listed below to search values coming from other components.
+          <br>
+          <br>
+          Example:<br>
+          <code ngNonBindable>{{ barcode }}</code><br><br>
+
+          Available variables (lowercase): <br>
+          <code>
+                <input type="text" value="barcode" disabled class="example-variable" /> <br>
+                <input type="text" value="number" disabled class="example-variable" /> <br>
+                <input type="text" value="text" disabled class="example-variable" /> <br>
+                <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+                <input type="text" value="date" disabled class="example-variable" /> <br>
+                <input type="text" value="time" disabled class="example-variable" /> <br>
+                <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+                <input type="text" value="device_name" disabled class="example-variable" /><br>
+                <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            </code>
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_csvFilePath">CSV Input File Path</label>
+        <input id="_csvFilePath" [(ngModel)]="outputBlock.csvFile" class="inline-input" type="text" placeholder="C:&#92;data.csv" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_searchColumnIndex">Search Column Index</label>
+        <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumn" class="inline-input" type="number" placeholder="1" />
+        <p>The column number (starting with 1 for the left-most column of the CSV file) that contains the searched value</p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_resultColumnIndex">Result Column Index</label>
+        <input id="_resultColumnIndex" [(ngModel)]="outputBlock.resultColumn" class="inline-input" type="number" placeholder="2" />
+        <p>The column number (starting with 1 for the left-most column of the CSV file) that contains the return value</p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_notFoundValue">Not Found value</label>
+        <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
+        <p>The text to output when the lookup doesn't produce matches</p>
+      </ion-item>
+    </div>
+
     <div [hidden]="outputBlock.type != 'beep'">
       <ion-item no-lines text-wrap>
         <p>
