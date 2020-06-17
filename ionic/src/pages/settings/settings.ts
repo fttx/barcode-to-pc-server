@@ -314,8 +314,12 @@ export class SettingsPage {
     this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
   }
 
+  private _settingsChanged = false;
+  private settingsChangedDebounceTimeout = null;
   settingsChanged() {
-    return this.lastSavedSettings != JSON.stringify(this.settings);
+    if (this.settingsChangedDebounceTimeout != null) clearTimeout(this.settingsChangedDebounceTimeout);
+    this.settingsChangedDebounceTimeout = setTimeout(() => { this._settingsChanged = this.lastSavedSettings != JSON.stringify(this.settings) }, 200)
+    return this._settingsChanged;
   }
 
   goBack() {
@@ -366,7 +370,6 @@ export class SettingsPage {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    console.log('esc');
     if (event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) { // esc
       this.goBack();
     }
