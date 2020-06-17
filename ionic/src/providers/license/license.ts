@@ -10,7 +10,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
-
+declare global { interface Window { confetti: any; } }
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -141,7 +141,8 @@ export class LicenseProvider {
             this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
           }
           this.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
-          this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully')
+          this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully');
+          window.confetti.start(3000);
         }
       } else {
         // When the license-server says that the subscription is not active
