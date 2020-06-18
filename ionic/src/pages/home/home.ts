@@ -16,13 +16,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-
-/**
- * Generated class for the HomePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { throttle } from 'helpful-decorators';
 
 @Component({
   selector: 'page-home',
@@ -82,9 +76,19 @@ export class HomePage {
   }
 
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
+  keyup(event: KeyboardEvent) {
     if (event.keyCode == 27) {
       this.onSearchCancel(null);
+    }
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  @throttle(100)
+  keydown(event: KeyboardEvent) {
+    if (event.keyCode == 40) {
+      if (this.selectedScanSessionIndex < this.filteredScanSessions().length - 1) this.selectedScanSessionIndex++;
+    } else if (event.keyCode == 38) {
+      if (this.selectedScanSessionIndex > 0) this.selectedScanSessionIndex--;
     }
   }
 
@@ -469,7 +473,7 @@ export class ConnectedClientsPopover {
   ) {
     this.connectedDevices = this.navParams.get('connectedDevices');
   }
-}
+} // ConnectedClientsPopover
 
 
 // ScanSessionContextMenuPopover
@@ -529,7 +533,7 @@ export class ScanSessionContextMenuPopover {
     this.close();
     this.events.publish('delete:scanSession', this.scanSession)
   }
-}
+} // ScanSessionContextMenuPopover
 
 
 // MainMenuPopover
@@ -569,7 +573,7 @@ export class MainMenuPopover {
   }
 }
 
-
+// QrCodePairingModal
 @Component({
   templateUrl: 'pop-over-qrcode.html'
 })
@@ -587,4 +591,4 @@ export class QrCodePairingModal {
   close() {
     this.viewCtrl.dismiss();
   }
-}
+} // QrCodePairingModal
