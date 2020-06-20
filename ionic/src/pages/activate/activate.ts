@@ -77,4 +77,8 @@ export class ActivatePage {
     }
     return number + '';
   }
+
+  isUnlimited() {
+    return this.licenseProvider.activePlan == LicenseProvider.PLAN_UNLIMITED;
+  }
 }

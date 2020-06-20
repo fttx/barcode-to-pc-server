@@ -9,8 +9,25 @@ page-activate {
     .serial-container-active {
         background-color: #cdffbe
     }
-    
+
     a {
         cursor: pointer;
+    }
+
+    .license-plate {
+        filter: drop-shadow(0 0 0.75rem #dadada);
+        background: white;
+        width: 94%;
+        margin-top: -9px;
+        margin-bottom: 33px;
+        border: 1px solid #e4e4e4;
+    }
+
+    .badge {
+        position: absolute;
+        z-index: 1;
+        height: 128px;
+        right: 11px;
+        top: 134px;
     }
 }

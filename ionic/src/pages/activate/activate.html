@@ -46,15 +46,15 @@
     </div>
 
     <ion-item no-lines text-wrap no-padding>
-      <b>License details</b> <br>
-      <ion-grid>
+      <b [hidden]="licenseProvider.isSubscribed()">License details</b> <br>
+      <img class="badge" [hidden]="!licenseProvider.isSubscribed()" src="assets/activate/badge.png" alt="">
+      <ion-grid [class.license-plate]="licenseProvider.isSubscribed()">
         <ion-row>
-          <ion-col>License</ion-col>
-          <ion-col>{{ licenseProvider.getPlanName() }} ({{  licenseProvider.activePlan
-              }})</ion-col>
+          <ion-col>License name</ion-col>
+          <ion-col>{{ licenseProvider.getPlanName() }}</ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col [hidden]="false && licenseProvider.isSubscribed()">Next reset date</ion-col>
+        <ion-row [hidden]="isUnlimited()">
+          <ion-col>Next reset date</ion-col>
           <!-- <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col> -->
           <ion-col>{{ getNextChargeDate() }}</ion-col>
         </ion-row>
