@@ -16,6 +16,23 @@
 ### Security
 -->
 
+## [v3.11.0] - 2020-07-04
+
+### Added
+
+- OCR support
+- CSV_LOOKUP Component
+- More CSV file name variables
+- Vibration feedback option
+
+### Changed
+
+- Improve accessibility
+
+### Fixed
+
+- Keyboard input field issue
+
 ## [v3.10.0] - 2020-05-30
 
 ### Added
@@ -298,6 +315,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.11.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.10.0...v3.11.0
 [v3.10.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.9.0...v3.10.0
 [v3.9.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.8.0...v3.9.0
 [v3.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.7.0...v3.8.0
