@@ -268,6 +268,18 @@ export class MyApp {
           })
         }
 
+        // v3.11.1
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              // skip output
+              if (outputBlock.type == 'csv_lookup' && typeof outputBlock.skipOutput == 'undefined') {
+                outputBlock.skipOutput = false;
+              }
+            });
+          })
+        }
+
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;
