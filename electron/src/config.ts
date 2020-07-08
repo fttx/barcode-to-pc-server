@@ -23,6 +23,7 @@ export class Config {
   public static URL_PRICING = Config.URL_WEBSITE + '/pricing/';
   public static URL_DOWNLOAD_SERVER = Config.URL_WEBSITE + '/#download-server';
   public static URL_FAQ = Config.URL_WEBSITE + '/frequently-asked-questions/';
+  public static URL_SUPPORTED_KEY_IDENTIFIERS = Config.URL_WEBSITE + '/supported-key-identifiers/';
   public static URL_FAQ_APP_DOESNT_FIND_COMPUTER = Config.URL_FAQ + '#app-doesnt-find-computer';
   public static URL_API = Config.URL_WEBSITE + "http-api.json"
   public static URL_GITHUB_SERVER = 'https://github.com/fttx/barcode-to-pc-server';
@@ -31,7 +32,11 @@ export class Config {
   public static URL_GITHUB_CHANGELOG = 'https://raw.githubusercontent.com/fttx/barcode-to-pc-server/master/CHANGELOG.md';
 
   public static URL_TUTORIAL_KEYBOARD_EMULATION = Config.URL_WEBSITE + '/tutorial/keyboard-emulation/';
-  public static URL_TUTORIAL_USE_VARIABLES = Config.URL_WEBSITE + '/tutorial/how-to-use-the-javascript-function-component/#setup';
+  public static URL_TUTORIAL_JAVASCRIPT_FUNCTION = Config.URL_WEBSITE + '/tutorial/how-to-use-the-javascript-function-component/';
+  public static URL_TUTORIAL_IF = Config.URL_WEBSITE + '/tutorial/use-conditions-in-the-output-template/';
+  public static URL_TUTORIAL_RUN = Config.URL_WEBSITE + '/tutorial/how-to-use-the-run-output-component/';
+  public static URL_TUTORIAL_RUN_PASS_PARAMETER = Config.URL_WEBSITE + '/tutorial/how-to-use-the-run-output-component/#pass-parameters';
+  public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = Config.URL_WEBSITE + '/tutorial/how-to-create-output-templates/';
 
   public static URL_PAIR = 'http://app.barcodetopc.com';
 

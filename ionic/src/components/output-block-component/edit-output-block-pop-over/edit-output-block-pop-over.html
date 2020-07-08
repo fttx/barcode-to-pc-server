@@ -3,6 +3,9 @@
     <ion-title>{{ outputBlock.name }}</ion-title>
 
     <ion-buttons end>
+      <button ion-button icon-end icon-only solid [color]="color" (click)="onHelpClick(outputBlock)">
+        <ion-icon name="help"></ion-icon>
+      </button>
       <button ion-button icon-end icon-only solid [color]="color" (click)="onCloseClick()">
         <ion-icon name="close"></ion-icon>
       </button>
@@ -120,7 +123,7 @@
       <ion-item [hidden]="outputBlock.editable !== true">
         <label for="_valueCustomKey" color="dark">
           <h2>Key identifier</h2>
-          <p>Insert one identifier present in <a class="clickable" (click)="electronProvider.shell.openExternal('https://barcodetopc.com/supported-key-identifiers/')">this list</a>.</p>
+          <p>Insert one identifier present in <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedKeyIdentifiers())">this list</a>.</p>
         </label>
         <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="eg. numpad_9" />
       </ion-item>
@@ -256,8 +259,17 @@
                         <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
                         <input type="text" value="device_name" disabled class="example-variable" /><br>
                         <input type="text" value="select_option" disabled class="example-variable" /> <br>
+                        <!-- Remember to update also the article:
+                        https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters -->
                     </code><br>
         </p>
+      </ion-item>
+
+      <ion-item>
+        <info-box title="Info">
+          To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.<br><br>
+          See <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialRunPassParameter())">this article</a> for more info.
+        </info-box>
       </ion-item>
     </div>
 
@@ -428,7 +440,7 @@
   </ion-item>
 
   <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
-  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'run')">
+  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup')">
     <info-box title="Info">
       To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.<br><br>
       See <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialUseVariables())">this example</a>.

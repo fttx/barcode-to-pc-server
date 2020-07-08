@@ -80,12 +80,39 @@ export class EditOutputBlockPage {
     console.log('onBarcodeFormatsChange() => enabled formats=', this.outputBlock.enabledFormats)
   }
 
+  onHelpClick(outputBlock: OutputBlockModel) {
+    switch (outputBlock.type) {
+      case 'barcode': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'key': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'text': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'variable': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'function': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_JAVASCRIPT_FUNCTION); break;
+      case 'barcode': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'delay': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'if': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IF); break;
+      case 'endif': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IF); break;
+      case 'http': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'run': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_RUN); break;
+      case 'select_option': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'beep': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'csv_lookup': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+    }
+  }
+
   onCloseClick() {
     this.viewCtrl.dismiss();
   }
 
   getUrlTutorialUseVariables() {
-    return Config.URL_TUTORIAL_USE_VARIABLES;
+    return Config.URL_TUTORIAL_JAVASCRIPT_FUNCTION;
+  }
+
+  getUrlTutorialRunPassParameter() {
+    return Config.URL_TUTORIAL_RUN_PASS_PARAMETER;
+  }
+
+  getUrlSupportedKeyIdentifiers() {
+    return Config.URL_SUPPORTED_KEY_IDENTIFIERS;
   }
 
   async testAudio() {
