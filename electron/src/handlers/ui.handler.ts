@@ -221,7 +221,6 @@ export class UiHandler implements Handler {
         } else {
             //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
-            this.mainWindow.webContents.openDevTools(); // REMOVE THIS!
         }
 
         if (process.platform === 'darwin') {
