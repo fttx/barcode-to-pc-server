@@ -33,7 +33,7 @@ export class UiHandler implements Handler {
     static IsFirstInstanceLaunch = true;
 
     private static instance: UiHandler;
-    private constructor(settingsHandler: SettingsHandler, ) {
+    private constructor(settingsHandler: SettingsHandler,) {
         if (!app.requestSingleInstanceLock()) {
             this.quitImmediately = true;
             app.quit();
@@ -107,7 +107,8 @@ export class UiHandler implements Handler {
         // For this reason we use an external executable to check the settings
         // See: https://github.com/fttx/read-darkmode
         let readDarkModeExecutable = _path.join(__dirname, '/../../../read-darkmode').replace('app.asar', 'app.asar.unpacked');
-        let result = execFileSync(readDarkModeExecutable).toString().trim();
+        let result = 'light';
+        try { result = execFileSync(readDarkModeExecutable).toString().trim(); } catch { }
         if (result == 'dark') {
             if (this.tray == null) this.tray = new Tray(white);
             // Always update the icon image: we don't know if it's the first
