@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, remote, shell, Menu, MenuItem } from 'electron';
 import ElectronStore from 'electron-store';
+import * as v4 from 'uuid/v4';
 
 declare var window: any;
 // If you import a module but never use any of the imported values other than as TypeScript types,
@@ -12,7 +13,7 @@ declare var window: any;
 */
 @Injectable()
 export class ElectronProvider {
-  public uuid = '';
+  public uuid = 'default-uuid';
 
   ipcRenderer: typeof ipcRenderer;
   dialog: typeof remote.dialog;
@@ -24,6 +25,7 @@ export class ElectronProvider {
   menuItem: typeof MenuItem;
   ElectronStore: typeof ElectronStore;
   nodeMachineId;
+  v4: typeof v4;
 
   constructor(
   ) {
@@ -42,7 +44,20 @@ export class ElectronProvider {
       this.ElectronStore = electron.remote.require('electron-store');
       this.nodeMachineId = electron.remote.require('node-machine-id');
 
-      this.uuid = this.nodeMachineId.machineIdSync();
+      try {
+        this.uuid = this.nodeMachineId.machineIdSync();
+      } catch {
+        // Generate a one-time random UUID and save it
+        let store = new this.ElectronStore();
+        let uuid = store.get('uuid', null);
+        if (uuid == null) {
+          this.v4 = electron.remote.require('uuid/v4');
+          this.uuid = v4();
+          store.set('uuid', this.uuid);
+        } else {
+          this.uuid = uuid;
+        }
+      }
     }
   }
 
