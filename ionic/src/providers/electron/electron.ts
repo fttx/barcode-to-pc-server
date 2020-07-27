@@ -42,7 +42,12 @@ export class ElectronProvider {
       this.ElectronStore = electron.remote.require('electron-store');
       this.nodeMachineId = electron.remote.require('node-machine-id');
 
-      this.uuid = this.nodeMachineId.machineIdSync();
+      try {
+        this.uuid = this.nodeMachineId.machineIdSync();
+      } catch (error) {
+        this.uuid = 'uuid-error'
+        console.log("UUID error: ", error)
+      }
     }
   }
 
