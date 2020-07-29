@@ -16,6 +16,14 @@
 ### Security
 -->
 
+## [v3.11.2] - 2020-07-29
+
+### Fixed
+
+- "enableTray" error
+- "image not found" error
+
+
 ## [v3.11.1] - 2020-07-06
 
 ### Added
@@ -321,6 +329,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.11.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.1...v3.11.2
 [v3.11.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.0...v3.11.1
 [v3.11.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.10.0...v3.11.0
 [v3.10.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.9.0...v3.10.0
