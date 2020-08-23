@@ -1,5 +1,5 @@
-import { OutputProfileModel } from "./output-profile.model";
 import { OutputBlockModel } from "./output-block.model";
+import { OutputProfileModel } from "./output-profile.model";
 
 /**
  * When editing this file rember to reflect the same changes to
@@ -18,6 +18,7 @@ export abstract class responseModel {
     public static readonly ACTION_UPDATE_SETTINGS = 'update_output_profiles';
     public static readonly ACTION_REQUEST_SCAN_SESSION_UPDATE = 'requestScanSessionUpdate';
     public static readonly ACTION_KICK = 'kick';
+    public static readonly ACTION_REMOTE_COMPONENT_RESPONSE = 'remoteComponentResponse';
     public static readonly EVENT_ON_SMARTPHONE_CHARGE = 'on_smartphone_charge';
 }
 
@@ -130,6 +131,20 @@ export class responseModelKick extends responseModel {
 
     public fromObject(obj: ({ message: string })) {
         this.message = obj.message;
+        return this;
+    }
+}
+
+export class responseModelRemoteComponentResponse extends responseModel {
+    action = responseModel.ACTION_REMOTE_COMPONENT_RESPONSE;
+    id: number;
+    errorMessage: string;
+    outputBlock: OutputBlockModel;
+
+    public fromObject(obj: ({ id: number, errorMessage: string, outputBlock: OutputBlockModel, })) {
+        this.id = obj.id;
+        this.errorMessage = obj.errorMessage;
+        this.outputBlock = obj.outputBlock;
         return this;
     }
 }

@@ -2,12 +2,11 @@ import { ipcMain } from 'electron';
 import * as http from 'http';
 import { ReplaySubject } from 'rxjs';
 import * as WebSocket from 'ws';
+import { OutputProfileModel } from '../../../ionic/src/models/output-profile.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import ElectronStore = require('electron-store');
-import { OutputProfileModel } from '../../../ionic/src/models/output-profile.model';
-import { responseModel } from '../../../ionic/src/models/response.model';
 
 export class SettingsHandler implements Handler {
     public onSettingsChanged: ReplaySubject<SettingsModel> = new ReplaySubject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.

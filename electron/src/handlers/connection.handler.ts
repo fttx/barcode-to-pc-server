@@ -3,19 +3,17 @@ import { app, dialog, ipcMain } from 'electron';
 import * as http from 'http';
 import * as network from 'network';
 import * as os from 'os';
+import { Handler } from 'src/models/handler.model';
 import * as WebSocket from 'ws';
-
 import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
 import {
-    responseModelHelo,
+    responseModel, responseModelHelo,
     responseModelKick,
     responseModelPong,
-    responseModelUpdateSettings,
-    responseModel,
+    responseModelUpdateSettings
 } from '../../../ionic/src/models/response.model';
 import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
-import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 

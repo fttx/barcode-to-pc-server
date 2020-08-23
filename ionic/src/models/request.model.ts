@@ -1,3 +1,4 @@
+import { OutputBlockModel } from './output-block.model';
 import { ScanSessionModel } from './scan-session.model';
 import { ScanModel } from './scan.model';
 
@@ -21,6 +22,7 @@ export abstract class requestModel {
     public static readonly ACTION_CLEAR_SCAN_SESSIONS = 'clearScanSessions';
     public static readonly ACTION_ON_SMARTPHONE_CHARGE = 'action_on_smartphone_charge';
     public static readonly ACTION_UNDO_INFINITE_LOOP = 'undo_infinite_loop';
+    public static readonly ACTION_REMOTE_COMPONENT = 'remoteComponent';
 }
 
 /**
@@ -126,6 +128,18 @@ export class requestModelUndoInfiniteLoop extends requestModel {
 
     public fromObject(obj: ({ count: number })) {
         this.count = obj.count;
+        return this;
+    }
+}
+
+export class requestModelRemoteComponent extends requestModel {
+    action = requestModel.ACTION_REMOTE_COMPONENT;
+    id: number;
+    outputBlock: OutputBlockModel;
+
+    public fromObject(obj: ({ id: number, outputBlock: OutputBlockModel })) {
+        this.id = obj.id;
+        this.outputBlock = obj.outputBlock;
         return this;
     }
 }

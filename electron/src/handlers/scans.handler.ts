@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { exec, execSync } from 'child_process';
+import * as parse from 'csv-parse/lib/sync';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
 import * as http from 'http';
@@ -8,16 +9,17 @@ import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
-import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions } from '../../../ionic/src/models/request.model';
-import { responseModelPutScanAck } from '../../../ionic/src/models/response.model';
+import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions, requestModelRun } from '../../../ionic/src/models/request.model';
+import { responseModelPutScanAck, responseModelRemoteComponentResponse, responseModelMessageDialog } from '../../../ionic/src/models/response.model';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
-import * as parse from 'csv-parse/lib/sync'
+import { SemVer, lt } from 'semver';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
+    private devices = {};
 
     private constructor(
         private settingsHandler: SettingsHandler,
@@ -73,61 +75,80 @@ export class ScansHandler implements Handler {
                             break;
                         }
                         case 'http': {
-                            console.log('HTTP: ', outputBlock)
-                            if (outputBlock.skipOutput) {
-                                axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 });
-                            } else {
-                                try {
-                                    let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
-                                    if (typeof response == 'object') {
-                                        response = JSON.stringify(response);
+                            if (lt(this.devices[request.deviceId].version, new SemVer('3.12.0'))) {
+                                /** @deprecated */
+                                if (outputBlock.skipOutput) {
+                                    axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 });
+                                } else {
+                                    try {
+                                        let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
+                                        if (typeof response == 'object') {
+                                            response = JSON.stringify(response);
+                                        }
+                                        outputBlock.value = response;
+                                        // message = request;
+                                        this.typeString(outputBlock.value)
+                                    } catch (error) {
+                                        // Do not change the value when the request fails to allow the Send again feature to work
+                                        // if (error.code) {
+                                        //      if (error.code == 'ECONNREFUSED') outputBlock.value = 'Connection refused';
+                                        // }
                                     }
-                                    outputBlock.value = response;
-                                    message = request;
-                                    this.typeString(outputBlock.value)
-                                } catch (error) {
-                                    // Do not change the value when the request fails to allow the Send again feature to work
-                                    // if (error.code) {
-                                    //      if (error.code == 'ECONNREFUSED') outputBlock.value = 'Connection refused';
-                                    // }
+                                    outputBloksValueChanged = true;
                                 }
-                                outputBloksValueChanged = true;
+                            } else {
+                                // New versions, where the app is >= v3.12.0
+                                if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
+                                // When the skipOutput is true, we don't do anything.
+                                // At this point the component has been already
+                                // executed by the ACTION_REMOTE_COMPONENT request.
+                                // The same applies to the RUN and CSV LOOKUP components.
                             }
                             break;
                         }
                         case 'run': {
-                            if (outputBlock.skipOutput) {
-                                exec(outputBlock.value, { cwd: os.homedir(), timeout: 10000 })
-                            } else {
-                                try {
-                                    outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
-                                    this.typeString(outputBlock.value)
-                                } catch (error) {
-                                    // Do not change the value when the command fails to allow the Send again feature to work
-                                    // if (error.code) {
-                                    //     if (error.code == 'ETIMEDOUT') outputBlock.value = 'Timeout. Max allowed 10 seconds';
-                                    //     if (error.code == 'ENOBUFS') outputBlock.value = 'Too much output. Max allowed 1024 bytes';
-                                    // }
+                            if (lt(this.devices[request.deviceId].version, new SemVer('3.12.0'))) {
+                                /** @deprecated */
+                                if (outputBlock.skipOutput) {
+                                    exec(outputBlock.value, { cwd: os.homedir(), timeout: 10000 })
+                                } else {
+                                    try {
+                                        outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                                        this.typeString(outputBlock.value)
+                                    } catch (error) {
+                                        // Do not change the value when the command fails to allow the Send again feature to work
+                                        // if (error.code) {
+                                        //     if (error.code == 'ETIMEDOUT') outputBlock.value = 'Timeout. Max allowed 10 seconds';
+                                        //     if (error.code == 'ENOBUFS') outputBlock.value = 'Too much output. Max allowed 1024 bytes';
+                                        // }
+                                    }
+                                    outputBloksValueChanged = true;
                                 }
-                                outputBloksValueChanged = true;
+                            } else {
+                                if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
                             }
                             break;
                         }
                         case 'csv_lookup': {
-                            try {
-                                const content = fs.readFileSync(outputBlock.csvFile).toString().replace(/^\ufeff/, '')
-                                const records: any[] = parse(content, { columns: false, ltrim: true, rtrim: true, });
-                                const resultRow = records.find(x => x[outputBlock.searchColumn - 1] == outputBlock.value);
-                                outputBlock.value = resultRow[outputBlock.resultColumn - 1];
-                                this.typeString(outputBlock.value)
-                            } catch (error) {
-                                // If there is an error opening the file: do nothing
-                                if (error.code == 'ENOENT') continue;
+                            if (lt(this.devices[request.deviceId].version, new SemVer('3.12.0'))) {
+                                /** @deprecated */
+                                try {
+                                    const content = fs.readFileSync(outputBlock.csvFile).toString().replace(/^\ufeff/, '')
+                                    const records: any[] = parse(content, { columns: false, ltrim: true, rtrim: true, });
+                                    const resultRow = records.find(x => x[outputBlock.searchColumn - 1] == outputBlock.value);
+                                    outputBlock.value = resultRow[outputBlock.resultColumn - 1];
+                                    this.typeString(outputBlock.value)
+                                } catch (error) {
+                                    // If there is an error opening the file: do nothing
+                                    if (error.code == 'ENOENT') continue;
 
-                                // If there is an error finding the desired columns
-                                outputBlock.value = outputBlock.notFoundValue;
+                                    // If there is an error finding the desired columns
+                                    outputBlock.value = outputBlock.notFoundValue;
+                                }
+                                outputBloksValueChanged = true;
+                            } else {
+                                if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
                             }
-                            outputBloksValueChanged = true;
                             break;
                         }
                     } // end switch
@@ -220,8 +241,70 @@ export class ScansHandler implements Handler {
 
             case requestModel.ACTION_HELO: {
                 let request: requestModelHelo = message;
+                this.devices[request.deviceId] = {
+                    version: new SemVer(request.version),
+                    name: request.deviceName,
+                };
                 break;
             }
+
+            case requestModel.ACTION_REMOTE_COMPONENT: {
+                let request: requestModelRun = message;
+                let remoteComponentResponse = new responseModelRemoteComponentResponse();
+                let responseOutputBlock = request.outputBlock;
+                let errorMessage = null;
+
+                // Overrides the necessary values of the request.outputBlock
+                // object and sends it back to the app.
+                switch (request.outputBlock.type) {
+                    case 'http': {
+                        try {
+                            let response = (await axios.request({ url: request.outputBlock.value, method: request.outputBlock.method, timeout: 10000 })).data;
+                            if (typeof response == 'object') response = JSON.stringify(response);
+                            responseOutputBlock.value = response;
+                        } catch (error) {
+                            errorMessage = 'The HTTP ' + request.outputBlock.method.toUpperCase() + ' request failed. <br><br>Error code: ' + error.code; // ECONNREFUSED
+                        }
+                        break;
+                    }
+
+                    case 'run': {
+                        try {
+                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                        } catch (error) {
+                            let output = error.output.toString().substr(2);
+                            errorMessage = 'The RUN command failed.<br>';
+                            if (output.length) {
+                                errorMessage += '<br>Output: ' + output;
+                            } else {
+                                errorMessage += '<br>Output: null';
+                            }
+                            errorMessage += '<br>Exit status: ' + error.status;
+                        }
+                        break;
+                    }
+
+                    case 'csv_lookup': {
+                        try {
+                            const content = fs.readFileSync(request.outputBlock.csvFile).toString().replace(/^\ufeff/, '');
+                            const records: any[] = parse(content, { columns: false, ltrim: true, rtrim: true, });
+                            const resultRow = records.find(x => x[request.outputBlock.searchColumn - 1] == request.outputBlock.value);
+                            responseOutputBlock.value = resultRow[request.outputBlock.resultColumn - 1];
+                        } catch (error) {
+                            errorMessage = 'The CSV_LOOKUP component failed to access ' + request.outputBlock.csvFile + '<br>Make you sure the path is correct and that the server has the read permissions.<br><br>Error code: ' + error.code; // ENOENT
+                        }
+                        break;
+                    }
+                } // end switch(outputBlock.type)
+
+                remoteComponentResponse.fromObject({
+                    id: request.id,
+                    errorMessage: errorMessage,
+                    outputBlock: responseOutputBlock,
+                });
+                ws.send(JSON.stringify(remoteComponentResponse));
+                break;
+            } // end ACTION_REMOTE_COMPONENT
         }
         return message;
     }
