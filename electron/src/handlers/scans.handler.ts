@@ -7,15 +7,15 @@ import * as http from 'http';
 import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
+import { lt, SemVer } from 'semver';
 import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
-import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions, requestModelRun } from '../../../ionic/src/models/request.model';
-import { responseModelPutScanAck, responseModelRemoteComponentResponse, responseModelMessageDialog } from '../../../ionic/src/models/response.model';
+import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions, requestModelRemoteComponent } from '../../../ionic/src/models/request.model';
+import { responseModelPutScanAck, responseModelRemoteComponentResponse } from '../../../ionic/src/models/response.model';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
-import { SemVer, lt } from 'semver';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -249,7 +249,7 @@ export class ScansHandler implements Handler {
             }
 
             case requestModel.ACTION_REMOTE_COMPONENT: {
-                let request: requestModelRun = message;
+                let request: requestModelRemoteComponent = message;
                 let remoteComponentResponse = new responseModelRemoteComponentResponse();
                 let responseOutputBlock = request.outputBlock;
                 let errorMessage = null;
