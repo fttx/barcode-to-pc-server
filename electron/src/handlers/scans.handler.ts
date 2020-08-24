@@ -285,14 +285,26 @@ export class ScansHandler implements Handler {
                     }
 
                     case 'csv_lookup': {
+
+                        // Try to open the file
+                        let fileContent: string;
                         try {
-                            const content = fs.readFileSync(request.outputBlock.csvFile).toString().replace(/^\ufeff/, '');
-                            const records: any[] = parse(content, { columns: false, ltrim: true, rtrim: true, });
+                            fileContent = fs.readFileSync(request.outputBlock.csvFile).toString().replace(/^\ufeff/, '');
+                        } catch (error) {
+                            errorMessage = 'The CSV_LOOKUP component failed to access ' + request.outputBlock.csvFile + '<br>Make you sure the path is correct and that the server has the read permissions.<br><br>Error code: ' + error.code; // ENOENT
+                            break;
+                        }
+
+                        // Try to find the columns
+                        try {
+                            const records: any[] = parse(fileContent, { columns: false, ltrim: true, rtrim: true, });
                             const resultRow = records.find(x => x[request.outputBlock.searchColumn - 1] == request.outputBlock.value);
                             responseOutputBlock.value = resultRow[request.outputBlock.resultColumn - 1];
                         } catch (error) {
-                            errorMessage = 'The CSV_LOOKUP component failed to access ' + request.outputBlock.csvFile + '<br>Make you sure the path is correct and that the server has the read permissions.<br><br>Error code: ' + error.code; // ENOENT
+                            responseOutputBlock.value = request.outputBlock.notFoundValue;
+                            break;
                         }
+
                         break;
                     }
                 } // end switch(outputBlock.type)
