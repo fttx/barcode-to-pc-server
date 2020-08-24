@@ -263,6 +263,7 @@ export class ScansHandler implements Handler {
                             if (typeof response == 'object') response = JSON.stringify(response);
                             responseOutputBlock.value = response;
                         } catch (error) {
+                            responseOutputBlock.value = "";
                             errorMessage = 'The HTTP ' + request.outputBlock.method.toUpperCase() + ' request failed. <br><br>Error code: ' + error.code; // ECONNREFUSED
                         }
                         break;
@@ -272,9 +273,11 @@ export class ScansHandler implements Handler {
                         try {
                             responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
                         } catch (error) {
+                            responseOutputBlock.value = "";
                             let output = error.output.toString().substr(2);
                             errorMessage = 'The RUN command failed.<br>';
                             if (output.length) {
+                                responseOutputBlock.value = output;
                                 errorMessage += '<br>Output: ' + output;
                             } else {
                                 errorMessage += '<br>Output: null';
