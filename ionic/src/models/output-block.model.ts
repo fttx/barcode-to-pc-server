@@ -98,6 +98,7 @@ export class OutputBlockModel {
     searchColumn?: number;
     resultColumn?: number;
     notFoundValue?: string;
+    delimiter?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

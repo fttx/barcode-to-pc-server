@@ -329,6 +329,12 @@
         <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
         <p>The text to output when the lookup doesn't produce results</p>
       </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_delimiter">Delimiter character</label>
+        <input id="_delimiter" [(ngModel)]="outputBlock.delimiter" class="inline-input" type="text" placeholder="," />
+        <p>The field separator character</p>
+      </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'beep'">

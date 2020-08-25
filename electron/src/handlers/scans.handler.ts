@@ -300,7 +300,7 @@ export class ScansHandler implements Handler {
 
                         // Try to find the columns
                         try {
-                            const records: any[] = parse(fileContent, { columns: false, ltrim: true, rtrim: true, });
+                            const records: any[] = parse(fileContent, { columns: false, ltrim: true, rtrim: true, delimiter: request.outputBlock.delimiter });
                             const resultRow = records.find(x => x[request.outputBlock.searchColumn - 1] == request.outputBlock.value);
                             responseOutputBlock.value = resultRow[request.outputBlock.resultColumn - 1];
                         } catch (error) {
