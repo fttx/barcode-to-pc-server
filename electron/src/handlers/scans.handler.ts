@@ -172,6 +172,11 @@ export class ScansHandler implements Handler {
                         number: null,
                         text: null,
                         timestamp: (scanSession.date * 1000),
+                        // We use the date of the scan session.
+                        // We're not using the date from the Output template
+                        // because there isn't a way to tell if a block
+                        // contains a date since the DATE component is of
+                        // variable type
                         date: new Date(scanSession.date).toISOString().slice(0, 10),
                         time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
                         scan_session_name: scanSession.name,
