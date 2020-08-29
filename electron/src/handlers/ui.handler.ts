@@ -135,17 +135,18 @@ export class UiHandler implements Handler {
                     },
                 ];
                 if (process.platform == 'darwin') {
+                    // macOS
                     this.setMacOSTray();
                     menuItems.unshift({ label: 'Hide', role: 'hide' });
-                    menuItems.unshift({
-                        label: 'Show', click: () => {
-                            this.bringWindowUp();
-                        }
-                    });
+                    menuItems.unshift({ label: 'Show', click: () => { this.bringWindowUp(); } });
                 } else if (process.platform.indexOf('win') != -1) {
+                    // Windows
                     this.tray = new Tray(nativeImage.createFromPath((_path.join(__dirname, '/../assets/tray/windows/icon.ico'))));
                 } else {
+                    // Linux
                     this.tray = new Tray(nativeImage.createFromPath((_path.join(__dirname, '/../assets/tray/default.png'))));
+                    menuItems.unshift({ label: 'Hide', role: 'hide', click: () => { this.mainWindow.hide(); } });
+                    menuItems.unshift({ label: 'Show', click: () => { this.bringWindowUp(); } });
                 }
 
                 this.tray.on('click', (event, bounds) => {
