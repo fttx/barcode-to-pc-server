@@ -342,7 +342,11 @@ export class ScansHandler implements Handler {
         }
 
         if (this.settingsHandler.typeMethod == 'keyboard') {
-            robotjs.typeString(string);
+            if (process.platform === 'linux') {
+                ScansHandler.TypeStringLinuxFix(string);
+            } else {
+                robotjs.typeString(string);
+            }
         } else {
             var ctrlKey = process.platform === "darwin" ? "command" : "control";
             clipboard.writeText(string);
@@ -356,5 +360,26 @@ export class ScansHandler implements Handler {
 
     onWsError(ws: WebSocket, err: Error) {
         throw new Error("Method not implemented.");
+    }
+
+    /**
+     * TODO: stop using this function after updating robotjs, related to: https://github.com/fttx/barcode-to-pc-server/issues/219
+     * Fix source: https://github.com/octalmage/robotjs/issues/285#issuecomment-463116360
+     */
+    private static TypeStringLinuxFix(str: string) {
+        const MATCH_REGEX = /[~!@#\$%\^&*()_+{}|:"<>?]/;
+        // minimize delay between robotjs keyboard calls
+        robotjs.setKeyboardDelay(1);
+        while (str) {
+            let match = str.match(MATCH_REGEX);
+            if (match) {
+                robotjs.typeString(str.substr(0, match['index']));
+                robotjs.keyTap(match[0], ['shift']);
+                str = str.substr(match['index'] + 1);
+            } else {
+                robotjs.typeString(str);
+                str = null;
+            }
+        }
     }
 }
