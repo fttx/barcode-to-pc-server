@@ -57,7 +57,9 @@ export class ScansHandler implements Handler {
 
                 // keyboard emulation
                 for (let outputBlock of scan.outputBlocks) {
-                    if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run') {
+                    if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run'
+                        && outputBlock.type != 'csv_lookup' && outputBlock.type != 'focus_window') {
+                        // for these components the continue; is called inside the switch below (< v3.12.0)
                         continue;
                     }
 
@@ -276,7 +278,7 @@ export class ScansHandler implements Handler {
 
                     case 'run': {
                         try {
-                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString().slice(0, -1);
                         } catch (error) {
                             responseOutputBlock.value = "";
                             let output = error.output.toString().substr(2);
@@ -325,7 +327,7 @@ export class ScansHandler implements Handler {
                 ws.send(JSON.stringify(remoteComponentResponse));
                 break;
             } // end ACTION_REMOTE_COMPONENT
-        }
+        } // end switch(message.action)
         return message;
     }
 
