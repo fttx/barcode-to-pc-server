@@ -143,7 +143,6 @@ export class EditOutputBlockPage {
   public selectedApplication: ApplicationModel;
   public selectedWindow: string = "Error";
   public matchCriterias = ["equals", "contains", "startsWith", "endsWith", "regex", "ignore"];
-  public matchCriteria = "equals";
   public currentOpenWindow: string;
 
   ionViewDidLoad() {
