@@ -18,11 +18,11 @@ import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 import { windowManager } from 'node-window-manager';
-import {
-    hasScreenCapturePermission,
-    openSystemPreferences,
-    hasPromptedForPermission
-} from 'mac-screen-capture-permissions';
+// import {
+//     hasScreenCapturePermission,
+//     openSystemPreferences,
+//     hasPromptedForPermission
+// } from 'mac-screen-capture-permissions';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
