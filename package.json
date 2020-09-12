@@ -62,6 +62,7 @@
       "sign": false
     },
     "win": {
+      "certificateSha1": "EDEB0B36E791F01F813F36B92EA335C860AC3838",
       "target": [
         {
           "target": "nsis-web",
