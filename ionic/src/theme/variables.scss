@@ -53,6 +53,7 @@ $colors: (
   output-block-component-if:   #f53d3d,
   output-block-component-endif:   #f53d3d,
   output-block-component-csv_lookup:   #613711,
+  output-block-component-focus_window:   #0066db,
   text:       #ffffff,
   selected: #ebebeb,
 );
@@ -131,3 +132,40 @@ popper-content a {
   background-color: rgba(0, 0, 0, .5);
   -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 }
+
+blockquote {
+  border-radius: 6px;
+  padding: 20px;
+  border-left: 5px solid #eee;
+  margin: 0;
+}
+
+.blockquote-yellow {
+  background-color: #fbf8e8;
+  border-left-color: #fee450;
+}
+
+.blockquote-grey {
+  background-color: #fafafa;
+  border-left-color: #e6e6e6;
+}
+
+.blockquote-blue {
+  background-color: #e8f3fb;
+  border-left-color: #5096fe;
+}
+
+.blockquote-red {
+  background-color: #fbe8e8;
+  border-left-color: #fe5050;
+}
+
+.blockquote-green {
+  background-color: #eafbe8;
+  border-left-color: #8bfe50;
+}
+
+.ng-dropdown-panel.ng-select-bottom {
+  left: 0;
+}
+

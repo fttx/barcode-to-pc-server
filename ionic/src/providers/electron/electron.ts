@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ipcRenderer, remote, shell, Menu, MenuItem } from 'electron';
+import { hasScreenCapturePermission, openSystemPreferences } from '@fttx/mac-screen-capture-permissions';
+import { ipcRenderer, Menu, MenuItem, remote, shell } from 'electron';
 import ElectronStore from 'electron-store';
+import { windowManager } from 'node-window-manager';
 import * as v4 from 'uuid/v4';
 
 declare var window: any;
@@ -26,6 +28,9 @@ export class ElectronProvider {
   ElectronStore: typeof ElectronStore;
   nodeMachineId;
   v4: typeof v4;
+  windowManager: typeof windowManager;
+  hasScreenCapturePermission: typeof hasScreenCapturePermission;
+  openSystemPreferences: typeof openSystemPreferences;
 
   constructor(
   ) {
@@ -43,6 +48,9 @@ export class ElectronProvider {
       this.menuItem = electron.remote.MenuItem;
       this.ElectronStore = electron.remote.require('electron-store');
       this.nodeMachineId = electron.remote.require('node-machine-id');
+      this.windowManager = electron.remote.require('node-window-manager').windowManager;
+      this.hasScreenCapturePermission = electron.remote.require('@fttx/mac-screen-capture-permissions').hasScreenCapturePermission;
+      this.openSystemPreferences = electron.remote.require('@fttx/mac-screen-capture-permissions').openSystemPreferences;
 
       try {
         this.uuid = this.nodeMachineId.machineIdSync();

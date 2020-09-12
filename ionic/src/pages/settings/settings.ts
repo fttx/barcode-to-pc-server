@@ -93,6 +93,7 @@ export class SettingsPage {
       { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false },
       { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '',  delimiter: ',' },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
+      { name: 'FOCUS_WINDOW', value: '', type: 'focus_window', editable: true, windowTitle: '', matchCriteria: 'equals' },
     ];
   }
 

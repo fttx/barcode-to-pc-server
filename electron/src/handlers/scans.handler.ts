@@ -3,6 +3,7 @@ import { exec, execSync } from 'child_process';
 import * as parse from 'csv-parse/lib/sync';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as http from 'http';
 import * as os from 'os';
 import * as robotjs from 'robotjs';
@@ -16,6 +17,12 @@ import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
+import { windowManager } from 'node-window-manager';
+import {
+    hasScreenCapturePermission,
+    openSystemPreferences,
+    hasPromptedForPermission
+} from 'mac-screen-capture-permissions';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -58,7 +65,7 @@ export class ScansHandler implements Handler {
                 // keyboard emulation
                 for (let outputBlock of scan.outputBlocks) {
                     if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run'
-                        && outputBlock.type != 'csv_lookup' && outputBlock.type != 'focus_window') {
+                        && outputBlock.type != 'csv_lookup') {
                         // for these components the continue; is called inside the switch below (< v3.12.0)
                         continue;
                     }
@@ -153,7 +160,55 @@ export class ScansHandler implements Handler {
                             }
                             break;
                         }
-                    } // end switch
+                        case 'focus_window': {
+                            // Get the windows list
+                            if (process.platform === 'darwin') {
+                                windowManager.requestAccessibility();
+
+                                // TODO: check if it works/alert the user before opening the preferences
+                                // if (!hasScreenCapturePermission()) {
+                                //     openSystemPreferences();
+                                // }
+                            }
+
+                            let windows = windowManager.getWindows();
+
+                            // Find the first window that matches the app name and title
+                            let matchWindows = windows.filter(window => {
+                                let title = window.getTitle();
+                                let appName = window.path.split(/[\\/]/).pop();
+                                if (appName == outputBlock.value && window.isWindow() && title) {
+                                    switch (outputBlock.matchCriteria) {
+                                        case 'equals':
+                                            if (title == outputBlock.windowTitle) return true;
+                                            break;
+                                        case 'contains':
+                                            if (title.indexOf(outputBlock.windowTitle) != -1) return true;
+                                            break;
+                                        case 'startsWith':
+                                            if (title.startsWith(outputBlock.windowTitle)) return true;
+                                            break;
+                                        case 'endsWith':
+                                            if (title.endsWith(outputBlock.windowTitle)) return true;
+                                            break;
+                                        case 'regex':
+                                            if (title.match(new RegExp(outputBlock.windowTitle)) != null) return true;
+                                            break;
+                                        case 'ignore':
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                                return false;
+                            });
+
+                            // Focus the window
+                            if (matchWindows && matchWindows.length != 0) {
+                                matchWindows[0].bringToTop();
+                            }
+                            break;
+                        }
+                    } // end switch(outputBlock.type)
                 } // end for
 
                 // Append to csv

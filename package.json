@@ -85,6 +85,7 @@
     }
   },
   "dependencies": {
+    "@fttx/mac-screen-capture-permissions": "^1.1.0",
     "axios": "^0.19.0",
     "bonjour": "^3.5.0",
     "csv-parse": "^4.10.1",
@@ -94,6 +95,7 @@
     "mdns": "^2.5.1",
     "network": "^0.4.1",
     "node-machine-id": "^1.1.12",
+    "node-window-manager": "^2.2.3",
     "papaparse": "^4.4.0",
     "requirejs": "^2.3.5",
     "robotjs": "^0.5.1",

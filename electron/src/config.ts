@@ -36,6 +36,7 @@ export class Config {
   public static URL_TUTORIAL_IF = Config.URL_WEBSITE + '/tutorial/use-conditions-in-the-output-template/';
   public static URL_TUTORIAL_RUN = Config.URL_WEBSITE + '/tutorial/how-to-use-the-run-output-component/';
   public static URL_TUTORIAL_RUN_PASS_PARAMETER = Config.URL_WEBSITE + '/tutorial/how-to-use-the-run-output-component/#pass-parameters';
+  public static URL_TUTORIAL_CSV_LOOKUP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-csv_lookup-component';
   public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = Config.URL_WEBSITE + '/tutorial/how-to-create-output-templates/';
 
   public static URL_PAIR = 'http://app.barcodetopc.com';

@@ -9,7 +9,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { DragulaModule } from 'ng2-dragula';
 import { ClipboardModule } from 'ngx-clipboard';
 import { NgxPopperModule, Triggers } from 'ngx-popper';
-
+import { NgSelectModule } from '@ng-select/ng-select';
+import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '../components/components.module';
 import {
   ConnectedClientsPopover,
@@ -72,6 +73,7 @@ import { MarkdownModule } from 'ngx-markdown';
     ComponentsModule,
     DragulaModule.forRoot(),
     MarkdownModule.forRoot(),
+    NgSelectModule, FormsModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [

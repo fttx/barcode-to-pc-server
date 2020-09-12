@@ -179,6 +179,13 @@
         <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
         <input type="text" value="device_name" disabled class="example-variable" /> <br>
         <input type="text" value="select_option" disabled class="example-variable" /> <br>
+        <input type="text" value="http" disabled class="example-variable" /> <br>
+        <input type="text" value="run" disabled class="example-variable" /> <br>
+        <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+        <!-- Remember to update the other components (6), and the article:
+          https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+          https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+        -->
       </code>
     </ion-item>
 
@@ -212,15 +219,22 @@
           <code ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
           You can use the following variables (lowercase): <br>
           <code>
-              <input type="text" value="barcode" disabled class="example-variable" /> <br>
-              <input type="text" value="number" disabled class="example-variable" /> <br>
-              <input type="text" value="text" disabled class="example-variable" /> <br>
-              <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-              <input type="text" value="date" disabled class="example-variable" /> <br>
-              <input type="text" value="time" disabled class="example-variable" /> <br>
-              <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-              <input type="text" value="device_name" disabled class="example-variable" /><br>
-              <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/  (remove comments)
+            -->
           </code><br>
         </p>
       </ion-item>
@@ -250,18 +264,23 @@
           <code ngNonBindable>cmd.exe /c C:&#92;script.bat &#123;&#123; barcode &#125;&#125;</code><br><br>
           You can use the following variables (lowercase): <br>
           <code>
-                        <input type="text" value="barcode" disabled class="example-variable" /> <br>
-                        <input type="text" value="number" disabled class="example-variable" /> <br>
-                        <input type="text" value="text" disabled class="example-variable" /> <br>
-                        <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-                        <input type="text" value="date" disabled class="example-variable" /> <br>
-                        <input type="text" value="time" disabled class="example-variable" /> <br>
-                        <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-                        <input type="text" value="device_name" disabled class="example-variable" /><br>
-                        <input type="text" value="select_option" disabled class="example-variable" /> <br>
-                        <!-- Remember to update also the article:
-                        https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters -->
-                    </code><br>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            -->
+          </code><br>
         </p>
       </ion-item>
 
@@ -294,16 +313,23 @@
 
           Available variables (lowercase): <br>
           <code>
-                <input type="text" value="barcode" disabled class="example-variable" /> <br>
-                <input type="text" value="number" disabled class="example-variable" /> <br>
-                <input type="text" value="text" disabled class="example-variable" /> <br>
-                <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-                <input type="text" value="date" disabled class="example-variable" /> <br>
-                <input type="text" value="time" disabled class="example-variable" /> <br>
-                <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-                <input type="text" value="device_name" disabled class="example-variable" /><br>
-                <input type="text" value="select_option" disabled class="example-variable" /> <br>
-            </code>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            -->
+          </code>
         </p>
       </ion-item>
 
@@ -396,16 +422,23 @@
 
           You can use the following variables (lowercase): <br>
           <code>
-                        <input type="text" value="barcode" disabled class="example-variable" /> <br>
-                        <input type="text" value="number" disabled class="example-variable" /> <br>
-                        <input type="text" value="text" disabled class="example-variable" /> <br>
-                        <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-                        <input type="text" value="date" disabled class="example-variable" /> <br>
-                        <input type="text" value="time" disabled class="example-variable" /> <br>
-                        <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-                        <input type="text" value="device_name" disabled class="example-variable" /><br>
-                        <input type="text" value="select_option" disabled class="example-variable" /> <br>
-                    </code><br>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            -->
+          </code><br>
         </p>
       </ion-item>
     </div>
@@ -427,16 +460,23 @@
 
         You can use the following variables (lowercase):<br>
         <code>
-                    <input type="text" value="barcode" disabled class="example-variable" /> <br>
-                    <input type="text" value="number" disabled class="example-variable" /> <br>
-                    <input type="text" value="text" disabled class="example-variable" /> <br>
-                    <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-                    <input type="text" value="date" disabled class="example-variable" /> <br>
-                    <input type="text" value="time" disabled class="example-variable" /> <br>
-                    <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-                    <input type="text" value="device_name" disabled class="example-variable" /> <br>
-                    <input type="text" value="select_option" disabled class="example-variable" /> <br>
-                </code>
+          <input type="text" value="barcode" disabled class="example-variable" /> <br>
+          <input type="text" value="number" disabled class="example-variable" /> <br>
+          <input type="text" value="text" disabled class="example-variable" /> <br>
+          <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+          <input type="text" value="date" disabled class="example-variable" /> <br>
+          <input type="text" value="time" disabled class="example-variable" /> <br>
+          <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+          <input type="text" value="device_name" disabled class="example-variable" /> <br>
+          <input type="text" value="select_option" disabled class="example-variable" /> <br>
+          <input type="text" value="http" disabled class="example-variable" /> <br>
+          <input type="text" value="run" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+          <!-- Remember to update the other components (6), and the article:
+            https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+          -->
+        </code>
       </p>
     </ion-item>
   </ion-list>
@@ -444,6 +484,61 @@
   <ion-item [hidden]="outputBlock.type != 'endif'" no-lines>
     Use this component to close the IF component counterpart.
   </ion-item>
+
+  <div [hidden]="outputBlock.type != 'focus_window'">
+    <ion-item text-wrap [hidden]="hasScreenCapturePermission()">
+      <blockquote class="blockquote-red">
+        <b>Error</b>: Can't access the windows list. Please allow the "Recording Screen" permission for Barcode to PC.
+        <br>
+        <button ion-button class="text-center" (click)="openSystemPreferences()" color="secondary" style="margin: 25px auto 10px auto;display: block;text-transform: none;">Open System Preferences</button>
+      </blockquote>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Application</ion-label>
+    </ion-item>
+    <ng-select [items]="applications" [(ngModel)]="selectedApplication" bindLabel="applicationName" [searchable]="false" [clearable]="false" class="ng-option-with-image" (change)="onApplicationChange(selectedApplication)">
+      <!-- (change)="outputBlock.windowTitle=selectedApplication.windows[0]" -->
+      <ng-template ng-label-tmp let-item="item">
+        <img *ngIf="item.applicationIcon" height="15" width="15" [src]="item.applicationIcon" alt="app icon">
+        {{ item.applicationName }}
+      </ng-template>
+      <ng-template ng-option-tmp let-item="item" let-index="applicationName">
+        <img height="15" width="15" [src]="item.applicationIcon" />
+        {{ item.applicationName }}
+      </ng-template>
+    </ng-select>
+    <button ion-button icon-only outline color="dark" (click)="getAppsList()" class="btn-refresh">
+      <ion-icon name="refresh"></ion-icon>
+    </button>
+
+    <hr class="separator" />
+
+    <ion-item no-lines>
+      <label for="_windowTitle" color="dark">Window title</label>
+      <input id="_windowTitle" [(ngModel)]="outputBlock.windowTitle" class="inline-input" type="text" placeholder="" />
+    </ion-item>
+
+    <ion-item no-lines>
+      <p>Copy from currently open windows</p>
+    </ion-item>
+    <ng-select class="open-windows" *ngIf="selectedApplication" [items]="selectedApplication.windows" [(ngModel)]="currentOpenWindow" [searchable]="false" [clearable]="false">
+    </ng-select>
+    <button ion-button icon-only outline color="dark" (click)="outputBlock.windowTitle = currentOpenWindow" class="btn-copy">
+      <ion-icon name="copy"></ion-icon>
+    </button>
+    <br style="clear:both" />
+
+    <hr class="separator" />
+
+    <ion-item no-lines>
+      <ion-label>Window title match criteria</ion-label>
+    </ion-item>
+    <ng-select [items]="matchCriterias" [(ngModel)]="matchCriteria" [clearable]="false">
+    </ng-select>
+
+    <br><br>
+  </div>
 
   <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
   <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup')">

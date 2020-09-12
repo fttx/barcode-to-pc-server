@@ -6,4 +6,8 @@ module.exports = {
     src: ['{{ROOT}}/node_modules/dragula/dist/dragula.min.css'],
     dest: '{{BUILD}}'
   },
+  copyNgSelect: {
+    src: ['{{ROOT}}/node_modules/@ng-select/ng-select/themes/default.theme.css'],
+    dest: '{{BUILD}}'
+  },
 }

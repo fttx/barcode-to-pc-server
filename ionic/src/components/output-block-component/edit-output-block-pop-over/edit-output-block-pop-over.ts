@@ -4,7 +4,9 @@ import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
 import { Config } from '../../../../../electron/src/config';
 import { barcodeFormatModel } from '../../../models/barcode-format.model';
-
+import { throttle } from 'helpful-decorators';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ApplicationModel } from '../../../models/application.model';
 
 @Component({
   selector: 'edit-output-block-pop-over',
@@ -25,6 +27,7 @@ export class EditOutputBlockPage {
     public viewCtrl: ViewController,
     public ngZone: NgZone,
     private electronProvider: ElectronProvider, // required from the template
+    private domSanitizer: DomSanitizer,
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
     this.color = this.navParams.get('color');
@@ -95,7 +98,7 @@ export class EditOutputBlockPage {
       case 'run': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_RUN); break;
       case 'select_option': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'beep': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'csv_lookup': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'csv_lookup': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CSV_LOOKUP); break;
     }
   }
 
@@ -133,5 +136,80 @@ export class EditOutputBlockPage {
       });
     };
     for (let i = 0; i < this.outputBlock.beepsNumber; i++) { await beep(); }
+  }
+
+
+  public applications: ApplicationModel[] = [];
+  public selectedApplication: ApplicationModel;
+  public selectedWindow: string = "Error";
+  public matchCriterias = ["equals", "contains", "startsWith", "endsWith", "regex", "ignore"];
+  public matchCriteria = "equals";
+  public currentOpenWindow: string;
+
+  ionViewDidLoad() {
+    if (this.outputBlock.type == 'focus_window')
+      this.getAppsList();
+  }
+
+  onApplicationChange(selectedApplication: ApplicationModel) {
+    this.currentOpenWindow = null
+    this.selectedWindow = null;
+    this.outputBlock.value = selectedApplication.applicationName;
+  }
+
+  getAppsList() {
+    if (process.platform === 'darwin') {
+      this.electronProvider.windowManager.requestAccessibility();
+    }
+    this.applications = [];
+    this.selectedWindow = "";
+    this.selectedApplication = null;
+
+    let windows = this.electronProvider.windowManager.getWindows();
+    for (let window of windows) {
+      let icon = window.getIcon(32);
+      let windowTitle = window.getTitle();
+      if (window.isWindow() && windowTitle && icon) {
+        let appName = window.path.split(/[\\/]/).pop();
+
+        let existingWindow = this.applications.find(x => x.applicationName == appName);
+        if (existingWindow) {
+          existingWindow.windows = [...existingWindow.windows, windowTitle];
+        } else {
+          let base64Icon = this.domSanitizer.bypassSecurityTrustResourceUrl('data:image/png;base64,' + icon.toString('base64'));
+          this.applications = [...this.applications, new ApplicationModel(appName, base64Icon, [windowTitle])];
+          this.selectedApplication = this.applications[0];
+          this.selectedWindow = "";
+        }
+      }
+    }
+
+    // Restore previously saved window application name
+    if (this.outputBlock.value.length != 0) {
+      let alreadyOpen = this.applications.find(x => x.applicationName == this.outputBlock.value);
+      if (alreadyOpen) {
+        this.selectedApplication = alreadyOpen;
+      } else {
+        this.selectedApplication = new ApplicationModel(this.outputBlock.value, '', []);
+      }
+    } else {
+      this.selectedApplication = null;
+    }
+  }
+
+  // Prevents unresponsive UI
+  @throttle(5000)
+  private _hasScreenCapturePermission() {
+    if (this.outputBlock.type != 'focus_window') return true;
+    return this.electronProvider.hasScreenCapturePermission()
+  }
+
+  public hasScreenCapturePermission() {
+    if (this.electronProvider.process.platform !== 'darwin') return true;
+    return this._hasScreenCapturePermission();
+  }
+
+  public openSystemPreferences() {
+    return this.electronProvider.openSystemPreferences();
   }
 }
