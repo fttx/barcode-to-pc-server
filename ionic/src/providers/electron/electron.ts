@@ -85,11 +85,12 @@ export class ElectronProvider {
     return !this.isElectron() || (this.process && this.process.argv.indexOf('--dev') != -1);
   }
 
-  isTrustedAccessibilityClient(prompt: boolean) {
-    if (!this.isElectron() || process.platform !== "darwin") { // always pass TRUE if the platform is not macOS
+  // Always returns true if the platform is not macOS
+  checkAndOpenAccessibilitySettigns(prompt: boolean) {
+    if (!this.isElectron() || this.process.platform !== "darwin") {
       return true;
     }
-    return this.remote.systemPreferences.isTrustedAccessibilityClient(false);
+    return this.remote.systemPreferences.isTrustedAccessibilityClient(prompt);
   }
 
 }
