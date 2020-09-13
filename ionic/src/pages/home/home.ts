@@ -37,6 +37,7 @@ export class HomePage {
   private store: ElectronStore;
   private saveDebounceTimeout = null;
   private noBounces = 0;
+  private accessibilityAlert: Alert;
 
   constructor(
     public navCtrl: NavController,
@@ -152,7 +153,7 @@ export class HomePage {
       return;
     }
 
-    this.checkAccessibilityPermission();
+    this.watchMacOSAccessibility();
 
     // Those events are inside ionViewDidLoad because they need to be listening
     // as long as the Home page is alive. Doesn't matter if there is another
@@ -298,22 +299,21 @@ export class HomePage {
     });
   }
 
-  private accessibilityAlert: Alert;
-  checkAccessibilityPermission() {
+  watchMacOSAccessibility() {
     if (this.accessibilityAlert) {
       this.accessibilityAlert.dismiss();
     }
-
-    if (!this.electronProvider.isTrustedAccessibilityClient(false)) {
+    if (!this.electronProvider.checkAndOpenAccessibilitySettigns(false)) {
       this.accessibilityAlert = this.alertCtrl.create({
-        title: 'Allow access', message:
-          `In order to enable the "keyboard emulation" feature, ` + Config.APP_NAME + ` needs your permission to control the computer.
-          <br/><br/>When you'll click Next, the System Preferences will open.
-          <br/><br/>Please make you sure that ` + Config.APP_NAME + ` <u>is present</u> in the allowed list and that it <u>is checked</u>`,
-        buttons: [{
-          text: 'Next', handler: (opts: AlertOptions) => {
-            this.electronProvider.isTrustedAccessibilityClient(true);
-            setTimeout(() => this.checkAccessibilityPermission(), 1000 * 60)
+        cssClass: 'alert-accessibility',
+        title: 'Accessibility permissions', message:
+          `In order to enable the "Keyboard emulation" feature, you must give ` + Config.APP_NAME + ` the Accessibility permissions.
+        <br/><br/>Please make you sure that ` + Config.APP_NAME + `:<br><br>&bullet; Is present in the allowed list<br>&bullet; And that it is checked`,
+        buttons: [{ text: 'Help', handler: () => this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_MACOS_ACCESSIBILITY) }, {
+          text: 'Open System Preferences', handler: (opts: AlertOptions) => {
+            this.electronProvider.checkAndOpenAccessibilitySettigns(true);
+            // Continuosly watch for permissions
+            setTimeout(() => this.watchMacOSAccessibility(), 1000 * 60)
           }
         }]
       });
