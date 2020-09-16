@@ -153,7 +153,7 @@ export class HomePage {
       return;
     }
 
-    this.watchMacOSAccessibility();
+    this.requestMacOSAccessibility();
 
     // Those events are inside ionViewDidLoad because they need to be listening
     // as long as the Home page is alive. Doesn't matter if there is another
@@ -294,12 +294,18 @@ export class HomePage {
       })
     });
 
+    this.electronProvider.ipcRenderer.on('capturePermissionError', (e, data) => {
+      this.ngZone.run(() => {
+        this.lastToast.present('Error: FOCUS_WINDOW failed. Please allow the "Recording Screen" permission for Barcode to PC')
+      });
+    });
+
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_UNDO_INFINITE_LOOP, (e, request: requestModelUndoInfiniteLoop) => {
       this.licenseProvider.limitMonthlyScans(-request.count);
     });
   }
 
-  watchMacOSAccessibility() {
+  requestMacOSAccessibility() {
     if (this.accessibilityAlert) {
       this.accessibilityAlert.dismiss();
     }
@@ -309,13 +315,23 @@ export class HomePage {
         title: 'Accessibility permissions', message:
           `In order to enable the "Keyboard emulation" feature, you must give ` + Config.APP_NAME + ` the Accessibility permissions.
         <br/><br/>Please make you sure that ` + Config.APP_NAME + `:<br><br>&bullet; Is present in the allowed list<br>&bullet; And that it is checked`,
-        buttons: [{ text: 'Help', handler: () => this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_MACOS_ACCESSIBILITY) }, {
-          text: 'Open System Preferences', handler: (opts: AlertOptions) => {
-            this.electronProvider.checkAndOpenAccessibilitySettigns(true);
-            // Continuosly watch for permissions
-            setTimeout(() => this.watchMacOSAccessibility(), 1000 * 60)
-          }
-        }]
+        buttons: [
+          { text: 'Cancel', role: 'dismiss' },
+          {
+            text: 'Help', handler: () => {
+              this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_MACOS_ACCESSIBILITY)
+              // Check if the user was able to follow the tutorial 5 minutes later
+              setTimeout(() => this.requestMacOSAccessibility(), 1000 * 300)
+            }
+          },
+          {
+            text: 'Open System Preferences', handler: (opts: AlertOptions) => {
+              this.electronProvider.checkAndOpenAccessibilitySettigns(true);
+              // Check if the user was able to follow the tutorial 3 minutes later
+              setTimeout(() => this.requestMacOSAccessibility(), 1000 * 180)
+              return false;
+            }
+          }]
       });
       this.accessibilityAlert.present();
     }

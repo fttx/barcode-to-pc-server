@@ -1,12 +1,12 @@
 import { Component, NgZone } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { throttle } from 'helpful-decorators';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { Config } from '../../../../../electron/src/config';
+import { ApplicationModel } from '../../../models/application.model';
+import { barcodeFormatModel } from '../../../models/barcode-format.model';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
-import { Config } from '../../../../../electron/src/config';
-import { barcodeFormatModel } from '../../../models/barcode-format.model';
-import { throttle } from 'helpful-decorators';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ApplicationModel } from '../../../models/application.model';
 
 @Component({
   selector: 'edit-output-block-pop-over',
@@ -157,9 +157,11 @@ export class EditOutputBlockPage {
   }
 
   getAppsList() {
-    if (process.platform === 'darwin') {
-      this.electronProvider.windowManager.requestAccessibility();
+    this.electronProvider.windowManager.requestAccessibility();
+    if (!this.electronProvider.hasScreenCapturePermission()) {
+      return;
     }
+
     this.applications = [];
     this.selectedWindow = "";
     this.selectedApplication = null;
@@ -203,6 +205,10 @@ export class EditOutputBlockPage {
     return this.electronProvider.hasScreenCapturePermission()
   }
 
+  // Use this function only for the UI
+  // It can return wrong values and may cause crashes. Always call the
+  // this.electronProvider.hasScreenCapturePermission method before accessing
+  // getWindows().
   public hasScreenCapturePermission() {
     if (this.electronProvider.process.platform !== 'darwin') return true;
     return this._hasScreenCapturePermission();

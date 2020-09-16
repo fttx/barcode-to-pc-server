@@ -1,10 +1,11 @@
+import { hasScreenCapturePermission, openSystemPreferences } from '@fttx/mac-screen-capture-permissions';
 import axios from 'axios';
 import { exec, execSync } from 'child_process';
 import * as parse from 'csv-parse/lib/sync';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
-import * as path from 'path';
 import * as http from 'http';
+import { windowManager } from 'node-window-manager';
 import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
@@ -17,16 +18,11 @@ import { ScanModel } from '../../../ionic/src/models/scan.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
-import { windowManager } from 'node-window-manager';
-// import {
-//     hasScreenCapturePermission,
-//     openSystemPreferences,
-//     hasPromptedForPermission
-// } from 'mac-screen-capture-permissions';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
     private devices = {};
+    private ipcClient;
 
     private constructor(
         private settingsHandler: SettingsHandler,
@@ -164,11 +160,11 @@ export class ScansHandler implements Handler {
                             // Get the windows list
                             if (process.platform === 'darwin') {
                                 windowManager.requestAccessibility();
-
-                                // TODO: check if it works/alert the user before opening the preferences
-                                // if (!hasScreenCapturePermission()) {
-                                //     openSystemPreferences();
-                                // }
+                                if (!hasScreenCapturePermission()) {
+                                    if (this.ipcClient) this.ipcClient.send('capturePermissionError');
+                                    openSystemPreferences();
+                                    continue;
+                                }
                             }
 
                             let windows = windowManager.getWindows();
@@ -417,6 +413,10 @@ export class ScansHandler implements Handler {
 
     onWsError(ws: WebSocket, err: Error) {
         throw new Error("Method not implemented.");
+    }
+
+    setIpcClient(ipcClient) {
+        this.ipcClient = ipcClient;
     }
 
     /**

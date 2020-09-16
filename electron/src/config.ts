@@ -38,6 +38,7 @@ export class Config {
   public static URL_TUTORIAL_RUN_PASS_PARAMETER = Config.URL_WEBSITE + '/tutorial/how-to-use-the-run-output-component/#pass-parameters';
   public static URL_TUTORIAL_CSV_LOOKUP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-csv_lookup-component';
   public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = Config.URL_WEBSITE + '/tutorial/how-to-create-output-templates/';
+  public static URL_TUTORIAL_MACOS_ACCESSIBILITY = Config.URL_WEBSITE + '/tutorial/give-accessibility-permissions-to-barcode-to-pc/';
 
   public static URL_PAIR = 'http://app.barcodetopc.com';
 

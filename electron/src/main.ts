@@ -40,6 +40,7 @@ ipcMain
         connectionHandler.setIpcClient(ipcClient);
         uiHandler.setIpcClient(ipcClient);
         updateHandler.setIpcClient(ipcClient);
+        scansHandler.setIpcClient(ipcClient);
 
         // wss events should be registered immediately
         wss.on('connection', (ws, req: http.IncomingMessage) => {

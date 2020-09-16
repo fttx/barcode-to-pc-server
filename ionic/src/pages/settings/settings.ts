@@ -1,13 +1,13 @@
-import { Component, HostListener, ViewChild, NgZone } from '@angular/core';
+import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import ElectronStore from 'electron-store';
-import { Alert, AlertController, Navbar, NavController, NavParams, AlertButton, Events } from 'ionic-angular';
+import { Alert, AlertButton, AlertController, Events, Navbar, NavController, NavParams } from 'ionic-angular';
 import { DragulaService } from "ng2-dragula";
 import { Config } from '../../../../electron/src/config';
+import { OutputBlockModel } from '../../models/output-block.model';
+import { OutputProfileModel } from '../../models/output-profile.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
-import { OutputBlockModel } from '../../models/output-block.model';
-import { OutputProfileModel } from '../../models/output-profile.model';
 
 /**
  * Generated class for the SettingsPage page.
