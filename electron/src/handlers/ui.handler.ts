@@ -302,6 +302,12 @@ export class UiHandler implements Handler {
                 return true;
             }
 
+            // When the close button is clicked before the settings are loaded,
+            // and thus the eventual trayIcon hasn't been created yet
+            if (!this.settingsHandler) {
+                return true;
+            }
+
             if (this.settingsHandler.enableTray) {
                 event.preventDefault();
                 this.mainWindow.hide();
