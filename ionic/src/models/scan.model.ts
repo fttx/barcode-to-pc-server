@@ -18,17 +18,17 @@ export class ScanModel {
      */
     format: 'QR_CODE' | 'DATA_MATRIX' | 'UPC_E' | 'UPC_A' | 'EAN_8' | 'EAN_13' | 'CODE_128' | 'CODE_39' | 'CODE_93' | 'CODABAR' | 'ITF' | 'RSS14' | 'RSS_EXPANDED' | 'PDF_417' | 'AZTEC' | 'MSI';
     /**
-     * @deprecated use the OutputBlock instead
+     * @deprecated use the DATE Component instead
      */
     date: number;
 
     /**
-     * @deprecated use the OutputBlock instead
+     * @deprecated use the NUMBER Component instead
      */
     quantity: string;
 
     /**
-     * @deprecated use the ToString method
+     * @deprecated use the ScanModel.ToString() method
      */
     text: string;
 
