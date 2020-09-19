@@ -101,7 +101,7 @@ gulp.task('dist', ['build'], () => {
 gulp.task('publish', [], () => {
   return new Promise((resolve, reject) => {
     electronBuilder.build({ projectDir: '../dist', publish: 'always' }).then(result => {
-      if (process.platform.startsWith('win') {
+      if (process.platform.startsWith('win')) {
         // Offline installer for Windows only
         gulp.src('../dist/dist/nsis-web/*')
           .pipe(zip('barcode-to-pc-server.offline-installer.zip'))
