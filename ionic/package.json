@@ -61,6 +61,8 @@
     "@types/papaparse": "^5.0.1",
     "angular2-template-loader": "^0.6.2",
     "cordova": "^8.0.0",
+    "fttx-gulp-github-release": "^1.2.1",
+    "gulp-zip": "^5.0.2",
     "html-loader": "^0.5.5",
     "ionic": "^3.20.0",
     "istanbul-instrumenter-loader": "^3.0.1",
