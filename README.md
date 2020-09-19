@@ -6,13 +6,12 @@
 <h1 align="center">Barcode to PC server</h1>
 
 <div align="center">
-  <!-- Latest Release -->
-  <a href="https://github.com/immuni-app/immuni-app-ios/releases">
+  <a href="https://github.com/fttx/barcode-to-pc-server/releases">
     <img alt="Downloads"
     src="https://img.shields.io/github/downloads/fttx/barcode-to-pc-server/total">
   </a>
 
-  <a href="https://github.com/immuni-app/immuni-app-ios/releases">
+  <a href="https://github.com/fttx/barcode-to-pc-server/releases">
     <img alt="GitHub release (latest SemVer)"
     src="https://img.shields.io/github/v/release/fttx/barcode-to-pc-server?color=rgb%2872%2C191%2C29%29">
   </a>
