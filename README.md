@@ -59,7 +59,7 @@
 ## Run
 
 The `npm start` command:
-- Runs the Electron app in develmpment mode
+- Runs the Electron app in development mode
 - Launches the ionic project in livereload mode
 
 Notes:
@@ -77,7 +77,7 @@ Notes:
 * The installer will be put in the dist/dist/ folder.
 * If you get sass errors run `cd ionic && npm rebuild node-sass --force`
 
-## Code Signign
+## Code Signing
 
 1. Set `certificateSubjectName` or `certificateSha1` parameter in the package.json
 2. Connect the physical token (Use the Microsoft Remote Desktop app to share the token with virtual machines)
