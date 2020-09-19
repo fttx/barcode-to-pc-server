@@ -118,7 +118,7 @@ export class ScansHandler implements Handler {
                                     exec(outputBlock.value, { cwd: os.homedir(), timeout: 10000 })
                                 } else {
                                     try {
-                                        outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString();
+                                        outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000 }).toString();
                                         this.typeString(outputBlock.value)
                                     } catch (error) {
                                         // Do not change the value when the command fails to allow the Send again feature to work
@@ -329,7 +329,7 @@ export class ScansHandler implements Handler {
 
                     case 'run': {
                         try {
-                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000, maxBuffer: 1024 }).toString().slice(0, -1);
+                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000 }).toString();
                         } catch (error) {
                             responseOutputBlock.value = "";
                             let output = error.output.toString().substr(2);
