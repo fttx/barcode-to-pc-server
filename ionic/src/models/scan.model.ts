@@ -71,6 +71,7 @@ export class ScanModel {
                 case 'delay': return ''
                 case 'beep': return ''
                 case 'focus_window': return ''
+                case 'message': return ''
                 default: return '';
             }
         }).join(fieldSeparator).replace(/\s+/g, ' ');

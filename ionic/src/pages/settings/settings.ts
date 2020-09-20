@@ -91,9 +91,10 @@ export class SettingsPage {
       { name: 'SELECT_OPTION', value: '', type: 'select_option', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', method: 'get', editable: true, skipOutput: false },
       { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false },
-      { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '',  delimiter: ',' },
+      { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
       { name: 'FOCUS_WINDOW', value: '', type: 'focus_window', editable: true, windowTitle: '', matchCriteria: 'equals' },
+      { name: 'ALERT', value: '', type: 'alert', editable: true, alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
     ];
   }
 

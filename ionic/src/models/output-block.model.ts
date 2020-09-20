@@ -45,7 +45,7 @@ export class OutputBlockModel {
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'focus_window';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'focus_window' | 'alert';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -106,6 +106,13 @@ export class OutputBlockModel {
     windowTitle?: string;
     matchCriteria?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'regex' | 'ignore';
 
+    /**
+     * Parameters for the ALERT component
+     */
+    alertTitle?: string;
+    alertDiscardScanButton?: string;
+    alertScanAgainButton?: string;
+    alertOkButton?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

@@ -540,6 +540,46 @@
     <br><br>
   </div>
 
+
+  <div [hidden]="outputBlock.type != 'alert'">
+    <ion-item>
+      <label for="_valueAlertTitle">Title</label>
+      <input id="_valueAlertTitle" [(ngModel)]="outputBlock.alertTitle" class="inline-input" type="text" placeholder="Alert" />
+    </ion-item>
+
+    <ion-item>
+      <label for="_valueAlertValue">Message</label>
+      <input id="_valueAlertValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Message" />
+    </ion-item>
+
+    <ion-item>
+      <label for="_valueAlertDiscardButton">Discard button text</label>
+      <input id="_valueAlertDiscardButton" [(ngModel)]="outputBlock.alertDiscardScanButton" class="inline-input" type="text" placeholder="Discard scan" />
+      <br>
+      <p>
+        Leave blank to hide the button
+      </p>
+    </ion-item>
+
+    <ion-item>
+      <label for="_valueAlertScanAgainButton">Scan again button text</label>
+      <input id="_valueAlertScanAgainButton" [(ngModel)]="outputBlock.alertScanAgainButton" class="inline-input" type="text" placeholder="Scan again" />
+      <br>
+      <p>
+        Leave blank to hide the button
+      </p>
+    </ion-item>
+
+    <ion-item>
+      <label for="_valueAlertOkButton">Ok button text</label>
+      <input id="_valueAlertOkButton" [(ngModel)]="outputBlock.alertOkButton" class="inline-input" type="text" placeholder="Ok" />
+      <br>
+      <p>
+        Leave blank to hide the button
+      </p>
+    </ion-item>
+  </div>
+
   <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
   <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup')">
     <info-box title="Info">
