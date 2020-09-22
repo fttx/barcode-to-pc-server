@@ -2,7 +2,6 @@ version: v{build} # doesn't matter because gets overwritten later on with the pa
 branches:
   only:
     - master
-    - /^v[0-9]+.[0-9]+.[0-9]+$/
 skip_non_tags: true
 clone_depth: 1
 environment:
@@ -10,13 +9,7 @@ environment:
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
   BONJOUR_SDK_DOWNLOAD:
     secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
-  CERTIFICATE_DOWNLOAD:
-    secure: 1uWToJLKf6uUn0/fsVHbrc3lRWTNOmtHhBTGUj/INODqPtCb0s1TJICTpUiwpzWRL27o6pvHUKP9VwlYx1wy3A==
 image: Visual Studio 2015
-# init:
-#  - ps: iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
-# on_finish:
-#   - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))
 install:
   - ps: Install-Product node $env:nodejs_version x64
   - ps: npm install -g npm@6.11.3
@@ -31,21 +24,15 @@ install:
 
   - git config --global user.email "filippo.tortomasi@gmail.com"
   - git config --global user.name "Filippo Tortomasi"
-  # - npm version %APPVEYOR_BUILD_VERSION% -m 'v%APPVEYOR_BUILD_VERSION%' # update the version field in the package.json
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
-  - curl -fsSL -o C:\Certificates.p12 %CERTIFICATE_DOWNLOAD%
   - npm cache verify
   - npm ci --unsafe-perm
   - cd ionic
   - npm ci --unsafe-perm
   - cd ..
   - set NODE_ENV=production
-  # - set PATH=%APPDATA%\npm;%PATH%
-  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules\.bin;%PATH%
-  # - set PATH=%APPVEYOR_BUILD_FOLDER%\node_modules;%PATH%
-  # - set PATH=%APPVEYOR_BUILD_FOLDER%;%PATH%
   - set ECHO=ON
   - echo "%PATH%"
   - echo "%NODE_ENV%"
@@ -56,16 +43,6 @@ build_script:
   - cmd: npm run publish
 artifacts:
   - path: \dist\dist\nsis-web
-    name: barcode-to-pc-server.offline-installer
+    name: barcode-to-pc-server.$env:package_version-$env:APPVEYOR_BUILD_NUMBER.offline-installer
     type: zip
-deploy:
-  provider: GitHub
-  auth_token:
-    secure: sCY/WHG4lyNQtpYUYMFTTzNvgpmCoCsjHKzF/ZfJWn6Ux6K4/S7UNSJTcTqwgVla
-  artifact: barcode-to-pc-server.offline-installer
-  draft: true
-  tag: $(APPVEYOR_REPO_TAG_NAME)
-  on:
-    branch: master
-    appveyor_repo_tag: true
 test: off
