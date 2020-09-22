@@ -2,7 +2,7 @@ version: v{build} # doesn't matter because gets overwritten later on with the pa
 branches:
   only:
     - master
-skip_non_tags: true
+skip_non_tags: false
 clone_depth: 1
 environment:
   nodejs_version: "8"
