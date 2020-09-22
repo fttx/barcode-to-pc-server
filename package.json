@@ -95,7 +95,7 @@
     "mdns": "^2.5.1",
     "network": "^0.4.1",
     "node-machine-id": "^1.1.12",
-    "papaparse": "^4.4.0",
+    "papaparse": "^5.2.0",
     "requirejs": "^2.3.5",
     "robotjs": "^0.5.1",
     "rxjs": "^5.5.6",
