@@ -70,7 +70,6 @@ export class ScanModel {
                 case 'barcode': return block.value;
                 case 'delay': return ''
                 case 'beep': return ''
-                case 'focus_window': return ''
                 case 'alert': return ''
                 default: return '';
             }
@@ -99,7 +98,6 @@ export class ScanModel {
                         outputBlock.type != 'key' &&
                         outputBlock.type != 'delay' &&
                         outputBlock.type != 'beep' &&
-                        outputBlock.type != 'focus_window' &&
                         // 'if' and 'endif' bloks never reach
                         // the server because they're stripped on the app side
 

@@ -490,62 +490,6 @@
     Use this component to close the IF component counterpart.
   </ion-item>
 
-  <div [hidden]="outputBlock.type != 'focus_window'">
-    <ion-item text-wrap [hidden]="hasScreenCapturePermission()">
-      <blockquote class="blockquote-red">
-        <b>Error</b>: Can't access the windows list. Please allow the "Recording Screen" permission for Barcode to PC.
-        <br>
-        <button ion-button class="text-center" (click)="openSystemPreferences()" color="secondary" style="margin: 25px auto 10px auto;display: block;text-transform: none;">Open System Preferences</button>
-      </blockquote>
-    </ion-item>
-
-    <ion-item no-lines>
-      <ion-label>Application</ion-label>
-    </ion-item>
-    <ng-select [items]="applications" [(ngModel)]="selectedApplication" bindLabel="applicationName" [searchable]="false" [clearable]="false" class="ng-option-with-image" (change)="onApplicationChange(selectedApplication)">
-      <!-- (change)="outputBlock.windowTitle=selectedApplication.windows[0]" -->
-      <ng-template ng-label-tmp let-item="item">
-        <img *ngIf="item.applicationIcon" height="15" width="15" [src]="item.applicationIcon" alt="app icon">
-        {{ item.applicationName }}
-      </ng-template>
-      <ng-template ng-option-tmp let-item="item" let-index="applicationName">
-        <img height="15" width="15" [src]="item.applicationIcon" />
-        {{ item.applicationName }}
-      </ng-template>
-    </ng-select>
-    <button ion-button icon-only outline color="dark" (click)="getAppsList()" class="btn-refresh">
-      <ion-icon name="refresh"></ion-icon>
-    </button>
-
-    <hr class="separator" />
-
-    <ion-item no-lines>
-      <label for="_windowTitle" color="dark">Window title</label>
-      <input id="_windowTitle" [(ngModel)]="outputBlock.windowTitle" class="inline-input" type="text" placeholder="" />
-    </ion-item>
-
-    <ion-item no-lines>
-      <p>Copy from currently open windows</p>
-    </ion-item>
-    <ng-select class="open-windows" *ngIf="selectedApplication" [items]="selectedApplication.windows" [(ngModel)]="currentOpenWindow" [searchable]="false" [clearable]="false">
-    </ng-select>
-    <button ion-button icon-only outline color="dark" (click)="outputBlock.windowTitle = currentOpenWindow" class="btn-copy">
-      <ion-icon name="copy"></ion-icon>
-    </button>
-    <br style="clear:both" />
-
-    <hr class="separator" />
-
-    <ion-item no-lines>
-      <ion-label>Window title match criteria</ion-label>
-    </ion-item>
-    <ng-select [items]="matchCriterias" [(ngModel)]="outputBlock.matchCriteria" [clearable]="false">
-    </ng-select>
-
-    <br><br>
-  </div>
-
-
   <div [hidden]="outputBlock.type != 'alert'">
     <ion-item>
       <label for="_valueAlertTitle">Title</label>

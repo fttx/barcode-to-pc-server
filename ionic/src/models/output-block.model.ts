@@ -45,7 +45,7 @@ export class OutputBlockModel {
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'focus_window' | 'alert';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'alert';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -99,12 +99,6 @@ export class OutputBlockModel {
     resultColumn?: number;
     notFoundValue?: string;
     delimiter?: string;
-
-    /**
-     * Parameters for the FOCUS_WINDOW component
-     */
-    windowTitle?: string;
-    matchCriteria?: 'equals' | 'contains' | 'startsWith' | 'endsWith' | 'regex' | 'ignore';
 
     /**
      * Parameters for the ALERT component

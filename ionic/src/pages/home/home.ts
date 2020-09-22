@@ -294,12 +294,6 @@ export class HomePage {
       })
     });
 
-    this.electronProvider.ipcRenderer.on('capturePermissionError', (e, data) => {
-      this.ngZone.run(() => {
-        this.lastToast.present('Error: FOCUS_WINDOW failed. Please allow the "Recording Screen" permission for Barcode to PC')
-      });
-    });
-
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_UNDO_INFINITE_LOOP, (e, request: requestModelUndoInfiniteLoop) => {
       this.licenseProvider.limitMonthlyScans(-request.count);
     });

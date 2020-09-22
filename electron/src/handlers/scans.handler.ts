@@ -1,11 +1,9 @@
-import { hasScreenCapturePermission, openSystemPreferences } from '@fttx/mac-screen-capture-permissions';
 import axios from 'axios';
 import { exec, execSync } from 'child_process';
 import * as parse from 'csv-parse/lib/sync';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
 import * as http from 'http';
-import { windowManager } from 'node-window-manager';
 import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
@@ -153,54 +151,6 @@ export class ScansHandler implements Handler {
                                 outputBloksValueChanged = true;
                             } else {
                                 if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
-                            }
-                            break;
-                        }
-                        case 'focus_window': {
-                            // Get the windows list
-                            if (process.platform === 'darwin') {
-                                windowManager.requestAccessibility();
-                                if (!hasScreenCapturePermission()) {
-                                    if (this.ipcClient) this.ipcClient.send('capturePermissionError');
-                                    openSystemPreferences();
-                                    continue;
-                                }
-                            }
-
-                            let windows = windowManager.getWindows();
-
-                            // Find the first window that matches the app name and title
-                            let matchWindows = windows.filter(window => {
-                                let title = window.getTitle();
-                                let appName = window.path.split(/[\\/]/).pop();
-                                if (appName == outputBlock.value && window.isWindow() && title) {
-                                    switch (outputBlock.matchCriteria) {
-                                        case 'equals':
-                                            if (title == outputBlock.windowTitle) return true;
-                                            break;
-                                        case 'contains':
-                                            if (title.indexOf(outputBlock.windowTitle) != -1) return true;
-                                            break;
-                                        case 'startsWith':
-                                            if (title.startsWith(outputBlock.windowTitle)) return true;
-                                            break;
-                                        case 'endsWith':
-                                            if (title.endsWith(outputBlock.windowTitle)) return true;
-                                            break;
-                                        case 'regex':
-                                            if (title.match(new RegExp(outputBlock.windowTitle)) != null) return true;
-                                            break;
-                                        case 'ignore':
-                                            return true;
-                                    }
-                                    return false;
-                                }
-                                return false;
-                            });
-
-                            // Focus the window
-                            if (matchWindows && matchWindows.length != 0) {
-                                matchWindows[0].bringToTop();
                             }
                             break;
                         }
