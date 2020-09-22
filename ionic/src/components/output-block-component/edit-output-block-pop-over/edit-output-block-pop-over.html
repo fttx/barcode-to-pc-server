@@ -244,8 +244,13 @@
           <h2 color="dark">Method</h2>
         </label>
         <select id="_valueMethod" [(ngModel)]="outputBlock.method">
-          <option selected value="get">GET</option>
+          <option value="get">GET</option>
+          <option value="delete">DELETE</option>
+          <option value="head">HEAD</option>
+          <option value="options">OPTIONS</option>
           <option value="post">POST</option>
+          <option value="put">PUT</option>
+          <option value="patch">PATCH</option>
         </select>
       </ion-item>
     </div>

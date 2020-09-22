@@ -71,7 +71,7 @@ export class OutputBlockModel {
     /**
      * HTTP request method
      */
-    method?: 'get' | 'post';
+    method?: 'get' | 'delete' | 'head' | 'options' | 'post' | 'put' | 'patch';
 
     /**
      * Enabled formats for the BARCODE component.
