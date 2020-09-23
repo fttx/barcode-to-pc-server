@@ -69,15 +69,22 @@ export class OutputBlockModel {
     label?: string;
 
     /**
-     * HTTP request method
-     */
-    method?: 'get' | 'delete' | 'head' | 'options' | 'post' | 'put' | 'patch';
-
-    /**
      * Enabled formats for the BARCODE component.
      * When the array is empty, then all barcode formats are enabled.
     */
     enabledFormats?: string[];
+
+    /**
+     * Parameters for the HTTP component
+     */
+    httpMethod?: 'get' | 'delete' | 'head' | 'options' | 'post' | 'put' | 'patch';
+    httpData?: string;
+    httpParams?: string;
+    httpHeaders?: string;
+    /**
+     * @deprecated
+     */
+    method?: 'get' | 'post'; // TODO: add upgrade script
 
     /**
      * Parameters for the BEEP component

@@ -243,7 +243,8 @@
         <label for="_valueMethod" color="dark">
           <h2 color="dark">Method</h2>
         </label>
-        <select id="_valueMethod" [(ngModel)]="outputBlock.method">
+        <br>
+        <select id="_valueMethod" [(ngModel)]="outputBlock.httpMethod">
           <option value="get">GET</option>
           <option value="delete">DELETE</option>
           <option value="head">HEAD</option>
@@ -252,6 +253,47 @@
           <option value="put">PUT</option>
           <option value="patch">PATCH</option>
         </select>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_httpData">Data</label>
+        <input id="_httpData" [(ngModel)]="outputBlock.httpData" class="inline-input" type="text" placeholder="(optional)" />
+        <br>
+        <p>
+          Is the data to be sent as the request body. It must be a valid JSON string.
+          <br>
+          <br>
+          Example:<br>
+          <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_httpParams">Params</label>
+        <input id="_httpParams" [(ngModel)]="outputBlock.httpParams" class="inline-input" type="text" placeholder="(optional)" />
+        <br>
+        <p>
+          Are the URL parameters to be sent with the request.
+          You can either pass them here or in the URL.
+          It must be a valid JSON string.
+          <br>
+          <br>
+          Example:<br>
+          <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_httpHeaders">Headers</label>
+        <input id="_httpHeaders" [(ngModel)]="outputBlock.httpHeaders" class="inline-input" type="text" placeholder="(optional)" />
+        <br>
+        <p>
+          Are custom headers to be sent. It must be a valid JSON string.
+          <br>
+          <br>
+          Example:
+          <code>&#123; "Content-Type": "application/json" &#125;</code>
+        </p>
       </ion-item>
     </div>
 

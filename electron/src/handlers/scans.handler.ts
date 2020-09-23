@@ -263,16 +263,28 @@ export class ScansHandler implements Handler {
                 let errorMessage = null;
 
                 // Overrides the necessary values of the request.outputBlock
-                // object and sends it back to the app.
+                // object and sends it back to the app.s
                 switch (request.outputBlock.type) {
                     case 'http': {
                         try {
-                            let response = (await axios.request({ url: request.outputBlock.value, method: request.outputBlock.method, timeout: 10000 })).data;
+                            let params = JSON.parse(request.outputBlock.httpParams || '{}');
+                            if (params == {}) params = null;
+                            let haeders = JSON.parse(request.outputBlock.httpHeaders || '{}');
+                            if (haeders == {}) haeders = null;
+
+                            let response = (await axios.request({
+                                url: request.outputBlock.value,
+                                data: request.outputBlock.httpData,
+                                params: params,
+                                headers: haeders,
+                                method: request.outputBlock.method || request.outputBlock.httpMethod,
+                                timeout: 10000
+                            })).data;
                             if (typeof response == 'object') response = JSON.stringify(response);
                             responseOutputBlock.value = response;
                         } catch (error) {
                             responseOutputBlock.value = "";
-                            errorMessage = 'The HTTP ' + request.outputBlock.method.toUpperCase() + ' request failed. <br><br>Error code: ' + error.code; // ECONNREFUSED
+                            errorMessage = 'The HTTP ' + request.outputBlock.httpMethod.toUpperCase() + ' request failed. <br><br>Error code: ' + error.code;
                         }
                         break;
                     }

@@ -279,6 +279,17 @@ export class MyApp {
           })
         }
 
+        // v3.13.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'http') {
+                outputBlock.httpMethod = outputBlock.method;
+              }
+            });
+          })
+        }
+
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;
