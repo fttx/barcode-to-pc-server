@@ -28,7 +28,7 @@ install:
   # Remove certificateSha1 from package.json to avoid build error
   - ps: $package_json = Get-Content -Raw -Path package.json
   - ps: $package_json = $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})"
-  - ps: \[System.IO.File\]::WriteAllLines("package.json", $package_json) # save the file as UTF-8 with no BOM
+  - ps: "[System.IO.File]::WriteAllLines('package.json', $package_json)" # save the file as UTF-8 with no BOM
 
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
