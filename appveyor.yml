@@ -26,6 +26,7 @@ install:
   - git config --global user.name "Filippo Tortomasi"
 
   # Remove certificateSha1 from package.json to avoid build error
+  - ps: $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
   - ps: $package_json = Get-Content -Raw -Path package.json
   - ps: $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})" > package.json
 
