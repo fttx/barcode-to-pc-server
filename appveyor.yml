@@ -28,6 +28,13 @@ install:
   - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
+    # Remove certificateSha1 from package.json to avoid build error
+  - ps: $package_json = Get-Content -Raw -Path .\package.json
+  - ps: $package_json = $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})"
+  - ps: $package_json_path = (Get-Item -Path "." -Verbose).FullName + '\package.json'
+  - ps: $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
+  - ps: "[System.IO.File]::WriteAllLines($package_json_path, $package_json, $Utf8NoBomEncoding)" # save the file as UTF-8 with no BOM
+
   - npm cache verify
   - npm ci --unsafe-perm
   - cd ionic
@@ -41,14 +48,6 @@ install:
   - npm --version
   - npm run tsc --version
 build_script:
-  # Remove certificateSha1 from package.json to avoid build error
-  - ps: $package_json = Get-Content -Raw -Path .\package.json
-  - ps: $package_json = $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})"
-  - ps: echo $package_json
-  - ps: del .\package.json
-  - ps: '[System.IO.File]::WriteAllLines(".\package.json", $package_json)' # save the file as UTF-8 with no BOM
-  - ps: $package_json = Get-Content -Raw -Path .\package.json
-  - ps: echo $package_json
   - cmd: npm run dist
 artifacts:
   - path: \dist\dist\nsis-web
