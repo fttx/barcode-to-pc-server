@@ -51,6 +51,6 @@ build_script:
   - cmd: npm run dist
 artifacts:
   - path: \dist\dist\nsis-web
-    name: barcode-to-pc-server."$env:package_version-$env:APPVEYOR_BUILD_NUMBER".offline-installer
+    name: barcode-to-pc-server.offline-installer
     type: zip
 test: off
