@@ -95,7 +95,7 @@ gulp.task('electron:executables', ['mkdir'], async () => {
 gulp.task('build', ['electron:resources', 'electron:tsc', 'ionic:build', 'electron:assets', 'electron:executables']);
 
 gulp.task('dist', ['build'], () => {
-  return electronBuilder.build({ projectDir: '../dist' });
+  return electronBuilder.build({ projectDir: '../dist', publish: 'never' });
 })
 
 gulp.task('publish', [], () => {
