@@ -26,7 +26,6 @@ export class ElectronProvider {
   ElectronStore: typeof ElectronStore;
   nodeMachineId;
   v4: typeof v4;
-  windowManager: typeof windowManager;
 
   constructor(
   ) {
