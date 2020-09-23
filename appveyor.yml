@@ -44,10 +44,11 @@ build_script:
   # Remove certificateSha1 from package.json to avoid build error
   - ps: $package_json = Get-Content -Raw -Path .\package.json
   - ps: $package_json = $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})"
-  - ps: "[System.IO.File]::WriteAllLines('.\\package.json', $package_json)" # save the file as UTF-8 with no BOM
+  - ps: echo $package_json
+  - ps: '[System.IO.File]::WriteAllLines(@".\package.json", $package_json)' # save the file as UTF-8 with no BOM
   - ps: $package_json = Get-Content -Raw -Path .\package.json
   - ps: echo $package_json
-  - ps: npm run dist
+  - cmd: npm run dist
 artifacts:
   - path: \dist\dist\nsis-web
     name: barcode-to-pc-server.$env:package_version-$env:APPVEYOR_BUILD_NUMBER.offline-installer
