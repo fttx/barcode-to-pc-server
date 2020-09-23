@@ -45,7 +45,7 @@ build_script:
   - ps: $package_json = Get-Content -Raw -Path .\package.json
   - ps: $package_json = $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})"
   - ps: echo $package_json
-  - ps: '[System.IO.File]::WriteAllLines(@".\package.json", $package_json)' # save the file as UTF-8 with no BOM
+  - ps: '[System.IO.File]::WriteAllLines(.\package.json, $package_json)' # save the file as UTF-8 with no BOM
   - ps: $package_json = Get-Content -Raw -Path .\package.json
   - ps: echo $package_json
   - cmd: npm run dist
