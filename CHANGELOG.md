@@ -16,6 +16,18 @@
 ### Security
 -->
 
+
+## [v3.13.0] - 2020-09-23
+
+### Added
+
+- ALERT component to show messages in the app
+- More options for the HTTP component
+
+### Removed
+
+- FOCUS_WINDOW component
+
 ## [v3.12.0] - 2020-09-19
 
 ### Added
@@ -351,6 +363,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.13.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.12.0...v3.13.0
 [v3.12.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.2...v3.12.0
 [v3.11.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.1...v3.11.2
 [v3.11.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.0...v3.11.1
