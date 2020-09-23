@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ipcRenderer, Menu, MenuItem, remote, shell } from 'electron';
 import ElectronStore from 'electron-store';
-import { windowManager } from 'node-window-manager';
 import * as v4 from 'uuid/v4';
 
 declare var window: any;
@@ -45,7 +44,6 @@ export class ElectronProvider {
       this.menuItem = electron.remote.MenuItem;
       this.ElectronStore = electron.remote.require('electron-store');
       this.nodeMachineId = electron.remote.require('node-machine-id');
-      this.windowManager = electron.remote.require('node-window-manager').windowManager;
 
       try {
         this.uuid = this.nodeMachineId.machineIdSync();
