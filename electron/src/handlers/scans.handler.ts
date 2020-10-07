@@ -8,6 +8,7 @@ import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import { lt, SemVer } from 'semver';
+import { Config } from '../config';
 import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
 import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions, requestModelRemoteComponent } from '../../../ionic/src/models/request.model';
@@ -81,10 +82,10 @@ export class ScansHandler implements Handler {
                             if (lt(this.devices[request.deviceId].version, new SemVer('3.12.0'))) {
                                 /** @deprecated */
                                 if (outputBlock.skipOutput) {
-                                    axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 });
+                                    axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT });
                                 } else {
                                     try {
-                                        let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: 10000 })).data;
+                                        let response = (await axios.request({ url: outputBlock.value, method: outputBlock.method, timeout: outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT })).data;
                                         if (typeof response == 'object') {
                                             response = JSON.stringify(response);
                                         }
@@ -113,10 +114,10 @@ export class ScansHandler implements Handler {
                             if (lt(this.devices[request.deviceId].version, new SemVer('3.12.0'))) {
                                 /** @deprecated */
                                 if (outputBlock.skipOutput) {
-                                    exec(outputBlock.value, { cwd: os.homedir(), timeout: 10000 })
+                                    exec(outputBlock.value, { cwd: os.homedir(), timeout: outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT })
                                 } else {
                                     try {
-                                        outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: 10000 }).toString();
+                                        outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT }).toString();
                                         this.typeString(outputBlock.value)
                                     } catch (error) {
                                         // Do not change the value when the command fails to allow the Send again feature to work
@@ -278,7 +279,7 @@ export class ScansHandler implements Handler {
                                 params: params,
                                 headers: haeders,
                                 method: request.outputBlock.method || request.outputBlock.httpMethod,
-                                timeout: 10000
+                                timeout: request.outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT
                             })).data;
                             if (typeof response == 'object') response = JSON.stringify(response);
                             responseOutputBlock.value = response;
@@ -291,7 +292,7 @@ export class ScansHandler implements Handler {
 
                     case 'run': {
                         try {
-                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: 10000 }).toString();
+                            responseOutputBlock.value = execSync(request.outputBlock.value, { cwd: os.homedir(), timeout: request.outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT }).toString();
                         } catch (error) {
                             responseOutputBlock.value = "";
                             let output = error.output.toString().substr(2);

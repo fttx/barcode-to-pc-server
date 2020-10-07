@@ -290,6 +290,17 @@ export class MyApp {
           })
         }
 
+        // v3.14.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'http' || outputBlock.type == 'run') {
+                outputBlock.timeout = null;
+              }
+            });
+          })
+        }
+
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;

@@ -295,6 +295,15 @@
           <code>&#123; "Content-Type": "application/json" &#125;</code>
         </p>
       </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_httpTimeout">Timeout</label>
+        <input id="_httpTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />
+        <br>
+        <p>
+          The request timeout in milliseconds
+        </p>
+      </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'run'">
@@ -328,6 +337,15 @@
               https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
             -->
           </code><br>
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_runTimeout">Timeout</label>
+        <input id="_runTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />
+        <br>
+        <p>
+          The maximum amount of time the process is allowed to run (milliseconds)
         </p>
       </ion-item>
 

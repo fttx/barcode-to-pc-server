@@ -115,6 +115,11 @@ export class OutputBlockModel {
     alertScanAgainButton?: string;
     alertOkButton?: string;
 
+    /**
+     * Parameters for RUN and HTTP component
+     */
+    timeout?: number;
+
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;
         for (let i = startFrom; i < outputBlocks.length; i++) {

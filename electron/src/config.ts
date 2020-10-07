@@ -12,6 +12,8 @@ export class Config {
     title: Config.APP_NAME,
   };
 
+  public static DEFAULT_COMPONENT_TIMEOUT =  10000;
+
   public static WEBSITE_NAME = 'barcodetopc.com';
 
   public static URL_WEBSITE = 'https://barcodetopc.com';
