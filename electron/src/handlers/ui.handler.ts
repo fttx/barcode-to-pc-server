@@ -2,7 +2,9 @@ import { execFileSync } from 'child_process';
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, systemPreferences, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
+import * as os from 'os';
 import * as _path from 'path';
+import { gt } from 'semver';
 import * as WebSocket from 'ws';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -112,8 +114,25 @@ export class UiHandler implements Handler {
             result = execFileSync(readDarkModeExecutable).toString().trim();
             console.log('read-darkmode: ' + result);
         } catch (e) {
-            console.log('read-darkmode error: ' + e);
+            console.log('read-darkmode: ' + e);
         }
+
+        // Big Sur Fix - start
+        // The Menu Bar background is always dark on Big Sur => We should always
+        // use the white icon.
+        try {
+            // https://en.wikipedia.org/wiki/Darwin_(operating_system)#Release_history
+            // 19.6.0 = macOS 10.15.6 beta 2 (Catalina)
+            // 20.0.0 = macOS 11.0 beta 1 (Big Sur)
+            if (gt(os.release(), '19.6.0')) {
+                // Override the read-darkmode value
+                result = 'dark';
+            }
+        } catch (e) {
+            console.log('read-darkmode: fail to get the OS release version, error: ' + e);
+        }
+        // Big Sur Fix - end
+
         if (result == 'dark') {
             if (this.tray == null) this.tray = new Tray(white);
             // Always update the icon image: we don't know if it's the first
