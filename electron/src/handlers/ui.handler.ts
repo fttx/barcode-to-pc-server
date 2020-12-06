@@ -108,7 +108,12 @@ export class UiHandler implements Handler {
         // See: https://github.com/fttx/read-darkmode
         let readDarkModeExecutable = _path.join(__dirname, '/../../../read-darkmode').replace('app.asar', 'app.asar.unpacked');
         let result = 'light';
-        try { result = execFileSync(readDarkModeExecutable).toString().trim(); } catch { }
+        try {
+            result = execFileSync(readDarkModeExecutable).toString().trim();
+            console.log('read-darkmode: ' + result);
+        } catch (e) {
+            console.log('read-darkmode error: ' + e);
+        }
         if (result == 'dark') {
             if (this.tray == null) this.tray = new Tray(white);
             // Always update the icon image: we don't know if it's the first
