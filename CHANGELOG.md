@@ -17,6 +17,21 @@
 -->
 
 
+## [v3.13.1] - 2020-12-06
+
+### Changed
+
+- Minor UI fixes
+
+### Removed
+
+- Alert from CSV Output
+
+### Fixed
+
+- macOS Big Sur menu icon dark mode color
+
+
 ## [v3.13.0] - 2020-09-23
 
 ### Added
@@ -363,6 +378,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.13.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.0...v3.13.1
 [v3.13.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.12.0...v3.13.0
 [v3.12.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.2...v3.12.0
 [v3.11.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.1...v3.11.2
