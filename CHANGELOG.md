@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v3.13.2] - 2021-03-07
+
+### Fixed
+
+- QR Code pairing issue
+
 
 ## [v3.13.1] - 2020-12-06
 
@@ -378,6 +384,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.13.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.1...v3.13.2
 [v3.13.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.0...v3.13.1
 [v3.13.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.12.0...v3.13.0
 [v3.12.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.2...v3.12.0
