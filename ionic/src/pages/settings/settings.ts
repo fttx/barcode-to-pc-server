@@ -41,7 +41,6 @@ export class SettingsPage {
       // KEYS
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
       { name: 'DELETE', value: 'delete', type: 'key', modifiers: [] },
-      { name: 'ALT', value: 'ALT', type: 'key', modifiers: [] },
       // Warning: keep in sync with settings.model.ts
       { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] },
       { name: 'TAB', value: 'tab', type: 'key', modifiers: [] },
