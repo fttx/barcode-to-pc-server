@@ -172,8 +172,8 @@ export class ScansHandler implements Handler {
 
                     // Inject variables to the file path
                     let variables = {
+                        barcodes: [],
                         barcode: null, // ''
-                        // barcodes: [],
                         number: null,
                         text: null,
                         timestamp: (scanSession.date * 1000),
@@ -195,13 +195,17 @@ export class ScansHandler implements Handler {
                     let keys = Object.keys(variables);
                     for (let i = 0; i < keys.length; i++) {
                         let key = keys[i];
-                        if (variables[key] === null) {
+                        if (variables[key] === null) { // Skips barcodes, timestamp, date, etc.
+                            // Extract the variable value from the Output template
                             let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
                             let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
                             if (typeof (outputBlock) != "undefined") {
                                 value = outputBlock.value;
                             }
                             variables[key] = value;
+                        } else if (key == 'barcodes') {
+                            let barcodes = scanSession.scannings[0].outputBlocks.filter(x => x.name.toLowerCase() == 'barcode').map(x => x.value);
+                            variables.barcodes = barcodes;
                         }
                     }
                     // Finally supplant the variables to the file path
