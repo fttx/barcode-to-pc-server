@@ -161,6 +161,7 @@ export class ScansHandler implements Handler {
                 // Append to csv
                 if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
                     let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
+                    // The ToCSV() method includes the skipOutput logic
                     let rows = ScanModel.ToCSV(
                         scanSession.scannings, // Warning: contains only the last scan
                         this.settingsHandler.exportOnlyText,
