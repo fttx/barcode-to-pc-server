@@ -22,7 +22,7 @@ page-home {
         line-height: 1.5em;
         margin-top: 295px;
         text-align: center;
-        background: rgba(183, 28, 28, 0.4);
+        background: rgba(map-get($colors, secondary), .35);
         border-radius: 5px;
     }
     .scan-text-animate ion-item[aria-posinset="1"] {
