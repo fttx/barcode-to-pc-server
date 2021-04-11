@@ -23,6 +23,7 @@
 
 - Support for the "defaultValue" variable in the TEXT and NUMBER components
 - Support for the "barcodes" variable
+- CMD+Q Shortcut (macOS)
 
 ### Changed
 
