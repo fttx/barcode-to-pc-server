@@ -88,7 +88,7 @@
       "oneClick": false,
       "perMachine": true,
       "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
-      "shortcutName": "${productname}",
+      "shortcutName": "Barcode to PC server",
       "artifactName": "${name}.v${version}.${os}.setup.${ext}"
     }
   },
