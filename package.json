@@ -6,7 +6,7 @@
     "app",
     "remote"
   ],
-  "version": "3.13.1",
+  "version": "3.14.0",
   "license": "MIT",
   "author": {
     "name": "Filippo Tortomasi",
@@ -75,7 +75,14 @@
       "icon": "build/icon.ico"
     },
     "linux": {
-      "target": "AppImage"
+      "target": "AppImage",
+      "artifactName": "${name}.v${version}.${os}.${arch}.${ext}",
+      "category": "Utility",
+      "desktop": {
+        "Name": "${name}",
+        "Comment": "${productname}. Please wait...",
+        "Terminal": "false"
+      }
     },
     "nsisWeb": {
       "oneClick": false,
