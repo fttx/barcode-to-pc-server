@@ -265,7 +265,9 @@ export class UiHandler implements Handler {
                             label: 'Quit ' + Config.APP_NAME, click: (menuItem, browserWindow, event) => {
                                 this.quitImmediately = true;
                                 app.quit();
-                            }
+                            },
+                            accelerator: 'CmdOrCtrl+Q',
+                            registerAccelerator: true,
                         }
                     ]
                 },
