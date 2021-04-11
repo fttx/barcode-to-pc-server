@@ -16,6 +16,25 @@
 ### Security
 -->
 
+
+## [v3.14.0] - 2021-04-11
+
+### Added
+
+- Support for the "defaultValue" variable in the TEXT and NUMBER components
+- Support for the "barcodes" variable
+
+### Changed
+
+- Improve buttons position
+
+### Fixed
+
+- Disappearing keyboard issue when using MANUAL INPUT mode
+- DELAY component
+- Sync button issue
+
+
 ## [v3.13.2] - 2021-03-07
 
 ### Fixed
@@ -384,6 +403,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.14.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.2...v3.14.0
 [v3.13.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.1...v3.13.2
 [v3.13.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.0...v3.13.1
 [v3.13.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.12.0...v3.13.0
