@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { exec, execSync } from 'child_process';
 import * as parse from 'csv-parse/lib/sync';
+import * as stringify from 'csv-stringify';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
 import * as http from 'http';
@@ -8,12 +9,12 @@ import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import { lt, SemVer } from 'semver';
-import { Config } from '../config';
 import * as Supplant from 'supplant';
 import * as WebSocket from 'ws';
 import { requestModel, requestModelHelo, requestModelOnSmartphoneCharge, requestModelPutScanSessions, requestModelRemoteComponent } from '../../../ionic/src/models/request.model';
 import { responseModelPutScanAck, responseModelRemoteComponentResponse } from '../../../ionic/src/models/response.model';
 import { ScanModel } from '../../../ionic/src/models/scan.model';
+import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
@@ -60,7 +61,7 @@ export class ScansHandler implements Handler {
                 // keyboard emulation
                 for (let outputBlock of scan.outputBlocks) {
                     if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run'
-                        && outputBlock.type != 'csv_lookup') {
+                        && outputBlock.type != 'csv_lookup' && outputBlock.type != 'csv_update') {
                         // for these components the continue; is called inside the switch below (< v3.12.0)
                         continue;
                     }
@@ -155,6 +156,10 @@ export class ScansHandler implements Handler {
                             }
                             break;
                         }
+                        case 'csv_update': {
+                            if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
+                            break;
+                        }
                     } // end switch(outputBlock.type)
                 } // end for
 
@@ -190,6 +195,7 @@ export class ScansHandler implements Handler {
                         run: null,
                         http: null,
                         csv_lookup: null,
+                        csv_update: null,
                     };
                     // Search if there is a corresponding Output component to assign to the NULL variables
                     let keys = Object.keys(variables);
@@ -329,6 +335,47 @@ export class ScansHandler implements Handler {
                             const records: any[] = parse(fileContent, { columns: false, ltrim: true, rtrim: true, delimiter: request.outputBlock.delimiter });
                             const resultRow = records.find(x => x[request.outputBlock.searchColumn - 1] == request.outputBlock.value);
                             responseOutputBlock.value = resultRow[request.outputBlock.resultColumn - 1];
+                        } catch (error) {
+                            responseOutputBlock.value = request.outputBlock.notFoundValue;
+                            break;
+                        }
+
+                        break;
+                    }
+
+                    case 'csv_update': {
+
+                        // Try to open the file
+                        let fileContent: string;
+                        try {
+                            fileContent = fs.readFileSync(request.outputBlock.csvFile).toString().replace(/^\ufeff/, '');
+                        } catch (error) {
+                            errorMessage = 'The CSV_UPDATE component failed to access ' + request.outputBlock.csvFile + '<br>Make you sure the path is correct and that the server has the read permissions.<br><br>Error code: ' + error.code; // ENOENT
+                            break;
+                        }
+
+                        // Try to find the columns
+                        try {
+                            const records: any[] = parse(fileContent, { columns: false, ltrim: true, rtrim: true, delimiter: request.outputBlock.delimiter });
+                            let output = request.outputBlock.notFoundValue;
+
+                            // Replace the values
+                            const result = records.map(row => {
+                                if (row[request.outputBlock.searchColumn - 1] == request.outputBlock.value) {
+                                    row[request.outputBlock.columnToUpdate - 1] = request.outputBlock.newValue
+                                    output = request.outputBlock.newValue;
+                                }
+                                return row;
+                            });
+
+                            // Write the file synchronously
+                            await new Promise<void>((resolve) => {
+                                stringify(result, { delimiter: request.outputBlock.delimiter }, (err: Error | undefined, output: string) => {
+                                    fs.writeFileSync(request.outputBlock.csvFile, output);
+                                    resolve();
+                                })
+                            });
+                            responseOutputBlock.value = output;
                         } catch (error) {
                             responseOutputBlock.value = request.outputBlock.notFoundValue;
                             break;

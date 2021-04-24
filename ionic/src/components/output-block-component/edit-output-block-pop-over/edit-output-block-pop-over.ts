@@ -98,6 +98,7 @@ export class EditOutputBlockPage {
       case 'select_option': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'beep': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'csv_lookup': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CSV_LOOKUP); break;
+      case 'csv_update': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'alert': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       default: this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
     }
@@ -128,7 +129,7 @@ export class EditOutputBlockPage {
       case 'fast': beepSpeed = 250; break;
     }
     let beep = () => {
-      return new Promise((resolve, reject) => {
+      return new Promise<void>((resolve, reject) => {
         let audio = new Audio();
         audio.src = 'assets/audio/' + this.outputBlock.value + '.ogg';
         audio.load();

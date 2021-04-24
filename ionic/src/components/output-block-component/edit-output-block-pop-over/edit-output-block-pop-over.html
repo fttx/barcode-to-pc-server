@@ -183,6 +183,7 @@
         <input type="text" value="http" disabled class="example-variable" /> <br>
         <input type="text" value="run" disabled class="example-variable" /> <br>
         <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+        <input type="text" value="csv_update" disabled class="example-variable" /> <br>
         <!-- Remember to update the other components (6), and the article:
           https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
           https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
@@ -233,6 +234,7 @@
             <input type="text" value="http" disabled class="example-variable" /> <br>
             <input type="text" value="run" disabled class="example-variable" /> <br>
             <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
             <!-- Remember to update the other components (6), and the article:
               https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
               https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/  (remove comments)
@@ -335,6 +337,7 @@
             <input type="text" value="http" disabled class="example-variable" /> <br>
             <input type="text" value="run" disabled class="example-variable" /> <br>
             <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
             <!-- Remember to update the other components (6), and the article:
               https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
               https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
@@ -363,7 +366,7 @@
     <div [hidden]="outputBlock.type != 'csv_lookup'">
       <ion-item no-lines text-wrap>
         <p>
-          Allows you to match field values inside CSV files and then output the corresponding field value of another column.
+          CSV_LOOKUP allows you to match field values inside CSV files and then output the corresponding field value of another column.
         </p>
       </ion-item>
 
@@ -394,6 +397,7 @@
             <input type="text" value="http" disabled class="example-variable" /> <br>
             <input type="text" value="run" disabled class="example-variable" /> <br>
             <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
             <!-- Remember to update the other components (6), and the article:
               https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
               https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
@@ -430,7 +434,95 @@
         <input id="_delimiter" [(ngModel)]="outputBlock.delimiter" class="inline-input" type="text" placeholder="," />
         <p>The field separator character</p>
       </ion-item>
-    </div>
+    </div> <!-- end csv_lookup -->
+
+    <div [hidden]="outputBlock.type != 'csv_update'">
+      <ion-item no-lines text-wrap>
+        <p>
+          CSV_UPDATE allows you to find and edit values inside CSV files.<br>
+          If the operation is successful the new value will be outputted.
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_searchValue">Search value</label>
+        <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. 0" />
+
+        <p>
+          <br>
+          The text or number to search in the CSV file. You can use the variables listed below to search values coming from other components.
+        </p>
+      </ion-item>
+
+      <ion-item no-lines text-wrap>
+        <label for="_newValue">New Value</label>
+        <input id="_newValue" [(ngModel)]="outputBlock.newValue" class="inline-input" type="text" placeholder="Eg. 1" />
+
+        <p>
+          <br>
+          The text or number to use to replace the <i>Search value</i> in the CSV file. You can use the variables listed below to search values coming from other components.
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p>
+          <br>
+          <i>New Value</i> example:<br>
+          <code ngNonBindable>{{ number }}</code><br><br>
+
+          Available variables (lowercase): <br>
+          <code>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            -->
+          </code>
+        </p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_csvFilePath">CSV Input File Path</label>
+        <input id="_csvFilePath" [(ngModel)]="outputBlock.csvFile" class="inline-input" type="text" placeholder="C:&#92;data.csv" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_searchColumnIndex">Search Column Index</label>
+        <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumn" class="inline-input" type="number" placeholder="1" />
+        <p>The column number (starting with 1 for the left-most column of the CSV file) where you want to search</p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_columnToUpdateIndex">Column to Edit Index</label>
+        <input id="_columnToUpdateIndex" [(ngModel)]="outputBlock.columnToUpdate" class="inline-input" type="number" placeholder="2" />
+        <p>The column number (starting with 1 for the left-most column of the CSV file) that you want to update</p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_notFoundValue">Not Found value</label>
+        <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
+        <p>The text to output when the lookup doesn't produce results</p>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <label for="_delimiter">Delimiter character</label>
+        <input id="_delimiter" [(ngModel)]="outputBlock.delimiter" class="inline-input" type="text" placeholder="," />
+        <p>The field separator character</p>
+      </ion-item>
+    </div> <!-- end csv_update -->
 
     <div [hidden]="outputBlock.type != 'beep'">
       <ion-item no-lines text-wrap>
@@ -504,6 +596,7 @@
             <input type="text" value="http" disabled class="example-variable" /> <br>
             <input type="text" value="run" disabled class="example-variable" /> <br>
             <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
             <!-- Remember to update the other components (6), and the article:
               https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
               https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
@@ -543,6 +636,7 @@
           <input type="text" value="http" disabled class="example-variable" /> <br>
           <input type="text" value="run" disabled class="example-variable" /> <br>
           <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_update" disabled class="example-variable" /> <br>
           <!-- Remember to update the other components (6), and the article:
             https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
             https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
@@ -596,7 +690,7 @@
   </div>
 
   <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
-  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup')">
+  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup' || outputBlock.type == 'csv_update')">
     <info-box title="Info">
       To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.<br><br>
       See <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialUseVariables())">this example</a>.

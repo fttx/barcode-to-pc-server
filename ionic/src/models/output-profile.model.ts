@@ -30,7 +30,7 @@ export class OutputProfileModel {
     static ContainsBlockingComponents(outputProfile: OutputProfileModel): boolean {
         return outputProfile.outputBlocks.findIndex(x =>
             x.value == 'number' || x.value == 'text' || x.type == 'select_option' ||
-            x.type == 'http' || x.type == 'run' || x.type == 'csv_lookup' ||
+            x.type == 'http' || x.type == 'run' || x.type == 'csv_lookup' || x.type == 'csv_update' ||
             x.type == 'alert' ||
             /**
              * @deprecated for update transition only

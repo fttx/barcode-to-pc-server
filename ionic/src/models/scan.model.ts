@@ -67,6 +67,7 @@ export class ScanModel {
                 case 'http': return block.value;
                 case 'run': return block.value;
                 case 'csv_lookup': return block.value;
+                case 'csv_update': return block.value;
                 case 'barcode': return block.value;
                 case 'delay': return ''
                 case 'beep': return ''
