@@ -44,9 +44,7 @@ export class UtilsProvider {
         if (defaultLocalAddress) { // Adds the defaultLocalAddress at very beginning of the list
           localAddresses.unshift(defaultLocalAddress);
         }
-        // this.ngZone.run(() => {
         resolve(Config.URL_PAIR + '/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
-        // })
       });
     })
   }
@@ -131,7 +129,7 @@ export class UtilsProvider {
   }
 
   public upgradeDisplayValue(requireRestart = false) {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       // mark the update as "started"
       this.store.set('upgraded_displayValue', false);
 

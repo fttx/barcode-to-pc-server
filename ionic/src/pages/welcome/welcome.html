@@ -21,7 +21,8 @@
       </div>
 
       <h3>2) Launch the app and scan this QR code to connect</h3>
-      <qr-code [value]="qrCodeUrl" [size]="240"></qr-code>
+      <qr-code [hidden]="qrCodeUrl == ''" [value]="qrCodeUrl" [size]="240"></qr-code>
+      <ion-spinner [hidden]="qrCodeUrl != ''" class="qr-spinner" color="primary"></ion-spinner>
 
       <div *ngIf="electronProvider.isDev()">
         <br>

@@ -11,19 +11,18 @@
 </ion-header>
 
 <ion-content padding text-center>
-    <p>
+    <p [hidden]="qrCodeUrl == ''">
         <qr-code class="qr-code-element" [value]="qrCodeUrl" [size]="240"></qr-code>
     </p>
 
+    <ion-spinner class="qr-spinner" color="primary" [hidden]="qrCodeUrl != ''"></ion-spinner>
+
     <div style="margin: 20px; font-size: 1.3em">
-        In order to pair the app:
+        Instructions:
         <ol text-left>
-            <li>Launch the app</li>
-            <li>Open the
-                <i>Select server</i> page</li>
-            <li>Tap on the scan icon
-                <ion-icon style="margin-left: 6px; font-size: .9em" name="qr-scanner"></ion-icon>
-            </li>
+            <li>Open the app on your smartphone</li>
+            <li>Open the <b>Select server</b> page by tapping the Wi-Fi shaped icon <ion-icon style="margin-left: 3px; font-size: .9em" name="ios-wifi"></ion-icon></li>
+            <li>Tap on the <b><ion-icon style="margin-left: 3px; font-size: .9em" name="qr-scanner"></ion-icon> QR Code Pairing</b> button</li>
             <li>Scan the QR code above</li>
         </ol>
     </div>
