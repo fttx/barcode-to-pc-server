@@ -47,6 +47,32 @@
         <p>
           Provide a short description such as "Tracking number" or "Product ID".<br>
           The label will be shown in the app while acquiring the data.
+          <br>
+          <br>
+          Use the double curly braces syntax to inject a variables. Example:<br>
+          <code ngNonBindable>{{ csv_lookup }}</code><br><br>
+
+          Available variables (lowercase): <br>
+          <code>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date" disabled class="example-variable" /> <br>
+            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            -->
+          </code>
         </p>
       </ion-item>
     </div>
@@ -61,7 +87,8 @@
 
       <ion-item text-wrap>
         <p>
-          The value that should be used when no input is provided
+          The value that should be used when no input is provided.<br><br>
+          Use the double curly braces syntax to inject a variables. (Same as above)
         </p>
       </ion-item>
     </div>
