@@ -110,3 +110,13 @@ To publish an update:
 Note: for macOS delete the `electron/electron-resources/*.rtf` folder and run: `npm run publish`
 
 At this point if all looks good the only thing left to do is to publish the Github release draft.
+
+## Translations
+
+| Language           | Credits           |
+| :----------------- |:------------------|
+| Español  (Spanish) | Juan Manuel       |
+| Deutsch (German)   | Bruno Wenger      |
+| Italian            | Filippo Tortomasi |
+
+Are you fluent in any other language than English? Help translate Barcode to PC by [contacting us](https://barcodetopc.com/contact/).
