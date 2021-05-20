@@ -47,7 +47,7 @@ export class ScansHandler implements Handler {
                     (request.scanSessions.length == 1 && request.scanSessions[0].scannings && request.scanSessions[0].scannings.length != 1) ||
                     request.scanSessions.length > 1
                 ) { // checks for at least 1 scan inside the request
-                    return;
+                    return message;
                 }
 
                 // at the moment the server supports only one scanSession and one scan per request
