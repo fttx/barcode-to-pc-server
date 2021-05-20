@@ -43,14 +43,32 @@ export class ScansHandler implements Handler {
         switch (message.action) {
             case requestModel.ACTION_PUT_SCAN_SESSIONS: {
                 let request: requestModelPutScanSessions = message;
-                if (request.scanSessions.length == 0 ||
-                    (request.scanSessions.length == 1 && request.scanSessions[0].scannings && request.scanSessions[0].scannings.length != 1) ||
-                    request.scanSessions.length > 1
-                ) { // checks for at least 1 scan inside the request
+
+                // Prevent malformed requests
+                // At the moment the server supports only one scanSession at a time
+                if (request.scanSessions.length != 1) {
                     return message;
                 }
 
-                // at the moment the server supports only one scanSession and one scan per request
+                // If there are more than one scan inside the session it means
+                // that it's a request to sync an archieved scanSession,
+                // So we can skip executing the output template.
+                //
+                // Note: perhaps do a separate request would be a better solution?
+                if (request.scanSessions.length == 1 && request.scanSessions[0].scannings && request.scanSessions[0].scannings.length != 1) {
+                    // What if the archived scanSession contains a scan with ack = false?
+                    // For example it would imply that the RUN component has never been executed.
+                    // Workaround: discard these scans and let the user sync them using the sync button.
+                    //             the app will continue to display the (!) red mark.
+                    request.scanSessions = request.scanSessions.map(x => {
+                        x.scannings = x.scannings.filter(x => x.ack);
+                        return x;
+                    });
+                    return message;
+                }
+
+                // The only possible case left is when there is only one scanSession:
+
                 let scanSession = request.scanSessions[0];
                 let scan = scanSession.scannings[0];
 
