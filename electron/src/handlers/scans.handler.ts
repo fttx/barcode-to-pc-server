@@ -63,7 +63,9 @@ export class ScansHandler implements Handler {
                     request.scanSessions = request.scanSessions.map(x => {
                         x.scannings = x.scannings.filter(x => x.ack);
                         return x;
-                    });
+                    })
+                    // If the scanSessions contains ALL .ack = false, then discard the enteire scan session to avoid empty user interface.
+                    .filter(x => x.scannings.length != 0);
                     return message;
                 }
 
