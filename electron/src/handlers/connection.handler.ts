@@ -151,6 +151,7 @@ export class ConnectionHandler implements Handler {
                      * @deprecated
                      */
                     quantityEnabled: false,
+                    serverUUID: Config.getServerUUID()
                 });
 
                 if (request && request.deviceId) {

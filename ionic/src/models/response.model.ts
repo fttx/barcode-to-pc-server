@@ -40,13 +40,14 @@ export class responseModelHelo extends responseModel {
     version: string;
     outputProfiles: OutputProfileModel[];
     events: string[];
+    serverUUID: string;
 
     /**
      * @deprecated Use OutputProfiles instead
      */
     quantityEnabled: boolean;
 
-    public fromObject(obj: ({ version: string, outputProfiles: OutputProfileModel[], quantityEnabled: boolean, events: string[] })) {
+    public fromObject(obj: ({ version: string, outputProfiles: OutputProfileModel[], quantityEnabled: boolean, events: string[], serverUUID:string })) {
         this.outputProfiles = obj.outputProfiles;
         if (obj.events) {
             this.events = obj.events;
@@ -56,6 +57,7 @@ export class responseModelHelo extends responseModel {
         this.version = obj.version;
         this.outputProfiles = obj.outputProfiles;
         this.quantityEnabled = obj.quantityEnabled;
+        this.serverUUID = obj.serverUUID;
         return this;
     }
 }
@@ -73,11 +75,13 @@ export class responseModelPutScanAck extends responseModel {
     scanSessionId: number;
     scanId: number;
     outputBlocks: OutputBlockModel[];
+    serverUUID: string;
 
-    public fromObject(obj: ({ scanSessionId: number, scanId: number, outputBlocks: OutputBlockModel[] })) {
+    public fromObject(obj: ({ scanSessionId: number, scanId: number, outputBlocks: OutputBlockModel[], serverUUID: string })) {
         this.scanSessionId = obj.scanSessionId;
         this.scanId = obj.scanId;
         this.outputBlocks = obj.outputBlocks;
+        this.serverUUID = obj.serverUUID;
         return this;
     }
 }
