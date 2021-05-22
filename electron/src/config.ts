@@ -1,7 +1,4 @@
 import { BrowserWindowConstructorOptions } from 'electron';
-import ElectronStore = require('electron-store');
-import { machineIdSync } from 'node-machine-id';
-import { v4 } from 'uuid';
 
 export class Config {
     public static APP_NAME = 'Barcode to PC server';
@@ -61,19 +58,4 @@ export class Config {
     public static STORAGE_SETTINGS = 'storage_settings';
     public static STORAGE_LAST_VERSION = 'storage_last_version';
     public static STORAGE_LICENSE_EVER_ACTIVATED = 'storage_license_ever_activated';
-
-    // Duplicated code in the electron.ts file
-    public static getServerUUID() {
-        try {
-            return machineIdSync();
-        } catch {
-            let store = new ElectronStore();
-            let uuid = store.get('uuid', null);
-            if (uuid == null) {
-                uuid = v4();
-                store.set('uuid', uuid);
-            }
-            return uuid;
-        }
-    }
 }

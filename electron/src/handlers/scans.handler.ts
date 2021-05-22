@@ -268,7 +268,7 @@ export class ScansHandler implements Handler {
                     scanId: scan.id,
                     scanSessionId: scanSession.id,
                     outputBlocks: updatedOutputBloks,
-                    serverUUID: Config.getServerUUID(),
+                    serverUUID: this.settingsHandler.getServerUUID(),
                 });
                 ws.send(JSON.stringify(response));
                 // END ACK

@@ -7,6 +7,8 @@ import { SettingsModel } from '../../../ionic/src/models/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import ElectronStore = require('electron-store');
+import { machineIdSync } from 'node-machine-id';
+import { v4 } from 'uuid';
 
 export class SettingsHandler implements Handler {
     public onSettingsChanged: ReplaySubject<SettingsModel> = new ReplaySubject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
@@ -84,5 +86,19 @@ export class SettingsHandler implements Handler {
     }
     onWsError(ws: WebSocket, err: Error) {
         throw new Error("Method not implemented.");
+    }
+
+    // Duplicated code in the electron.ts file
+    public getServerUUID() {
+        try {
+            return machineIdSync();
+        } catch {
+            let uuid = this.store.get('uuid', null);
+            if (uuid == null) {
+                uuid = v4();
+                this.store.set('uuid', uuid);
+            }
+            return uuid;
+        }
     }
 }

@@ -44,7 +44,7 @@ export class ElectronProvider {
       this.ElectronStore = electron.remote.require('electron-store');
       this.nodeMachineId = electron.remote.require('node-machine-id');
 
-      // Duplicated code on the main process/config.ts file
+      // Duplicated code on the settings.handler.ts file
       try {
         this.uuid = this.nodeMachineId.machineIdSync();
       } catch {
