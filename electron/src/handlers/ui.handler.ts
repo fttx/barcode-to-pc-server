@@ -2,9 +2,7 @@ import { execFileSync } from 'child_process';
 import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, systemPreferences, Tray } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
-import * as os from 'os';
 import * as _path from 'path';
-import { gt } from 'semver';
 import * as WebSocket from 'ws';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
@@ -33,6 +31,8 @@ export class UiHandler implements Handler {
 
     // Used to trigger the automatic window minimization only on the first launch
     static IsFirstInstanceLaunch = true;
+
+    private isSettingsReady = false;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler,) {
@@ -93,6 +93,7 @@ export class UiHandler implements Handler {
     // Waits for the settings to be read and the 'ready' event to be sent
     public onSettingsReady() {
         this.autoMinimize();
+        this.isSettingsReady = true;
     }
 
     static getInstance(settingsHandler: SettingsHandler) {
@@ -116,22 +117,6 @@ export class UiHandler implements Handler {
         } catch (e) {
             console.log('read-darkmode: ' + e);
         }
-
-        // Big Sur Fix - start
-        // The Menu Bar background is always dark on Big Sur => We should always
-        // use the white icon.
-        try {
-            // https://en.wikipedia.org/wiki/Darwin_(operating_system)#Release_history
-            // 19.6.0 = macOS 10.15.6 beta 2 (Catalina)
-            // 20.0.0 = macOS 11.0 beta 1 (Big Sur)
-            if (gt(os.release(), '19.6.0')) {
-                // Override the read-darkmode value
-                result = 'dark';
-            }
-        } catch (e) {
-            console.log('read-darkmode: fail to get the OS release version, error: ' + e);
-        }
-        // Big Sur Fix - end
 
         if (result == 'dark') {
             if (this.tray == null) this.tray = new Tray(white);
@@ -357,6 +342,14 @@ export class UiHandler implements Handler {
             // });
             // app.quit();
         })
+
+        // On Big Sur the tray icon color can change also when the desktop background is changed
+        // regardless of the darkmode settings.
+        // Since we don't have access to such notification on electron v4, we temporarely
+        // fix this way:
+        const forceTrayIconRefresh = () => { if (process.platform == 'darwin' && this.isSettingsReady) this.updateTray(true); }
+        this.mainWindow.on('moved', () => { forceTrayIconRefresh();});
+        this.mainWindow.on('focus', () => { forceTrayIconRefresh();});
 
         if (this.mainWindow.isVisible()) {
             if (app.dock != null) {
