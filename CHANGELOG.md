@@ -17,6 +17,19 @@
 -->
 
 
+## [v3.15.0] - 2021-05-25
+
+### Added
+
+- CSV_UPDATE component
+- Option to archive scan sessions while offline
+- Option to acquire the scan session name as a barcode
+
+### Changed
+
+- Improve QR Code pairing instructions
+- Minor UX improvements
+
 ## [v3.14.0] - 2021-04-11
 
 ### Added
@@ -404,6 +417,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.15.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.14.0...v3.15.0
 [v3.14.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.2...v3.14.0
 [v3.13.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.1...v3.13.2
 [v3.13.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.0...v3.13.1
