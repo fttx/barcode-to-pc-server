@@ -18,7 +18,7 @@ declare global { interface Window { confetti: any; } }
  * start in the constructor)
  *
  * LicenseProvider provides methods to see wheter a certain feature can be
- * accessed with the active subscription plan like getNOMaxX or canUseX.
+ * accessed with the active license like getNOMaxX or canUseX.
  *
  * Methods that looks like limitFeatureX must be called when the user tries to
  * use an X paid feature. These methods take care of disabling the feature for
@@ -30,15 +30,18 @@ declare global { interface Window { confetti: any; } }
  * // TODO: remove StorageProvider and use only ElectronStore ✅, this way should
  * be possible to convert all methods that looks like canUseX to limitFeatureX
  * so that this class can encapsulate all license related code
+ *
+ * Note: the "License" was previusly called "Subscription plan", that's why the
+ * server replyes with the 'plan' value.
  */
 @Injectable()
 export class LicenseProvider {
-  public static PLAN_FREE = 'barcode-to-pc-free';
-  public static PLAN_BASIC = 'barcode-to-pc-basic-license';
-  public static PLAN_PRO = 'barcode-to-pc-pro-license';
-  public static PLAN_UNLIMITED = 'barcode-to-pc-unlimited-license';
+  public static LICENSE_FREE = 'barcode-to-pc-free';
+  public static LICENSE_BASIC = 'barcode-to-pc-basic-license';
+  public static LICENSE_PRO = 'barcode-to-pc-pro-license';
+  public static LICENSE_UNLIMITED = 'barcode-to-pc-unlimited-license';
 
-  public activePlan = LicenseProvider.PLAN_FREE;
+  public activeLicense = LicenseProvider.LICENSE_FREE;
   public serial = '';
 
   private store: ElectronStore;
@@ -59,8 +62,8 @@ export class LicenseProvider {
     })
 
     this.devicesProvider.onDeviceDisconnect().pipe(throttle(ev => interval(1000 * 60))).subscribe(device => {
-      if (this.activePlan == LicenseProvider.PLAN_FREE) {
-        this.showUpgradeDialog('commercialUse', 'Free plan', 'Your current plan is for non-commercial use only. Please switch to a paid plan if you are using Barcode to PC for commercial purposes')
+      if (this.activeLicense == LicenseProvider.LICENSE_FREE) {
+        this.showUpgradeDialog('commercialUse', 'Upgrade', 'Your current license is for non-commercial use only. Please switch to a paid license if you are using Barcode to PC for commercial purposes')
       }
     })
 
@@ -81,7 +84,7 @@ export class LicenseProvider {
    * machine and saves it locally by contacting the btp-license-server.
    *
    * Once it has been executed the other methods of this class will return the
-   * corresponding max allowed values for the active subscription plan (eg.
+   * corresponding max allowed values for the active license (eg.
    * getMaxComponentsNumber will return different values based on the active
    * subscription).
    *
@@ -93,7 +96,7 @@ export class LicenseProvider {
    * If the serial is passed it'll prompt the user with dialogs
    */
   updateSubscriptionStatus(serial: string = '') {
-    this.activePlan = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.PLAN_FREE)
+    this.activeLicense = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.LICENSE_FREE)
 
     if (serial) {
       this.serial = serial;
@@ -113,9 +116,9 @@ export class LicenseProvider {
     }
 
     // Do not bother the license-server if there isn't an active subscription
-    if (serial == '' && this.serial == '' && this.activePlan == LicenseProvider.PLAN_FREE) {
+    if (serial == '' && this.serial == '' && this.activeLicense == LicenseProvider.LICENSE_FREE) {
       // it's also required to check this.serial == '' because when there isn't
-      // a internet connection the plan gets downgraded but the serial is
+      // a internet connection the license gets downgraded but the serial is
       // still saved to the storage
       return;
     }
@@ -127,12 +130,13 @@ export class LicenseProvider {
       this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
       if (value['active'] == true) {
 
-        // If the plan name changed it means that a plan UPGRADE has been performed
-        if (this.activePlan != value['plan']) {
+        // If the license name changed it means that a license UPGRADE has been performed
+        // The 'plan' attribute referes to the license name.
+        if (this.activeLicense != value['plan']) {
           console.log('upgrade')
           this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
           this.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
-          this.activePlan = value['plan'];
+          this.activeLicense = value['plan'];
         }
 
         if (serial) {
@@ -177,11 +181,11 @@ export class LicenseProvider {
   } // updateSubscriptionStatus
 
   /**
-   * Resets the subscription plan to FREE.
+   * Resets the license to FREE.
    *
    * @param clearSerial If TRUE the serial number is removed from the storage.
    * The serial should be cleared only if the user explicitely deactivates the
-   * plan from the UI.
+   * license from the UI.
    *
    * In all other cases clearSerial should always be set to FALSE in order to
    * give the system the opportunity to reactivate itself when for example the
@@ -194,8 +198,8 @@ export class LicenseProvider {
    */
   deactivate(clearSerial = false) {
     let downgradeToFree = () => {
-      this.activePlan = LicenseProvider.PLAN_FREE;
-      this.store.set(Config.STORAGE_SUBSCRIPTION, this.activePlan);
+      this.activeLicense = LicenseProvider.LICENSE_FREE;
+      this.store.set(Config.STORAGE_SUBSCRIPTION, this.activeLicense);
 
       let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
       if (!this.canUseCSVAppend(false)) {
@@ -266,7 +270,7 @@ export class LicenseProvider {
     // Put everything together and open the url in the system browser
     this.electronProvider.shell.openExternal(
       this.utilsProvider.appendParametersToURL(Config.URL_PRICING, {
-        currentPlan: this.activePlan,
+        currentPlan: this.activeLicense,
         customOutputField: customOutputField,
         scanLimitReached: scanLimitReached,
         periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
@@ -282,7 +286,7 @@ export class LicenseProvider {
    */
   limitNOMaxConnectedDevices(device: DeviceModel, connectedDevices: DeviceModel[]) {
     if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
-      let message = 'You\'ve reached the maximum number of connected devices for your current plan';
+      let message = 'You\'ve reached the maximum number of connected devices for your current license';
       this.devicesProvider.kickDevice(device, message);
       this.showUpgradeDialog('limitNOMaxConnectedDevices', 'Devices limit reached', message)
     }
@@ -294,7 +298,7 @@ export class LicenseProvider {
    * has been exceeded
    */
   limitMonthlyScans(noNewScans = 1) {
-    if (this.activePlan == LicenseProvider.PLAN_UNLIMITED) {
+    if (this.activeLicense == LicenseProvider.LICENSE_UNLIMITED) {
       return;
     }
 
@@ -303,7 +307,7 @@ export class LicenseProvider {
     this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
 
     if (count > this.getNOMaxAllowedScansPerMonth()) {
-      let message = 'You\'ve reached the maximum number of monthly scans for your current plan.';
+      let message = 'You\'ve reached the maximum number of monthly scans for your current license.';
       this.devicesProvider.kickAllDevices(message);
       this.showUpgradeDialog('limitMonthlyScans', 'Monthly scans limit reached', message)
     }
@@ -315,15 +319,15 @@ export class LicenseProvider {
    */
   canUseNumberParameter(showUpgradeDialog = true): boolean {
     let available = false;
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: available = false; break;
-      case LicenseProvider.PLAN_BASIC: available = true; break;
-      case LicenseProvider.PLAN_PRO: available = true; break;
-      case LicenseProvider.PLAN_UNLIMITED: available = true; break;
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE: available = false; break;
+      case LicenseProvider.LICENSE_BASIC: available = true; break;
+      case LicenseProvider.LICENSE_PRO: available = true; break;
+      case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
     }
 
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseNumberParameter', 'Upgrade', 'The number component isn\'t available with your current plan.');
+      this.showUpgradeDialog('canUseNumberParameter', 'Upgrade', 'The number component isn\'t available with your current license.');
     }
     return available;
   }
@@ -334,55 +338,55 @@ export class LicenseProvider {
    */
   canUseCSVAppend(showUpgradeDialog = false): boolean {
     let available = false;
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: available = false; break;
-      case LicenseProvider.PLAN_BASIC: available = true; break;
-      case LicenseProvider.PLAN_PRO: available = true; break;
-      case LicenseProvider.PLAN_UNLIMITED: available = true; break;
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE: available = false; break;
+      case LicenseProvider.LICENSE_BASIC: available = true; break;
+      case LicenseProvider.LICENSE_PRO: available = true; break;
+      case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
     }
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseCSVAppend', 'Upgrade', 'This feature isn\'t available with your current plan.');
+      this.showUpgradeDialog('canUseCSVAppend', 'Upgrade', 'This feature isn\'t available with your current license.');
     }
     return available;
   }
 
   getNOMaxComponents() {
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return 4;
-      case LicenseProvider.PLAN_BASIC: return 5;
-      case LicenseProvider.PLAN_PRO: return 10;
-      case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE: return 4;
+      case LicenseProvider.LICENSE_BASIC: return 5;
+      case LicenseProvider.LICENSE_PRO: return 10;
+      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
 
   getNOMaxAllowedConnectedDevices() {
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return 1;
-      case LicenseProvider.PLAN_BASIC: return 1;
-      case LicenseProvider.PLAN_PRO: return 3;
-      case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE: return 1;
+      case LicenseProvider.LICENSE_BASIC: return 1;
+      case LicenseProvider.LICENSE_PRO: return 3;
+      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
 
   getNOMaxAllowedScansPerMonth() {
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return 300;
-      case LicenseProvider.PLAN_BASIC: return 1000;
-      case LicenseProvider.PLAN_PRO: return 10000;
-      case LicenseProvider.PLAN_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE: return 300;
+      case LicenseProvider.LICENSE_BASIC: return 1000;
+      case LicenseProvider.LICENSE_PRO: return 10000;
+      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
   }
 
   isSubscribed() {
-    return this.activePlan != LicenseProvider.PLAN_FREE;
+    return this.activeLicense != LicenseProvider.LICENSE_FREE;
   }
 
-  getPlanName() {
-    switch (this.activePlan) {
-      case LicenseProvider.PLAN_FREE: return 'Free';
-      case LicenseProvider.PLAN_BASIC: return 'Basic';
-      case LicenseProvider.PLAN_PRO: return 'Pro';
-      case LicenseProvider.PLAN_UNLIMITED: return 'Unlimited'
+  getLicenseName() {
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE: return 'Free';
+      case LicenseProvider.LICENSE_BASIC: return 'Basic';
+      case LicenseProvider.LICENSE_PRO: return 'Pro';
+      case LicenseProvider.LICENSE_UNLIMITED: return 'Unlimited'
     }
   }
 
