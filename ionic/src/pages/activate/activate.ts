@@ -79,6 +79,6 @@ export class ActivatePage {
   }
 
   isUnlimited() {
-    return this.licenseProvider.activePlan == LicenseProvider.PLAN_UNLIMITED;
+    return this.licenseProvider.activeLicense == LicenseProvider.LICENSE_UNLIMITED;
   }
 }
