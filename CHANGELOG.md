@@ -16,6 +16,16 @@
 ### Security
 -->
 
+## [v3.16.0] - 2021-06-11
+
+### Added
+
+- Title and message parameter to the SELECT_OPTION component
+
+### Fixed
+
+- CSV_UPDATE empty output issue
+
 
 ## [v3.15.0] - 2021-05-25
 
@@ -417,6 +427,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.16.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.15.0...v3.16.0
 [v3.15.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.14.0...v3.15.0
 [v3.14.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.2...v3.14.0
 [v3.13.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.1...v3.13.2
