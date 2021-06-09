@@ -51,7 +51,7 @@
       <ion-grid [class.license-plate]="licenseProvider.isSubscribed()">
         <ion-row>
           <ion-col>License name</ion-col>
-          <ion-col>{{ licenseProvider.getPlanName() }}</ion-col>
+          <ion-col>{{ licenseProvider.getLicenseName() }}</ion-col>
         </ion-row>
         <ion-row [hidden]="isUnlimited()">
           <ion-col>Next reset date</ion-col>
