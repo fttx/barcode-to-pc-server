@@ -283,7 +283,7 @@ export class MyApp {
         if (settings.outputProfiles) {
           settings.outputProfiles.forEach(outputProfile => {
             outputProfile.outputBlocks.forEach(outputBlock => {
-              if (outputBlock.type == 'http') {
+              if (outputBlock.type == 'http' && typeof outputBlock.httpMethod == 'undefined') {
                 outputBlock.httpMethod = outputBlock.method;
               }
             });
@@ -296,6 +296,20 @@ export class MyApp {
             outputProfile.outputBlocks.forEach(outputBlock => {
               if (outputBlock.type == 'http' || outputBlock.type == 'run') {
                 outputBlock.timeout = null;
+              }
+            });
+          })
+        }
+
+        // v3.16.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'select_option') {
+                if (outputBlock.title == null && typeof outputBlock.title == 'undefined') {
+                  outputBlock.title = '';
+                  outputBlock.message = '';
+                }
               }
             });
           })

@@ -82,9 +82,9 @@ export class OutputBlockModel {
     httpParams?: string;
     httpHeaders?: string;
     /**
-     * @deprecated
+     * @deprecated use httpMethod instead
      */
-    method?: 'get' | 'post'; // TODO: add upgrade script
+    method?: 'get' | 'post';
 
     /**
      * Parameters for the BEEP component
@@ -125,6 +125,12 @@ export class OutputBlockModel {
      * Parameters for RUN and HTTP component
      */
     timeout?: number;
+
+    /**
+     * Parameters for SELECT_OPTION component
+     */
+    title?: string;
+    message?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

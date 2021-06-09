@@ -597,6 +597,16 @@
 
     <div [hidden]="outputBlock.type != 'select_option'">
       <ion-item>
+        <label for="_soTitle">Title</label>
+        <input id="_soTitle" [(ngModel)]="outputBlock.title" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item>
+        <label for="_soMessage">Message</label>
+        <input id="_soMessage" [(ngModel)]="outputBlock.message" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item>
         <label for="_valueSelectOption">Options list</label>
         <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
         <br>

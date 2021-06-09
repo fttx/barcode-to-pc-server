@@ -87,7 +87,7 @@ export class SettingsPage {
 
       // OTHER
       { name: 'JavaScript function', value: '', type: 'function', editable: true, skipOutput: false },
-      { name: 'SELECT_OPTION', value: '', type: 'select_option', skipOutput: false },
+      { name: 'SELECT_OPTION', value: '', type: 'select_option', title: '', message: '', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, editable: true, skipOutput: false, timeout: 10000 },
       { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false, timeout: 10000 },
       { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
