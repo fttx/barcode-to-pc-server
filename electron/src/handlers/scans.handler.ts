@@ -28,7 +28,6 @@ export class ScansHandler implements Handler {
         private settingsHandler: SettingsHandler,
         private uiHandler: UiHandler,
     ) {
-
     }
 
     static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler) {
@@ -256,7 +255,7 @@ export class ScansHandler implements Handler {
                             type: 'error',
                             title: 'CSV Write error',
                             buttons: ['OK'],
-                            message: "An error occurred while appending the scan to the specified CSV file. Please make you sure that the file name doesn't contain special characters and that the server has the write permissions to that path"
+                            message: "An error occurred while appending the scan to the specified CSV file. Please make sure that:\n\n\t1) the file is not open in other programs\n\t2) the server has the write permissions to the specified path\n\t3) the file name doesn't contain special characters"
                         });
                         console.log('CSV Write error:', error);
                     }
