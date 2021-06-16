@@ -1,8 +1,13 @@
-import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
+import { Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertButton, AlertController, Events, Navbar, NavController, NavParams } from 'ionic-angular';
 import moment from 'moment';
 import { DragulaService } from "ng2-dragula";
+import { Observable } from 'rxjs/Observable';
+import { fromEvent } from 'rxjs/observable/fromEvent';
+import { interval } from 'rxjs/observable/interval';
+import { merge, tap, throttle, throttleTime } from 'rxjs/operators';
+import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../../../electron/src/config';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
@@ -21,7 +26,7 @@ import { LicenseProvider } from '../../providers/license/license';
   selector: 'page-settings',
   templateUrl: 'settings.html',
 })
-export class SettingsPage {
+export class SettingsPage implements OnInit, OnDestroy {
   @ViewChild(Navbar) navBar: Navbar;
 
   public unsavedSettingsAlert: Alert;
@@ -318,16 +323,14 @@ export class SettingsPage {
     this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
   }
 
-  private _settingsChanged = false;
-  private settingsChangedDebounceTimeout = null;
-  settingsChanged() {
-    if (this.settingsChangedDebounceTimeout != null) clearTimeout(this.settingsChangedDebounceTimeout);
-    this.settingsChangedDebounceTimeout = setTimeout(() => { this._settingsChanged = this.lastSavedSettings != JSON.stringify(this.settings) }, 200)
-    return this._settingsChanged;
+  public settingsChanged = false;
+  private checkSettingsChanged() {
+    this.settingsChanged = this.lastSavedSettings != JSON.stringify(this.settings);
+    return this.settingsChanged;
   }
 
   goBack() {
-    if (!this.settingsChanged()) { // settings up to date
+    if (!this.checkSettingsChanged()) { // settings up to date
       this.navCtrl.pop();
     } else { // usnaved settings
       this.unsavedSettingsAlert = this.alertCtrl.create({
@@ -372,9 +375,25 @@ export class SettingsPage {
     }
   }
 
-  @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-    if (event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) { // esc
+  // Handle changes dection through 'mouseup' and 'keyup' DOM events
+  // This way it's more efficient compared to the angular way.
+  private domEvents: Subscription;
+  ngOnInit(): void {
+    let events = Observable.merge(fromEvent(window, 'mouseup'), fromEvent(window, 'keyup'));
+    this.domEvents = events.pipe(
+      throttle(ev => interval(1000), { leading: true, trailing: true }),
+      tap(event => this.checkSettingsChanged()),
+      tap(event => this.domEvent(event)),
+    ).subscribe();
+  }
+  ngOnDestroy(): void {
+    this.domEvents.unsubscribe(); // don't forget to unsubscribe
+  }
+
+  // ESC button => Go back
+  domEvent(event) {
+    if (event.keyCode && event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) {
+      this.events.publish('settings:goBack');
       this.goBack();
     }
   }

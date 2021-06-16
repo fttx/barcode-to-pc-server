@@ -151,7 +151,7 @@ export class MyApp {
   }
 
   upgrade() {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       let lastVersion = new SemVer(this.store.get(Config.STORAGE_LAST_VERSION, '0.0.0'));
       let currentVersion = new SemVer(this.electronProvider.app.getVersion());
       // Given a version number MAJOR.MINOR.PATCH, increment the:

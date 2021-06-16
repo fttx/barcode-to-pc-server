@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
-import { ModalController } from 'ionic-angular';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Events, Modal, ModalController } from 'ionic-angular';
+import { Subscription } from 'rxjs';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { EditOutputBlockPage } from './edit-output-block-pop-over/edit-output-block-pop-over';
 
@@ -10,15 +11,19 @@ import { EditOutputBlockPage } from './edit-output-block-pop-over/edit-output-bl
 })
 export class OutputBlockComponent {
   @Input() outputBlock: OutputBlockModel;
+
   constructor(
     public modalCtrl: ModalController,
+    public events: Events,
   ) { }
 
   onClick(event) {
     event.stopPropagation();
-    this.modalCtrl
-      .create(EditOutputBlockPage, { outputBlock: this.outputBlock, color: this.getVariableColor() }, {enableBackdropDismiss: false, showBackdrop: true})
-      .present();
+    let modal = this.modalCtrl
+      .create(EditOutputBlockPage, { outputBlock: this.outputBlock, color: this.getVariableColor() }, { enableBackdropDismiss: false, showBackdrop: true });
+    this.events.subscribe('settings:goBack', () => { modal.dismiss(); });
+    modal.onDidDismiss(() => { this.events.unsubscribe('settings:goBack'); })
+    modal.present();
   }
 
   displayedName() {
