@@ -1,6 +1,7 @@
 import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertButton, AlertController, Events, Navbar, NavController, NavParams } from 'ionic-angular';
+import moment from 'moment';
 import { DragulaService } from "ng2-dragula";
 import { Config } from '../../../../electron/src/config';
 import { OutputBlockModel } from '../../models/output-block.model';
@@ -38,7 +39,7 @@ export class SettingsPage {
     // array below and also enforce compatibility with the previous versions by
     // adding an upgrade script in the app.component.ts/upgrade() method.
     return [
-      // KEYS
+      // **KEYS**
       { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
       { name: 'DELETE', value: 'delete', type: 'key', modifiers: [] },
       // Warning: keep in sync with settings.model.ts
@@ -61,11 +62,14 @@ export class SettingsPage {
       { name: 'SPACE', value: 'space', type: 'key', modifiers: [] },
       { name: 'Custom key', value: '', type: 'key', modifiers: [], editable: true },
 
-      // VARIABLES
+      // **DATE_TIME**
+      { name: 'DATE_TIME', value: '', type: 'date_time', skipOutput: false, format: 'YYYY-MM-DD', locale: moment.locale() },
+
+      // **VARIABLES**
       { name: 'TIMESTAMP', value: 'timestamp', type: 'variable', skipOutput: false },
-      { name: 'DATE', value: 'date', type: 'variable', skipOutput: false },
-      { name: 'TIME', value: 'time', type: 'variable', skipOutput: false },
-      { name: 'DATE_TIME', value: 'date_time', type: 'variable', skipOutput: false },
+      // { name: 'DATE', value: 'date', type: 'variable', skipOutput: false },
+      // { name: 'TIME', value: 'time', type: 'variable', skipOutput: false },
+      // { name: 'DATE_TIME', value: 'date_time', type: 'variable', skipOutput: false },
       { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable', skipOutput: false },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable', skipOutput: false },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable', skipOutput: false },
@@ -74,18 +78,17 @@ export class SettingsPage {
       // Warning: keep in sync with settings.model.ts
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [], filter: null, errorMessage: null },
 
-      // VARIABLE
+      // **CONSTANTS**
       { name: 'Static text', value: '', type: 'text', editable: true },
 
-      // DELAY
+      // **DELAY**
       { name: 'Delay', value: '', type: 'delay', editable: true },
 
-
-      // CONSTRUCTS
+      // **CONSTRUCTS**
       { name: 'IF', value: '', type: 'if', editable: true },
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
-      // OTHER
+      // **OTHER**
       { name: 'JAVASCRIPT_FUNCTION', value: '', type: 'function', editable: true, skipOutput: false },
       { name: 'SELECT_OPTION', value: '', type: 'select_option', title: '', message: '', skipOutput: false },
       { name: 'HTTP', value: '', type: 'http', httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, editable: true, skipOutput: false, timeout: 10000 },

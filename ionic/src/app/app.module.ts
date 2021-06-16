@@ -32,6 +32,7 @@ import { ActivatePage } from '../pages/activate/activate';
 import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
 import { HttpModule } from '@angular/http';
 import { MarkdownModule } from 'ngx-markdown';
+import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { MarkdownModule } from 'ngx-markdown';
     ComponentsModule,
     DragulaModule.forRoot(),
     MarkdownModule.forRoot(),
+    MomentModule,
     NgSelectModule, FormsModule,
   ],
   bootstrap: [IonicApp],

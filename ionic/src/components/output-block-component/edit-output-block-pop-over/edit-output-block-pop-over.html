@@ -61,8 +61,7 @@
             <input type="text" value="number" disabled class="example-variable" /> <br>
             <input type="text" value="text" disabled class="example-variable" /> <br>
             <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
             <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
             <input type="text" value="device_name" disabled class="example-variable" /><br>
             <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -206,8 +205,7 @@
         <input type="text" value="number" disabled class="example-variable" /> <br>
         <input type="text" value="text" disabled class="example-variable" /> <br>
         <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-        <input type="text" value="date" disabled class="example-variable" /> <br>
-        <input type="text" value="time" disabled class="example-variable" /> <br>
+        <input type="text" value="date_time" disabled class="example-variable" /> <br>
         <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
         <input type="text" value="device_name" disabled class="example-variable" /> <br>
         <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -259,8 +257,7 @@
             <input type="text" value="number" disabled class="example-variable" /> <br>
             <input type="text" value="text" disabled class="example-variable" /> <br>
             <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
             <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
             <input type="text" value="device_name" disabled class="example-variable" /><br>
             <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -364,8 +361,7 @@
             <input type="text" value="number" disabled class="example-variable" /> <br>
             <input type="text" value="text" disabled class="example-variable" /> <br>
             <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
             <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
             <input type="text" value="device_name" disabled class="example-variable" /><br>
             <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -426,8 +422,7 @@
             <input type="text" value="number" disabled class="example-variable" /> <br>
             <input type="text" value="text" disabled class="example-variable" /> <br>
             <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
             <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
             <input type="text" value="device_name" disabled class="example-variable" /><br>
             <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -516,8 +511,7 @@
             <input type="text" value="number" disabled class="example-variable" /> <br>
             <input type="text" value="text" disabled class="example-variable" /> <br>
             <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
             <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
             <input type="text" value="device_name" disabled class="example-variable" /><br>
             <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -639,8 +633,7 @@
             <input type="text" value="number" disabled class="example-variable" /> <br>
             <input type="text" value="text" disabled class="example-variable" /> <br>
             <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-            <input type="text" value="date" disabled class="example-variable" /> <br>
-            <input type="text" value="time" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
             <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
             <input type="text" value="device_name" disabled class="example-variable" /><br>
             <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -681,8 +674,7 @@
           <input type="text" value="number" disabled class="example-variable" /> <br>
           <input type="text" value="text" disabled class="example-variable" /> <br>
           <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-          <input type="text" value="date" disabled class="example-variable" /> <br>
-          <input type="text" value="time" disabled class="example-variable" /> <br>
+          <input type="text" value="date_time" disabled class="example-variable" /> <br>
           <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
           <input type="text" value="device_name" disabled class="example-variable" /> <br>
           <input type="text" value="select_option" disabled class="example-variable" /> <br>
@@ -743,6 +735,52 @@
       </p>
     </ion-item>
   </div>
+
+  <ion-item [hidden]="outputBlock.value != 'timestamp' || outputBlock.type != 'variable'">
+    <info-box title="Info">
+      If you want a custom format use the DATE_TIME component instead.
+    </info-box>
+  </ion-item>
+
+  <!-- date_time START -->
+  <div [hidden]="outputBlock.type != 'date_time'">
+    <ion-item no-lines>
+      <ion-label>Enable custom format</ion-label>
+      <ion-toggle [(ngModel)]="enableCustomFormat" (ionChange)="dateTimeEnableCustomFormatChange($event)"></ion-toggle>
+    </ion-item>
+
+    <ion-item [hidden]="enableCustomFormat">
+      <ion-label>Format</ion-label>
+      <ion-select [(ngModel)]="dateTimeSelectedDefaultFormat" (ionChange)="onDateTimeDefaultFormatsChange($event)">
+        <ion-option *ngFor="let format of getFormats()" [value]="format.value">{{ format.title }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item [hidden]="!enableCustomFormat">
+      <label for="_valueFormat">Custom format</label>
+      <input id="_valueFormat" [(ngModel)]="outputBlock.format" class="inline-input" type="text" placeholder="YYYY-MM-DD" />
+
+      <br>
+
+      <p>
+        You can view the full token list
+        <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedDateFormats())">here</a>.
+      </p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Locale</ion-label>
+      <ion-select [(ngModel)]="outputBlock.locale" (ionChange)="onDateTimeLocaleChange($event)">
+        <ion-option *ngFor="let locale of getLocales()" [value]="locale.id">{{ locale.name }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <label>Preview</label>
+      <ion-note item-end>{{ dateTimeNowExample | amDateFormat: outputBlock.format }}</ion-note>
+    </ion-item>
+  </div>
+  <!-- date_time END -->
 
   <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
   <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup' || outputBlock.type == 'csv_update')">

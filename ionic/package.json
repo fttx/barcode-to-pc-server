@@ -33,6 +33,7 @@
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "^2.0.0",
     "@types/semver": "^5.5.0",
+    "angular2-moment": "^1.9.0",
     "angular2-qrcode": "^2.0.3",
     "cordova-browser": "5.0.4",
     "cordova-plugin-device": "^2.0.3",

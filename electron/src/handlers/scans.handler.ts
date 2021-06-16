@@ -64,8 +64,8 @@ export class ScansHandler implements Handler {
                         x.scannings = x.scannings.filter(x => x.ack);
                         return x;
                     })
-                    // If the scanSessions contains ALL .ack = false, then discard the enteire scan session to avoid empty user interface.
-                    .filter(x => x.scannings.length != 0);
+                        // If the scanSessions contains ALL .ack = false, then discard the enteire scan session to avoid empty user interface.
+                        .filter(x => x.scannings.length != 0);
                     return message;
                 }
 
@@ -90,6 +90,7 @@ export class ScansHandler implements Handler {
                         case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
                         case 'text': this.typeString(outputBlock.value); break;
                         case 'variable': this.typeString(outputBlock.value); break;
+                        case 'date_time': this.typeString(outputBlock.value); break;
                         case 'function': this.typeString(outputBlock.value); break;
                         case 'barcode': this.typeString(outputBlock.value); break;
                         case 'select_option': this.typeString(outputBlock.value); break;
@@ -201,14 +202,22 @@ export class ScansHandler implements Handler {
                         barcode: null, // ''
                         number: null,
                         text: null,
-                        timestamp: (scanSession.date * 1000),
                         // We use the date of the scan session.
                         // We're not using the date from the Output template
                         // because there isn't a way to tell if a block
-                        // contains a date since the DATE component is of
-                        // variable type
+                        // contains a date since the TIMESTAMP component is of
+                        // variable type. Solution => create a separate type
+                        //
+                        // Note that in the output template is handled differently
+                        // by using the actual scan date instead.
+                        timestamp: (scanSession.date * 1000),
+                        // We assign a default value to date for backwards compatibility
+                        // If the output template is created with a v3.17.0+ version
+                        // the value of the date variable will be overwritten below.
                         date: new Date(scanSession.date).toISOString().slice(0, 10),
+                        // The time variable is @deprecated. We keep it for backwards compatibility
                         time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
+                        date_time: null,
                         scan_session_name: scanSession.name,
                         device_name: null,
                         select_option: null,
@@ -242,13 +251,14 @@ export class ScansHandler implements Handler {
                         if (rows.length != 0) {
                             fs.appendFileSync(path, rows + newLineCharacter);
                         }
-                    } catch (e) {
+                    } catch (error) {
                         dialog.showMessageBox(this.uiHandler.mainWindow, {
                             type: 'error',
-                            title: 'Write error',
+                            title: 'CSV Write error',
                             buttons: ['OK'],
                             message: "An error occurred while appending the scan to the specified CSV file. Please make you sure that the file name doesn't contain special characters and that the server has the write permissions to that path"
                         });
+                        console.log('CSV Write error:', error);
                     }
                 }
 

@@ -1,24 +1,37 @@
-import { Component, NgZone } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import format from 'date-fns/format';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
+import moment from 'moment';
 import { Config } from '../../../../../electron/src/config';
 import { ApplicationModel } from '../../../models/application.model';
 import { barcodeFormatModel } from '../../../models/barcode-format.model';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
+import { UtilsProvider } from '../../../providers/utils/utils';
 
 @Component({
   selector: 'edit-output-block-pop-over',
   templateUrl: 'edit-output-block-pop-over.html',
 })
-export class EditOutputBlockPage {
+export class EditOutputBlockPage implements OnInit, OnDestroy {
   public outputBlock: OutputBlockModel;
   public color: string;
 
+  // KEY
   public modifiers: boolean[] = [false, false, false, false];
 
+  // BARCODE
   public barcodeFormats: barcodeFormatModel[];
   public enableLimitBarcodeFormats = false;
+
+  // DATE_TIME
+  public dateTimeNowExample = new Date();
+  public dateTimeSelectedDefaultFormat;
+  public enableCustomFormat = false;
+  private dateTimeInterval = null;
+  public getFormats() { return UtilsProvider.DATE_TIME_DEFAULT_FORMATS; }
+  public getLocales() { return UtilsProvider.DATE_TIME_LOCALES; }
 
   constructor(
     public navCtrl: NavController,
@@ -53,6 +66,53 @@ export class EditOutputBlockPage {
         this.enableLimitBarcodeFormats = true;
       }
     }
+
+    if (this.outputBlock.type == 'date_time') {
+      console.log(this.outputBlock)
+      this.dateTimeSelectedDefaultFormat = UtilsProvider.DATE_TIME_DEFAULT_FORMATS[0].value;
+      let index = UtilsProvider.DATE_TIME_DEFAULT_FORMATS.findIndex(x => x.value == this.outputBlock.format);
+      if (index != -1) {
+        this.dateTimeSelectedDefaultFormat = this.outputBlock.format;
+      } else {
+        this.enableCustomFormat = true;
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
+  }
+
+  ngOnInit(): void {
+    if (this.outputBlock.type == 'date_time') {
+      if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
+      this.dateTimeInterval = setInterval(() => { this.dateTimeNowExample = new Date(); }, 1000)
+    }
+  }
+
+  onDateTimeDefaultFormatsChange(newValue) {
+    this.outputBlock.format = this.dateTimeSelectedDefaultFormat;
+  }
+
+  dateTimeEnableCustomFormatChange(enable) {
+    console.log('dateTimeEnableCustomFormatChange = ', enable.checked)
+    if (!enable.checked) {
+      let index = UtilsProvider.DATE_TIME_DEFAULT_FORMATS.findIndex(x => x.value == this.outputBlock.format);
+      if (index != -1) {
+        this.dateTimeSelectedDefaultFormat = this.outputBlock.format
+      } else {
+        this.dateTimeSelectedDefaultFormat = UtilsProvider.DATE_TIME_DEFAULT_FORMATS[0].value;
+      }
+    }
+    this.outputBlock.format = this.dateTimeSelectedDefaultFormat;
+  }
+
+  onDateTimeLocaleChange(locale) {
+    moment.locale(this.outputBlock.locale);
+  }
+
+  getUrlSupportedDateFormats() {
+    return Config.URL_SUPPORTED_DATE_FORMATS;
   }
 
   onModifierChange() {

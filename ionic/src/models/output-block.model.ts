@@ -27,25 +27,35 @@ export class OutputBlockModel {
      */
     editable?: boolean;
     /**
-     * Defines the behaviour of the OutputBlock.
+     * Defines the type of the value attribute, an thus its behaviour.
      *
      * We are not using an polymorphic approach because it would require to
      * write the behaviour of the object inside the class, and we are not
      * allowed to do that because this object is shared between the UI and the
      * renderer process where certains node modules are not available.
      *
-     * key is a key that can be pressed
-     * text is a string that can be set beforehand
-     * variable is some attribute of ScanModel that can be converted to string
-     * function is a string containing JS code that can be interpreted
-     * barcode is ScanModel.barcode
-     * delay is like sleep or wait
-     * http for http requests
-     * select_options is used to store CSV values
+     * Depending on the type, the OutputBlockModel.value attribute will contain:
+     *
+     * key: the key identifier to press
+     * text: the static string set in the output template
+     * variable: some text set on the smartphone side dynamically
+     * function: a string containing JS code interpreted on the smartphone side
+     * barcode: the barcode acquired from the smartphone
+     * delay: the amount of time to sleep in ms
+     * if: the string containing a JavaScript boolean expression
+     * endif: nothing
+     * http: the request' url
+     * run: the command
+     * select_options: a comma separated value string containing the options
+     * beep: audio file name to play
+     * csv_lookup: search value
+     * csv_update: new value
+     * alert: nothing
+     * date_time: a string containing the formatted date
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -131,6 +141,15 @@ export class OutputBlockModel {
      */
     title?: string;
     message?: string;
+
+    /**
+     * Parameters for DATE component
+     *
+     * Supported since v3.17.0.
+     * Older versions of the server use the 'variable' type to store dates
+     */
+    format?: string;
+    locale?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

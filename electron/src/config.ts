@@ -26,6 +26,7 @@ export class Config {
     public static URL_DOWNLOAD_SERVER = Config.URL_WEBSITE + '/#download-server';
     public static URL_FAQ = Config.URL_WEBSITE + '/frequently-asked-questions/';
     public static URL_SUPPORTED_KEY_IDENTIFIERS = Config.URL_WEBSITE + '/supported-key-identifiers/';
+    public static URL_SUPPORTED_DATE_FORMATS = Config.URL_WEBSITE + '/supported-date-formats/';
     public static URL_FAQ_APP_DOESNT_FIND_COMPUTER = Config.URL_FAQ + '#app-doesnt-find-computer';
     public static URL_API = Config.URL_WEBSITE + "http-api.json"
     public static URL_GITHUB_SERVER = 'https://github.com/fttx/barcode-to-pc-server';

@@ -62,6 +62,7 @@ export class ScanModel {
                 }
                 case 'text': return block.value;
                 case 'variable': return block.value;
+                case 'date_time': return block.value;
                 case 'select_option': return block.value;
                 case 'function': return block.value;
                 case 'http': return block.value;
