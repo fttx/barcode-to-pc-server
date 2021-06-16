@@ -17,7 +17,7 @@ export class OutputBlockComponent {
   onClick(event) {
     event.stopPropagation();
     this.modalCtrl
-      .create(EditOutputBlockPage, { outputBlock: this.outputBlock, color: this.getVariableColor() })
+      .create(EditOutputBlockPage, { outputBlock: this.outputBlock, color: this.getVariableColor() }, {enableBackdropDismiss: false, showBackdrop: true})
       .present();
   }
 

@@ -3,11 +3,13 @@
     <ion-title>{{ outputBlock.name }}</ion-title>
 
     <ion-buttons end>
-      <button ion-button icon-end icon-only solid [color]="color" (click)="onHelpClick(outputBlock)">
+      <button ion-button icon-end solid [color]="color" (click)="onHelpClick(outputBlock)" class="btn-help">
+        Help
         <ion-icon name="help"></ion-icon>
       </button>
-      <button ion-button icon-end icon-only solid [color]="color" (click)="onCloseClick()">
-        <ion-icon name="close"></ion-icon>
+      <button ion-button icon-end solid [color]="color" (click)="onCloseClick()" class="btn-save">
+        Save
+        <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
 

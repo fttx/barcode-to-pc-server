@@ -87,4 +87,25 @@ edit-output-block-pop-over {
     float: left;
     top: 0px !important;
   }
+
+  .btn-help {
+    // color: rgba(222, 222, 222, 0.541);
+    margin-right: 10px;
+    .button-inner {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .button-inner:hover {
+      color: #fff !important;
+    }
+    ion-icon {
+      height: 11px;
+      font-size: 15px;
+    }
+  }
+
+  .btn-save ion-icon {
+    height: 12px;
+    font-size: 17px;
+  }
 }
