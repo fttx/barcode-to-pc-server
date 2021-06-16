@@ -1,4 +1,4 @@
-import { Component, HostListener, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import ElectronStore from 'electron-store';
 import { Alert, AlertButton, AlertController, Events, Navbar, NavController, NavParams } from 'ionic-angular';
 import moment from 'moment';
@@ -6,7 +6,7 @@ import { DragulaService } from "ng2-dragula";
 import { Observable } from 'rxjs/Observable';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { interval } from 'rxjs/observable/interval';
-import { merge, tap, throttle, throttleTime } from 'rxjs/operators';
+import { tap, throttle } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../../../electron/src/config';
 import { OutputBlockModel } from '../../models/output-block.model';
