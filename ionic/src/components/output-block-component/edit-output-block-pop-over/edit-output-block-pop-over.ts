@@ -68,7 +68,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
     }
 
     if (this.outputBlock.type == 'date_time') {
-      console.log(this.outputBlock)
       this.dateTimeSelectedDefaultFormat = UtilsProvider.DATE_TIME_DEFAULT_FORMATS[0].value;
       let index = UtilsProvider.DATE_TIME_DEFAULT_FORMATS.findIndex(x => x.value == this.outputBlock.format);
       if (index != -1) {
@@ -95,7 +94,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
   }
 
   dateTimeEnableCustomFormatChange(enable) {
-    console.log('dateTimeEnableCustomFormatChange = ', enable.checked)
     if (!enable.checked) {
       let index = UtilsProvider.DATE_TIME_DEFAULT_FORMATS.findIndex(x => x.value == this.outputBlock.format);
       if (index != -1) {
@@ -139,7 +137,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
     // copy this.barcodeFormats values to the the outputBlock.enabledFormats
     this.outputBlock.enabledFormats = this.barcodeFormats.filter(x => x.enabled).map(x => x.name);
     this.enableLimitBarcodeFormats = true
-    console.log('onBarcodeFormatsChange() => enabled formats=', this.outputBlock.enabledFormats)
   }
 
   onHelpClick(outputBlock: OutputBlockModel) {
