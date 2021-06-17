@@ -201,14 +201,21 @@ export class ScansHandler implements Handler {
                         barcode: null, // ''
                         number: null,
                         text: null,
-                        // We use the date of the scan session.
-                        // We're not using the date from the Output template
-                        // because there isn't a way to tell if a block
-                        // contains a date since the TIMESTAMP component is of
-                        // variable type. Solution => create a separate type
-                        //
-                        // Note that in the output template is handled differently
-                        // by using the actual scan date instead.
+                        /**
+                         * We use the date of the Scan Session because it may be
+                         * get synced later, and this may cause even days of
+                         * difference => We use the most close date we've have
+                         * compared to the actual scan date.
+                         *
+                         * We're not using the date from the Output template
+                         * because there isn't a way to tell if a block
+                         * contains a date since the TIMESTAMP component is of
+                         * variable type. Solution => create a separate type
+                         *
+                         * Note that in the Output Template is handled
+                         * differently (app side) by using the actual scan date
+                         * instead.
+                        */
                         timestamp: (scanSession.date * 1000),
                         // We assign a default value to date for backwards compatibility
                         // If the output template is created with a v3.17.0+ version
