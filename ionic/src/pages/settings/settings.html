@@ -288,6 +288,20 @@
         Other
       </ion-item-divider>
 
+
+      <!-- maxScanSessionsNumber START -->
+      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+        <ion-label>
+          Maximum number of scan sessions
+          <p>The older scan sessions will be automatically deleted</p>
+          <p>Current Value: {{ getMaxScanSessionNumberReadable() }}</p>
+        </ion-label>
+      </ion-item>
+      <ion-item [hidden]="!(settings && settings.enableAdvancedSettings)" class="slider-max-scans">
+        <ion-range  min="0" [max]="getMaxScanSessionNumber()" step="100" snaps="true" color="secondary" [(ngModel)]="settings.maxScanSessionsNumber" (ionChange)="onMaxScanSessionNumberChange($event)"></ion-range>
+      </ion-item>
+      <!-- maxScanSessionsNumber END -->
+
       <ion-item no-lines>
         <ion-label>Show advanced settings</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableAdvancedSettings"></ion-checkbox>

@@ -37,6 +37,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   private store: ElectronStore;
 
   public selectedOutputProfile = 0;
+  static MAX_SCAN_SESSION_NUMBER_UNLIMITED = 2000; // Update also SettingsModel.maxScanSessionsNumber
 
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
@@ -410,5 +411,14 @@ export class SettingsPage implements OnInit, OnDestroy {
     if (this.settings.openAutomatically == 'minimized' && this.electronProvider.process.platform === 'darwin') {
       this.settings.enableTray = true;
     }
+  }
+
+  getMaxScanSessionNumberReadable() {
+    if (this.settings.maxScanSessionsNumber == SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED) return "Unlimited";
+    return this.settings.maxScanSessionsNumber;
+  }
+  getMaxScanSessionNumber() { return SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED };
+  onMaxScanSessionNumberChange(e) {
+    this.checkSettingsChanged();
   }
 }

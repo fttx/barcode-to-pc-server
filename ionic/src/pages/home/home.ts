@@ -38,6 +38,7 @@ export class HomePage {
   private saveDebounceTimeout = null;
   private noBounces = 0;
   private accessibilityAlert: Alert;
+  private settings: SettingsModel;
 
   constructor(
     public navCtrl: NavController,
@@ -143,7 +144,14 @@ export class HomePage {
     )
   }
 
+  ionViewDidEnter() {
+    // Always refresh settings
+    this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+  }
+
   ionViewDidLoad() {
+    if (!this.settings) this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+
     this.title.setTitle(Config.APP_NAME);
     this.scanSessions = JSON.parse(JSON.stringify(this.store.get(Config.STORAGE_SCAN_SESSIONS, [])));
 
@@ -221,6 +229,12 @@ export class HomePage {
             }
           }
         } else {
+          console.log ('scan session nt presetn', this.settings.maxScanSessionsNumber, this.scanSessions.length,this.settings.maxScanSessionsNumber);
+
+          while (this.settings.maxScanSessionsNumber != SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED && this.scanSessions.length != 0 &&  this.scanSessions.length > this.settings.maxScanSessionsNumber) {
+            this.scanSessions.pop();
+          }
+
           this.scanSessions.unshift(newScanSession);
           this.selectedScanSessionIndex = 0;
           if (this.scanSessionsContainer) {

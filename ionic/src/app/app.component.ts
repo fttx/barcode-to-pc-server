@@ -325,6 +325,10 @@ export class MyApp {
             });
           })
         }
+        if (typeof settings.maxScanSessionsNumber == 'undefined') {
+          settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
+        }
+
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
@@ -362,6 +366,7 @@ export class MyApp {
       } // on update detected end
       this.store.set(Config.STORAGE_LAST_VERSION, currentVersion.version)
       resolve();
+
     })
   }
 }
