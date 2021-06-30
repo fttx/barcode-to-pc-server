@@ -398,13 +398,38 @@ export class ScansHandler implements Handler {
                             let output = request.outputBlock.notFoundValue;
 
                             // Replace the values
-                            const result = records.map(row => {
-                                if (row[request.outputBlock.searchColumn - 1] == request.outputBlock.value) {
-                                    row[request.outputBlock.columnToUpdate - 1] = request.outputBlock.newValue
-                                    output = request.outputBlock.newValue;
-                                }
-                                return row;
-                            });
+                            let result;
+                            switch (request.outputBlock.rowToUpdate) {
+                                case 'all':
+                                    result = records.map(row => {
+                                        if (row[request.outputBlock.searchColumn - 1] == request.outputBlock.value) {
+                                            row[request.outputBlock.columnToUpdate - 1] = request.outputBlock.newValue
+                                            output = request.outputBlock.newValue;
+                                        }
+                                        return row;
+                                    });
+                                    break;
+
+                                case 'first':
+                                    const firstIndex = records.findIndex(x => x[request.outputBlock.searchColumn - 1] == request.outputBlock.value);
+                                    console.log('First index: ', firstIndex)
+                                    if (firstIndex != -1) {
+                                        console.log('row: ', records[firstIndex])
+                                        records[firstIndex][request.outputBlock.columnToUpdate - 1] = request.outputBlock.newValue
+                                        output = request.outputBlock.newValue;
+                                    }
+                                    result = records;
+                                    break;
+
+                                case 'last':
+                                    const lastIndex = ScansHandler.findLastIndex(records, x => x[request.outputBlock.searchColumn - 1] == request.outputBlock.value);
+                                    if (lastIndex != -1) {
+                                        records[lastIndex][request.outputBlock.columnToUpdate - 1] = request.outputBlock.newValue
+                                        output = request.outputBlock.newValue;
+                                    }
+                                    result = records;
+                                    break;
+                            }
 
                             // Write the file synchronously
                             await new Promise<void>((resolve) => {
@@ -491,5 +516,24 @@ export class ScansHandler implements Handler {
                 str = null;
             }
         }
+    }
+
+    /**
+     * Returns the index of the last element in the array where predicate is true, and -1
+     * otherwise.
+     * @param array The source array to search in
+     * @param predicate find calls predicate once for each element of the array, in descending
+     * order, until it finds one where predicate returns true. If such an element is found,
+     * findLastIndex immediately returns that element index. Otherwise, findLastIndex returns -1.
+     *
+     * https://stackoverflow.com/questions/40929260/find-last-index-of-element-inside-array-by-certain-condition
+     */
+    public static findLastIndex<T>(array: Array<T>, predicate: (value: T, index: number, obj: T[]) => boolean): number {
+        let l = array.length;
+        while (l--) {
+            if (predicate(array[l], l, array))
+                return l;
+        }
+        return -1;
     }
 }

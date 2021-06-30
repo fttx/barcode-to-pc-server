@@ -100,7 +100,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'HTTP', value: '', type: 'http', httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, editable: true, skipOutput: false, timeout: 10000 },
       { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false, timeout: 10000 },
       { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
-      { name: 'CSV_UPDATE', value: '{{ barcode }}', type: 'csv_update', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, columnToUpdate: 2, newValue: '', notFoundValue: '', delimiter: ',' },
+      { name: 'CSV_UPDATE', value: '{{ barcode }}', type: 'csv_update', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
       { name: 'ALERT', value: '', type: 'alert', editable: true, alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
     ];

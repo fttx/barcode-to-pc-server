@@ -121,6 +121,7 @@ export class OutputBlockModel {
      * Parameters for the CSV_UPDATE component
      */
     columnToUpdate?: number;
+    rowToUpdate?: 'all' | 'first' | 'last';
     newValue?: string;
 
     /**

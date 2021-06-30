@@ -546,6 +546,18 @@
         <p>The column number (starting with 1 for the left-most column of the CSV file) that you want to update</p>
       </ion-item>
 
+      <ion-item text-wrap no-lines>
+        <ion-label>
+          Row to Edit
+        </ion-label>
+        <ion-select [(ngModel)]="outputBlock.rowToUpdate">
+          <ion-option value="all">All</ion-option>
+          <ion-option value="first">First match</ion-option>
+          <ion-option value="last">Last match</ion-option>
+        </ion-select>
+        <!-- <p>The matched row to update that you want to update</p> -->
+      </ion-item>
+
       <ion-item text-wrap>
         <label for="_notFoundValue">Not Found value</label>
         <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />

@@ -322,13 +322,15 @@ export class MyApp {
               if (outputBlock.type == 'function') {
                 outputBlock.name = 'JAVASCRIPT_FUNCTION';
               }
+              if (outputBlock.type == 'csv_update' && typeof outputBlock.rowToUpdate == 'undefined') {
+                outputBlock.rowToUpdate = 'all';
+              }
             });
           })
         }
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }
-
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
