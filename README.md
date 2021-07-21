@@ -115,8 +115,10 @@ At this point if all looks good the only thing left to do is to publish the Gith
 
 | Language           | Credits           |
 | :----------------- |:------------------|
-| Español  (Spanish) | Juan Manuel       |
-| Deutsch (German)   | Bruno Wenger      |
-| Italian            | Filippo Tortomasi |
+| Chinese            | -                 |
+| Deutsc             | Bruno Wenger      |
+| Español            | Juan Manuel       |
+| Italiano           | -                 |
+| English            | -                 |
 
-Are you fluent in any other language than English? Help translate Barcode to PC by [contacting us](https://barcodetopc.com/contact/).
+Are you fluent in any other language than English? If you found a typo, or want to help translate Barcode to PC, get in touch [here](https://barcodetopc.com/contact/).

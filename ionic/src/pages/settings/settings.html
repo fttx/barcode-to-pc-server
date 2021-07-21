@@ -68,7 +68,8 @@
             ?
           </button>
           <popper-content #keyboardEmulationPopper>
-            Enable this option to automatically type the barcodes. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/keyboard-emulation/')">here</a> to learn more.
+            Enable this option to automatically type the barcodes. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/keyboard-emulation/')">here</a>
+            to learn more.
           </popper-content>
         </ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
@@ -107,7 +108,8 @@
           keeping pressed your mouse button.<br>
           If the key that you're looking for isn't present you can use the <b>CUSTOM KEY</b> component.<br>
           If you want to apply a custom function like a character replacement or transform the barcode<br>
-          to uppercase, you can use the <b>JAVASCRIPT FUNCTION</b>. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">here</a> to learn more.
+          to uppercase, you can use the <b>JAVASCRIPT FUNCTION</b>. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">here</a>
+          to learn more.
         </popper-content>
         <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
@@ -132,7 +134,8 @@
           <popper-content #outputTemplatePopper>
             It's the template that will be used to type barcodes with the emulated keyboard.<br>
             You can rearrange the elements by dragging them. To remove an element drag it outside <br>
-            by keeping pressed your mouse button. Click <a (click)=" electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">here</a> to learn more.
+            by keeping pressed your mouse button. Click <a (click)=" electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">here</a>
+            to learn more.
           </popper-content>
         </div>
 
@@ -186,7 +189,8 @@
             ?
           </button>
           <popper-content #appendToCsvFilePopper>
-            Appends in real-time the scans to a .csv file. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/3-ways-to-save-scans-to-csv-files/#method-2-append-the-scans-to-a-file-in-real-time-synchronously')">here</a> to learn more.
+            Appends in real-time the scans to a .csv file. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/3-ways-to-save-scans-to-csv-files/#method-2-append-the-scans-to-a-file-in-real-time-synchronously')">here</a>
+            to learn more.
           </popper-content>
         </ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.appendCSVEnabled" (click)="onCSVClick()"></ion-checkbox>
@@ -223,7 +227,8 @@
             <input type="text" value="javascript_function" disabled />
           </code><br>
           Note 1:
-          <p style="margin-left: 13px">To use the variables acquired from the smartphone it's required to put a correspoinding Output Component in the Output template field</p><br>
+          <p style="margin-left: 13px">To use the variables acquired from the smartphone it's required to put a
+            correspoinding Output Component in the Output template field</p><br>
           Note 2:
           <p style="margin-left: 13px">The <i>timestamp</i> variable refers to the scan session creation date</p><br>
           Example:<br>
@@ -291,14 +296,15 @@
 
       <!-- maxScanSessionsNumber START -->
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-        <ion-label>
+        <ion-label text-wrap>
           Maximum number of scan sessions
-          <p>The older scan sessions will be automatically deleted</p>
+          <p>The older scan sessions will be automatically deleted from the server, but you will still able to send them
+            again from the smartphone using the <i>sync</i> button.</p><br>
           <p>Current Value: {{ getMaxScanSessionNumberReadable() }}</p>
         </ion-label>
       </ion-item>
       <ion-item [hidden]="!(settings && settings.enableAdvancedSettings)" class="slider-max-scans">
-        <ion-range  min="0" [max]="getMaxScanSessionNumber()" step="100" snaps="true" color="secondary" [(ngModel)]="settings.maxScanSessionsNumber" (ionChange)="onMaxScanSessionNumberChange($event)"></ion-range>
+        <ion-range min="0" [max]="getMaxScanSessionNumber()" step="100" snaps="true" color="secondary" [(ngModel)]="settings.maxScanSessionsNumber" (ionChange)="onMaxScanSessionNumberChange($event)"></ion-range>
       </ion-item>
       <!-- maxScanSessionsNumber END -->
 
