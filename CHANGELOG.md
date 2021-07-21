@@ -16,6 +16,22 @@
 ### Security
 -->
 
+## [v3.17.0] - 2021-06-21
+
+### Added
+
+- Option to automatically delete scan sessions from the server
+- Add option to change the row to update for the CSV_UPDATE component
+
+### Changed
+
+- Improve Continuous mode scan speed
+- Improve UX
+
+### Fixed
+
+- CSV Exporting issue with unsupported charsets
+- Fix beep sound not playing after exiting the ScanSession page
 
 ## [v3.16.1] - 2021-06-11
 
@@ -434,6 +450,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.17.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.1...v3.17.0
 [v3.16.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.0...v3.16.1
 [v3.16.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.15.0...v3.16.0
 [v3.15.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.14.0...v3.15.0
