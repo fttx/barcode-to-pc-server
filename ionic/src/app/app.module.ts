@@ -1,23 +1,30 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MomentModule } from 'angular2-moment';
 import { QRCodeModule } from 'angular2-qrcode';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { DragulaModule } from 'ng2-dragula';
 import { ClipboardModule } from 'ngx-clipboard';
+import { MarkdownModule } from 'ngx-markdown';
 import { NgxPopperModule, Triggers } from 'ngx-popper';
-import { NgSelectModule } from '@ng-select/ng-select';
-import { FormsModule } from '@angular/forms';
 import { ComponentsModule } from '../components/components.module';
+import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
+import { ActivatePage } from '../pages/activate/activate';
 import {
   ConnectedClientsPopover,
   HomePage,
   MainMenuPopover,
   QrCodePairingModal,
-  ScanSessionContextMenuPopover,
+  ScanSessionContextMenuPopover
 } from '../pages/home/home';
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
@@ -28,11 +35,6 @@ import { LastToastProvider } from '../providers/last-toast/last-toast';
 import { LicenseProvider } from '../providers/license/license';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
-import { ActivatePage } from '../pages/activate/activate';
-import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
-import { HttpModule } from '@angular/http';
-import { MarkdownModule } from 'ngx-markdown';
-import { MomentModule } from 'angular2-moment';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,13 @@ import { MomentModule } from 'angular2-moment';
     ClipboardModule,
     HttpClientModule,
     HttpModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    }),
     NgxPopperModule.forRoot({
       trigger: Triggers.CLICK,
       hideOnClickOutside: true,
@@ -103,3 +112,6 @@ import { MomentModule } from 'angular2-moment';
   ]
 })
 export class AppModule { }
+export function createTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}

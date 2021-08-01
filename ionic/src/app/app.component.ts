@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
+import { TranslateService } from '@ngx-translate/core';
 import ElectronStore from 'electron-store';
 import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
@@ -36,6 +37,7 @@ export class MyApp {
     public events: Events,
     public utils: UtilsProvider,
     public app: App,
+    private translate: TranslateService,
   ) {
     this.store = new this.electronProvider.ElectronStore();
 
@@ -147,6 +149,11 @@ export class MyApp {
       }
     });
 
+    if (this.translate.getBrowserLang() !== undefined) {
+      this.translate.use(this.translate.getBrowserLang());
+    } else {
+      this.translate.use('en');
+    }
     utils.upgradeIonicStoreToElectronStore();
   }
 

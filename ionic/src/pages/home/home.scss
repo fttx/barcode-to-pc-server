@@ -15,15 +15,21 @@ page-home {
         max-width: 55%;
         margin: 150px 0 40px 0;
     }
-    .empty {
-        width: 230px;
-        margin: 0 auto;
+
+    .empty-breadcrumb {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .empty-text {
         height: 1.5em;
         line-height: 1.5em;
         margin-top: 295px;
         text-align: center;
         background: rgba(map-get($colors, secondary), .35);
         border-radius: 5px;
+        padding: 0 25px;
+        display: inline-block;
     }
     .scan-text-animate ion-item[aria-posinset="1"] {
         animation: scanAnimation 1000ms linear 1
