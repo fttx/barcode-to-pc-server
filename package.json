@@ -124,6 +124,7 @@
     "electron-log": "^3.0.0",
     "electron-notarize": "^0.2.1",
     "gulp": "^3.9.1",
+    "iconv-lite": "^0.5.1",
     "mocha": "^5.2.0",
     "npx": "^10.2.0",
     "spectron": "^3.8.0",
