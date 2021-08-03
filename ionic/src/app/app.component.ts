@@ -149,6 +149,7 @@ export class MyApp {
       }
     });
 
+    this.translate.setDefaultLang('en');
     if (this.translate.getBrowserLang() !== undefined) {
       this.translate.use(this.translate.getBrowserLang());
     } else {
