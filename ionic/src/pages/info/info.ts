@@ -117,7 +117,7 @@ export class InfoPage {
 
   // Methods to "translate" the status received from the MAIN process to the user interface
   getUpdateStatus() {
-    if (this.updateStatus == 'checkingForUpdate') return this.translateService.get('checkingForUpdates');
+    if (this.updateStatus == 'checkingForUpdate') return this.translateService.instant('checkingForUpdates');
     if (this.updateStatus == 'updateAvailable') return this.translateService.instant('outOfDate', {
       "appName": Config.APP_NAME,
     })
