@@ -14,6 +14,7 @@ import { OutputProfileModel } from '../../models/output-profile.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
+import { UtilsProvider } from '../../providers/utils/utils';
 
 /**
  * Generated class for the SettingsPage page.
@@ -116,6 +117,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     private alertCtrl: AlertController,
     public events: Events,
     private ngZone: NgZone,
+    private utils: UtilsProvider,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.dragulaService.destroy('dragula-group')
@@ -168,9 +170,11 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.apply();
   }
 
-  onRestoreDefaultSettingsClick() {
+  async onRestoreDefaultSettingsClick() {
     this.alertCtrl.create({
-      title: 'Are you sure?', message: 'Do you really want to restore the default settings? This cannot be undone', buttons: [{ text: 'Cancel', role: 'cancel' }, {
+      title: await this.utils.text('restoreDefaultSettingsDialogTitle'),
+      message: await this.utils.text('restoreDefaultSettingsDialogMessage'),
+      buttons: [{ text: await this.utils.text('restoreDefaultSettingsDialogCancelButton'), role: 'cancel' }, {
         text: 'Restore', handler: (opts) => {
           this.settings = new SettingsModel();
           this.apply();
@@ -179,17 +183,17 @@ export class SettingsPage implements OnInit, OnDestroy {
     }).present();
   }
 
-  apply(pop = false) {
+  async apply(pop = false) {
     let noIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'if').length;
     let noEndIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'endif').length;
     if (noIfs != noEndIfs) {
-      let buttons: AlertButton[] = [{ text: 'OK', role: 'cancel', },];
+      let buttons: AlertButton[] = [{ text: await this.utils.text('applyDialogOKButton'), role: 'cancel', },];
       if (pop) {
-        buttons.unshift({ text: 'Discard', handler: () => { this.navCtrl.pop(); } });
+        buttons.unshift({ text: await this.utils.text('applyDialogDiscardButton'), handler: () => { this.navCtrl.pop(); } });
       }
       this.alertCtrl.create({
-        title: 'Syntax error',
-        message: 'The number of IF output components should be the same of the ENDIFs',
+        title: await this.utils.text('"syntaxErrorDialogTitle"'),
+        message: await this.utils.text('"syntaxErrorDialogMessage"'),
         buttons: buttons
       }).present();
       return false;
@@ -212,18 +216,19 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
-  onEditOutputProfileNameClick() {
+  async onEditOutputProfileNameClick() {
     let currentProfile = this.settings.outputProfiles[this.selectedOutputProfile];
     this.alertCtrl.create({
-      title: 'Output template name',
+      title: await this.utils.text('outputTemplateNameDialogTitle'),
       // message: 'Inse',
       enableBackdropDismiss: false,
       inputs: [{ name: 'name', type: 'text', placeholder: currentProfile.name, value: currentProfile.name }],
       buttons: [{
-        role: 'cancel', text: 'Cancel',
+        role: 'cancel',
+        text: await this.utils.text('outputTemplateNameDialogCancelButton'),
         handler: () => { }
       }, {
-        text: 'Ok',
+        text: await this.utils.text('outputTemplateNameDialogOkButton'),
         handler: data => {
           if (data.name != "") {
             this.settings.outputProfiles[this.selectedOutputProfile].name = data.name;
@@ -233,16 +238,16 @@ export class SettingsPage implements OnInit, OnDestroy {
     }).present();
   }
 
-  onDeleteOutputTemplateClick() {
+  async onDeleteOutputTemplateClick() {
     if (this.settings.outputProfiles.length <= 1) {
       return;
     }
 
     this.alertCtrl.create({
-      title: 'Delete Output template',
-      message: 'Are you sure?',
+      title: await this.utils.text('deleteOutputTemplateDialogTitle'),
+      message: await this.utils.text('deleteOutputTemplateDialogMessage'),
       buttons: [{
-        text: 'Yes',
+        text: await this.utils.text('deleteOutputTemplateDialogYesButton'),
         handler: () => {
           // change the selected OutputProfile
           let selectedIndex = this.selectedOutputProfile;
@@ -252,22 +257,26 @@ export class SettingsPage implements OnInit, OnDestroy {
           this.settings.outputProfiles = this.settings.outputProfiles.filter((x, index) => index != selectedIndex);
         }
       }, {
-        text: 'Cancel',
+        text: await this.utils.text('deleteOutputTemplateDialogCancelButton'),
         role: 'cancel',
         handler: () => { }
       }]
     }).present();
   }
 
-  onExportOutputTemplateClick() {
+  async onExportOutputTemplateClick() {
     let outputProfile = this.settings.outputProfiles[this.selectedOutputProfile];
     outputProfile.version = this.electronProvider.app.getVersion()
 
     this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
-      title: "Select the location",
+      title: await this.utils.text('saveDialogTitle'),
       defaultPath: outputProfile.name + '.btpt',
-      buttonLabel: "Save",
-      filters: [{ name: 'Barcode to PC Output Template', extensions: ['btpt',] }],
+      buttonLabel: await this.utils.text('saveDialogSaveButton'),
+      filters: [{
+        name: await this.utils.text('saveDialogFilterName', {
+          "appName": Config.APP_NAME,
+        }), extensions: ['btpt',]
+      }],
     }, (filename, bookmark) => {
       if (!filename) return;
       const fs = this.electronProvider.remote.require('fs');
@@ -275,14 +284,20 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
   }
 
-  onImportOutputTemplateClick() {
+  async onImportOutputTemplateClick() {
     let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
-      title: 'Select the Output Template file',
-      buttonLabel: 'Select',
+      title: await this.utils.text('importDialogTitle'),
+      buttonLabel: await this.utils.text('importDialogSelectButton'),
       defaultPath: this.electronProvider.app.getPath('desktop'),
-      filters: [{ name: 'Output Template Files', extensions: ['btpt'] }],
+      filters: [{
+        name: await this.utils.text('saveDialogFilterName', {
+          "appName": Config.APP_NAME,
+        }), extensions: ['btpt']
+      }],
       properties: ['openFile', 'createDirectory', 'promptToCreate',]
     });
+
+    if (!filePaths || !filePaths[0]) return;
 
     const fs = this.electronProvider.remote.require('fs');
     fs.readFile(filePaths[0], 'utf-8', (err, data) => {
@@ -291,18 +306,20 @@ export class SettingsPage implements OnInit, OnDestroy {
     });
   }
 
-  onNewOutputTemplateClick() {
-    let newTemplateName = 'Output template ' + (this.settings.outputProfiles.length + 1);
+  async onNewOutputTemplateClick() {
+    let newTemplateName = await this.utils.text('newOutputTemplateName', {
+      "number": (this.settings.outputProfiles.length + 1)
+    });
     this.alertCtrl.create({
-      title: 'New Output template',
-      message: 'Insert the Output template name',
+      title: await this.utils.text('newOutputTemplateDialogTitle'),
+      message: await this.utils.text('newOutputTemplateDialogMessage'),
       enableBackdropDismiss: false,
       inputs: [{ name: 'name', type: 'text', placeholder: newTemplateName }],
       buttons: [{
-        role: 'cancel', text: 'Cancel',
+        role: 'cancel', text: await this.utils.text('newOutputTemplateDialogCancelButton'),
         handler: () => { }
       }, {
-        text: 'Ok',
+        text: await this.utils.text('newOutputTemplateDialogOkButton'),
         handler: data => {
           if (data.name != "") {
             newTemplateName = data.name;
@@ -330,20 +347,20 @@ export class SettingsPage implements OnInit, OnDestroy {
     return this.settingsChanged;
   }
 
-  goBack() {
+  async goBack() {
     if (!this.checkSettingsChanged()) { // settings up to date
       this.navCtrl.pop();
     } else { // usnaved settings
       this.unsavedSettingsAlert = this.alertCtrl.create({
-        title: 'Unsaved settings',
-        message: 'Do you want to save and apply the settings?',
+        title: await this.utils.text('unsavedSettingsDialogTitle'),
+        message: await this.utils.text('unsavedSettingsDialogMessage'),
         buttons: [{
-          text: 'Save & Apply',
+          text: await this.utils.text('unsavedSettingsDialogSaveButton'),
           handler: () => {
             this.apply(true);
           }
         }, {
-          text: 'Discard',
+          text: await this.utils.text('unsavedSettingsDialogDiscardButton'),
           role: 'cancel',
           handler: () => {
             this.navCtrl.pop();
@@ -354,19 +371,19 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
-  onSelectCSVPathClick() {
+  async onSelectCSVPathClick() {
     let defaultPath = this.settings.csvPath;
     if (!defaultPath) {
       defaultPath = this.electronProvider.app.getPath('desktop')
     }
 
     let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
-      title: 'Select the CSV file path',
-      buttonLabel: 'Select',
+      title: await this.utils.text('selectCSVPathDialog'),
+      buttonLabel: await this.utils.text('selectCSVSelectButton'),
       defaultPath: defaultPath,
       filters: [
-        { name: 'Text files', extensions: ['txt', 'csv', 'log'] },
-        { name: 'All Files', extensions: ['*'] }
+        { name: await this.utils.text('selectCSVFilterText'), extensions: ['txt', 'csv', 'log'] },
+        { name: await this.utils.text('selectCSVFilterAll'), extensions: ['*'] }
       ],
       properties: ['openFile', 'createDirectory', 'promptToCreate',]
     });

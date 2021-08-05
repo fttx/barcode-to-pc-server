@@ -61,9 +61,13 @@ export class LicenseProvider {
       this.limitNOMaxConnectedDevices(lastDevice, devicesList);
     })
 
-    this.devicesProvider.onDeviceDisconnect().pipe(throttle(ev => interval(1000 * 60))).subscribe(device => {
+    this.devicesProvider.onDeviceDisconnect().pipe(throttle(ev => interval(1000 * 60))).subscribe(async device => {
       if (this.activeLicense == LicenseProvider.LICENSE_FREE) {
-        this.showUpgradeDialog('commercialUse', 'Upgrade', 'Your current license is for non-commercial use only. Please switch to a paid license if you are using Barcode to PC for commercial purposes')
+        this.showUpgradeDialog(
+          'commercialUse',
+          await this.utilsProvider.text('commercialUseDialogTitle'),
+          await this.utilsProvider.text('commercialUseDialogMessage')
+        )
       }
     })
 
@@ -126,7 +130,7 @@ export class LicenseProvider {
     this.http.post(Config.URL_ORDER_CHECK, {
       serial: this.serial,
       uuid: this.electronProvider.uuid
-    }).subscribe(value => {
+    }).subscribe(async value => {
       this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
       if (value['active'] == true) {
 
@@ -145,7 +149,7 @@ export class LicenseProvider {
             this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
           }
           this.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
-          this.utilsProvider.showSuccessNativeDialog('The license has been activated successfully');
+          this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
           window.confetti.start(3000);
         }
       } else {
@@ -155,13 +159,13 @@ export class LicenseProvider {
         this.deactivate();
         this.utilsProvider.showErrorNativeDialog(value['message']);
       }
-    }, (error: HttpErrorResponse) => {
+    }, async (error: HttpErrorResponse) => {
       if (serial) {
         // if (error.status == 503) {
         //   this.utilsProvider.showErrorNativeDialog('Unable to fetch the subscription information, try later (FS problem)');
         // }
         this.deactivate();
-        this.utilsProvider.showErrorNativeDialog('Unable to activate the license. Please make you sure that your internet connection is active and try again. If the error persists please contact the support.');
+        this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licenseActivationErrorDialogMessage'));
       } else {
         // Perhaps there is a connection problem, wait 15 days before asking the
         // user to enable the connection.
@@ -172,7 +176,7 @@ export class LicenseProvider {
         if (firstFailDate && (now - firstFailDate) > 1296000000) { //  15 days = 1296000000 ms
           this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
           this.deactivate();
-          this.utilsProvider.showErrorNativeDialog('Unable to verify your license. Please make you sure that the computer has an active internet connection');
+          this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licensePeriodicCheckErrorDialogMessage'));
         } else {
           this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
         }
@@ -221,8 +225,8 @@ export class LicenseProvider {
         downgradeToFree();
         this.serial = '';
         this.store.set(Config.STORAGE_SERIAL, this.serial);
-      }, (error: HttpErrorResponse) => {
-        this.utilsProvider.showErrorNativeDialog('Unable to deactivate the license. Please make you sure that the computer has an active internet connection');
+      }, async (error: HttpErrorResponse) => {
+        this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licenseDeactivationErrorDialogMessage'));
       });
     } else {
       downgradeToFree();
@@ -284,11 +288,14 @@ export class LicenseProvider {
    * It will check if the limit is reached and will show the appropriate
    * messages on both server and app
    */
-  limitNOMaxConnectedDevices(device: DeviceModel, connectedDevices: DeviceModel[]) {
+  async limitNOMaxConnectedDevices(device: DeviceModel, connectedDevices: DeviceModel[]) {
     if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
-      let message = 'You\'ve reached the maximum number of connected devices for your current license';
+      let message = await this.utilsProvider.text('deviceLimitsReachedDialogMessage');
       this.devicesProvider.kickDevice(device, message);
-      this.showUpgradeDialog('limitNOMaxConnectedDevices', 'Devices limit reached', message)
+      this.showUpgradeDialog(
+        'limitNOMaxConnectedDevices',
+        await this.utilsProvider.text('deviceLimitsReachedDialogTitle'), message
+      );
     }
   }
 
@@ -297,7 +304,7 @@ export class LicenseProvider {
    * It kicks out all devices and shows a dialog when the monthly limit of scans
    * has been exceeded
    */
-  limitMonthlyScans(noNewScans = 1) {
+  async limitMonthlyScans(noNewScans = 1) {
     if (this.activeLicense == LicenseProvider.LICENSE_UNLIMITED) {
       return;
     }
@@ -307,9 +314,13 @@ export class LicenseProvider {
     this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
 
     if (count > this.getNOMaxAllowedScansPerMonth()) {
-      let message = 'You\'ve reached the maximum number of monthly scans for your current license.';
+      let message = await this.utilsProvider.text('scansLimitReachedDialogMessage');
       this.devicesProvider.kickAllDevices(message);
-      this.showUpgradeDialog('limitMonthlyScans', 'Monthly scans limit reached', message)
+      this.showUpgradeDialog(
+        'limitMonthlyScans',
+        await this.utilsProvider.text('scansLimitReachedDialogTitle'),
+        message
+      );
     }
   }
 
@@ -317,7 +328,7 @@ export class LicenseProvider {
    * Shuld be called when the user tries to drag'n drop the number component.
    * @returns FALSE if the feature should be limited
    */
-  canUseNumberParameter(showUpgradeDialog = true): boolean {
+  async canUseNumberParameter(showUpgradeDialog = true): Promise<boolean> {
     let available = false;
     switch (this.activeLicense) {
       case LicenseProvider.LICENSE_FREE: available = false; break;
@@ -327,7 +338,11 @@ export class LicenseProvider {
     }
 
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseNumberParameter', 'Upgrade', 'The number component isn\'t available with your current license.');
+      this.showUpgradeDialog(
+        'canUseNumberParameter',
+        await this.utilsProvider.text('numberComponentNotAvailableDialogTitle'),
+        await this.utilsProvider.text('numberComponentNotAvailableDialogMessage'),
+      );
     }
     return available;
   }
@@ -336,7 +351,7 @@ export class LicenseProvider {
    * Shuld be called when the user tries to enable the CSV append option
    * @returns FALSE if the feature should be limited
    */
-  canUseCSVAppend(showUpgradeDialog = false): boolean {
+  async canUseCSVAppend(showUpgradeDialog = false): Promise<boolean> {
     let available = false;
     switch (this.activeLicense) {
       case LicenseProvider.LICENSE_FREE: available = false; break;
@@ -345,7 +360,11 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
     }
     if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog('canUseCSVAppend', 'Upgrade', 'This feature isn\'t available with your current license.');
+      this.showUpgradeDialog(
+        'canUseCSVAppend',
+        await this.utilsProvider.text('csvAppendNotAvailableDialogTitle'),
+        await this.utilsProvider.text('csvAppendNotAvailableDialogMessage'),
+      );
     }
     return available;
   }
@@ -390,13 +409,15 @@ export class LicenseProvider {
     }
   }
 
-  private showUpgradeDialog(refer, title, message) {
+  private async showUpgradeDialog(refer, title, message) {
     if (this.upgradeDialog != null) {
       return;
     }
     this.upgradeDialog = this.alertCtrl.create({
-      title: title, message: message, buttons: [{ text: 'Close', role: 'cancel' }, {
-        text: 'Upgrade', handler: (opts: AlertOptions) => {
+      title: title, message: message, buttons: [{
+        text: await this.utilsProvider.text('upgradeDialogDismissButton'), role: 'cancel'
+      }, {
+        text: await this.utilsProvider.text('upgradeDialogUpgradeButton'), handler: (opts: AlertOptions) => {
           this.showPricingPage(refer + 'Dialog');
         }
       }]

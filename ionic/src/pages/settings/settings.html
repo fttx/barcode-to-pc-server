@@ -7,16 +7,16 @@
 <ion-header>
 
   <ion-navbar color="secondary">
-    <ion-title class="settings-title">Settings</ion-title>
+    <ion-title class="settings-title">{{ 'settingsTitle' | translate }}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-end solid color="secondary" (click)="onRestoreDefaultSettingsClick()">
-        Restore default settings
+        {{ 'restoreDefaultSettingsButton' | translate }}
         <ion-icon name="refresh"></ion-icon>
       </button>
 
       <button ion-button icon-end solid color="secondary" [disabled]="!settingsChanged" (click)="onApplyClick()">
-        Save &amp; Apply
+        {{ 'saveApplyButton' | translate }}
         <ion-icon name="checkmark"></ion-icon>
       </button>
 
@@ -30,21 +30,19 @@
   <ion-grid fixed>
     <ion-list>
       <ion-item-divider style="margin-top: 0">
-        General
+        {{ 'generalDivider' | translate }}
       </ion-item-divider>
 
       <ion-item no-lines>
         <ion-grid no-padding>
           <ion-row>
-            <ion-col>
-              Open
-              <i>{{ getAppName() }}</i> automatically after you log into the computer&nbsp;
+            <ion-col [innerHtml]="('openAutomatically' | translate:{'appName': getAppName()}) + '&nbsp;'">
             </ion-col>
             <ion-col>
               <select [(ngModel)]="settings && settings.openAutomatically" (change)="onOpenAutomaticallyChange()">
-                <option value="no">No</option>
-                <option selected value="yes">Yes</option>
-                <option value="minimized">Minimized</option>
+                <option value="no">{{ 'openAutomaticallyNo' | translate }}</option>
+                <option selected value="yes">{{ 'openAutomaticallyYes' | translate }}</option>
+                <option value="minimized">{{ 'openAutomaticallyMinimized' | translate }}</option>
               </select>
             </ion-col>
           </ion-row>
@@ -52,24 +50,24 @@
       </ion-item>
 
       <ion-item no-lines>
-        <ion-label>Enable tray icon</ion-label>
+        <ion-label>{{ 'enableTrayIcon' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableTray"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines>
-        <ion-label>Automatically open URLs in browser</ion-label>
+        <ion-label>{{ 'automaticallyOpenUrLsInBrowser' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableOpenInBrowser"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines>
         <ion-label>
-          Enable keyboard emulation
+          {{ 'enableKeyboardEmulation' | translate }}
           <button ion-button small color="light" [popper]="keyboardEmulationPopper" class="help-button">
             ?
           </button>
           <popper-content #keyboardEmulationPopper>
-            Enable this option to automatically type the barcodes. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/keyboard-emulation/')">here</a>
-            to learn more.
+            {{ 'enableKeyboardEmulationPopper1' | translate }} <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/keyboard-emulation/')">{{ 'enableKeyboardEmulationPopper2' | translate }}</a>
+            {{ 'enableKeyboardEmulationPopper3' | translate }}
           </popper-content>
         </ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
@@ -79,12 +77,12 @@
         <ion-grid no-padding>
           <ion-row>
             <ion-col col-sm-2>
-              Type method&nbsp;
+              {{ 'typeMethod' | translate }}&nbsp;
             </ion-col>
             <ion-col>
               <select [(ngModel)]="settings && settings.typeMethod">
-                <option value="keyboard" selected="selected">Keyboard</option>
-                <option value="clipboard">Clipboard</option>
+                <option value="keyboard" selected="selected">{{ 'keyboard' | translate }}</option>
+                <option value="clipboard">{{ 'clipboard' | translate }}</option>
               </select>
             </ion-col>
           </ion-row>
@@ -92,32 +90,57 @@
       </ion-item>
 
       <ion-item-divider>
-        Output settings
+        {{ 'outputSettingsDivider' | translate }}
       </ion-item-divider>
 
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
-          <span>Available components</span>
+          <span>{{ 'availableComponents' | translate }}</span>
           <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content" class="help-button">
             ?
           </button>
         </div>
         <popper-content #popper1Content>
-          To edit the emulated keyboard output drag &amp; drop one element from the <br>
-          <b>Available components</b> field to the <b>Output template</b> box by <br>
-          keeping pressed your mouse button.<br>
-          If the key that you're looking for isn't present you can use the <b>CUSTOM KEY</b> component.<br>
-          If you want to apply a custom function like a character replacement or transform the barcode<br>
-          to uppercase, you can use the <b>JAVASCRIPT FUNCTION</b>. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">here</a>
-          to learn more.
+          {{ 'availableComponentsPopper1' | translate }}
+          &amp;
+          {{ 'availableComponentsPopper2' | translate }}
+          <br>
+          <b>
+            {{ 'availableComponentsPopper3' | translate }}
+          </b>
+          {{ 'availableComponentsPopper4' | translate }}
+          <b>
+            {{ 'availableComponentsPopper5' | translate }}
+          </b>
+          {{ 'availableComponentsPopper6' | translate }}
+          <br>
+          {{ 'availableComponentsPopper7' | translate }}
+          <br>
+          {{ 'availableComponentsPopper8' | translate }}
+          <b>
+            {{ 'availableComponentsPopper9' | translate }}
+          </b>
+          {{ 'availableComponentsPopper10' | translate }}
+          <br>
+          {{ 'availableComponentsPopper11' | translate }}or transform the barcode
+          <br>
+          {{ 'availableComponentsPopper12' | translate }}
+          <b>
+            {{ 'availableComponentsPopper13' | translate }}
+          </b>
+          {{ 'availableComponentsPopper14' | translate }}
+          <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">
+            {{ 'availableComponentsPopper15' | translate }}
+          </a>
+          {{ 'availableComponentsPopper16' | translate }}
         </popper-content>
         <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
-            You've reached the maximum number of output components
+            {{ 'limitReacheadHeader' | translate }}
           </h2>
-          <p>Drag out one output component from the Output template</p>
-          <div>or</div>
-          <button ion-button color="secondary" (click)="onSubscribeClick()">Upgrade</button>
+          <p>{{ 'limitReachead1' | translate }}</p>
+          <div>{{ 'limitReachead2' | translate }}</div>
+          <button ion-button color="secondary" (click)="onSubscribeClick()">{{ 'limitReacheadUpgradeButton' | translate }}</button>
         </div>
         <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
           <output-block-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock">
@@ -127,20 +150,25 @@
 
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
-          <span>Output template</span>
+          <span>{{ 'outputTemplate' | translate }}</span>
           <button ion-button small color="light" popperPlacement="right-start" [popper]="outputTemplatePopper" class="help-button">
             ?
           </button>
           <popper-content #outputTemplatePopper>
-            It's the template that will be used to type barcodes with the emulated keyboard.<br>
-            You can rearrange the elements by dragging them. To remove an element drag it outside <br>
-            by keeping pressed your mouse button. Click <a (click)=" electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">here</a>
-            to learn more.
+            {{ 'outputTemplatePopper1' | translate }}
+            <br>
+            {{ 'outputTemplatePopper2' | translate }}
+            <br>
+            {{ 'outputTemplatePopper3' | translate }}
+            <a (click)=" electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">
+              {{ 'outputTemplatePopper4' | translate }}
+            </a>
+            {{ 'outputTemplatePopper5' | translate }}
           </popper-content>
         </div>
 
         <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
-          Selected Output template:
+          {{ 'selectedOutputTemplate' | translate }}:
 
           <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
             <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">
@@ -149,27 +177,27 @@
 
           <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onEditOutputProfileNameClick()">
             <ion-icon name="create"></ion-icon>
-            Rename
+            {{ 'outputTemplateRename' | translate }}
           </button>
 
           <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onExportOutputTemplateClick()">
             <ion-icon name="ios-share"></ion-icon>
-            Export
+            {{ 'outputTemplateExport' | translate }}
           </button>
 
           <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()">
             <ion-icon name="trash"></ion-icon>
-            Delete
+            {{ 'outputTemplateDelete' | translate }}
           </button>
 
           <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
             <ion-icon name="add"></ion-icon>
-            New Output template
+            {{ 'outputTemplateNew' | translate }}
           </button>
 
           <button ion-button small icon-start color="light" float-right class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
             <ion-icon name="ios-download"></ion-icon>
-            Import
+            {{ 'outputTemplateImport' | translate }}
           </button>
 
         </ion-item>
@@ -180,17 +208,20 @@
       </ion-item>
 
       <ion-item-divider>
-        CSV Settings
+        {{ 'csvSettingsDivider' | translate }}
       </ion-item-divider>
 
       <ion-item no-lines>
-        <ion-label>Append scans to a .csv file
+        <ion-label>{{ 'appendScansToACsvFile' | translate }}
           <button ion-button small color="light" [popper]="appendToCsvFilePopper" class="help-button">
             ?
           </button>
           <popper-content #appendToCsvFilePopper>
-            Appends in real-time the scans to a .csv file. Click <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/3-ways-to-save-scans-to-csv-files/#method-2-append-the-scans-to-a-file-in-real-time-synchronously')">here</a>
-            to learn more.
+            {{ 'appendToCsvFilePopper1' | translate }}
+            <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/3-ways-to-save-scans-to-csv-files/#method-2-append-the-scans-to-a-file-in-real-time-synchronously')">
+              {{ 'appendToCsvFilePopper2' | translate }}
+            </a>
+            {{ 'appendToCsvFilePopper3' | translate }}
           </popper-content>
         </ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.appendCSVEnabled" (click)="onCSVClick()"></ion-checkbox>
@@ -200,16 +231,16 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text" placeholder="Select the file path" />
+              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" />
             </ion-col>
             <ion-col>
-              <button ion-button small color="light" (click)="onSelectCSVPathClick()">Select</button>
+              <button ion-button small color="light" (click)="onSelectCSVPathClick()">{{ 'select' | translate }}</button>
             </ion-col>
           </ion-row>
         </ion-grid>
 
         <info-box title="Info">
-          You can use the following variables in your file name (lowercase): <br>
+          {{ 'variablesInfo' | translate }}<br>
           <code>
             <input type="text" value="barcode" disabled />
             <input type="text" value="barcodes" disabled />
@@ -226,12 +257,13 @@
             <input type="text" value="csv_update" disabled />
             <input type="text" value="javascript_function" disabled />
           </code><br>
-          Note 1:
-          <p style="margin-left: 13px">To use the variables acquired from the smartphone it's required to put a
-            correspoinding Output Component in the Output template field</p><br>
-          Note 2:
-          <p style="margin-left: 13px">The <i>timestamp</i> variable refers to the scan session creation date</p><br>
-          Example:<br>
+          {{ 'note1Header' | translate }}:
+          <p style="margin-left: 13px">
+            {{ 'note1' | translate }}
+          </p><br>
+          {{ 'note2Header' | translate }}:
+          <p style="margin-left: 13px" [innerHtml]="'note2' | translate"></p><br>
+          {{ 'example' | translate }}:<br>
           <code ngNonBindable>
             <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.csv" disabled />
           </code><br>
@@ -241,17 +273,17 @@
 
 
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-        <ion-label>Export only readable components</ion-label>
+        <ion-label>{{ 'exportOnlyReadableComponents' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.exportOnlyText"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-        <ion-label>Enable quotes</ion-label>
+        <ion-label>{{ 'enableQuotes' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableQuotes"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-        <label for="csvDelimiter">Separator character (delimiter)</label>
+        <label for="csvDelimiter">{{ 'separatorCharacter' | translate }}</label>
         <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter" id="csvDelimiter" type="text" placeholder="Eg. ," />
       </ion-item>
 
@@ -267,7 +299,7 @@
         <ion-grid no-padding>
           <ion-row>
             <ion-col col-md-2>
-              New Line character
+              {{ 'newLineCharacter' | translate}}
             </ion-col>
             <ion-col col-md-10>
               <select [(ngModel)]="settings && settings.newLineCharacter">
@@ -281,26 +313,25 @@
       </ion-item>
 
       <ion-item-divider>
-        Events
+        {{ 'eventsDivider' | translate }}
       </ion-item-divider>
 
       <ion-item no-lines>
-        <label for="_onSmartphoneChargeCommand">Execute a command when the smartphone power cord is plugged in</label>
+        <label for="_onSmartphoneChargeCommand">{{ 'executeCommandLabel' | translate }}</label>
         <input [(ngModel)]="settings && settings.onSmartphoneChargeCommand" id="_onSmartphoneChargeCommand" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
       </ion-item>
 
       <ion-item-divider>
-        Other
+        {{ 'otherDivider' | translate }}
       </ion-item-divider>
 
 
       <!-- maxScanSessionsNumber START -->
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <ion-label text-wrap>
-          Maximum number of scan sessions
-          <p>The older scan sessions will be automatically deleted from the server, but you will still able to send them
-            again from the smartphone using the <i>sync</i> button.</p><br>
-          <p>Current Value: {{ getMaxScanSessionNumberReadable() }}</p>
+          {{ 'maximumNumberOfScanSessions' | translate }}
+          <p [innerHtml]="'maximumNumberOfScanSessionsDescription' | translate"></p><br>
+          <p>{{ 'currentValue' | translate }}: {{ getMaxScanSessionNumberReadable() }}</p>
         </ion-label>
       </ion-item>
       <ion-item [hidden]="!(settings && settings.enableAdvancedSettings)" class="slider-max-scans">
@@ -309,7 +340,7 @@
       <!-- maxScanSessionsNumber END -->
 
       <ion-item no-lines>
-        <ion-label>Show advanced settings</ion-label>
+        <ion-label>{{ 'showAdvancedSettings' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableAdvancedSettings"></ion-checkbox>
       </ion-item>
 

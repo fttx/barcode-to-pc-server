@@ -17,7 +17,6 @@ import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
 import { throttle } from 'helpful-decorators';
-
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -52,6 +51,7 @@ export class HomePage {
     public devicesProvider: DevicesProvider,
     private alertCtrl: AlertController,
     public licenseProvider: LicenseProvider,
+    public utils: UtilsProvider,
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
@@ -168,7 +168,10 @@ export class HomePage {
     // page on top of it. They get registered only one time whene the Home page
     // loads, so there isn't the need to clear them or perform other checks.
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
-      this.ngZone.run(() => this.lastToast.present('A connection was successfully established with ' + request.deviceName));
+      this.ngZone.run(async () => {
+        this.lastToast.present(await this.utils.text('connectionExtablished', { "deviceName": request.deviceName }
+        ))
+      });
 
       // older versions of the app didn't send the version number
       if (!request.version) {
@@ -229,9 +232,7 @@ export class HomePage {
             }
           }
         } else {
-          console.log ('scan session nt presetn', this.settings.maxScanSessionsNumber, this.scanSessions.length,this.settings.maxScanSessionsNumber);
-
-          while (this.settings.maxScanSessionsNumber != SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED && this.scanSessions.length != 0 &&  this.scanSessions.length > this.settings.maxScanSessionsNumber) {
+          while (this.settings.maxScanSessionsNumber != SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED && this.scanSessions.length != 0 && this.scanSessions.length > this.settings.maxScanSessionsNumber) {
             this.scanSessions.pop();
           }
 
@@ -313,27 +314,31 @@ export class HomePage {
     });
   }
 
-  requestMacOSAccessibility() {
+  async requestMacOSAccessibility() {
     if (this.accessibilityAlert) {
       this.accessibilityAlert.dismiss();
     }
     if (!this.electronProvider.checkAndOpenAccessibilitySettigns(false)) {
       this.accessibilityAlert = this.alertCtrl.create({
         cssClass: 'alert-accessibility',
-        title: 'Accessibility permissions', message:
-          `In order to enable the "Keyboard emulation" feature, you must give ` + Config.APP_NAME + ` the Accessibility permissions.
-        <br/><br/>Please make you sure that ` + Config.APP_NAME + `:<br><br>&bullet; Is present in the allowed list<br>&bullet; And that it is checked`,
+        title: await this.utils.text('accessibilityPermissionsDialogTitle'),
+        message: await this.utils.text('accessibilityPermissionsDialogMessage', {
+          "appName": Config.APP_NAME
+        }),
         buttons: [
-          { text: 'Cancel', role: 'dismiss' },
           {
-            text: 'Help', handler: () => {
+            text: await this.utils.text('accessibilityPermissionsDialogCancel'),
+            role: 'dismiss'
+          },
+          {
+            text: await this.utils.text('accessibilityPermissionsDialogHelp'), handler: () => {
               this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_MACOS_ACCESSIBILITY)
               // Check if the user was able to follow the tutorial 5 minutes later
               setTimeout(() => this.requestMacOSAccessibility(), 1000 * 300)
             }
           },
           {
-            text: 'Open System Preferences', handler: (opts: AlertOptions) => {
+            text: await this.utils.text('accessibilityPermissionsDialogSystemPreferences'), handler: (opts: AlertOptions) => {
               this.electronProvider.checkAndOpenAccessibilitySettigns(true);
               // Check if the user was able to follow the tutorial 3 minutes later
               setTimeout(() => this.requestMacOSAccessibility(), 1000 * 180)
@@ -394,10 +399,15 @@ export class HomePage {
     return index == this.selectedScanSessionIndex ? 'selected' : 'default';
   }
 
-  onClearAllClick() {
+  async onClearAllClick() {
     this.alertCtrl.create({
-      title: 'Delete all scan sessions?', message: 'The scans sessions will be deleted from the server. You can send them again from your smartphone.', buttons: [{ text: 'Cancel', role: 'cancel' }, {
-        text: 'Delete all', handler: (opts: AlertOptions) => {
+      title: await this.utils.text('deleteAllDialogTitle'),
+      message: await this.utils.text('deleteAllDialogMessage'),
+      buttons: [{
+        text: await this.utils.text('deleteAllDialogCancel'), role: 'cancel'
+      },
+      {
+        text: await this.utils.text('deleteAllDialogDeleteAll'), handler: (opts: AlertOptions) => {
           this.scanSessions = [];
           this.selectedScanSessionIndex = null;
           this.save();
@@ -433,13 +443,19 @@ export class HomePage {
   }
 
   private isVersionMismatchDialogVisible = false;
-  private showVersionMismatch() {
+  private async showVersionMismatch() {
     if (!this.isVersionMismatchDialogVisible) {
       let dialog = this.alertCtrl.create({
-        title: 'Server/app version mismatch',
-        message: 'Please update both app and server, otherwise they may not work properly.<br><br>Server can be downloaded at ' + Config.WEBSITE_NAME,
-        buttons: [{ text: 'Cancel', role: 'cancel' }, {
-          text: 'Download', handler: () => {
+        title: await this.utils.text('versionMismatchDialogTitle'),
+        message: await this.utils.text('versionMismatchDialogMessage', {
+          "websiteName": Config.WEBSITE_NAME,
+        }),
+        buttons: [{
+          text: await this.utils.text('versionMismatchDialogCancel'),
+          role: 'cancel'
+        }, {
+          text: await this.utils.text('versionMismatchDialogDownload'),
+          handler: () => {
             this.electronProvider.shell.openExternal(Config.URL_DOWNLOAD_SERVER)
           }
         }]
@@ -478,7 +494,7 @@ export class HomePage {
   template: `
     <ion-list>
       <ion-list-header>
-        Connected devices
+        {{ 'connectedDevices' | translate }}
       </ion-list-header>
       <ion-item no-padding *ngFor="let connectedDevice of connectedDevices; let i = index;" [class.kicked]="connectedDevice.kicked">
         <ion-avatar item-start text-center padding-vertical>
@@ -504,9 +520,9 @@ export class ConnectedClientsPopover {
 @Component({
   template: `
     <ion-list>
-      <ion-list-header>Options</ion-list-header>
-      <button ion-item (click)="exportAsCSV()">Export as CSV</button>
-      <button ion-item (click)="delete()">Delete</button>
+      <ion-list-header>{{ 'scanSessionContextMenuHeader' | translate }}</ion-list-header>
+      <button ion-item (click)="exportAsCSV()">{{ 'scanSessionContextExportAsCSV' | translate }}</button>
+      <button ion-item (click)="delete()">{{ 'scanSessionContextMenuDelete' | translate }}</button>
     </ion-list>
   `
 })
@@ -520,6 +536,7 @@ export class ScanSessionContextMenuPopover {
     public electronProvider: ElectronProvider,
     public events: Events,
     private alertCtrl: AlertController,
+    private utils: UtilsProvider,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.scanSession = this.navParams.get('scanSession');
@@ -529,7 +546,7 @@ export class ScanSessionContextMenuPopover {
     this.viewCtrl.dismiss();
   }
 
-  exportAsCSV(index) {
+  async exportAsCSV(index) {
     this.close()
     let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
     let newLineCharacter = settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
@@ -542,9 +559,9 @@ export class ScanSessionContextMenuPopover {
     );
 
     this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
-      title: "Select the location",
+      title: await this.utils.text('exportAsCSVSaveDialogTitle'),
       defaultPath: this.scanSession.name + ".csv",
-      buttonLabel: "Save",
+      buttonLabel: await this.utils.text('exportAsCSVSaveDialogSave'),
       filters: [{ name: 'CSV File', extensions: ['csv', 'txt'] }],
     }, (filename, bookmark) => {
       if (!filename) return;
@@ -564,10 +581,10 @@ export class ScanSessionContextMenuPopover {
 @Component({
   template: `
     <ion-list>
-      <ion-list-header>More</ion-list-header>
-      <button ion-item (click)="onShowPairQrCodeClick()" class="show-pair-qr-code-button">Pair the app with QR code</button>
-      <button ion-item (click)="onActivateClick()">Activate</button>
-      <button ion-item (click)="onInfoClick()">Info</button>
+      <ion-list-header>{{ 'mainMenuPopoverHeader' | translate }}</ion-list-header>
+      <button ion-item (click)="onShowPairQrCodeClick()" class="show-pair-qr-code-button">{{ 'mainMenuPopoverPair' | translate }}</button>
+      <button ion-item (click)="onActivateClick()">{{ 'mainMenuPopoverActivate' | translate }}</button>
+      <button ion-item (click)="onInfoClick()">{{ 'mainMenuPopoverInfo' | translate }}</button>
     </ion-list>
   `
 })

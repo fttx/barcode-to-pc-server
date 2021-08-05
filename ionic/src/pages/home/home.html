@@ -39,8 +39,8 @@
                     </circle-text>
                   </ion-avatar>
                   <h2>{{ scanSession.name }}</h2>
-                  <p>Created: {{ getLocaleDate(scanSession.date) }}</p>
-                  <p>Number of scannings: {{ scanSession.scannings.length }}</p>
+                  <p>{{ 'created' | translate }}: {{ getLocaleDate(scanSession.date) }}</p>
+                  <p>{{ 'numberOfScannings' | translate }}: {{ scanSession.scannings.length }}</p>
                 </ion-col>
 
                 <ion-col col-auto>
@@ -55,8 +55,8 @@
 
         <div *ngIf="!scanSessions || !scanSessions.length" text-center>
           <img src="assets/logo.jpg" alt="logo" class="desaturate-img" />
-          <br /> Scan sessions list is empty
-          <br /> Open the app and tap on the camera button to start scanning
+          <br /> {{ 'emptyScanSessionList1' | translate }}
+          <br /> {{ 'emptyScanSessionList2' | translate }}
         </div>
       </ion-content>
     </ion-menu>
@@ -100,20 +100,20 @@
 
   <status-bar text-right>
     <button [hidden]="hideSearchBar || searchTerms.length == 0" ion-button clear small color="dark">
-      Search results: {{ filteredScanSessions().length }}
+      {{ 'searchResults' | translate }}: {{ filteredScanSessions().length }}
     </button>
 
     <button ion-button clear small color="dark">
-      Scan sessions: {{ scanSessions.length }}
+      {{ 'scanSessions' | translate }}: {{ scanSessions.length }}
     </button>
 
     <button ion-button clear small color="dark" (click)="connectedClientsClick($event)">
       <ion-icon name="phone-portrait"></ion-icon>
-      Connected devices: {{ connectedDevices.length }}
+      {{ 'connectedDevices' | translate }}: {{ connectedDevices.length }}
     </button>
   </status-bar>
 
-  <notification id="keyboard-emulation" title="Warning" [hidden]="false" [hideAfter]="120000" [cta]="getUrlKeyboardEmulationTutorial()">
-    Keyboard emulation is enabled by default. <br>To type barcodes in your programs minimize Barcode to PC and put the cursor inside a text field.
+  <notification id="keyboard-emulation" title="Warning" [hidden]="false" [hideAfter]="120000" [cta]="getUrlKeyboardEmulationTutorial()" [ctaText]="'keyboardEmualtionWarningCTAText' | translate">
+    {{ 'keyboardEmualtionWarning1' | translate }} <br>{{ 'keyboardEmualtionWarning2' | translate }}
   </notification>
 </ion-content>

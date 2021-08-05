@@ -6,6 +6,7 @@ import { Config } from '../../../../electron/src/config';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';
+import { TranslateService } from '@ngx-translate/core';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -171,7 +172,8 @@ export class UtilsProvider {
   constructor(
     private electronProvider: ElectronProvider,
     private alertCtrl: AlertController,
-    public storage: Storage
+    public storage: Storage,
+    private translateService: TranslateService,
   ) {
     this.store = new this.electronProvider.ElectronStore();
   }
@@ -238,16 +240,16 @@ export class UtilsProvider {
     return -1;
   }
 
-  public showErrorNativeDialog(message: string = '') {
+  public async showErrorNativeDialog(message: string = '') {
     this.electronProvider.dialog.showMessageBox(null, { // this.electronProvider.remote.getCurrentWindow()
-      type: 'error', title: 'Error', buttons: ['Close'], message: message,
+      type: 'error', title: await this.text('nativeErrorDialogTitle'), buttons: [await this.text('nativeErrorDialogCloseButton')], message: message,
     })
   }
 
 
-  public showSuccessNativeDialog(message: string = '') {
+  public async showSuccessNativeDialog(message: string = '') {
     this.electronProvider.dialog.showMessageBox(null, {
-      type: 'info', title: 'Success', buttons: ['Close'], message: message
+      type: 'info', title: await this.text('nativeSuccessDialogTitle'), buttons: ['nativeSuccessDialogCloseButton'], message: message
     })
   }
 
@@ -314,5 +316,15 @@ export class UtilsProvider {
 
       resolve();
     });
+  }
+
+  /**
+    * Gets the translated value of a key (or an array of keys)
+    * @param key
+    * @param interpolateParams
+    * @returns {string} the translated key, or an object of translated keys
+    */
+  public async text(key: string | Array<string>, interpolateParams?: Object): Promise<string> {
+    return await this.translateService.get(key, interpolateParams).toPromise();
   }
 }

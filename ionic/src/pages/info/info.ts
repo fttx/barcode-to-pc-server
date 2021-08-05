@@ -1,4 +1,5 @@
 import { Component, NgZone } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import ElectronStore from 'electron-store';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
@@ -33,6 +34,7 @@ export class InfoPage {
     public electronProvider: ElectronProvider,
     public ngZone: NgZone,
     public utils: UtilsProvider,
+    private translateService: TranslateService,
   ) {
     this.store = new this.electronProvider.ElectronStore();
   }
@@ -115,11 +117,17 @@ export class InfoPage {
 
   // Methods to "translate" the status received from the MAIN process to the user interface
   getUpdateStatus() {
-    if (this.updateStatus == 'checkingForUpdate') return 'Checking for updates...';
-    if (this.updateStatus == 'updateAvailable') return Config.APP_NAME + ' is out of date';
-    if (this.updateStatus == 'updateNotAvailable') return Config.APP_NAME + ' is up to date';
-    if (this.updateStatus == 'updateError') return 'Update error';
-    if (this.updateStatus == 'updateDownloaded') return Config.APP_NAME + ' is ready for update';
+    if (this.updateStatus == 'checkingForUpdate') return this.translateService.get('checkingForUpdates');
+    if (this.updateStatus == 'updateAvailable') return this.translateService.instant('outOfDate', {
+      "appName": Config.APP_NAME,
+    })
+    if (this.updateStatus == 'updateNotAvailable') return this.translateService.instant('upToDate', {
+      "appName": Config.APP_NAME,
+    })
+    if (this.updateStatus == 'updateError') return this.translateService.instant('updateError');
+    if (this.updateStatus == 'updateDownloaded') return this.translateService.instant('readyForUpdate', {
+      "appName": Config.APP_NAME,
+    });
   }
 
   getUpdateIcon() {
@@ -131,11 +139,11 @@ export class InfoPage {
   }
 
   getUpdateButtonText() {
-    if (this.updateStatus == 'checkingForUpdate') return 'Update'; // disabled
-    if (this.updateStatus == 'updateAvailable') return 'Update';
-    if (this.updateStatus == 'updateNotAvailable') return 'Update';
-    if (this.updateStatus == 'updateError') return 'Update';
-    if (this.updateStatus == 'updateDownloaded') return 'Relaunch';
+    if (this.updateStatus == 'checkingForUpdate') return this.translateService.instant('update'); // disabled
+    if (this.updateStatus == 'updateAvailable') return this.translateService.instant('update');
+    if (this.updateStatus == 'updateNotAvailable') return this.translateService.instant('update');
+    if (this.updateStatus == 'updateError') return this.translateService.instant('update');
+    if (this.updateStatus == 'updateDownloaded') return this.translateService.instant('relaunch');
   }
 
   onUpdateClick() {

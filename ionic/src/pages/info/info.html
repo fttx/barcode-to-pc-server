@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar color="secondary">
-    <ion-title>Info</ion-title>
+    <ion-title>{{ 'infoTitle' | translate }}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-start solid color="secondary" (click)="close()">
@@ -36,19 +36,19 @@
         </ion-spinner>
       </ion-thumbnail>
       <h2>{{ getUpdateStatus() }}</h2>
-      <p>Version: {{ getVersion() }}</p>
-      <p>Last checked: {{ getLastUpdateCheck() }}</p>
+      <p>{{ 'version' | translate }}: {{ getVersion() }}</p>
+      <p>{{ 'lastChecked' | translate }}: {{ getLastUpdateCheck() }}</p>
       <button ion-button color="secondary" item-end (click)="onUpdateClick()" [disabled]="updateStatus == 'checkingForUpdate'">{{ getUpdateButtonText() }}</button>
     </ion-item>
 
     <ion-item text-wrap>
       <ion-thumbnail item-start></ion-thumbnail>
       <ion-label>
-        <h2>Enable automatic updates</h2>
+        <h2>{{ 'automaticUpdates' | translate }}</h2>
         <p>
-          ⚠️Warning: Disabling automatic updates you may encounter incompatibility issues.
-          Make you sure that at least the first number matches the one of the app.
-          Eg. v<b>3</b>.0.0 is compatible with v<b>3</b>.2.0, but not with v<b>2</b>.0.0.
+          ⚠️{{ 'automaticUpdatesDescription1' | translate }}
+          {{ 'automaticUpdatesDescription2' | translate }}<b>{{ 'automaticUpdatesDescription3' | translate }}</b>
+          {{ 'automaticUpdatesDescription4' | translate }}<b>{{ 'automaticUpdatesDescription5' | translate }}</b>{{ 'automaticUpdatesDescription6' | translate }}<b>{{ 'automaticUpdatesDescription7' | translate }}</b>{{ 'automaticUpdatesDescription8' | translate }}
         </p>
       </ion-label>
       <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate" color="secondary"></ion-toggle>
@@ -57,24 +57,25 @@
     <ion-item>
       <ion-thumbnail item-start></ion-thumbnail>
       <ion-label>
-        <h2>Rebuild database cache</h2>
+        <h2>{{ 'rebuildDatabaseCache' | translate}}</h2>
         <p text-wrap>
-          Updates the old scannings display value (it can take several minutes).<br>
-          Do it only if you know what your doing.
+          {{ 'rebuildDatabaseCacheDescription1' | translate }}
+          <br>
+          {{ 'rebuildDatabaseCacheDescription2' | translate }}
         </p>
       </ion-label>
-      <button ion-button color="secondary" item-end (click)="utils.upgradeDisplayValue(true)">Rebuild</button>
+      <button ion-button color="secondary" item-end (click)="utils.upgradeDisplayValue(true)">{{ 'rebuildButton' | translate }}</button>
     </ion-item>
 
     <ion-item>
       <ion-thumbnail item-start> </ion-thumbnail>
-      <h2>Website</h2>
+      <h2>{{ 'website' | translate }}</h2>
       <p><a (click)="electronProvider.shell.openExternal(getWebSiteUrl())">{{ getWebSiteName() }}</a></p>
     </ion-item>
 
     <ion-item>
       <ion-thumbnail item-start> </ion-thumbnail>
-      <h2>Support e-mail</h2>
+      <h2>{{ 'supportEMail' | translate }}</h2>
       <p><a (click)="electronProvider.shell.openExternal(getMailUrl())">{{ getMail() }}</a></p>
     </ion-item>
   </ion-list>

@@ -15,6 +15,7 @@ export class NotificationComponent {
   @Input('title') title: string;
   @Input('hideAfter') hideAfter: number;
   @Input('cta') cta: string;
+  @Input('ctaText') ctaText: string;
   @Input('id') id: string;
 
   public hidden = true;

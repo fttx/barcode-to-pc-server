@@ -49,7 +49,7 @@ export class MyApp {
       electronProvider.sendReadyToMainProcess();
 
       // The publishing can happen by a drag-n-drop or a double click of a .btpt file
-      this.events.subscribe('import_btpt', (filePath: string) => {
+      this.events.subscribe('import_btpt', async (filePath: string) => {
         // Prevent --parameters to be interpreted as file paths
         if (filePath.startsWith('-') || !filePath.endsWith('.btpt')) {
           return
@@ -59,9 +59,9 @@ export class MyApp {
         let activeNav = this.app.getActiveNav();
         if (activeNav && activeNav.getActive() && activeNav.getActive().component == SettingsPage) {
           this.alertCtrl.create({
-            title: 'Error',
-            message: "You must close the Settings page before opening a .btpt file.",
-            buttons: [{ text: 'Ok', role: 'cancel', }]
+            title: await this.utils.text('closeSettingsDialogTitle'),
+            message: await this.utils.text('closeSettingsDialogMessage'),
+            buttons: [{ text: await this.utils.text('closeSettingsDialogOkButton'), role: 'cancel', }]
           }).present();
           return;
         }
@@ -74,18 +74,22 @@ export class MyApp {
           outputTemplate = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         } catch {
           this.alertCtrl.create({
-            title: 'Cannot open the file',
-            message: "The <b>" + path.basename(filePath) + "</b> file is corrupted or the server doesn't have the read permissions.",
-            buttons: [{ text: 'Ok', role: 'cancel', }]
+            title: await this.utils.text('openFileErrorDialogTitle'),
+            message: await this.utils.text('openFileErrorDialogMessage', {
+              "path": path.basename(filePath),
+            }),
+            buttons: [{ text: await this.utils.text('openFileErrorDialogOkButton'), role: 'cancel', }]
           }).present();
           return;
         }
 
         this.alertCtrl.create({
-          title: 'Import Output template',
-          message: 'Do you want to import ' + outputTemplate.name + ' profile?',
+          title: await this.utils.text('importOutputTemplateDialogTitle'),
+          message: await this.utils.text('importOutputTemplateDialogMessage', {
+            "templateName": outputTemplate.name,
+          }),
           buttons: [{
-            text: 'Yes',
+            text: await this.utils.text('importOutputTemplateDialogYesButton'),
             handler: () => {
               let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
               // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
@@ -97,7 +101,7 @@ export class MyApp {
               }
             }
           }, {
-            text: 'Cancel',
+            text: await this.utils.text('importOutputTemplateDialogCancelButton'),
             role: 'cancel',
             handler: () => { }
           }]
@@ -175,11 +179,11 @@ export class MyApp {
         let render = this.markdownService.renderer;
         render.link = function (href, title, text) { return '<b>' + text + '</b>' };
         let httpRes = await this.http.get(Config.URL_GITHUB_CHANGELOG).toPromise();
-        let changelog = 'Please make you sure to update also the app on your smatphone.<div style="font-size: .1em">' + this.markdownService.compile(httpRes.text(), { renderer: render }) + '</div>';
+        let changelog = await this.utils.text('changelogDialogMessage') + '<div style="font-size: .1em">' + this.markdownService.compile(httpRes.text(), { renderer: render }) + '</div>';
         this.alertCtrl.create({
-          title: 'The server has been updated',
+          title: await this.utils.text('changelogDialogTitle'),
           message: changelog,
-          buttons: ['Ok'],
+          buttons: [await this.utils.text('changelogDialogOkButton')],
           cssClass: 'changelog'
         }).present();
 

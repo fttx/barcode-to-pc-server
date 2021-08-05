@@ -6,7 +6,7 @@
 -->
 <ion-header>
   <ion-navbar color="secondary">
-    <ion-title>Activate</ion-title>
+    <ion-title>{{ 'activateTitle' | translate }}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-start solid color="secondary" (click)="close()">
@@ -20,70 +20,70 @@
 <ion-content padding>
   <ion-list>
     <ion-item no-lines no-padding>
-      Click <a (click)="licenseProvider.showPricingPage('activatePageShowPricing')">here</a> to buy a license.
+      {{ 'activateInstruction1' | translate }} <a (click)="licenseProvider.showPricingPage('activatePageShowPricing')">{{ 'activateInstruction2' | translate }}</a> {{ 'activateInstruction3' | translate }}
     </ion-item>
 
     <div [hidden]="licenseProvider.isSubscribed()">
       <ion-item no-lines text-wrap no-padding>
-        <b>Serial</b>
+        <b>{{ 'serial' | translate }}</b>
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
 
       <ion-item no-lines no-padding>
-        <button ion-button color="secondary" default float-right (click)="onActivationClick()">Activate</button>
-        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">Clear</button>
+        <button ion-button color="secondary" default float-right (click)="onActivationClick()">{{ 'activateButton' | translate }}</button>
+        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">{{ 'clearButton' | translate }}</button>
       </ion-item>
     </div>
 
     <div [hidden]="!licenseProvider.isSubscribed()">
       <ion-item no-lines text-wrap no-padding>
-        <b>Serial</b>
+        <b>{{ 'serial' | translate }}</b>
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
       </ion-item>
       <ion-item no-lines no-padding>
-        <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">Deactivate</button>
+        <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">{{ 'deactivate' | translate }}</button>
       </ion-item>
     </div>
 
     <ion-item no-lines text-wrap no-padding>
-      <b [hidden]="licenseProvider.isSubscribed()">License details</b> <br>
+      <b [hidden]="licenseProvider.isSubscribed()">{{ 'licenseDetails' | translate }}</b> <br>
       <img class="badge" [hidden]="!licenseProvider.isSubscribed()" src="assets/activate/badge.png" alt="">
       <ion-grid [class.license-plate]="licenseProvider.isSubscribed()">
         <ion-row>
-          <ion-col>License name</ion-col>
+          <ion-col>{{ 'licenseName' | translate }}</ion-col>
           <ion-col>{{ licenseProvider.getLicenseName() }}</ion-col>
         </ion-row>
         <ion-row [hidden]="isUnlimited()">
-          <ion-col>Next reset date</ion-col>
+          <ion-col>{{ 'nextResetDate' | translate }}</ion-col>
           <!-- <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col> -->
           <ion-col>{{ getNextChargeDate() }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>Remaining scans</ion-col>
+          <ion-col>{{ 'remaingScans' | translate }}</ion-col>
           <ion-col>{{ getRemainingScans() }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>Max number of smartphones</ion-col>
+          <ion-col>{{ 'maxNumberofSmartphones' | translate }}</ion-col>
           <ion-col>{{ toReadable(licenseProvider.getNOMaxAllowedConnectedDevices()) }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>Max number of output components</ion-col>
+          <ion-col>{{ 'maxNumberOfComponents' | translate }}</ion-col>
           <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>Number component</ion-col>
+          <ion-col>{{ 'numberComponent' | translate }}</ion-col>
           <ion-col>{{ licenseProvider.canUseNumberParameter(false) ? 'Yes': 'No' }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>Append to CSV file</ion-col>
+          <ion-col>{{ 'appendToCSV' | translate }}</ion-col>
           <ion-col>{{ licenseProvider.canUseCSVAppend() ? 'Yes': 'No' }}</ion-col>
         </ion-row>
       </ion-grid>
     </ion-item>
 
     <ion-item no-lines no-padding>
-      For support contact: <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a><br>
-      For billing, invoices, taxes, etc. <a (click)="ordersSupportClick()">click here</a>.<br>
+      {{ 'contactSupport1' | translate }} <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a><br>
+      {{ 'contactSupport2' | translate }} <a (click)="ordersSupportClick()">{{ 'contactSupportClickHere' | translate }}</a>.<br>
     </ion-item>
   </ion-list>
 </ion-content>

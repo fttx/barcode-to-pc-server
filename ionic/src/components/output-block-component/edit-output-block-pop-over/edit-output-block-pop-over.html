@@ -4,11 +4,11 @@
 
     <ion-buttons end>
       <button ion-button icon-end solid [color]="color" (click)="onHelpClick(outputBlock)" class="btn-help">
-        Help
+        {{ 'helpButton' | translate }}
         <ion-icon name="help"></ion-icon>
       </button>
       <button ion-button icon-end solid [color]="color" (click)="onCloseClick()" class="btn-save">
-        Save
+        {{ 'saveButton' | translate }}
         <ion-icon name="checkmark"></ion-icon>
       </button>
     </ion-buttons>
@@ -22,39 +22,28 @@
 
     <div [hidden]="outputBlock.skipOutput === undefined">
       <ion-item text-wrap no-lines>
-        <ion-label for="_valueSkipOutput">Skip output</ion-label>
+        <ion-label for="_valueSkipOutput">{{ 'skipOutputToggle' | translate }}</ion-label>
         <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
         <br>
       </ion-item>
 
       <ion-item text-wrap>
-        <p>
-          Disables the Keyboard emulation and CSV output for this component.<br><br>
-          This option is useful when you only want to acquire the data, and use it later with components like
-          "JavaScript
-          Function", "IF", "HTTP", or as a parameter for the CSV file name.
-        </p>
+        <p [innerHtml]="'skipOutputDescription' | translate"></p>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.label === undefined">
       <ion-item no-lines>
         <label for="_labelValue">
-          <h2 color="dark">Label</h2>
+          <h2 color="dark">{{ 'label' | translate }}</h2>
         </label>
         <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <ion-item text-wrap>
+        <p [innerHtml]="'numberDescription' | translate"></p>
         <p>
-          Provide a short description such as "Tracking number" or "Product ID".<br>
-          The label will be shown in the app while acquiring the data.
-          <br>
-          <br>
-          Use the double curly braces syntax to inject a variables. Example:<br>
-          <code ngNonBindable>{{ csv_lookup }}</code><br><br>
-
-          Available variables (lowercase): <br>
+          {{ 'availableVariables' | translate }} <br>
           <code>
             <input type="text" value="barcode" disabled class="example-variable" /> <br>
             <input type="text" value="barcodes" disabled class="example-variable" /> <br>
@@ -83,59 +72,47 @@
     <div [hidden]="outputBlock.defaultValue === undefined">
       <ion-item no-lines>
         <label for="_defaultValue">
-          <h2 color="dark">Default Value</h2>
+          <h2 color="dark">{{ 'defaultValue' | translate }}</h2>
         </label>
         <input id="_defaultValue" [(ngModel)]="outputBlock.defaultValue" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <ion-item text-wrap>
-        <p>
-          The value that should be used when no input is provided.<br><br>
-          Use the double curly braces syntax to inject a variables. (Same as above)
-        </p>
+        <p [innerHtml]="'defaultValueDescription' | translate"></p>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.filter === undefined">
       <ion-item no-lines>
         <label for="_filterValue">
-          <h2 color="dark">Filter</h2>
+          <h2 color="dark">{{ 'filter' | translate }}</h2>
         </label>
         <input id="_filterValue" [(ngModel)]="outputBlock.filter" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <ion-item text-wrap>
-        <p>
-          Define a regular expression to restrict the possible values of this Output Component.<br>
-          It is recommended to use the "Multiple scans" mode when applying filters.
-        </p>
+        <p [innerHtml]="'filterDescription' | translate"></p>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.errorMessage === undefined">
       <ion-item no-lines>
         <label for="_errorMessage">
-          <h2 color="dark">Error Message</h2>
+          <h2 color="dark">{{ 'errorMessage' | translate }}</h2>
         </label>
         <input id="_errorMessage" [(ngModel)]="outputBlock.errorMessage" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <ion-item text-wrap>
-        <p>
-          The error message to show when the acquired value doesn't match the Filter regular expression
-        </p>
+        <p [innerHtml]="'errorMessageDescription' | translate"></p>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'barcode'">
       <ion-item text-wrap no-lines>
         <ion-label>
-          <h2 color="dark">Limit barcode formats</h2>
-          <p>
-            Use this setting to keep enabled only the barcode formats that you scan.
-            It may improve the scanning speed and the overall reliability.
-            If this option is disabled the barcode formats specified in the app settings will be used.
-          </p>
+          <h2 color="dark">{{ 'limitBarcodeFormats' | translate }}</h2>
+          <p [innerHtml]="'limitBarcodeFormatsDescription' | translate"></p>
         </ion-label>
         <ion-toggle [(ngModel)]="enableLimitBarcodeFormats" (ionChange)="onEnableLimitBarcodeFormatsChange()"></ion-toggle>
       </ion-item>
@@ -152,15 +129,15 @@
       <!-- CUSTOM KEY Only -->
       <ion-item [hidden]="outputBlock.editable !== true">
         <label for="_valueCustomKey" color="dark">
-          <h2>Key identifier</h2>
-          <p>Insert one identifier present in <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedKeyIdentifiers())">this list</a>.</p>
+          <h2>{{ 'keyIdentifier' | translate }}</h2>
+          <p>{{ 'keyIdentifierDescription1' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedKeyIdentifiers())">{{ 'keyIdentifierDescription2' | translate }}</a>.</p>
         </label>
         <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="eg. numpad_9" />
       </ion-item>
 
       <ion-item no-lines text-wrap>
-        <h2>Modifier keys</h2>
-        <p>Select the modifier keys that you want to be pressed along with the {{ outputBlock.name }} key</p>
+        <h2>{{ 'modifierKeys' | translate }}</h2>
+        <p [innerHtml]="'modifierKeysDescription' | translate"></p>
       </ion-item>
 
       <ion-item>
@@ -194,10 +171,12 @@
 
       <br>
       <p>
-        The expression should return a string.<br><br>
-        You can manipulate the variables with any JavaScript method that is listed:
-        <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">here</a>.<br><br>
-        You can use the following variables (lowercase):
+        {{ 'javascriptDescription1' | translate }}
+        <br><br>
+        {{ 'javascriptDescription2' | translate }}
+        <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">
+          {{ 'javascriptDescription3' | translate }}</a>.<br><br>
+        {{ 'availableVariables' | translate }}
       </p>
       <code>
         <input type="text" value="barcode" disabled class="example-variable" /> <br>
@@ -224,33 +203,34 @@
 
     <ion-item [hidden]="outputBlock.type != 'text'">
       <label for="_valueText">
-        <h2 color="dark">Text</h2>
+        <h2 color="dark">{{ 'text' | translate }}</h2>
       </label>
       <input id="_valueText" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Lorem ipsum" />
     </ion-item>
 
     <ion-item [hidden]="outputBlock.type != 'delay'">
-      <label for="_valueMs" color="dark">Milliseconds</label>
+      <label for="_valueMs" color="dark">{{ 'milliseconds' | translate }}</label>
       <input id="_valueMs" class="inline-input" type="number" [(ngModel)]="outputBlock.value" placeholder="1000" />
       <br>
-      <p>
-        Time interval to wait in milliseconds<br><br>
-        1000 milliseconds = 1 second
-      </p>
+      <p [innerHtml]="'millisecondsDescription' | translate"></p>
     </ion-item>
 
     <div [hidden]="outputBlock.type != 'http'">
       <ion-item>
-        <label for="_valueUrl">URL</label>
+        <label for="_valueUrl">{{ 'url' | translate }}</label>
         <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="https://www.example.com/" />
         <br>
         <p>
-          The expression must return a string.<br>
-          The request will be performed by the server once the scan is received.<br><br>
-          Use the double curly braces syntax to inject a variables.<br><br>
-          Example:<br>
+          {{ 'urlDescription1' | translate }}
+          <br>
+          {{ 'urlDescription2' | translate }}
+          <br><br>
+          {{ 'urlDescription3' | translate }}
+          <br><br>
+          {{ 'urlDescription4' | translate }}
+          <br>
           <code ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
-          You can use the following variables (lowercase): <br>
+          {{ 'availableVariables' | translate }} <br>
           <code>
             <input type="text" value="barcode" disabled class="example-variable" /> <br>
             <input type="text" value="barcodes" disabled class="example-variable" /> <br>
@@ -277,7 +257,7 @@
 
       <ion-item>
         <label for="_valueMethod" color="dark">
-          <h2 color="dark">Method</h2>
+          <h2 color="dark">{{ 'method' | translate }}</h2>
         </label>
         <br>
         <select id="_valueMethod" [(ngModel)]="outputBlock.httpMethod">
@@ -292,69 +272,72 @@
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_httpData">Data</label>
+        <label for="_httpData">{{ 'data' | translate }}</label>
         <input id="_httpData" [(ngModel)]="outputBlock.httpData" class="inline-input" type="text" placeholder="(optional)" />
         <br>
         <p>
-          Is the data to be sent as the request body. It must be a valid JSON string.
+          {{ 'dataDescription1' | translate }}
           <br>
           <br>
-          Example:<br>
+          {{ 'dataDescription2' | translate }}
+          <br>
           <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
         </p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_httpParams">Params</label>
+        <label for="_httpParams">{{ 'params' | translate }}</label>
         <input id="_httpParams" [(ngModel)]="outputBlock.httpParams" class="inline-input" type="text" placeholder="(optional)" />
         <br>
         <p>
-          Are the URL parameters to be sent with the request.
-          You can either pass them here or in the URL.
-          It must be a valid JSON string.
+          {{ 'paramsDescription1' | translate }}
           <br>
           <br>
-          Example:<br>
+          {{ 'paramsDescription2' | translate }}
+          <br>
           <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
         </p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_httpHeaders">Headers</label>
+        <label for="_httpHeaders">{{ 'headers' | translate }}</label>
         <input id="_httpHeaders" [(ngModel)]="outputBlock.httpHeaders" class="inline-input" type="text" placeholder="(optional)" />
         <br>
         <p>
-          Are custom headers to be sent. It must be a valid JSON string.
+          {{ 'headersDescription1' | translate }}
           <br>
           <br>
-          Example:
+          {{ 'headersDescription2' | translate }}
           <code>&#123; "Content-Type": "application/json" &#125;</code>
         </p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_httpTimeout">Timeout</label>
+        <label for="_httpTimeout">{{ 'httpTimeout' | translate }}</label>
         <input id="_httpTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />
         <br>
-        <p>
-          The request timeout in milliseconds
-        </p>
+        <p [innerHtml]="'httpTimeoutDescription' | translate"></p>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'run'">
       <ion-item>
-        <label for="_valueRun">Command</label>
+        <label for="_valueRun">{{ 'command' | translate }}</label>
         <input id="_valueRun" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
         <br>
         <p>
-          The working directory is set to the user home directory.<br><br>
-          Use the double curly braces syntax to inject a variables.<br><br>
-          Example:<br>
+          {{ 'commandDescription1' | translate }}
+          <br><br>
+          {{ 'commandDescription2' | translate }}
+          <br><br>
+          {{ 'commandDescription3' | translate }}
+          <br>
           <code ngNonBindable>C:&#92;program.exe --tracking-number &#123;&#123; barcode &#125;&#125;</code><br><br>
-          Example: <br>
+          {{ 'commandDescription4' | translate }}
+          <br>
           <code ngNonBindable>cmd.exe /c C:&#92;script.bat &#123;&#123; barcode &#125;&#125;</code><br><br>
-          You can use the following variables (lowercase): <br>
+          {{ 'availableVariables' | translate }}
+          <br>
           <code>
             <input type="text" value="barcode" disabled class="example-variable" /> <br>
             <input type="text" value="barcodes" disabled class="example-variable" /> <br>
@@ -380,42 +363,32 @@
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_runTimeout">Timeout</label>
+        <label for="_runTimeout">{{ 'commandTimeout' | translate }}</label>
         <input id="_runTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />
         <br>
-        <p>
-          The maximum amount of time the process is allowed to run (milliseconds)
-        </p>
-      </ion-item>
-
-      <ion-item>
-        <info-box title="Info">
-          To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.<br><br>
-          See <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialRunPassParameter())">this article</a> for more info.
-        </info-box>
+        <p [innerHtml]="'commandTimeoutDescription' | translate"></p>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'csv_lookup'">
       <ion-item no-lines text-wrap>
-        <p>
-          CSV_LOOKUP allows you to match field values inside CSV files and then output the corresponding field value of another column.
-        </p>
+        <p [innerHtml]="'csvLookupDescription' | translate"></p>
       </ion-item>
 
       <ion-item>
-        <label for="_searchValue">Search value</label>
+        <label for="_searchValue">{{ 'searchValue' | translate }}</label>
         <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. Field1" />
       </ion-item>
       <ion-item text-wrap>
         <p>
-          The text or number to search in the CSV file. You can use the variables listed below to search values coming from other components.
+          {{ 'searchValueDescription1' | translate }}
           <br>
           <br>
-          Example:<br>
+          {{ 'searchValueDescription2' | translate }}
+          <br>
           <code ngNonBindable>{{ barcode }}</code><br><br>
 
-          Available variables (lowercase): <br>
+          {{ 'availableVariables' | translate }} <br>
           <code>
             <input type="text" value="barcode" disabled class="example-variable" /> <br>
             <input type="text" value="barcodes" disabled class="example-variable" /> <br>
@@ -441,70 +414,64 @@
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_csvFilePath">CSV Input File Path</label>
+        <label for="_csvFilePath">{{ 'csvInputFilePath' | translate }}</label>
         <input id="_csvFilePath" [(ngModel)]="outputBlock.csvFile" class="inline-input" type="text" placeholder="C:&#92;data.csv" />
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_searchColumnIndex">Search Column Index</label>
+        <label for="_searchColumnIndex">{{ 'searchColumnIndex' | translate }}</label>
         <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumn" class="inline-input" type="number" placeholder="1" />
-        <p>The column number (starting with 1 for the left-most column of the CSV file) that contains the searched value</p>
+        <p>{{ 'searchColumnIndexDescription' | translate }}</p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_resultColumnIndex">Result Column Index</label>
+        <label for="_resultColumnIndex">{{ 'resultColumnIndex' | translate }}</label>
         <input id="_resultColumnIndex" [(ngModel)]="outputBlock.resultColumn" class="inline-input" type="number" placeholder="2" />
-        <p>The column number (starting with 1 for the left-most column of the CSV file) that contains the return value</p>
+        <p>{{ 'resultColumnIndexDescription' | translate }}</p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_notFoundValue">Not Found value</label>
+        <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
         <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
-        <p>The text to output when the lookup doesn't produce results</p>
+        <p>{{ 'notFoundValueDescription' | translate }}</p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_delimiter">Delimiter character</label>
+        <label for="_delimiter">{{ 'delimiterCharacter' | translate }}</label>
         <input id="_delimiter" [(ngModel)]="outputBlock.delimiter" class="inline-input" type="text" placeholder="," />
-        <p>The field separator character</p>
+        <p>{{ 'delimiterCharacterDescription' | translate }}</p>
       </ion-item>
     </div> <!-- end csv_lookup -->
 
     <div [hidden]="outputBlock.type != 'csv_update'">
       <ion-item no-lines text-wrap>
-        <p>
-          CSV_UPDATE allows you to find and edit values inside CSV files.<br>
-          If the operation is successful the new value will be outputted.
-        </p>
+        <p [innerHtml]="'csvUpdateDescription' | translate"></p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_searchValue">Search value</label>
+        <label for="_searchValue">{{ 'csvUpdateSearchValue' | translate }}</label>
         <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. 0" />
 
         <p>
           <br>
-          The text or number to search in the CSV file. You can use the variables listed below to search values coming from other components.
+          {{ 'csvUpdateSearchDescription' | translate }}
         </p>
       </ion-item>
 
       <ion-item no-lines text-wrap>
-        <label for="_newValue">New Value</label>
+        <label for="_newValue">{{ 'newValue' | translate }}</label>
         <input id="_newValue" [(ngModel)]="outputBlock.newValue" class="inline-input" type="text" placeholder="Eg. 1" />
 
-        <p>
-          <br>
-          The text or number to use to replace the <i>Search value</i> in the CSV file. You can use the variables listed below to search values coming from other components.
-        </p>
+        <p [innerHtml]="'newValueDescription' | translate"></p>
       </ion-item>
 
       <ion-item text-wrap>
         <p>
           <br>
-          <i>New Value</i> example:<br>
+          <i>{{ 'newValue' | translate }}</i> {{ 'newValueExample' | translate }}<br>
           <code ngNonBindable>{{ number }}</code><br><br>
 
-          Available variables (lowercase): <br>
+          {{ 'availableVariables' | translate }} <br>
           <code>
             <input type="text" value="barcode" disabled class="example-variable" /> <br>
             <input type="text" value="barcodes" disabled class="example-variable" /> <br>
@@ -530,14 +497,14 @@
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_csvFilePath">CSV Input File Path</label>
+        <label for="_csvFilePath">{{ 'csvInputFilePath' | translate }}</label>
         <input id="_csvFilePath" [(ngModel)]="outputBlock.csvFile" class="inline-input" type="text" placeholder="C:&#92;data.csv" />
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_searchColumnIndex">Search Column Index</label>
+        <label for="_searchColumnIndex">{{ 'searchColumnIndex' | translate }}</label>
         <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumn" class="inline-input" type="number" placeholder="1" />
-        <p>The column number (starting with 1 for the left-most column of the CSV file) where you want to search</p>
+        <p>{{ 'csvUpdateSearchColumnIndexDescription' | translate }}</p>
       </ion-item>
 
       <ion-item text-wrap>
@@ -548,51 +515,47 @@
 
       <ion-item text-wrap no-lines>
         <ion-label>
-          Row to Edit
+          {{ 'rowToEdit' | translate }}
         </ion-label>
         <ion-select [(ngModel)]="outputBlock.rowToUpdate">
-          <ion-option value="all">All</ion-option>
-          <ion-option value="first">First match</ion-option>
-          <ion-option value="last">Last match</ion-option>
+          <ion-option value="all">{{ 'all' | translate }}</ion-option>
+          <ion-option value="first">{{ 'firstMatch' | translate }}</ion-option>
+          <ion-option value="last">{{ 'lastMatch' | translate }}</ion-option>
         </ion-select>
         <!-- <p>The matched row to update that you want to update</p> -->
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_notFoundValue">Not Found value</label>
+        <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
         <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
-        <p>The text to output when the lookup doesn't produce results</p>
+        <p>{{ 'csvUpdateNotFoundValueDescription' | translate }}</p>
       </ion-item>
 
       <ion-item text-wrap>
-        <label for="_delimiter">Delimiter character</label>
+        <label for="_delimiter">{{ 'delimiterCharacter' | translate }}</label>
         <input id="_delimiter" [(ngModel)]="outputBlock.delimiter" class="inline-input" type="text" placeholder="," />
-        <p>The field separator character</p>
+        <p>{{ 'delimiterCharacterDescription' | translate }}</p>
       </ion-item>
     </div> <!-- end csv_update -->
 
     <div [hidden]="outputBlock.type != 'beep'">
       <ion-item no-lines text-wrap>
-        <p>
-          The beep sound will be played on the smartphone.<br>
-          Make you sure that the smartphone Media volume is turned on.<br><br>
-          <b>Note</b>: to disable the beep when you scan a barcode use the "Enable camera beep" option present in the app settings
-        </p>
+        <p [innerHtml]="'beepDescription' | translate"></p>
       </ion-item>
 
       <ion-item>
-        <ion-label>Sound</ion-label>
+        <ion-label>{{ 'sound' | translate }}</ion-label>
         <ion-select [(ngModel)]="outputBlock.value">
-          <ion-option value="beep">Beep</ion-option>
-          <ion-option value="beep_double">Double beep</ion-option>
-          <ion-option value="beep_two_tone">Two tone beep</ion-option>
-          <ion-option value="beep_low">Low beep</ion-option>
-          <ion-option value="beep_high">High beep</ion-option>
+          <ion-option value="beep">{{ 'beep' | translate }}</ion-option>
+          <ion-option value="beep_double">{{ 'doubleBeep' | translate }}</ion-option>
+          <ion-option value="beep_two_tone">{{ 'twoToneBeep' | translate }}</ion-option>
+          <ion-option value="beep_low">{{ 'lowBeep' | translate }}</ion-option>
+          <ion-option value="beep_high">{{ 'highBeep' | translate }}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label>Number of beeps</ion-label>
+        <ion-label>{{ 'numberOfBeeps' | translate }}</ion-label>
         <ion-select [(ngModel)]="outputBlock.beepsNumber">
           <ion-option value="1">1</ion-option>
           <ion-option value="2">2</ion-option>
@@ -602,41 +565,39 @@
       </ion-item>
 
       <ion-item>
-        <ion-label>Speed</ion-label>
+        <ion-label>{{ 'speed' | translate }}</ion-label>
         <ion-select [(ngModel)]="outputBlock.beepSpeed">
-          <ion-option value="low">Slow</ion-option>
-          <ion-option value="medium">Medium</ion-option>
-          <ion-option value="fast">Fast</ion-option>
+          <ion-option value="low">{{ 'slow' | translate }}</ion-option>
+          <ion-option value="medium">{{ 'medium' | translate }}</ion-option>
+          <ion-option value="fast">{{ 'fast' | translate }}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item no-lines text-center padding-top>
-        <button ion-button (click)="testAudio()" color="output-block-component-beep">Test audio</button>
+        <button ion-button (click)="testAudio()" color="output-block-component-beep">{{ 'testAudio' | translate }}</button>
       </ion-item>
     </div>
 
     <div [hidden]="outputBlock.type != 'select_option'">
       <ion-item>
-        <label for="_soTitle">Title</label>
+        <label for="_soTitle">{{ 'title' | translate }}</label>
         <input id="_soTitle" [(ngModel)]="outputBlock.title" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <ion-item>
-        <label for="_soMessage">Message</label>
+        <label for="_soMessage">{{ 'message' | translate }}</label>
         <input id="_soMessage" [(ngModel)]="outputBlock.message" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <ion-item>
-        <label for="_valueSelectOption">Options list</label>
+        <label for="_valueSelectOption">{{ 'optionsList' | translate }}</label>
         <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
         <br>
+        <p [innerHtml]="optionsListDescription"></p>
         <p>
-          Specify the possible options separed by the comma character<br><br>
-          Use the double curly braces syntax to inject a variables.<br><br>
-
-          Example 1: <code ngNonBindable>yes,no</code><br><br>
-          Example 2: <code ngNonBindable>created,processing,completed</code><br><br>
-          Example 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
+          {{ 'optionsListExample' | translate }} 1: <code ngNonBindable>yes,no</code><br><br>
+          {{ 'optionsListExample' | translate }} 2: <code ngNonBindable>created,processing,completed</code><br><br>
+          {{ 'optionsListExample' | translate }} 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
 
           You can use the following variables (lowercase): <br>
           <code>
@@ -665,21 +626,21 @@
     </div>
 
     <ion-item [hidden]="outputBlock.type != 'if'">
-      <label for="_valueIf" color="dark">JavaScript boolean expression</label>
+      <label for="_valueIf" color="dark">{{ 'ifDescription' | translate }}</label>
 
       <input id="_valueIf" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="true" />
 
       <br>
       <p>
-        The expression must return a boolean.<br><br>
+        {{ 'ifDescription1' | translate }}<br><br>
 
-        Example 1:<br>
+        {{ 'ifDescriptionExample' | translate }} 1:<br>
         <code ngNonBindable>barcode.startsWith("1")</code><br><br>
 
-        Example 2:<br>
+        {{ 'ifDescriptionExample' | translate }} 2:<br>
         <code ngNonBindable>device_name == "John's iPhone"</code><br><br>
 
-        You can use the following variables (lowercase):<br>
+        {{ 'availableVariables' | translate }} <br>
         <code>
           <input type="text" value="barcode" disabled class="example-variable" /> <br>
           <input type="text" value="barcodes" disabled class="example-variable" /> <br>
@@ -706,99 +667,99 @@
   </ion-list>
 
   <ion-item [hidden]="outputBlock.type != 'endif'" no-lines>
-    Use this component to close the IF component counterpart.
+    {{ 'endifDescription' | translate }}
   </ion-item>
 
   <div [hidden]="outputBlock.type != 'alert'">
     <ion-item>
-      <label for="_valueAlertTitle">Title</label>
+      <label for="_valueAlertTitle">{{ 'title' | translate }}</label>
       <input id="_valueAlertTitle" [(ngModel)]="outputBlock.alertTitle" class="inline-input" type="text" placeholder="Alert" />
     </ion-item>
 
     <ion-item>
-      <label for="_valueAlertValue">Message</label>
+      <label for="_valueAlertValue">{{ 'message' | translate }}</label>
       <input id="_valueAlertValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Message" />
     </ion-item>
 
     <ion-item>
-      <label for="_valueAlertDiscardButton">Discard button text</label>
+      <label for="_valueAlertDiscardButton">{{ 'discardButtonText' | translate }}</label>
       <input id="_valueAlertDiscardButton" [(ngModel)]="outputBlock.alertDiscardScanButton" class="inline-input" type="text" placeholder="Discard scan" />
       <br>
       <p>
-        Leave blank to hide the button
+        {{ 'alertLeaveBlank' | translate }}
       </p>
     </ion-item>
 
     <ion-item>
-      <label for="_valueAlertScanAgainButton">Scan again button text</label>
+      <label for="_valueAlertScanAgainButton">{{ 'scanAgainButtonText' | translate }}</label>
       <input id="_valueAlertScanAgainButton" [(ngModel)]="outputBlock.alertScanAgainButton" class="inline-input" type="text" placeholder="Scan again" />
       <br>
       <p>
-        Leave blank to hide the button
+        {{ 'alertLeaveBlank' | translate }}
       </p>
     </ion-item>
 
     <ion-item>
-      <label for="_valueAlertOkButton">Ok button text</label>
+      <label for="_valueAlertOkButton">{{ 'okButtonText' | translate }}</label>
       <input id="_valueAlertOkButton" [(ngModel)]="outputBlock.alertOkButton" class="inline-input" type="text" placeholder="Ok" />
       <br>
       <p>
-        Leave blank to hide the button
+        {{ 'alertLeaveBlank' | translate }}
       </p>
     </ion-item>
   </div>
 
   <ion-item [hidden]="outputBlock.value != 'timestamp' || outputBlock.type != 'variable'">
     <info-box title="Info">
-      If you want a custom format use the DATE_TIME component instead.
+      {{ 'timestampDescription' | translate }}
     </info-box>
   </ion-item>
 
   <!-- date_time START -->
   <div [hidden]="outputBlock.type != 'date_time'">
     <ion-item no-lines>
-      <ion-label>Enable custom format</ion-label>
+      <ion-label>{{ 'enableCustomFormat' | translate }}</ion-label>
       <ion-toggle [(ngModel)]="enableCustomFormat" (ionChange)="dateTimeEnableCustomFormatChange($event)"></ion-toggle>
     </ion-item>
 
     <ion-item [hidden]="enableCustomFormat">
-      <ion-label>Format</ion-label>
+      <ion-label>{{ 'format' | translate }}</ion-label>
       <ion-select [(ngModel)]="dateTimeSelectedDefaultFormat" (ionChange)="onDateTimeDefaultFormatsChange($event)">
         <ion-option *ngFor="let format of getFormats()" [value]="format.value">{{ format.title }}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item [hidden]="!enableCustomFormat">
-      <label for="_valueFormat">Custom format</label>
+      <label for="_valueFormat">{{ 'customFormat' | translate }}</label>
       <input id="_valueFormat" [(ngModel)]="outputBlock.format" class="inline-input" type="text" placeholder="YYYY-MM-DD" />
 
       <br>
 
       <p>
         You can view the full token list
-        <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedDateFormats())">here</a>.
+        <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedDateFormats())">{{ 'customFormatDescription2' | translate }}</a>.
       </p>
     </ion-item>
 
     <ion-item>
-      <ion-label>Locale</ion-label>
+      <ion-label>{{ 'locale' | translate }}</ion-label>
       <ion-select [(ngModel)]="outputBlock.locale" (ionChange)="onDateTimeLocaleChange($event)">
         <ion-option *ngFor="let locale of getLocales()" [value]="locale.id">{{ locale.name }}</ion-option>
       </ion-select>
     </ion-item>
 
     <ion-item>
-      <label>Preview</label>
+      <label>{{ 'preview' | translate }}</label>
       <ion-note item-end>{{ dateTimeNowExample | amDateFormat: outputBlock.format }}</ion-note>
     </ion-item>
   </div>
   <!-- date_time END -->
 
   <!-- Show "Variables dependency" info box only for: function, if, select_option, http, run -->
-  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'csv_lookup' || outputBlock.type == 'csv_update')">
+  <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'run' || outputBlock.type == 'csv_lookup' || outputBlock.type == 'csv_update')">
     <info-box title="Info">
-      To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.<br><br>
-      See <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialUseVariables())">this example</a>.
+      {{ 'variablesInjectionInfoBox1' | translate }}<br><br>
+      {{ 'variablesInjectionInfoBox2' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlTutorialUseVariables())">{{ 'variablesInjectionInfoBox3' | translate }}</a>.
     </info-box>
   </ion-item>
 </ion-content>
