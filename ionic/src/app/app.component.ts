@@ -153,9 +153,9 @@ export class MyApp {
       }
     });
 
-    this.translate.setDefaultLang('en');
-    if (this.translate.getBrowserLang() !== undefined) {
-      this.translate.use(this.translate.getBrowserLang());
+    const lang = this.translate.getBrowserLang();
+    if (lang !== undefined && this.translate.getLangs().indexOf(lang) != -1) {
+      this.translate.use(lang);
     } else {
       this.translate.use('en');
     }
