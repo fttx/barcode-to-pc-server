@@ -1,5 +1,6 @@
 {
   "================================APP==========================================": "",
+  "appName": "Barcode to PC server",
   "closeSettingsDialogTitle": "Error",
   "closeSettingsDialogMessage": "You must close the Settings page before opening a .btpt file.",
   "closeSettingsDialogOkButton": "Ok",
@@ -14,7 +15,7 @@
   "changelogDialogTitle": "The server has been updated",
   "changelogDialogOkButton": "Ok",
   "================================WELCOME_PAGE=================================": "",
-  "welcome": "Welcome to Barcode to PC server",
+  "welcome": "Welcome to ",
   "welcomeStep1": "1) Install the app on your smartphone",
   "welcomeStep2": "2) Launch the app and scan this QR code to connect",
   "help": "Help?",
