@@ -17,6 +17,8 @@ export class Config {
     public static WEBSITE_NAME = 'barcodetopc.com';
 
     public static URL_WEBSITE = 'https://barcodetopc.com';
+    public static URL_PLAYSTORE = 'https://play.google.com/store/apps/details?id=com.barcodetopc';
+    public static URL_APPSTORE = 'https://itunes.apple.com/app/id1180168368';
 
     public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com';
     public static URL_ORDER_CHECK = Config.URL_LICENSE_SERVER + '/order/check';

@@ -32,9 +32,9 @@ export class WelcomePage {
   ) {
     if (this.electronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.once(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
-          ngZone.run(() => {
-            this.navCtrl.setRoot(HomePage);
-          })
+        ngZone.run(() => {
+          this.navCtrl.setRoot(HomePage);
+        })
       });
     }
     this.utilsService.getQrCodeUrl().then((url: string) => this.qrCodeUrl = url);
@@ -50,5 +50,13 @@ export class WelcomePage {
 
   onHelpClick() {
     this.electronProvider.shell.openExternal(Config.URL_FAQ_APP_DOESNT_FIND_COMPUTER);
+  }
+
+  onPlayStoreClick() {
+    this.electronProvider.shell.openExternal(Config.URL_PLAYSTORE);
+  }
+
+  onAppStoreClick() {
+    this.electronProvider.shell.openExternal(Config.URL_APPSTORE);
   }
 }
