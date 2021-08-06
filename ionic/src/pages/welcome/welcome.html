@@ -21,7 +21,7 @@
       <qr-code [hidden]="qrCodeUrl == ''" [value]="qrCodeUrl" [size]="240"></qr-code>
       <ion-spinner [hidden]="qrCodeUrl != ''" class="qr-spinner" color="primary"></ion-spinner>
 
-      <div *ngIf="electronProvider.isDev()">
+      <div *ngIf="electronProvider.isDev()" class="btn-skip">
         <br>
         <button ion-button (click)="onSkipClick()">Skip</button>
       </div>

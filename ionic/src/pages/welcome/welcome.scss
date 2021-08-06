@@ -10,31 +10,37 @@ page-welcome {
         flex-direction: column;
         position: relative;
     }
-    
+
     .parent img {
         cursor: pointer;
     }
-    
+
     .badges img {
         height: 50px;
     }
-    
+
     .fixed-bottom {
         position: absolute;
         bottom: 0;
-        padding: 5px;    
+        padding: 5px;
     }
-    
-    .help { 
+
+    .help {
         right: 0;
         cursor: pointer;
     }
-    
+
     h3 {
         padding-top: 20px;
     }
-    
+
     .badges, qr-code {
         margin-left: 40px;
+    }
+
+    .btn-skip {
+      position: absolute;
+      top: 8px;
+      right: 10px;
     }
 }
