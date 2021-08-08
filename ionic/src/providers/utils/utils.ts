@@ -249,7 +249,7 @@ export class UtilsProvider {
 
   public async showSuccessNativeDialog(message: string = '') {
     this.electronProvider.dialog.showMessageBox(null, {
-      type: 'info', title: await this.text('nativeSuccessDialogTitle'), buttons: ['nativeSuccessDialogCloseButton'], message: message
+      type: 'info', title: await this.text('nativeSuccessDialogTitle'), buttons: [await this.text('nativeSuccessDialogCloseButton')], message: message
     })
   }
 
