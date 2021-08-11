@@ -339,7 +339,7 @@ export class LicenseProvider {
       }
 
       if (!available && showUpgradeDialog) {
-        this.showUpgradeDialog(
+        await this.showUpgradeDialog(
           'canUseNumberParameter',
           await this.utilsProvider.text('numberComponentNotAvailableDialogTitle'),
           await this.utilsProvider.text('numberComponentNotAvailableDialogMessage'),
@@ -363,7 +363,7 @@ export class LicenseProvider {
         case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
       }
       if (!available && showUpgradeDialog) {
-        this.showUpgradeDialog(
+        await this.showUpgradeDialog(
           'canUseCSVAppend',
           await this.utilsProvider.text('csvAppendNotAvailableDialogTitle'),
           await this.utilsProvider.text('csvAppendNotAvailableDialogMessage'),

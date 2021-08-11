@@ -135,9 +135,9 @@ export class SettingsPage implements OnInit, OnDestroy {
       removeOnSpill: true
     });
 
-    this.dragulaService.dropModel('dragula-group').subscribe(({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
+    this.dragulaService.dropModel('dragula-group').subscribe(async ({ name, el, target, source, sibling, item, sourceModel, targetModel, }) => {
       if (item.value == 'number') {
-        if (!this.licenseProvider.canUseNumberParameter(true)) {
+        if (!(await this.licenseProvider.canUseNumberParameter(true))) {
           setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.value != 'number'), 1000)
         }
       }
@@ -416,9 +416,9 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
-  onCSVClick() {
+  async onCSVClick() {
     if (this.settings.appendCSVEnabled) {
-      if (!this.licenseProvider.canUseCSVAppend(true)) {
+      if (!(await this.licenseProvider.canUseCSVAppend(true))) {
         setTimeout(() => this.settings.appendCSVEnabled = false, 1000)
       }
     }
