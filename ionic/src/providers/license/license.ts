@@ -201,15 +201,15 @@ export class LicenseProvider {
    * the deactivation process.
    */
   deactivate(clearSerial = false) {
-    let downgradeToFree = () => {
+    let downgradeToFree = async () => {
       this.activeLicense = LicenseProvider.LICENSE_FREE;
       this.store.set(Config.STORAGE_SUBSCRIPTION, this.activeLicense);
 
       let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-      if (!this.canUseCSVAppend(false)) {
+      if (!(await this.canUseCSVAppend(false))) {
         settings.appendCSVEnabled = false;
       }
-      if (!this.canUseNumberParameter(false)) {
+      if (!(await this.canUseNumberParameter(false))) {
         for (let i in settings.outputProfiles) {
           settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'number');
         }
@@ -328,45 +328,49 @@ export class LicenseProvider {
    * Shuld be called when the user tries to drag'n drop the number component.
    * @returns FALSE if the feature should be limited
    */
-  async canUseNumberParameter(showUpgradeDialog = true): Promise<boolean> {
-    let available = false;
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: available = false; break;
-      case LicenseProvider.LICENSE_BASIC: available = true; break;
-      case LicenseProvider.LICENSE_PRO: available = true; break;
-      case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
-    }
+  canUseNumberParameter(showUpgradeDialog = true): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      let available = false;
+      switch (this.activeLicense) {
+        case LicenseProvider.LICENSE_FREE: available = false; break;
+        case LicenseProvider.LICENSE_BASIC: available = true; break;
+        case LicenseProvider.LICENSE_PRO: available = true; break;
+        case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
+      }
 
-    if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog(
-        'canUseNumberParameter',
-        await this.utilsProvider.text('numberComponentNotAvailableDialogTitle'),
-        await this.utilsProvider.text('numberComponentNotAvailableDialogMessage'),
-      );
-    }
-    return available;
+      if (!available && showUpgradeDialog) {
+        this.showUpgradeDialog(
+          'canUseNumberParameter',
+          await this.utilsProvider.text('numberComponentNotAvailableDialogTitle'),
+          await this.utilsProvider.text('numberComponentNotAvailableDialogMessage'),
+        );
+      }
+      resolve(available);
+    });
   }
 
   /**
    * Shuld be called when the user tries to enable the CSV append option
    * @returns FALSE if the feature should be limited
    */
-  async canUseCSVAppend(showUpgradeDialog = false): Promise<boolean> {
-    let available = false;
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: available = false; break;
-      case LicenseProvider.LICENSE_BASIC: available = true; break;
-      case LicenseProvider.LICENSE_PRO: available = true; break;
-      case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
-    }
-    if (!available && showUpgradeDialog) {
-      this.showUpgradeDialog(
-        'canUseCSVAppend',
-        await this.utilsProvider.text('csvAppendNotAvailableDialogTitle'),
-        await this.utilsProvider.text('csvAppendNotAvailableDialogMessage'),
-      );
-    }
-    return available;
+  canUseCSVAppend(showUpgradeDialog = false): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      let available = false;
+      switch (this.activeLicense) {
+        case LicenseProvider.LICENSE_FREE: available = false; break;
+        case LicenseProvider.LICENSE_BASIC: available = true; break;
+        case LicenseProvider.LICENSE_PRO: available = true; break;
+        case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
+      }
+      if (!available && showUpgradeDialog) {
+        this.showUpgradeDialog(
+          'canUseCSVAppend',
+          await this.utilsProvider.text('csvAppendNotAvailableDialogTitle'),
+          await this.utilsProvider.text('csvAppendNotAvailableDialogMessage'),
+        );
+      }
+      resolve(available);
+    });
   }
 
   getNOMaxComponents() {
