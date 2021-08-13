@@ -153,12 +153,9 @@ export class MyApp {
       }
     });
 
-    const lang = this.translate.getBrowserLang();
-    if (lang !== undefined && this.translate.getLangs().indexOf(lang) != -1) {
-      this.translate.use(lang);
-    } else {
-      this.translate.use('en');
-    }
+    this.translate.setDefaultLang('en');
+    this.translate.use(this.translate.getBrowserLang());
+
     utils.upgradeIonicStoreToElectronStore();
   }
 
