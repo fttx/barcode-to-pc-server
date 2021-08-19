@@ -250,7 +250,7 @@
   "skipOutputDescription": "Desactiva la emulación del teclado y la salida CSV para este componente.<br><br>Esta opción es útil cuando solo desea adquirir los datos y usarlos más tarde con componentes como \" Función JavaScript \",\"IF \", \"HTTP\", o como parámetro para el nombre del archivo CSV.",
   "label": "Etiqueta",
   "numberDescription": "Proporcione una descripción breve, como \"Número de seguimiento \"o \"ID de producto\".<br>La etiqueta se mostrará en la aplicación mientras se adquieren los datos.<br><br>Utilice la sintaxis de llaves dobles para insertar una variable. Ejemplo:<br><code ngNonBindable>{{ csv_lookup }}</code><br><br>",
-  "availableVariables:": "Puede utilizar las siguientes variables (minúsculas)",
+  "availableVariables": "Puede utilizar las siguientes variables (minúsculas)",
   "defaultValue": "Valor predeterminado",
   "defaultValueDescription": "El valor que se debe utilizar cuando no se proporciona ninguna entrada.<br><br>Utilice la sintaxis de llaves dobles para insertar una variable. (Igual que el anterior)",
   "filter": "Filtro",

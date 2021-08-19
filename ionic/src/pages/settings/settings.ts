@@ -192,8 +192,8 @@ export class SettingsPage implements OnInit, OnDestroy {
         buttons.unshift({ text: await this.utils.text('applyDialogDiscardButton'), handler: () => { this.navCtrl.pop(); } });
       }
       this.alertCtrl.create({
-        title: await this.utils.text('"syntaxErrorDialogTitle"'),
-        message: await this.utils.text('"syntaxErrorDialogMessage"'),
+        title: await this.utils.text('syntaxErrorDialogTitle'),
+        message: await this.utils.text('syntaxErrorDialogMessage'),
         buttons: buttons
       }).present();
       return false;

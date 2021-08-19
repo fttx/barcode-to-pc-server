@@ -593,7 +593,7 @@
         <label for="_valueSelectOption">{{ 'optionsList' | translate }}</label>
         <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
         <br>
-        <p [innerHtml]="optionsListDescription"></p>
+        <p [innerHtml]="'optionsListDescription' | translate"></p>
         <p>
           {{ 'optionsListExample' | translate }} 1: <code ngNonBindable>yes,no</code><br><br>
           {{ 'optionsListExample' | translate }} 2: <code ngNonBindable>created,processing,completed</code><br><br>
@@ -640,7 +640,7 @@
         {{ 'ifDescriptionExample' | translate }} 2:<br>
         <code ngNonBindable>device_name == "John's iPhone"</code><br><br>
 
-        {{ 'availableVariables' | translate }} <br>
+        {{ 'availableVariables' | translate }} <br>
         <code>
           <input type="text" value="barcode" disabled class="example-variable" /> <br>
           <input type="text" value="barcodes" disabled class="example-variable" /> <br>

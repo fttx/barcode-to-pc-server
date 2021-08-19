@@ -250,7 +250,7 @@
   "skipOutputDescription": "Disables the Keyboard emulation and CSV output for this component.<br><br>This option is useful when you only want to acquire the data, and use it later with components like \"JavaScript Function\", \"IF\", \"HTTP\", or as a parameter for the CSV file name.",
   "label": "Label",
   "numberDescription": "Provide a short description such as \"Tracking number\" or \"Product ID\".<br>The label will be shown in the app while acquiring the data.<br><br>Use the double curly braces syntax to inject a variables. Example:<br><code ngNonBindable>{{ csv_lookup }}</code><br><br>",
-  "availableVariables:": "You can use the following variables (lowercase)",
+  "availableVariables": "You can use the following variables (lowercase)",
   "defaultValue": "Default Value",
   "defaultValueDescription": "The value that should be used when no input is provided.<br><br>Use the double curly braces syntax to inject a variables. (Same as above)",
   "filter": "Filter",
