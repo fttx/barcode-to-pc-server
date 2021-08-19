@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import ElectronStore from 'electron-store';
-import { ViewController } from 'ionic-angular';
+import { Events, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
@@ -12,6 +12,8 @@ import { LicenseProvider } from '../../providers/license/license';
 export class ActivatePage {
   public uuid = '';
   public serial = '';
+  public numberComponent = 'No';
+  public appendToCSV = 'No';
 
   private store: ElectronStore;
 
@@ -19,9 +21,26 @@ export class ActivatePage {
     private electronProvider: ElectronProvider,
     public viewCtrl: ViewController,
     public licenseProvider: LicenseProvider,
+    public events: Events,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.serial = this.licenseProvider.serial;
+  }
+
+  ionViewWillEnter() {
+    this.refresh();
+    this.events.subscribe('license:activate', () => { this.refresh(); });
+    this.events.subscribe('license:deactivate', () => { this.refresh(); });
+  }
+
+  ionViewWillLeave() {
+    this.events.unsubscribe('license:activate');
+    this.events.unsubscribe('license:deactivate');
+  }
+
+  async refresh() {
+    this.numberComponent = await this.licenseProvider.canUseNumberParameter(false) ? 'Yes' : 'No';
+    this.appendToCSV = await this.licenseProvider.canUseCSVAppend() ? 'Yes' : 'No';
   }
 
   close() {

@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import ElectronStore from 'electron-store';
-import { Alert, AlertController, AlertOptions } from 'ionic-angular';
+import { Alert, AlertController, AlertOptions, Events } from 'ionic-angular';
 import { interval } from 'rxjs/observable/interval';
 import { throttle } from 'rxjs/operators';
 import { Config } from '../../../../electron/src/config';
@@ -53,6 +53,7 @@ export class LicenseProvider {
     private alertCtrl: AlertController,
     private utilsProvider: UtilsProvider,
     private devicesProvider: DevicesProvider,
+    public events: Events,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.updateSubscriptionStatus();
@@ -63,7 +64,7 @@ export class LicenseProvider {
 
     this.devicesProvider.onDeviceDisconnect().pipe(throttle(ev => interval(1000 * 60))).subscribe(async device => {
       if (this.activeLicense == LicenseProvider.LICENSE_FREE) {
-        this.showUpgradeDialog(
+        await this.showUpgradeDialog(
           'commercialUse',
           await this.utilsProvider.text('commercialUseDialogTitle'),
           await this.utilsProvider.text('commercialUseDialogMessage')
@@ -151,6 +152,7 @@ export class LicenseProvider {
           this.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
           this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
           window.confetti.start(3000);
+          this.events.publish('license:activate');
         }
       } else {
         // When the license-server says that the subscription is not active
@@ -215,6 +217,7 @@ export class LicenseProvider {
         }
       }
       this.store.set(Config.STORAGE_SETTINGS, settings);
+      this.events.publish('license:deactivate');
     }
 
     if (clearSerial) {
@@ -292,7 +295,7 @@ export class LicenseProvider {
     if (connectedDevices.length > this.getNOMaxAllowedConnectedDevices()) {
       let message = await this.utilsProvider.text('deviceLimitsReachedDialogMessage');
       this.devicesProvider.kickDevice(device, message);
-      this.showUpgradeDialog(
+      await this.showUpgradeDialog(
         'limitNOMaxConnectedDevices',
         await this.utilsProvider.text('deviceLimitsReachedDialogTitle'), message
       );
@@ -316,7 +319,7 @@ export class LicenseProvider {
     if (count > this.getNOMaxAllowedScansPerMonth()) {
       let message = await this.utilsProvider.text('scansLimitReachedDialogMessage');
       this.devicesProvider.kickAllDevices(message);
-      this.showUpgradeDialog(
+      await this.showUpgradeDialog(
         'limitMonthlyScans',
         await this.utilsProvider.text('scansLimitReachedDialogTitle'),
         message
