@@ -174,8 +174,10 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.alertCtrl.create({
       title: await this.utils.text('restoreDefaultSettingsDialogTitle'),
       message: await this.utils.text('restoreDefaultSettingsDialogMessage'),
-      buttons: [{ text: await this.utils.text('restoreDefaultSettingsDialogCancelButton'), role: 'cancel' }, {
-        text: 'Restore', handler: (opts) => {
+      buttons: [{
+        text: await this.utils.text('restoreDefaultSettingsDialogCancelButton'), role: 'cancel'
+      }, {
+        text: await this.utils.text('restoreDefaultSettingsDialogRestoreButton'), handler: (opts) => {
           this.settings = new SettingsModel();
           this.apply();
         }

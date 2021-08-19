@@ -191,6 +191,7 @@
   "restoreDefaultSettingsDialogTitle": "¿Está seguro?",
   "restoreDefaultSettingsDialogMessage": "¿Realmente desea restaurar los ajustes predeterminados? Esto no se puede deshacer",
   "restoreDefaultSettingsDialogCancelButton": "Cancelar",
+  "restoreDefaultSettingsDialogRestoreButton": "Restaurar",
   "applyDialogOKButton": "OK",
   "syntaxErrorDialogTitle": "Error de sintaxis",
   "syntaxErrorDialogMessage": "El número de componentes de salida IF debe ser el mismo de los ENDIFs",

@@ -191,6 +191,7 @@
   "restoreDefaultSettingsDialogTitle": "Are you sure?",
   "restoreDefaultSettingsDialogMessage": "Do you really want to restore the default settings? This cannot be undone",
   "restoreDefaultSettingsDialogCancelButton": "Cancel",
+  "restoreDefaultSettingsDialogRestoreButton": "Restore",
   "applyDialogOKButton": "OK",
   "syntaxErrorDialogTitle": "Syntax error",
   "syntaxErrorDialogMessage": "The number of IF output components should be the same of the ENDIFs",
