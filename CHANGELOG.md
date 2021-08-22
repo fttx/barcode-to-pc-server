@@ -16,6 +16,15 @@
 ### Security
 -->
 
+
+## [v3.18.0] - 2021-08-XX
+
+### Added
+
+- Option to ignore duplicate barcodes
+- Spanish language support
+- Connection instructions page
+
 ## [v3.17.0] - 2021-06-21
 
 ### Added
@@ -450,6 +459,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.18.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.17.0...v3.18.0
 [v3.17.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.1...v3.17.0
 [v3.16.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.0...v3.16.1
 [v3.16.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.15.0...v3.16.0
