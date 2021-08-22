@@ -176,3 +176,25 @@ blockquote {
   height: 100px;
   margin: 50px auto;
 }
+
+// ion-slides dots
+.swiper-pagination-bullet {
+  background: map-get($colors, dark)  !important;
+}
+
+.swiper-pagination-bullet-active {
+  background:  map-get($colors, primary) !important;
+  opacity: .8 !important;
+}
+
+.text-muted {
+  color: #5c5c5c;
+}
+
+// Pop-over custom height
+@media only screen and (min-height: 600px) and (min-width: 768px){
+  .modal-wrapper {
+      top: calc(50% - (600px/2)) !important;
+      height: 600px !important;
+  }
+}

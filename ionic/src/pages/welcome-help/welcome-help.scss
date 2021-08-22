@@ -1,0 +1,28 @@
+page-welcome-help {
+  .toolbar-navigation {
+    .toolbar-background {
+      background: transparent;
+    }
+  }
+
+  .slide-zoom, ion-scroll {
+    height: 100%;
+  }
+
+  .swiper-container-horizontal > .swiper-pagination-progress {
+    top: unset;
+    bottom: 0;
+  }
+
+  .swiper-pagination-progress .swiper-pagination-progressbar {
+    background: map-get($colors, secondary);
+  }
+
+  .slide-image {
+    max-height: 20vh;
+  }
+
+  a {
+    cursor: pointer;
+  }
+}

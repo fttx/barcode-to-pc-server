@@ -1,0 +1,136 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>{{ 'welcomePageHelpTitle' | translate }}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-start solid color="secondary" (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding text-center>
+  <ion-slides #slider pager paginationType="progress" (ionSlideDidChange)="onSlideChange()">
+
+    <ion-slide>
+      <ion-scroll scrollY="true">
+        <img src="assets/welcome-help/wifi-logo.gif" alt="wifi" sty class="slide-image">
+        <br>
+        <br>
+        <h2>
+          {{ 'connectToWifiTitle' | translate }}
+        </h2>
+        <p class="text-muted">
+          {{ 'connectToWifi1' | translate }}
+        </p>
+      </ion-scroll>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-scroll scrollY="true">
+        <img src="assets/welcome-help/select-wifi.gif" alt="wifi" class="slide-image">
+        <br>
+        <br>
+        <h2>
+          {{ 'sameNetworkTitle' | translate }}
+        </h2>
+        <p class="text-muted">
+          {{ 'sameNetwork1' | translate }}
+        </p>
+        <p class="text-muted">
+          {{ 'sameNetwork2' | translate }}
+        </p>
+      </ion-scroll>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-scroll scrollY="true">
+        <img src="assets/welcome-help/wifi-help-2.gif" alt="wifi" class="slide-image">
+        <h2>
+          {{ 'check5GhzTitle' | translate }}
+        </h2>
+        <p class="text-muted">
+          {{ 'check5Ghz1' | translate }}
+        </p>
+        <p class="text-muted">
+          {{ 'check5Ghz2' | translate }}
+        </p>
+      </ion-scroll>
+    </ion-slide>
+
+
+    <ion-slide>
+      <ion-scroll scrollY="true">
+        <img src="assets/welcome-help/wifi-help-2.gif" alt="wifi" class="slide-image">
+        <h2>
+          {{ 'check5GhzTitle' | translate }}
+        </h2>
+        <p class="text-muted">
+          {{ 'check5Ghz3' | translate }}
+        </p>
+      </ion-scroll>
+    </ion-slide>
+
+    <ion-slide [hidden]="!isWindows() && !this.electronProvider.isDev()">
+      <ion-scroll scrollY="true">
+        <img src="assets/welcome-help/firewall.gif" alt="wifi" class="slide-image">
+        <h2>
+          {{ 'checkFirewallTitle' | translate }}
+        </h2>
+        <p class="text-muted">
+          {{ 'checkFirewall1' | translate }}
+        </p>
+        <p class="text-muted">
+          {{ 'checkFirewall2' | translate: {'appName': appName()} }}
+        </p>
+        <p class="text-muted">
+          {{ 'checkFirewall3' | translate }}
+          <a (click)="onFirewallHelpClick()">{{ 'checkFirewall4' | translate }}</a>.<br>
+          {{ 'checkFirewall5' | translate }}
+        </p>
+      </ion-scroll>
+    </ion-slide>
+
+    <ion-slide>
+      <ion-scroll scrollY="true">
+        <ion-icon name="checkmark-circle-outline" style="font-size: 100px;"></ion-icon>
+        <h2>
+          {{ 'doneTitle' | translate }}
+        </h2>
+        <p class="text-muted">
+          {{ 'done1' | translate }}
+        </p>
+        <p class="text-muted">
+          {{ 'done2' | translate }}
+          <br>
+          {{ 'done3' | translate }}
+          <a (click)="onCommonIssuesClick()">{{ 'done4' | translate }}</a>.
+        </p>
+      </ion-scroll>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>
+
+<ion-footer no-border padding>
+  <ion-toolbar class="toolbar-navigation">
+    <ion-buttons secondary>
+      <button [hidden]="!showPrev" ion-button icon-end small color="dark" style="opacity: .7;" (click)="onPrevClick()">
+        <ion-icon name="arrow-back"></ion-icon> &nbsp;
+        {{ 'previous' | translate }}
+      </button>
+    </ion-buttons>
+    <ion-buttons end>
+      <button [hidden]="!showNext" ion-button icon-end small color="primary" (click)="onNextClick()">
+        {{ 'next' | translate }}
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+
+      <button [hidden]="showNext" ion-button icon-end small color="primary" (click)="onCloseClick()">
+        {{ 'close' | translate }}
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-footer>

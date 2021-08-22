@@ -28,6 +28,7 @@ import {
 } from '../pages/home/home';
 import { InfoPage } from '../pages/info/info';
 import { SettingsPage } from '../pages/settings/settings';
+import { WelcomeHelpPage } from '../pages/welcome-help/welcome-help';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
@@ -41,6 +42,7 @@ import { MyApp } from './app.component';
     MyApp,
     HomePage,
     WelcomePage,
+    WelcomeHelpPage,
     InfoPage,
     EditOutputBlockPage,
     ActivatePage,
@@ -91,6 +93,7 @@ import { MyApp } from './app.component';
     MyApp,
     HomePage,
     WelcomePage,
+    WelcomeHelpPage,
     InfoPage,
     EditOutputBlockPage,
     ActivatePage,
