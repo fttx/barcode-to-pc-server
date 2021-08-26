@@ -113,10 +113,10 @@ At this point if all looks good the only thing left to do is to publish the Gith
 
 ## Translations
 
-| Language           | Credits           |
+| Language           | Contributors      |
 | :----------------- |:------------------|
 | Chinese            | -                 |
-| Deutsc             | Bruno Wenger      |
+| Deutsch            | Bruno Wenger      |
 | Español            | Juan Manuel       |
 | Italiano           | -                 |
 | English            | -                 |
