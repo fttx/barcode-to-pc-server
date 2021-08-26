@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import ElectronStore from 'electron-store';
 import { Events, ViewController } from 'ionic-angular';
 import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
+import { UtilsProvider } from '../../providers/utils/utils';
 
 @Component({
   selector: 'page-activate',
@@ -22,6 +24,8 @@ export class ActivatePage {
     public viewCtrl: ViewController,
     public licenseProvider: LicenseProvider,
     public events: Events,
+    public utils: UtilsProvider,
+    public translateService: TranslateService,
   ) {
     this.store = new this.electronProvider.ElectronStore();
     this.serial = this.licenseProvider.serial;
@@ -39,8 +43,13 @@ export class ActivatePage {
   }
 
   async refresh() {
-    this.numberComponent = await this.licenseProvider.canUseNumberParameter(false) ? 'Yes' : 'No';
-    this.appendToCSV = await this.licenseProvider.canUseCSVAppend() ? 'Yes' : 'No';
+    this.numberComponent =
+      await this.licenseProvider.canUseNumberParameter(false) ?
+        await this.utils.text('featureAvailableYes') :
+        await this.utils.text('featureAvailableNo');
+    this.appendToCSV = await this.licenseProvider.canUseCSVAppend() ?
+      await this.utils.text('featureAvailableYes') :
+      await this.utils.text('featureAvailableNo');
   }
 
   close() {
@@ -64,7 +73,7 @@ export class ActivatePage {
 
   getRemainingScans() {
     if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
-      return 'Unlimited'
+      return this.translateService.instant('featureUnlimited');
     }
     return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
   }
@@ -92,7 +101,7 @@ export class ActivatePage {
 
   toReadable(number: number) {
     if (number == Number.MAX_SAFE_INTEGER) {
-      return 'Unlimited'
+      return this.translateService.instant('featureUnlimited');
     }
     return number + '';
   }
