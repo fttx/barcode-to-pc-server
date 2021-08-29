@@ -137,7 +137,7 @@
 
       <ion-item no-lines text-wrap>
         <h2>{{ 'modifierKeys' | translate }}</h2>
-        <p [innerHtml]="'modifierKeysDescription' | translate"></p>
+        <p [innerHtml]="'modifierKeysDescription' | translate: { 'outputBlock': outputBlock }"></p>
       </ion-item>
 
       <ion-item>
