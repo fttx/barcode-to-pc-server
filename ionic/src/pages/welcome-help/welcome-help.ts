@@ -3,6 +3,7 @@ import { NavController, Slides, ViewController } from 'ionic-angular';
 import * as os from 'os';
 import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
+import { UtilsProvider } from '../../providers/utils/utils';
 
 @Component({
   selector: 'page-welcome-help',
@@ -12,11 +13,13 @@ export class WelcomeHelpPage {
   @ViewChild('slider') slider: Slides;
   public showPrev = false;
   public showNext = true;
+  decryptText = UtilsProvider.DecryptText;
 
   constructor(
     public navCtrl: NavController,
     public viewCtrl: ViewController,
     public electronProvider: ElectronProvider,
+    public utils: UtilsProvider,
   ) {
 
   }

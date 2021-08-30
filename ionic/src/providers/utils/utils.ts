@@ -168,6 +168,7 @@ export class UtilsProvider {
   ];
 
   private store: ElectronStore;
+  public static DecryptText: (encoded: string) => any;
 
   constructor(
     private electronProvider: ElectronProvider,
@@ -176,6 +177,7 @@ export class UtilsProvider {
     private translateService: TranslateService,
   ) {
     this.store = new this.electronProvider.ElectronStore();
+    UtilsProvider.DecryptText = UtilsProvider.decrypt('barcodetopc');
   }
 
   getQrCodeUrl(): Promise<string> {
@@ -326,5 +328,43 @@ export class UtilsProvider {
     */
   public async text(key: string | Array<string>, interpolateParams?: Object): Promise<string> {
     return await this.translateService.get(key, interpolateParams).toPromise();
+  }
+
+  /**
+   * Creates a cipher
+   * Usage:
+   *  const c = encrypt('key');
+   *  e = c('plaintext');
+   * @param salt
+   * @returns
+   */
+  public static encrypt(salt: string) {
+    const textToChars = text => text.split('').map(c => c.charCodeAt(0));
+    const byteHex = n => ("0" + Number(n).toString(16)).substr(-2);
+    const applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code);
+
+    return text => text.split('')
+      .map(textToChars)
+      .map(applySaltToChar)
+      .map(byteHex)
+      .join('');
+  }
+
+  /**
+   * Creates a cipher
+   * Usage:
+   *  const c = decrypt('key');
+   *  p = c('encryptedtext');
+   * @param salt
+   * @returns
+   */
+  public static decrypt(salt: string) {
+    const textToChars = text => text.split('').map(c => c.charCodeAt(0));
+    const applySaltToChar = code => textToChars(salt).reduce((a, b) => a ^ b, code);
+    return encoded => encoded.match(/.{1,2}/g)
+      .map(hex => parseInt(hex, 16))
+      .map(applySaltToChar)
+      .map(charCode => String.fromCharCode(charCode))
+      .join('');
   }
 }

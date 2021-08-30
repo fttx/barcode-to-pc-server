@@ -76,18 +76,18 @@
       <ion-scroll scrollY="true">
         <img src="assets/welcome-help/firewall.gif" alt="wifi" class="slide-image">
         <h2>
-          {{ 'checkFirewallTitle' | translate }}
+          {{ 'checkFirewallTitle' | translate: {'av': decryptText('151a001d021d060107')} }}
         </h2>
         <p class="text-muted">
-          {{ 'checkFirewall1' | translate }}
+          {{ 'checkFirewall1' | translate: {'av': decryptText('151a001d021d060107')} }}
         </p>
         <p class="text-muted">
-          {{ 'checkFirewall2' | translate: {'appName': appName()} }}
+          {{ 'checkFirewall2' | translate: {'appName': appName(), 'av': decryptText('151a001d021d060107')} }}
         </p>
         <p class="text-muted">
           {{ 'checkFirewall3' | translate }}
           <a (click)="onFirewallHelpClick()">{{ 'checkFirewall4' | translate }}</a>.<br>
-          {{ 'checkFirewall5' | translate }}
+          {{ 'checkFirewall5' | translate: {'appName': appName(), 'av': decryptText('151a001d021d060107')} }}
         </p>
       </ion-scroll>
     </ion-slide>
