@@ -72,7 +72,7 @@
       </ion-scroll>
     </ion-slide>
 
-    <ion-slide [hidden]="!isWindows() && !this.electronProvider.isDev()">
+    <ion-slide *ngIf="isWindows() || this.electronProvider.isDev()">
       <ion-scroll scrollY="true">
         <img src="assets/welcome-help/firewall.gif" alt="wifi" class="slide-image">
         <h2>
