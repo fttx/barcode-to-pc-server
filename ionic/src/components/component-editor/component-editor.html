@@ -15,5 +15,96 @@
 </ion-header>
 
 <ion-content padding>
-  <ng-content></ng-content>
+  <ion-list>
+
+    <div [hidden]="outputBlock.skipOutput === undefined">
+      <ion-item text-wrap no-lines>
+        <ion-label for="_valueSkipOutput">{{ 'skipOutputToggle' | translate }}</ion-label>
+        <ion-toggle id="_valueSkipOutput" [(ngModel)]="outputBlock.skipOutput"></ion-toggle>
+        <br>
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p [innerHtml]="'skipOutputDescription' | translate"></p>
+      </ion-item>
+    </div>
+
+    <div [hidden]="outputBlock.label === undefined">
+      <ion-item no-lines>
+        <label for="_labelValue">
+          <h2 color="dark">{{ 'label' | translate }}</h2>
+        </label>
+        <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p [innerHtml]="'numberDescription' | translate"></p>
+        <p>
+          {{ 'availableVariables' | translate }} <br>
+          <code>
+            <input type="text" value="barcode" disabled class="example-variable" /> <br>
+            <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+            <input type="text" value="number" disabled class="example-variable" /> <br>
+            <input type="text" value="text" disabled class="example-variable" /> <br>
+            <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+            <input type="text" value="date_time" disabled class="example-variable" /> <br>
+            <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+            <input type="text" value="device_name" disabled class="example-variable" /><br>
+            <input type="text" value="select_option" disabled class="example-variable" /> <br>
+            <input type="text" value="http" disabled class="example-variable" /> <br>
+            <input type="text" value="run" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+            <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+            <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
+            <!-- Remember to update the other components (6), and the article:
+              https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+              https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/
+            -->
+          </code>
+        </p>
+      </ion-item>
+    </div>
+
+    <div [hidden]="outputBlock.defaultValue === undefined">
+      <ion-item no-lines>
+        <label for="_defaultValue">
+          <h2 color="dark">{{ 'defaultValue' | translate }}</h2>
+        </label>
+        <input id="_defaultValue" [(ngModel)]="outputBlock.defaultValue" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p [innerHtml]="'defaultValueDescription' | translate"></p>
+      </ion-item>
+    </div>
+
+    <div [hidden]="outputBlock.filter === undefined">
+      <ion-item no-lines>
+        <label for="_filterValue">
+          <h2 color="dark">{{ 'filter' | translate }}</h2>
+        </label>
+        <input id="_filterValue" [(ngModel)]="outputBlock.filter" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p [innerHtml]="'filterDescription' | translate"></p>
+      </ion-item>
+    </div>
+
+    <div [hidden]="outputBlock.errorMessage === undefined">
+      <ion-item no-lines>
+        <label for="_errorMessage">
+          <h2 color="dark">{{ 'errorMessage' | translate }}</h2>
+        </label>
+        <input id="_errorMessage" [(ngModel)]="outputBlock.errorMessage" class="inline-input" type="text" placeholder="(optional)" />
+      </ion-item>
+
+      <ion-item text-wrap>
+        <p [innerHtml]="'errorMessageDescription' | translate"></p>
+      </ion-item>
+    </div>
+
+    <ng-content></ng-content>
+  </ion-list>
 </ion-content>

@@ -21,6 +21,7 @@ import { EditOutputBlockPage } from '../components/output-block-component/edit-o
 import { ActivatePage } from '../pages/activate/activate';
 import { ComponentEditorDateTimePage } from '../pages/component-editor-date-time/component-editor-date-time';
 import { ComponentEditorKeyPage } from '../pages/component-editor-key/component-editor-key';
+import { ComponentEditorVariablePage } from '../pages/component-editor-variable/component-editor-variable';
 import {
   ConnectedClientsPopover,
   HomePage,
@@ -48,6 +49,7 @@ import { MyApp } from './app.component';
     InfoPage,
     EditOutputBlockPage,
     ComponentEditorKeyPage,
+    ComponentEditorVariablePage,
     ComponentEditorDateTimePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
@@ -101,6 +103,7 @@ import { MyApp } from './app.component';
     InfoPage,
     EditOutputBlockPage,
     ComponentEditorKeyPage,
+    ComponentEditorVariablePage,
     ComponentEditorDateTimePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
