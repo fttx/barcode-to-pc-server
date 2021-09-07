@@ -1,0 +1,39 @@
+<component-editor [outputBlock]="outputBlock">
+  <div [hidden]="outputBlock.type != 'date_time'">
+    <ion-item no-lines>
+      <ion-label>{{ 'enableCustomFormat' | translate }}</ion-label>
+      <ion-toggle [(ngModel)]="enableCustomFormat" (ionChange)="dateTimeEnableCustomFormatChange($event)"></ion-toggle>
+    </ion-item>
+
+    <ion-item [hidden]="enableCustomFormat">
+      <ion-label>{{ 'format' | translate }}</ion-label>
+      <ion-select [(ngModel)]="dateTimeSelectedDefaultFormat" (ionChange)="onDateTimeDefaultFormatsChange($event)">
+        <ion-option *ngFor="let format of getFormats()" [value]="format.value">{{ format.title }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item [hidden]="!enableCustomFormat">
+      <label for="_valueFormat">{{ 'customFormat' | translate }}</label>
+      <input id="_valueFormat" [(ngModel)]="outputBlock.format" class="inline-input" type="text" placeholder="YYYY-MM-DD" />
+
+      <br>
+
+      <p>
+        You can view the full token list
+        <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedDateFormats())">{{ 'customFormatDescription2' | translate }}</a>.
+      </p>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>{{ 'locale' | translate }}</ion-label>
+      <ion-select [(ngModel)]="outputBlock.locale" (ionChange)="onDateTimeLocaleChange($event)">
+        <ion-option *ngFor="let locale of getLocales()" [value]="locale.id">{{ locale.name }}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <label>{{ 'preview' | translate }}</label>
+      <ion-note item-end>{{ dateTimeNowExample | amDateFormat: outputBlock.format }}</ion-note>
+    </ion-item>
+  </div>
+</component-editor>

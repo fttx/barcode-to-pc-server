@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Events, ModalController, ViewController } from 'ionic-angular';
 import { OutputBlockModel } from '../../models/output-block.model';
+import { ComponentEditorDateTimePage } from '../../pages/component-editor-date-time/component-editor-date-time';
 import { ComponentEditorKeyPage } from '../../pages/component-editor-key/component-editor-key';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { EditOutputBlockPage } from './edit-output-block-pop-over/edit-output-block-pop-over';
@@ -25,6 +26,7 @@ export class OutputBlockComponent {
 
     switch (this.outputBlock.type) {
       case 'key': editor = ComponentEditorKeyPage; break;
+      case 'date_time': editor = ComponentEditorDateTimePage; break;
       default: editor = EditOutputBlockPage;
     }
     let modal = this.modalCtrl

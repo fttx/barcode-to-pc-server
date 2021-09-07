@@ -14,21 +14,13 @@ import { UtilsProvider } from '../../../providers/utils/utils';
   selector: 'edit-output-block-pop-over',
   templateUrl: 'edit-output-block-pop-over.html',
 })
-export class EditOutputBlockPage implements OnInit, OnDestroy {
+export class EditOutputBlockPage {
   public outputBlock: OutputBlockModel;
   public color: string;
 
   // BARCODE
   public barcodeFormats: barcodeFormatModel[];
   public enableLimitBarcodeFormats = false;
-
-  // DATE_TIME
-  public dateTimeNowExample = new Date();
-  public dateTimeSelectedDefaultFormat;
-  public enableCustomFormat = false;
-  private dateTimeInterval = null;
-  public getFormats() { return UtilsProvider.DATE_TIME_DEFAULT_FORMATS; }
-  public getLocales() { return UtilsProvider.DATE_TIME_LOCALES; }
 
   constructor(
     public navCtrl: NavController,
@@ -56,51 +48,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
         this.enableLimitBarcodeFormats = true;
       }
     }
-
-    if (this.outputBlock.type == 'date_time') {
-      this.dateTimeSelectedDefaultFormat = UtilsProvider.DATE_TIME_DEFAULT_FORMATS[0].value;
-      let index = UtilsProvider.DATE_TIME_DEFAULT_FORMATS.findIndex(x => x.value == this.outputBlock.format);
-      if (index != -1) {
-        this.dateTimeSelectedDefaultFormat = this.outputBlock.format;
-      } else {
-        this.enableCustomFormat = true;
-      }
-    }
-  }
-
-  ngOnDestroy(): void {
-    if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
-  }
-
-  ngOnInit(): void {
-    if (this.outputBlock.type == 'date_time') {
-      if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
-      this.dateTimeInterval = setInterval(() => { this.dateTimeNowExample = new Date(); }, 1000)
-    }
-  }
-
-  onDateTimeDefaultFormatsChange(newValue) {
-    this.outputBlock.format = this.dateTimeSelectedDefaultFormat;
-  }
-
-  dateTimeEnableCustomFormatChange(enable) {
-    if (!enable.checked) {
-      let index = UtilsProvider.DATE_TIME_DEFAULT_FORMATS.findIndex(x => x.value == this.outputBlock.format);
-      if (index != -1) {
-        this.dateTimeSelectedDefaultFormat = this.outputBlock.format
-      } else {
-        this.dateTimeSelectedDefaultFormat = UtilsProvider.DATE_TIME_DEFAULT_FORMATS[0].value;
-      }
-    }
-    this.outputBlock.format = this.dateTimeSelectedDefaultFormat;
-  }
-
-  onDateTimeLocaleChange(locale) {
-    moment.locale(this.outputBlock.locale);
-  }
-
-  getUrlSupportedDateFormats() {
-    return Config.URL_SUPPORTED_DATE_FORMATS;
   }
 
   onEnableLimitBarcodeFormatsChange() {

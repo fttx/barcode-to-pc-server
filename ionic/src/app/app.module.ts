@@ -19,6 +19,7 @@ import { NgxPopperModule, Triggers } from 'ngx-popper';
 import { ComponentsModule } from '../components/components.module';
 import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
 import { ActivatePage } from '../pages/activate/activate';
+import { ComponentEditorDateTimePage } from '../pages/component-editor-date-time/component-editor-date-time';
 import { ComponentEditorKeyPage } from '../pages/component-editor-key/component-editor-key';
 import {
   ConnectedClientsPopover,
@@ -47,6 +48,7 @@ import { MyApp } from './app.component';
     InfoPage,
     EditOutputBlockPage,
     ComponentEditorKeyPage,
+    ComponentEditorDateTimePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
@@ -99,6 +101,7 @@ import { MyApp } from './app.component';
     InfoPage,
     EditOutputBlockPage,
     ComponentEditorKeyPage,
+    ComponentEditorDateTimePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
