@@ -1,7 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Events, Modal, ModalController } from 'ionic-angular';
-import { Subscription } from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { Events, ModalController, ViewController } from 'ionic-angular';
 import { OutputBlockModel } from '../../models/output-block.model';
+import { ComponentEditorKeyPage } from '../../pages/component-editor-key/component-editor-key';
+import { UtilsProvider } from '../../providers/utils/utils';
 import { EditOutputBlockPage } from './edit-output-block-pop-over/edit-output-block-pop-over';
 
 
@@ -15,12 +16,19 @@ export class OutputBlockComponent {
   constructor(
     public modalCtrl: ModalController,
     public events: Events,
+    public viewCtrl: ViewController,
   ) { }
 
   onClick(event) {
     event.stopPropagation();
+    let editor: any;
+
+    switch (this.outputBlock.type) {
+      case 'key': editor = ComponentEditorKeyPage; break;
+      default: editor = EditOutputBlockPage;
+    }
     let modal = this.modalCtrl
-      .create(EditOutputBlockPage, { outputBlock: this.outputBlock, color: this.getVariableColor() }, { enableBackdropDismiss: false, showBackdrop: true });
+      .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });
     this.events.subscribe('settings:goBack', () => { modal.dismiss(); });
     modal.onDidDismiss(() => { this.events.unsubscribe('settings:goBack'); })
     modal.present();
@@ -31,6 +39,6 @@ export class OutputBlockComponent {
   }
 
   getVariableColor() {
-    return 'output-block-component-' + this.outputBlock.type // sass variable name: output-block-component-barcode: #... in variables.scss file
+    return UtilsProvider.GetComponentColor(this.outputBlock);
   }
 }

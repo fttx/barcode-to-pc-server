@@ -18,9 +18,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
   public outputBlock: OutputBlockModel;
   public color: string;
 
-  // KEY
-  public modifiers: boolean[] = [false, false, false, false];
-
   // BARCODE
   public barcodeFormats: barcodeFormatModel[];
   public enableLimitBarcodeFormats = false;
@@ -43,13 +40,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
     this.color = this.navParams.get('color');
-
-    if (this.outputBlock.type == 'key') {
-      this.modifiers[0] = this.outputBlock.modifiers.findIndex(x => x == 'alt') != -1;
-      this.modifiers[1] = this.outputBlock.modifiers.findIndex(x => x == 'command') != -1;
-      this.modifiers[2] = this.outputBlock.modifiers.findIndex(x => x == 'control') != -1;
-      this.modifiers[3] = this.outputBlock.modifiers.findIndex(x => x == 'shift') != -1;
-    }
 
     if (this.outputBlock.type == 'barcode') {
       // Restore the ion-toggle state by reading the outputBlock.enabledFormats values
@@ -111,16 +101,6 @@ export class EditOutputBlockPage implements OnInit, OnDestroy {
 
   getUrlSupportedDateFormats() {
     return Config.URL_SUPPORTED_DATE_FORMATS;
-  }
-
-  onModifierChange() {
-    // copy this.modifiers values to the the outputBlock.modifiers
-    let modifiers = [];
-    if (this.modifiers[0] == true) modifiers.push('alt');
-    if (this.modifiers[1] == true) modifiers.push('command');
-    if (this.modifiers[2] == true) modifiers.push('control');
-    if (this.modifiers[3] == true) modifiers.push('shift');
-    this.outputBlock.modifiers = modifiers;
   }
 
   onEnableLimitBarcodeFormatsChange() {

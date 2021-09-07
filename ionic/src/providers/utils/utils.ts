@@ -7,6 +7,7 @@ import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';
 import { TranslateService } from '@ngx-translate/core';
+import { OutputBlockModel } from '../../models/output-block.model';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -16,7 +17,6 @@ import { TranslateService } from '@ngx-translate/core';
 */
 @Injectable()
 export class UtilsProvider {
-
   public static DATE_TIME_DEFAULT_FORMATS = [
     { value: "YYYY-MM-DD", title: "YYYY-MM-DD" },
     { value: "YYYY-MM-DD hh:mm", title: "YYYY-MM-DD hh:mm" },
@@ -366,5 +366,10 @@ export class UtilsProvider {
       .map(applySaltToChar)
       .map(charCode => String.fromCharCode(charCode))
       .join('');
+  }
+
+  public static GetComponentColor(outputComponent: OutputBlockModel) {
+    // sass variable name: output-block-component-barcode: #... in variables.scss file
+    return 'output-block-component-' + outputComponent.type;
   }
 }

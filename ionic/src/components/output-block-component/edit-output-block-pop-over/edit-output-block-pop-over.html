@@ -125,43 +125,6 @@
       </div>
     </div>
 
-    <div [hidden]="outputBlock.type != 'key'">
-      <!-- CUSTOM KEY Only -->
-      <ion-item [hidden]="outputBlock.editable !== true">
-        <label for="_valueCustomKey" color="dark">
-          <h2>{{ 'keyIdentifier' | translate }}</h2>
-          <p>{{ 'keyIdentifierDescription1' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedKeyIdentifiers())">{{ 'keyIdentifierDescription2' | translate }}</a>.</p>
-        </label>
-        <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="eg. numpad_9" />
-      </ion-item>
-
-      <ion-item no-lines text-wrap>
-        <h2>{{ 'modifierKeys' | translate }}</h2>
-        <p [innerHtml]="'modifierKeysDescription' | translate: { 'outputBlock': outputBlock }"></p>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="dark">Alt</ion-label>
-        <ion-checkbox [(ngModel)]="modifiers[0]" (ionChange)="onModifierChange()"></ion-checkbox>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="dark">Command</ion-label>
-        <ion-checkbox [(ngModel)]="modifiers[1]" (ionChange)="onModifierChange()"></ion-checkbox>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="dark">Control</ion-label>
-        <ion-checkbox [(ngModel)]="modifiers[2]" (ionChange)="onModifierChange()"></ion-checkbox>
-      </ion-item>
-
-      <ion-item>
-        <ion-label color="dark">Shift</ion-label>
-        <ion-checkbox [(ngModel)]="modifiers[3]" (ionChange)="onModifierChange()"></ion-checkbox>
-      </ion-item>
-    </div>
-
-
     <ion-item [hidden]="outputBlock.type != 'function'">
       <!-- <ion-label color="dark">JavaScript</ion-label> -->
       <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->

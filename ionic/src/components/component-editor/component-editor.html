@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-navbar [color]="color">
+    <ion-title>{{ outputBlock.name }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-end solid [color]="color" (click)="onHelpClick(outputBlock)" class="btn-help">
+        {{ 'helpButton' | translate }}
+        <ion-icon name="help"></ion-icon>
+      </button>
+      <button ion-button icon-end solid [color]="color" (click)="onCloseClick()" class="btn-save">
+        {{ 'saveButton' | translate }}
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ng-content></ng-content>
+</ion-content>
