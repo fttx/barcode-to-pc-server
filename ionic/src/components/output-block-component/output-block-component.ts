@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Events, ModalController, ViewController } from 'ionic-angular';
 import { OutputBlockModel } from '../../models/output-block.model';
+import { ComponentEditorBarcodePage } from '../../pages/component-editor-barcode/component-editor-barcode';
 import { ComponentEditorDateTimePage } from '../../pages/component-editor-date-time/component-editor-date-time';
 import { ComponentEditorKeyPage } from '../../pages/component-editor-key/component-editor-key';
 import { ComponentEditorVariablePage } from '../../pages/component-editor-variable/component-editor-variable';
@@ -29,6 +30,7 @@ export class OutputBlockComponent {
       case 'key': editor = ComponentEditorKeyPage; break;
       case 'date_time': editor = ComponentEditorDateTimePage; break;
       case 'variable': editor = ComponentEditorVariablePage; break;
+      case 'barcode': editor = ComponentEditorBarcodePage; break;
       default: editor = EditOutputBlockPage;
     }
     let modal = this.modalCtrl

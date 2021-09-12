@@ -20,23 +20,6 @@
   <!-- {{ outputBlock | json }} -->
   <ion-list>
 
-    <div [hidden]="outputBlock.type != 'barcode'">
-      <ion-item text-wrap no-lines>
-        <ion-label>
-          <h2 color="dark">{{ 'limitBarcodeFormats' | translate }}</h2>
-          <p [innerHtml]="'limitBarcodeFormatsDescription' | translate"></p>
-        </ion-label>
-        <ion-toggle [(ngModel)]="enableLimitBarcodeFormats" (ionChange)="onEnableLimitBarcodeFormatsChange()"></ion-toggle>
-      </ion-item>
-
-      <div [hidden]="!enableLimitBarcodeFormats" padding-left>
-        <ion-item *ngFor="let barcodeFormat of barcodeFormats">
-          <ion-label color="dark">{{ barcodeFormat.name }}</ion-label>
-          <ion-toggle [(ngModel)]="barcodeFormat.enabled" (ionChange)="onBarcodeFormatsChange()"></ion-toggle>
-        </ion-item>
-      </div>
-    </div>
-
     <ion-item [hidden]="outputBlock.type != 'function'">
       <!-- <ion-label color="dark">JavaScript</ion-label> -->
       <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->

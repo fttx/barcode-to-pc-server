@@ -18,10 +18,6 @@ export class EditOutputBlockPage {
   public outputBlock: OutputBlockModel;
   public color: string;
 
-  // BARCODE
-  public barcodeFormats: barcodeFormatModel[];
-  public enableLimitBarcodeFormats = false;
-
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -32,38 +28,6 @@ export class EditOutputBlockPage {
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
     this.color = this.navParams.get('color');
-
-    if (this.outputBlock.type == 'barcode') {
-      // Restore the ion-toggle state by reading the outputBlock.enabledFormats values
-      this.barcodeFormats = JSON.parse(JSON.stringify(barcodeFormatModel.supportedBarcodeFormats));
-      if (this.outputBlock.enabledFormats.length != 0) {
-        this.barcodeFormats.forEach(barcodeFormat => {
-          let enabledFormat = this.outputBlock.enabledFormats.find(x => x == barcodeFormat.name);
-          if (enabledFormat) {
-            barcodeFormat.enabled = true;
-          } else {
-            barcodeFormat.enabled = false;
-          }
-        });
-        this.enableLimitBarcodeFormats = true;
-      }
-    }
-  }
-
-  onEnableLimitBarcodeFormatsChange() {
-    if (this.outputBlock.type == 'barcode') {
-      if (!this.enableLimitBarcodeFormats) {
-        // Restore the default formats values when the toggle button is enabled
-        this.outputBlock.enabledFormats = [];
-        this.barcodeFormats = JSON.parse(JSON.stringify(barcodeFormatModel.supportedBarcodeFormats));
-      }
-    }
-  }
-
-  onBarcodeFormatsChange() {
-    // copy this.barcodeFormats values to the the outputBlock.enabledFormats
-    this.outputBlock.enabledFormats = this.barcodeFormats.filter(x => x.enabled).map(x => x.name);
-    this.enableLimitBarcodeFormats = true
   }
 
   onHelpClick(outputBlock: OutputBlockModel) {
