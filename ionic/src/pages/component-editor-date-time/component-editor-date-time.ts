@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavParams } from 'ionic-angular';
 import moment from 'moment';
 import { Config } from '../../../../electron/src/config';
 import { OutputBlockModel } from '../../models/output-block.model';
@@ -21,7 +21,6 @@ export class ComponentEditorDateTimePage implements OnInit, OnDestroy {
   public getLocales() { return UtilsProvider.DATE_TIME_LOCALES; }
 
   constructor(
-    public navCtrl: NavController,
     public navParams: NavParams,
     private electronProvider: ElectronProvider, // required from the template
   ) {
