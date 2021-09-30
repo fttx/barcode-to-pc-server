@@ -1,4 +1,5 @@
 import axios from 'axios';
+import addOAuthInterceptor from 'axios-oauth-1.0a';
 import { exec, execSync } from 'child_process';
 import * as parse from 'csv-parse/lib/sync';
 import * as stringify from 'csv-stringify';
@@ -322,7 +323,17 @@ export class ScansHandler implements Handler {
                             let haeders = JSON.parse(request.outputBlock.httpHeaders || '{}');
                             if (haeders == {}) haeders = null;
 
-                            let response = (await axios.request({
+                            // Add OAuth header
+                            const client = axios.create();
+                            if (request.outputBlock.httpOAuthMethod && request.outputBlock.httpOAuthMethod != 'disabled') {
+                                addOAuthInterceptor(client, {
+                                    algorithm: request.outputBlock.httpOAuthMethod,
+                                    key: request.outputBlock.httpOAuthConsumerKey,
+                                    secret: request.outputBlock.httpOAuthConsumerSecret,
+                                });
+                            }
+
+                            let response = (await client.request({
                                 url: request.outputBlock.value,
                                 data: request.outputBlock.httpData,
                                 params: params,

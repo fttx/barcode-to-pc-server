@@ -91,6 +91,9 @@ export class OutputBlockModel {
     httpData?: string;
     httpParams?: string;
     httpHeaders?: string;
+    httpOAuthMethod?: 'HMAC-SHA1' | 'HMAC-SHA256' | 'disabled';
+    httpOAuthConsumerKey?: string;
+    httpOAuthConsumerSecret?: string;
     /**
      * @deprecated use httpMethod instead
      */

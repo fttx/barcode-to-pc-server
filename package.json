@@ -94,6 +94,7 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "axios-oauth-1.0a": "^0.3.1",
     "bonjour": "^3.5.0",
     "csv-parse": "^4.10.1",
     "csv-stringify": "^5.6.2",

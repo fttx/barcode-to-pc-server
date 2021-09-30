@@ -170,6 +170,25 @@
         </p>
       </ion-item>
 
+      <ion-item no-lines>
+        <label for="_oauth" color="dark">
+          <h2 color="dark">{{ 'oauth' | translate }}</h2>
+        </label>
+        <br>
+        <select id="_oauth" [(ngModel)]="outputBlock.httpOAuthMethod">
+          <option value="disabled">Disabled</option>
+          <option value="HMAC-SHA1">HMAC-SHA1</option>
+          <option value="HMAC-SHA256">HMAC-SHA256</option>
+        </select>
+      </ion-item>
+      <ion-item text-wrap>
+        <label for="_httpOAuthKey">{{ 'consumerKey' | translate }}</label>
+        <input id="_httpOAuthKey" [(ngModel)]="outputBlock.httpOAuthConsumerKey" class="inline-input" type="text" placeholder="" />
+        <br>
+        <label for="_httpOAuthSecret">{{ 'consumerSecret' | translate }}</label>
+        <input id="_httpOAuthSecret" [(ngModel)]="outputBlock.httpOAuthConsumerSecret" class="inline-input" type="text" placeholder="" />
+      </ion-item>
+
       <ion-item text-wrap>
         <label for="_httpTimeout">{{ 'httpTimeout' | translate }}</label>
         <input id="_httpTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />

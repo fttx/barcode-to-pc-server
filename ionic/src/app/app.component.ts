@@ -341,6 +341,23 @@ export class MyApp {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }
 
+        // v3.19.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'http' && typeof outputBlock.httpOAuthMethod == 'undefined') {
+                outputBlock.httpOAuthMethod = 'disabled';
+                outputBlock.httpOAuthConsumerKey = null;
+                outputBlock.httpOAuthConsumerKey = null;
+              }
+            });
+          })
+        }
+
+        if (typeof settings.maxScanSessionsNumber == 'undefined') {
+          settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
+        }
+
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
           settings.outputProfiles = new SettingsModel().outputProfiles;
