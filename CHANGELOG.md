@@ -16,6 +16,18 @@
 ### Security
 -->
 
+## [v3.18.2] - 2021-10-04
+
+### Fixed
+
+- Multi-line scans
+
+
+## [v3.18.2] - 2021-08-30
+
+### Fixed
+
+- Blank screen issue
 
 ## [v3.18.0] - 2021-08-30
 
@@ -459,7 +471,8 @@
 
 - Included the Apple Bonjour installer
 
-[v3.18.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.17.0...v3.18.0
+[v3.18.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.1...v3.18.2
+[v3.18.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.0...v3.18.1
 [v3.17.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.1...v3.17.0
 [v3.16.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.0...v3.16.1
 [v3.16.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.15.0...v3.16.0
