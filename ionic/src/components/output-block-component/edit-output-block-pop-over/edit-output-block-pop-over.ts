@@ -41,7 +41,7 @@ export class EditOutputBlockPage {
       case 'delay': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'if': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IF); break;
       case 'endif': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IF); break;
-      case 'http': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'http': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_HTTP); break;
       case 'run': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_RUN); break;
       case 'select_option': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'beep': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
