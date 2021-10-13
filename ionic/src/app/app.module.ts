@@ -17,12 +17,23 @@ import { ClipboardModule } from 'ngx-clipboard';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxPopperModule, Triggers } from 'ngx-popper';
 import { ComponentsModule } from '../components/components.module';
-import { EditOutputBlockPage } from '../components/output-block-component/edit-output-block-pop-over/edit-output-block-pop-over';
 import { ActivatePage } from '../pages/activate/activate';
-import { ComponentEditorBarcodePage } from '../pages/component-editor-barcode/component-editor-barcode';
-import { ComponentEditorDateTimePage } from '../pages/component-editor-date-time/component-editor-date-time';
-import { ComponentEditorKeyPage } from '../pages/component-editor-key/component-editor-key';
-import { ComponentEditorVariablePage } from '../pages/component-editor-variable/component-editor-variable';
+import { ComponentEditorAlertPage } from '../pages/component-editor/component-editor-alert/component-editor-alert';
+import { ComponentEditorBarcodePage } from '../pages/component-editor/component-editor-barcode/component-editor-barcode';
+import { ComponentEditorBeepPage } from '../pages/component-editor/component-editor-beep/component-editor-beep';
+import { ComponentEditorCsvLookupPage } from '../pages/component-editor/component-editor-csv-lookup/component-editor-csv-lookup';
+import { ComponentEditorCsvUpdatePage } from '../pages/component-editor/component-editor-csv-update/component-editor-csv-update';
+import { ComponentEditorDateTimePage } from '../pages/component-editor/component-editor-date-time/component-editor-date-time';
+import { ComponentEditorDelayPage } from '../pages/component-editor/component-editor-delay/component-editor-delay';
+import { ComponentEditorEndifPage } from '../pages/component-editor/component-editor-endif/component-editor-endif';
+import { ComponentEditorFunctionPage } from '../pages/component-editor/component-editor-function/component-editor-function';
+import { ComponentEditorHttpPage } from '../pages/component-editor/component-editor-http/component-editor-http';
+import { ComponentEditorIfPage } from '../pages/component-editor/component-editor-if/component-editor-if';
+import { ComponentEditorKeyPage } from '../pages/component-editor/component-editor-key/component-editor-key';
+import { ComponentEditorRunPage } from '../pages/component-editor/component-editor-run/component-editor-run';
+import { ComponentEditorSelectOptionPage } from '../pages/component-editor/component-editor-select-option/component-editor-select-option';
+import { ComponentEditorTextPage } from '../pages/component-editor/component-editor-text/component-editor-text';
+import { ComponentEditorVariablePage } from '../pages/component-editor/component-editor-variable/component-editor-variable';
 import {
   ConnectedClientsPopover,
   HomePage,
@@ -48,11 +59,22 @@ import { MyApp } from './app.component';
     WelcomePage,
     WelcomeHelpPage,
     InfoPage,
-    EditOutputBlockPage,
-    ComponentEditorKeyPage,
-    ComponentEditorVariablePage,
-    ComponentEditorDateTimePage,
+    ComponentEditorAlertPage,
     ComponentEditorBarcodePage,
+    ComponentEditorBeepPage,
+    ComponentEditorCsvLookupPage,
+    ComponentEditorCsvUpdatePage,
+    ComponentEditorDateTimePage,
+    ComponentEditorDelayPage,
+    ComponentEditorEndifPage,
+    ComponentEditorFunctionPage,
+    ComponentEditorHttpPage,
+    ComponentEditorIfPage,
+    ComponentEditorKeyPage,
+    ComponentEditorRunPage,
+    ComponentEditorSelectOptionPage,
+    ComponentEditorTextPage,
+    ComponentEditorVariablePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
@@ -103,11 +125,22 @@ import { MyApp } from './app.component';
     WelcomePage,
     WelcomeHelpPage,
     InfoPage,
-    EditOutputBlockPage,
-    ComponentEditorKeyPage,
-    ComponentEditorVariablePage,
-    ComponentEditorDateTimePage,
+    ComponentEditorAlertPage,
     ComponentEditorBarcodePage,
+    ComponentEditorBeepPage,
+    ComponentEditorCsvLookupPage,
+    ComponentEditorCsvUpdatePage,
+    ComponentEditorDateTimePage,
+    ComponentEditorDelayPage,
+    ComponentEditorEndifPage,
+    ComponentEditorFunctionPage,
+    ComponentEditorHttpPage,
+    ComponentEditorIfPage,
+    ComponentEditorKeyPage,
+    ComponentEditorRunPage,
+    ComponentEditorSelectOptionPage,
+    ComponentEditorTextPage,
+    ComponentEditorVariablePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,

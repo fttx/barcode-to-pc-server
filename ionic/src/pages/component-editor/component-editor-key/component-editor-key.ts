@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
-import { OutputBlockModel } from '../../models/output-block.model';
-import { ElectronProvider } from '../../providers/electron/electron';
+import { Config } from '../../../../../electron/src/config';
+import { OutputBlockModel } from '../../../models/output-block.model';
+import { ElectronProvider } from '../../../providers/electron/electron';
 
 @Component({
   selector: 'page-component-editor-key',
@@ -34,5 +35,9 @@ export class ComponentEditorKeyPage implements OnInit {
     if (this.modifiers[2] == true) modifiers.push('control');
     if (this.modifiers[3] == true) modifiers.push('shift');
     this.outputBlock.modifiers = modifiers;
+  }
+
+  getUrlSupportedKeyIdentifiersTutorialUrl() {
+    return Config.URL_SUPPORTED_KEY_IDENTIFIERS;
   }
 }

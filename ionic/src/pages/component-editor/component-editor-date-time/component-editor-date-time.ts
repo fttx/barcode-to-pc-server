@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import moment from 'moment';
-import { Config } from '../../../../electron/src/config';
-import { OutputBlockModel } from '../../models/output-block.model';
-import { ElectronProvider } from '../../providers/electron/electron';
-import { UtilsProvider } from '../../providers/utils/utils';
+import { Config } from '../../../../../electron/src/config';
+import { OutputBlockModel } from '../../../models/output-block.model';
+import { ElectronProvider } from '../../../providers/electron/electron';
+import { UtilsProvider } from '../../../providers/utils/utils';
 
 @Component({
   selector: 'page-component-editor-date-time',
@@ -40,13 +40,13 @@ export class ComponentEditorDateTimePage implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
   }
+
   ngOnInit(): void {
     if (this.outputBlock.type == 'date_time') {
       if (this.dateTimeInterval) clearInterval(this.dateTimeInterval);
       this.dateTimeInterval = setInterval(() => { this.dateTimeNowExample = new Date(); }, 1000)
     }
   }
-
 
   onDateTimeDefaultFormatsChange(newValue) {
     this.outputBlock.format = this.dateTimeSelectedDefaultFormat;

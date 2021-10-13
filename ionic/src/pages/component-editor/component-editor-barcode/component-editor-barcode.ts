@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import { barcodeFormatModel } from '../../models/barcode-format.model';
-import { OutputBlockModel } from '../../models/output-block.model';
+import { NavParams } from 'ionic-angular';
+import { barcodeFormatModel } from '../../../models/barcode-format.model';
+import { OutputBlockModel } from '../../../models/output-block.model';
 
 @Component({
   selector: 'page-component-editor-barcode',

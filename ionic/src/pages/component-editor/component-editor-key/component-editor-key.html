@@ -2,7 +2,7 @@
   <ion-item [hidden]="outputBlock.editable !== true">
     <label for="_valueCustomKey" color="dark">
       <h2>{{ 'keyIdentifier' | translate }}</h2>
-      <p>{{ 'keyIdentifierDescription1' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedKeyIdentifiers())">{{ 'keyIdentifierDescription2' | translate }}</a>.</p>
+      <p>{{ 'keyIdentifierDescription1' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal(getUrlSupportedKeyIdentifiersTutorialUrl())">{{ 'keyIdentifierDescription2' | translate }}</a>.</p>
     </label>
     <input id="_valueCustomKey" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="eg. numpad_9" />
   </ion-item>

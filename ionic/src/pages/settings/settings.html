@@ -143,8 +143,8 @@
           <button ion-button color="secondary" (click)="onSubscribeClick()">{{ 'limitReacheadUpgradeButton' | translate }}</button>
         </div>
         <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
-          <output-block-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock">
-          </output-block-component>
+          <output-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock">
+          </output-component>
         </div>
       </ion-item>
 
@@ -203,7 +203,7 @@
         </ion-item>
 
         <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container">
-          <output-block-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-block-component>
+          <output-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-component>
         </div>
       </ion-item>
 

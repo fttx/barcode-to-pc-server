@@ -106,5 +106,13 @@
     </div>
 
     <ng-content></ng-content>
+
+    <!-- JAVASCRIPT_FUNCTION Variables injection example -->
+    <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'run' || outputBlock.type == 'csv_lookup' || outputBlock.type == 'csv_update')">
+      <info-box title="Info">
+        {{ 'variablesInjectionInfoBox1' | translate }}<br><br>
+        {{ 'variablesInjectionInfoBox2' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal(getJavascriptFunctionVariablesInjectionTutorialUrl())">{{ 'variablesInjectionInfoBox3' | translate }}</a>.
+      </info-box>
+    </ion-item>
   </ion-list>
 </ion-content>

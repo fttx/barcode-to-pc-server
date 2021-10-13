@@ -1,0 +1,39 @@
+<component-editor [outputBlock]="outputBlock">
+  <ion-item no-lines text-wrap>
+    <p [innerHtml]="'beepDescription' | translate"></p>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{ 'sound' | translate }}</ion-label>
+    <ion-select [(ngModel)]="outputBlock.value">
+      <ion-option value="beep">{{ 'beep' | translate }}</ion-option>
+      <ion-option value="beep_double">{{ 'doubleBeep' | translate }}</ion-option>
+      <ion-option value="beep_two_tone">{{ 'twoToneBeep' | translate }}</ion-option>
+      <ion-option value="beep_low">{{ 'lowBeep' | translate }}</ion-option>
+      <ion-option value="beep_high">{{ 'highBeep' | translate }}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{ 'numberOfBeeps' | translate }}</ion-label>
+    <ion-select [(ngModel)]="outputBlock.beepsNumber">
+      <ion-option value="1">1</ion-option>
+      <ion-option value="2">2</ion-option>
+      <ion-option value="3">3</ion-option>
+      <ion-option value="4">4</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{ 'speed' | translate }}</ion-label>
+    <ion-select [(ngModel)]="outputBlock.beepSpeed">
+      <ion-option value="low">{{ 'slow' | translate }}</ion-option>
+      <ion-option value="medium">{{ 'medium' | translate }}</ion-option>
+      <ion-option value="fast">{{ 'fast' | translate }}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <ion-item no-lines text-center padding-top>
+    <button ion-button (click)="testAudio()" color="output-block-component-beep">{{ 'testAudio' | translate }}</button>
+  </ion-item>
+</component-editor>

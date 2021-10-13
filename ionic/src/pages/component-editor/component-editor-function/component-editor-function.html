@@ -1,0 +1,40 @@
+<component-editor [outputBlock]="outputBlock">
+  <ion-item [hidden]="outputBlock.type != 'function'">
+    <!-- <ion-label color="dark">JavaScript</ion-label> -->
+    <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->
+    <label for="_valuejs">JavaScript</label>
+
+    <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="barcode.replace('a','b')" />
+
+    <br>
+    <p>
+      {{ 'javascriptDescription1' | translate }}
+      <br><br>
+      {{ 'javascriptDescription2' | translate }}
+      <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">
+        {{ 'javascriptDescription3' | translate }}</a>.<br><br>
+      {{ 'availableVariables' | translate }}
+    </p>
+    <code>
+      <input type="text" value="barcode" disabled class="example-variable" /> <br>
+      <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+      <input type="text" value="number" disabled class="example-variable" /> <br>
+      <input type="text" value="text" disabled class="example-variable" /> <br>
+      <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+      <input type="text" value="date_time" disabled class="example-variable" /> <br>
+      <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+      <input type="text" value="device_name" disabled class="example-variable" /> <br>
+      <input type="text" value="select_option" disabled class="example-variable" /> <br>
+      <input type="text" value="http" disabled class="example-variable" /> <br>
+      <input type="text" value="run" disabled class="example-variable" /> <br>
+      <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+      <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+      <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
+      <!-- Remember to update the other components (6), and the article:
+        https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+        https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+        https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/
+      -->
+    </code>
+  </ion-item>
+</component-editor>

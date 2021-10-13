@@ -1,0 +1,96 @@
+<component-editor [outputBlock]="outputBlock">
+  <div [hidden]="outputBlock.type != 'csv_update'">
+    <ion-item no-lines text-wrap>
+      <p [innerHtml]="'csvUpdateDescription' | translate"></p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_searchValue">{{ 'csvUpdateSearchValue' | translate }}</label>
+      <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. 0" />
+
+      <p>
+        <br>
+        {{ 'csvUpdateSearchDescription' | translate }}
+      </p>
+    </ion-item>
+
+    <ion-item no-lines text-wrap>
+      <label for="_newValue">{{ 'newValue' | translate }}</label>
+      <input id="_newValue" [(ngModel)]="outputBlock.newValue" class="inline-input" type="text" placeholder="Eg. 1" />
+
+      <p [innerHtml]="'newValueDescription' | translate"></p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <p>
+        <br>
+        <i>{{ 'newValue' | translate }}</i> {{ 'newValueExample' | translate }}<br>
+        <code ngNonBindable>{{ number }}</code><br><br>
+
+        {{ 'availableVariables' | translate }} <br>
+        <code>
+        <input type="text" value="barcode" disabled class="example-variable" /> <br>
+        <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+        <input type="text" value="number" disabled class="example-variable" /> <br>
+        <input type="text" value="text" disabled class="example-variable" /> <br>
+        <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+        <input type="text" value="date_time" disabled class="example-variable" /> <br>
+        <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+        <input type="text" value="device_name" disabled class="example-variable" /><br>
+        <input type="text" value="select_option" disabled class="example-variable" /> <br>
+        <input type="text" value="http" disabled class="example-variable" /> <br>
+        <input type="text" value="run" disabled class="example-variable" /> <br>
+        <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+        <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+        <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
+        <!-- Remember to update the other components (6), and the article:
+          https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+          https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+          https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/
+        -->
+      </code>
+      </p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_csvFilePath">{{ 'csvInputFilePath' | translate }}</label>
+      <input id="_csvFilePath" [(ngModel)]="outputBlock.csvFile" class="inline-input" type="text" placeholder="C:&#92;data.csv" />
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_searchColumnIndex">{{ 'searchColumnIndex' | translate }}</label>
+      <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumn" class="inline-input" type="number" placeholder="1" />
+      <p>{{ 'csvUpdateSearchColumnIndexDescription' | translate }}</p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_columnToUpdateIndex">Column to Edit Index</label>
+      <input id="_columnToUpdateIndex" [(ngModel)]="outputBlock.columnToUpdate" class="inline-input" type="number" placeholder="2" />
+      <p>The column number (starting with 1 for the left-most column of the CSV file) that you want to update</p>
+    </ion-item>
+
+    <ion-item text-wrap no-lines>
+      <ion-label>
+        {{ 'rowToEdit' | translate }}
+      </ion-label>
+      <ion-select [(ngModel)]="outputBlock.rowToUpdate">
+        <ion-option value="all">{{ 'all' | translate }}</ion-option>
+        <ion-option value="first">{{ 'firstMatch' | translate }}</ion-option>
+        <ion-option value="last">{{ 'lastMatch' | translate }}</ion-option>
+      </ion-select>
+      <!-- <p>The matched row to update that you want to update</p> -->
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
+      <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
+      <p>{{ 'csvUpdateNotFoundValueDescription' | translate }}</p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_delimiter">{{ 'delimiterCharacter' | translate }}</label>
+      <input id="_delimiter" [(ngModel)]="outputBlock.delimiter" class="inline-input" type="text" placeholder="," />
+      <p>{{ 'delimiterCharacterDescription' | translate }}</p>
+    </ion-item>
+  </div>
+</component-editor>

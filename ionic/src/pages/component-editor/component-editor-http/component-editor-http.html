@@ -1,0 +1,125 @@
+<component-editor [outputBlock]="outputBlock">
+  <div [hidden]="outputBlock.type != 'http'">
+    <ion-item>
+      <label for="_valueUrl">{{ 'url' | translate }}</label>
+      <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="https://www.example.com/" />
+      <br>
+      <p>
+        {{ 'urlDescription1' | translate }}
+        <br>
+        {{ 'urlDescription2' | translate }}
+        <br><br>
+        {{ 'urlDescription3' | translate }}
+        <br><br>
+        {{ 'urlDescription4' | translate }}
+        <br>
+        <code ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
+        {{ 'availableVariables' | translate }} <br>
+        <code>
+          <input type="text" value="barcode" disabled class="example-variable" /> <br>
+          <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+          <input type="text" value="number" disabled class="example-variable" /> <br>
+          <input type="text" value="text" disabled class="example-variable" /> <br>
+          <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+          <input type="text" value="date_time" disabled class="example-variable" /> <br>
+          <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+          <input type="text" value="device_name" disabled class="example-variable" /><br>
+          <input type="text" value="select_option" disabled class="example-variable" /> <br>
+          <input type="text" value="http" disabled class="example-variable" /> <br>
+          <input type="text" value="run" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+          <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
+          <!-- Remember to update the other components (6), and the article:
+            https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/  (remove comments)
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/  (remove comments)
+          -->
+        </code><br>
+      </p>
+    </ion-item>
+
+    <ion-item>
+      <label for="_valueMethod" color="dark">
+        <h2 color="dark">{{ 'method' | translate }}</h2>
+      </label>
+      <br>
+      <select id="_valueMethod" [(ngModel)]="outputBlock.httpMethod">
+        <option value="get">GET</option>
+        <option value="delete">DELETE</option>
+        <option value="head">HEAD</option>
+        <option value="options">OPTIONS</option>
+        <option value="post">POST</option>
+        <option value="put">PUT</option>
+        <option value="patch">PATCH</option>
+      </select>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_httpData">{{ 'data' | translate }}</label>
+      <input id="_httpData" [(ngModel)]="outputBlock.httpData" class="inline-input" type="text" placeholder="(optional)" />
+      <br>
+      <p>
+        {{ 'dataDescription1' | translate }}
+        <br>
+        <br>
+        {{ 'dataDescription2' | translate }}
+        <br>
+        <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
+      </p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_httpParams">{{ 'params' | translate }}</label>
+      <input id="_httpParams" [(ngModel)]="outputBlock.httpParams" class="inline-input" type="text" placeholder="(optional)" />
+      <br>
+      <p>
+        {{ 'paramsDescription1' | translate }}
+        <br>
+        <br>
+        {{ 'paramsDescription2' | translate }}
+        <br>
+        <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
+      </p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_httpHeaders">{{ 'headers' | translate }}</label>
+      <input id="_httpHeaders" [(ngModel)]="outputBlock.httpHeaders" class="inline-input" type="text" placeholder="(optional)" />
+      <br>
+      <p>
+        {{ 'headersDescription1' | translate }}
+        <br>
+        <br>
+        {{ 'headersDescription2' | translate }}
+        <code>&#123; "Content-Type": "application/json" &#125;</code>
+      </p>
+    </ion-item>
+
+    <ion-item no-lines>
+      <label for="_oauth" color="dark">
+        <h2 color="dark">{{ 'oauth' | translate }}</h2>
+      </label>
+      <br>
+      <select id="_oauth" [(ngModel)]="outputBlock.httpOAuthMethod">
+        <option value="disabled">Disabled</option>
+        <option value="HMAC-SHA1">HMAC-SHA1</option>
+        <option value="HMAC-SHA256">HMAC-SHA256</option>
+      </select>
+    </ion-item>
+    <ion-item text-wrap>
+      <label for="_httpOAuthKey">{{ 'consumerKey' | translate }}</label>
+      <input id="_httpOAuthKey" [(ngModel)]="outputBlock.httpOAuthConsumerKey" class="inline-input" type="text" placeholder="" />
+      <br>
+      <label for="_httpOAuthSecret">{{ 'consumerSecret' | translate }}</label>
+      <input id="_httpOAuthSecret" [(ngModel)]="outputBlock.httpOAuthConsumerSecret" class="inline-input" type="text" placeholder="" />
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_httpTimeout">{{ 'httpTimeout' | translate }}</label>
+      <input id="_httpTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />
+      <br>
+      <p [innerHtml]="'httpTimeoutDescription' | translate"></p>
+    </ion-item>
+  </div>
+</component-editor>

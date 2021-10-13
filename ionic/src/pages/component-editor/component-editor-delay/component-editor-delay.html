@@ -1,0 +1,8 @@
+<component-editor [outputBlock]="outputBlock">
+  <ion-item [hidden]="outputBlock.type != 'delay'">
+    <label for="_valueMs" color="dark">{{ 'milliseconds' | translate }}</label>
+    <input id="_valueMs" class="inline-input" type="number" [(ngModel)]="outputBlock.value" placeholder="1000" />
+    <br>
+    <p [innerHtml]="'millisecondsDescription' | translate"></p>
+  </ion-item>
+</component-editor>

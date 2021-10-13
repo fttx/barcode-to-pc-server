@@ -1,0 +1,48 @@
+<component-editor [outputBlock]="outputBlock">
+  <div [hidden]="outputBlock.type != 'select_option'">
+    <ion-item>
+      <label for="_soTitle">{{ 'title' | translate }}</label>
+      <input id="_soTitle" [(ngModel)]="outputBlock.title" class="inline-input" type="text" placeholder="(optional)" />
+    </ion-item>
+
+    <ion-item>
+      <label for="_soMessage">{{ 'message' | translate }}</label>
+      <input id="_soMessage" [(ngModel)]="outputBlock.message" class="inline-input" type="text" placeholder="(optional)" />
+    </ion-item>
+
+    <ion-item>
+      <label for="_valueSelectOption">{{ 'optionsList' | translate }}</label>
+      <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
+      <br>
+      <p [innerHtml]="'optionsListDescription' | translate"></p>
+      <p>
+        {{ 'optionsListExample' | translate }} 1: <code ngNonBindable>yes,no</code><br><br>
+        {{ 'optionsListExample' | translate }} 2: <code ngNonBindable>created,processing,completed</code><br><br>
+        {{ 'optionsListExample' | translate }} 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
+
+        {{ 'availableVariables' | translate }} <br>
+        <code>
+          <input type="text" value="barcode" disabled class="example-variable" /> <br>
+          <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+          <input type="text" value="number" disabled class="example-variable" /> <br>
+          <input type="text" value="text" disabled class="example-variable" /> <br>
+          <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+          <input type="text" value="date_time" disabled class="example-variable" /> <br>
+          <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+          <input type="text" value="device_name" disabled class="example-variable" /><br>
+          <input type="text" value="select_option" disabled class="example-variable" /> <br>
+          <input type="text" value="http" disabled class="example-variable" /> <br>
+          <input type="text" value="run" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+          <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
+          <!-- Remember to update the other components (6), and the article:
+            https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/
+          -->
+        </code><br>
+      </p>
+    </ion-item>
+  </div>
+</component-editor>

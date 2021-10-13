@@ -1,0 +1,51 @@
+<component-editor [outputBlock]="outputBlock">
+  <div [hidden]="outputBlock.type != 'run'">
+    <ion-item>
+      <label for="_valueRun">{{ 'command' | translate }}</label>
+      <input id="_valueRun" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
+      <br>
+      <p>
+        {{ 'commandDescription1' | translate }}
+        <br><br>
+        {{ 'commandDescription2' | translate }}
+        <br><br>
+        {{ 'commandDescription3' | translate }}
+        <br>
+        <code ngNonBindable>C:&#92;program.exe --tracking-number &#123;&#123; barcode &#125;&#125;</code><br><br>
+        {{ 'commandDescription4' | translate }}
+        <br>
+        <code ngNonBindable>cmd.exe /c C:&#92;script.bat &#123;&#123; barcode &#125;&#125;</code><br><br>
+        {{ 'availableVariables' | translate }}
+        <br>
+        <code>
+          <input type="text" value="barcode" disabled class="example-variable" /> <br>
+          <input type="text" value="barcodes" disabled class="example-variable" /> <br>
+          <input type="text" value="number" disabled class="example-variable" /> <br>
+          <input type="text" value="text" disabled class="example-variable" /> <br>
+          <input type="text" value="timestamp" disabled class="example-variable" /> <br>
+          <input type="text" value="date_time" disabled class="example-variable" /> <br>
+          <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
+          <input type="text" value="device_name" disabled class="example-variable" /><br>
+          <input type="text" value="select_option" disabled class="example-variable" /> <br>
+          <input type="text" value="http" disabled class="example-variable" /> <br>
+          <input type="text" value="run" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
+          <input type="text" value="csv_update" disabled class="example-variable" /> <br>
+          <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
+          <!-- Remember to update the other components (6), and the article:
+            https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
+            https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/
+          -->
+        </code><br>
+      </p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_runTimeout">{{ 'commandTimeout' | translate }}</label>
+      <input id="_runTimeout" [(ngModel)]="outputBlock.timeout" class="inline-input" type="number" min="0" max="3600000" step="250" placeholder="10000" />
+      <br>
+      <p [innerHtml]="'commandTimeoutDescription' | translate"></p>
+    </ion-item>
+  </div>
+</component-editor>
