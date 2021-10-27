@@ -150,7 +150,7 @@
   "openAutomaticallyYes": "Yes",
   "openAutomaticallyMinimized": "Minimized",
   "enableTrayIcon": "Enable tray icon",
-  "automaticallyOpenUrLsInBrowser": "Automatically open URLs in browser",
+  "automaticallyOpenUrLsInBrowser": "Automatically open Links in browser",
   "enableKeyboardEmulation": "Enable keyboard emulation",
   "enableKeyboardEmulationPopper1": "Enable this option to automatically type the barcodes. Click",
   "enableKeyboardEmulationPopper2": "here",
