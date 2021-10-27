@@ -53,6 +53,7 @@
     "rxjs": "5.5.11",
     "semver": "^5.6.0",
     "sw-toolbox": "3.6.0",
+    "xlsx": "^0.17.3",
     "zone.js": "0.8.26"
   },
   "devDependencies": {
@@ -60,6 +61,7 @@
     "@types/electron-store": "^1.3.0",
     "@types/jasmine": "^2.8.7",
     "@types/papaparse": "^5.0.1",
+    "@types/xlsx": "0.0.36",
     "angular2-template-loader": "^0.6.2",
     "cordova": "^8.0.0",
     "fttx-gulp-github-release": "^1.2.1",

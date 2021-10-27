@@ -170,4 +170,17 @@ export class OutputBlockModel {
         }
         return -1;
     }
+
+    static IsReadable(outputBlock: OutputBlockModel) {
+        return outputBlock.type != 'key' &&
+            outputBlock.type != 'delay' &&
+            outputBlock.type != 'beep' &&
+            outputBlock.type != 'alert' &&
+            // to avoid printing the dialog message in csv files
+            // update also in app.
+            // 'if' and 'endif' bloks never reach
+            // the server because they're stripped on the app side
+
+            !outputBlock.skipOutput;
+    }
 }

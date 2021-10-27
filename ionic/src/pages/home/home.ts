@@ -1,7 +1,9 @@
 import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import ElectronStore from 'electron-store';
+import { throttle } from 'helpful-decorators';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
+import * as xlsx from 'xlsx';
 import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUndoInfiniteLoop, requestModelUpdateScanSession } from '../../models/request.model';
@@ -16,7 +18,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
-import { throttle } from 'helpful-decorators';
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -522,6 +524,7 @@ export class ConnectedClientsPopover {
     <ion-list>
       <ion-list-header>{{ 'scanSessionContextMenuHeader' | translate }}</ion-list-header>
       <button ion-item (click)="exportAsCSV()">{{ 'scanSessionContextExportAsCSV' | translate }}</button>
+      <button ion-item (click)="exportAsXLSX()">{{ 'scanSessionContextExportAsXLSX' | translate }}</button>
       <button ion-item (click)="delete()">{{ 'scanSessionContextMenuDelete' | translate }}</button>
     </ion-list>
   `
@@ -567,6 +570,26 @@ export class ScanSessionContextMenuPopover {
       if (!filename) return;
       const fs = this.electronProvider.remote.require('fs');
       fs.writeFileSync(filename, rows, 'utf-8');
+    });
+  }
+
+  async exportAsXLSX(index) {
+    this.close()
+    let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    let rows = ScanModel.ToXLSX(
+      JSON.parse(JSON.stringify(this.scanSession.scannings)).reverse(),
+      settings.exportOnlyText,
+    );
+
+    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+      title: await this.utils.text('exportAsXLSXSaveDialogTitle'),
+      defaultPath: this.scanSession.name + ".xlsx",
+      buttonLabel: await this.utils.text('exportAsXLSXSaveDialogSave'),
+      filters: [{ name: 'XLSX File', extensions: ['xlsx'] }],
+    }, (filename, bookmark) => {
+      const wb = xlsx.utils.book_new();
+      xlsx.utils.book_append_sheet(wb, rows, this.scanSession.name);
+      xlsx.writeFile(wb, filename);
     });
   }
 

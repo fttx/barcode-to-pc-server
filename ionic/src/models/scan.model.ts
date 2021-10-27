@@ -1,4 +1,5 @@
 import * as Papa from 'papaparse';
+import * as xlsx from 'xlsx';
 import { OutputBlockModel } from "./output-block.model";
 
 export class ScanModel {
@@ -96,18 +97,7 @@ export class ScanModel {
         return Papa.unparse(scannings.map(scan => {
             if (exportOnlyText) {
                 return scan.outputBlocks
-                    .filter(outputBlock => (
-                        outputBlock.type != 'key' &&
-                        outputBlock.type != 'delay' &&
-                        outputBlock.type != 'beep' &&
-                        outputBlock.type != 'alert' &&
-                        // to avoid printing the dialog message in csv files
-                        // update also in app.
-                        // 'if' and 'endif' bloks never reach
-                        // the server because they're stripped on the app side
-
-                        !outputBlock.skipOutput
-                    ))
+                    .filter(outputBlock => OutputBlockModel.IsReadable(outputBlock))
                     .map(outputBlock => outputBlock.value)
             }
             return scan.outputBlocks.map(outputBlock => outputBlock.value);
@@ -116,5 +106,16 @@ export class ScanModel {
             delimiter: csvDelimiter,
             newline: newLineCharacter
         });
+    }
+
+    static ToXLSX(scannings: ScanModel[], exportOnlyText: boolean) {
+        return xlsx.utils.json_to_sheet(scannings.map(scan => {
+            if (exportOnlyText) {
+                return scan.outputBlocks
+                    .filter(outputBlock => OutputBlockModel.IsReadable(outputBlock))
+                    .map(outputBlock => outputBlock.value)
+            }
+            return scan.outputBlocks.map(outputBlock => outputBlock.value);
+        }), { skipHeader: true });
     }
 }
