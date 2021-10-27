@@ -6,6 +6,7 @@ import * as stringify from 'csv-stringify';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
 import * as http from 'http';
+import * as https from 'https';
 import * as os from 'os';
 import * as robotjs from 'robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
@@ -333,20 +334,22 @@ export class ScansHandler implements Handler {
                                 });
                             }
 
+                            process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
                             let response = (await client.request({
                                 url: request.outputBlock.value,
                                 data: request.outputBlock.httpData,
                                 params: params,
                                 headers: haeders,
                                 method: request.outputBlock.method || request.outputBlock.httpMethod,
-                                timeout: request.outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT
+                                timeout: request.outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT,
+                                httpAgent: new https.Agent({ rejectUnauthorized: false }),
                             })).data;
                             if (typeof response == 'object') response = JSON.stringify(response);
                             responseOutputBlock.value = response;
                         } catch (error) {
                             responseOutputBlock.value = "";
                             errorMessage = 'The HTTP ' + request.outputBlock.httpMethod.toUpperCase() + ' request failed. <br><br>Error code: ' + error.code;
-                        }
+                        } finally { }
                         break;
                     }
 
