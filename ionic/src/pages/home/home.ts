@@ -576,7 +576,7 @@ export class ScanSessionContextMenuPopover {
   async exportAsXLSX(index) {
     this.close()
     let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-    let rows = ScanModel.ToXLSX(
+    let ws = ScanModel.ToXLSX(
       JSON.parse(JSON.stringify(this.scanSession.scannings)).reverse(),
       settings.exportOnlyText,
     );
@@ -588,8 +588,10 @@ export class ScanSessionContextMenuPopover {
       filters: [{ name: 'XLSX File', extensions: ['xlsx'] }],
     }, (filename, bookmark) => {
       const wb = xlsx.utils.book_new();
-      xlsx.utils.book_append_sheet(wb, rows, this.scanSession.name);
-      xlsx.writeFile(wb, filename);
+      xlsx.utils.book_append_sheet(wb, ws, this.scanSession.name);
+      const data = xlsx.write(wb, { type: 'binary', bookType: 'xlsx', bookSST: false });
+      const fs = this.electronProvider.remote.require('fs');
+      fs.writeFileSync(filename, data, { encoding: 'binary' });
     });
   }
 
