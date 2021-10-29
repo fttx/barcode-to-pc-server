@@ -33,11 +33,14 @@ export class SettingsModel {
     newLineCharacter: string = os.release().toLowerCase().indexOf('windows') == -1 ? 'LF' : 'CRLF';
     csvDelimiter: string = ",";
     exportOnlyText: boolean = true;
+    exportOnlyTextXlsx: boolean = true;
     enableQuotes: boolean = false;
     enableTray: boolean = true;
     openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
     appendCSVEnabled: boolean = false;
     csvPath: string = null;
+    appendXLSXEnabled: boolean = false;
+    xlsxPath: string = null;
     typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
     enableAdvancedSettings: boolean = false;
     autoUpdate: boolean = true;
