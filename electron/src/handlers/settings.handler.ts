@@ -52,6 +52,9 @@ export class SettingsHandler implements Handler {
     get exportOnlyText(): boolean {
         return this.settings.exportOnlyText
     }
+    get exportOnlyTextXlsx(): boolean {
+        return this.settings.exportOnlyTextXlsx
+    }
     get enableQuotes(): boolean {
         return this.settings.enableQuotes
     }
@@ -64,8 +67,14 @@ export class SettingsHandler implements Handler {
     get csvPath(): string {
         return this.settings.csvPath
     }
+    get xlsxPath(): string {
+        return this.settings.xlsxPath
+    }
     get appendCSVEnabled(): boolean {
         return this.settings.appendCSVEnabled
+    }
+    get appendXLSXEnabled(): boolean {
+        return this.settings.appendXLSXEnabled
     }
     get typeMethod() {
         return this.settings.typeMethod

@@ -20,6 +20,7 @@ import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
+import * as xlsx from 'xlsx';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -267,6 +268,87 @@ export class ScansHandler implements Handler {
                             message: "An error occurred while appending the scan to the specified CSV file. Please make sure that:\n\n\t1) the file is not open in other programs\n\t2) the server has the write permissions to the specified path\n\t3) the file name doesn't contain special characters"
                         });
                         console.log('CSV Write error:', error);
+                    }
+                }
+
+                //Append to xlsx
+                if (this.settingsHandler.appendXLSXEnabled && this.settingsHandler.xlsxPath) {
+                    let rows = ScanModel.ToXLSX(
+                        scanSession.scannings, // Warning: contains only the last scan
+                        this.settingsHandler.exportOnlyTextXlsx
+                    );
+
+                    // Inject variables to the file path
+                    let variables = {
+                        barcodes: [],
+                        barcode: null, // ''
+                        number: null,
+                        text: null,
+                        /**
+                         * We use the date of the Scan Session because it may be
+                         * get synced later, and this may cause even days of
+                         * difference => We use the most close date we've have
+                         * compared to the actual scan date.
+                         *
+                         * We're not using the date from the Output template
+                         * because there isn't a way to tell if a block
+                         * contains a date since the TIMESTAMP component is of
+                         * variable type. Solution => create a separate type
+                         *
+                         * Note that in the Output Template is handled
+                         * differently (app side) by using the actual scan date
+                         * instead.
+                        */
+                        timestamp: (scanSession.date * 1000),
+                        // We assign a default value to date for backwards compatibility
+                        // If the output template is created with a v3.17.0+ version
+                        // the value of the date variable will be overwritten below.
+                        date: new Date(scanSession.date).toISOString().slice(0, 10),
+                        // The time variable is @deprecated. We keep it for backwards compatibility
+                        time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
+                        date_time: null,
+                        scan_session_name: scanSession.name,
+                        device_name: null,
+                        select_option: null,
+                        run: null,
+                        http: null,
+                        csv_lookup: null,
+                        csv_update: null,
+                        javascript_function: null,
+                    };
+                    // Search if there is a corresponding Output component to assign to the NULL variables
+                    let keys = Object.keys(variables);
+                    for (let i = 0; i < keys.length; i++) {
+                        let key = keys[i];
+                        if (variables[key] === null) { // Skips barcodes, timestamp, date, etc.
+                            // Extract the variable value from the Output template
+                            let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
+                            let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
+                            if (typeof (outputBlock) != "undefined") {
+                                value = outputBlock.value;
+                            }
+                            variables[key] = value;
+                        } else if (key == 'barcodes') {
+                            let barcodes = scanSession.scannings[0].outputBlocks.filter(x => x.name.toLowerCase() == 'barcode').map(x => x.value);
+                            variables.barcodes = barcodes;
+                        }
+                    }
+                    // Finally supplant the variables to the file path
+                    let path = new Supplant().text(this.settingsHandler.xlsxPath, variables)
+
+                    try {
+                        if (ws) {
+                            const wb = xlsx.utils.book_new();
+                            xlsx.utils.book_append_sheet(wb, ws, path);
+                        }
+                    } catch (error) {
+                        dialog.showMessageBox(this.uiHandler.mainWindow, {
+                            type: 'error',
+                            title: 'XLSX Write error',
+                            buttons: ['OK'],
+                            message: "An error occurred while appending the scan to the specified XLSX file. Please make sure that:\n\n\t1) the file is not open in other programs\n\t2) the server has the write permissions to the specified path\n\t3) the file name doesn't contain special characters"
+                        });
+                        console.log('XLSX Write error:', error);
                     }
                 }
 
