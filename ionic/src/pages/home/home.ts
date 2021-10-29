@@ -576,7 +576,7 @@ export class ScanSessionContextMenuPopover {
   async exportAsXLSX(index) {
     this.close()
     let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-    let ws = ScanModel.ToXLSX(
+    const ws = ScanModel.ToXLSX(
       JSON.parse(JSON.stringify(this.scanSession.scannings)).reverse(),
       settings.exportOnlyText,
     );
@@ -587,6 +587,7 @@ export class ScanSessionContextMenuPopover {
       buttonLabel: await this.utils.text('exportAsXLSXSaveDialogSave'),
       filters: [{ name: 'XLSX File', extensions: ['xlsx'] }],
     }, (filename, bookmark) => {
+      if (!filename) return;
       const wb = xlsx.utils.book_new();
       xlsx.utils.book_append_sheet(wb, ws, this.scanSession.name);
       const data = xlsx.write(wb, { type: 'binary', bookType: 'xlsx', bookSST: false });
