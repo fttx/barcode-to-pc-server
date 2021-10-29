@@ -168,7 +168,7 @@ export class MyApp {
       // MINOR version when you add functionality in a backwards-compatible manner, and
       // PATCH version when you make backwards-compatible bug fixes.
       // see: https://semver.org/
-      if (gt(currentVersion, lastVersion) && lastVersion.compare('0.0.0') != 0) { // update detected (the second proposition is to exclude the first start)
+      if (true || gt(currentVersion, lastVersion) && lastVersion.compare('0.0.0') != 0) { // update detected (the second proposition is to exclude the first start)
         let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
 
         // Changelog alert

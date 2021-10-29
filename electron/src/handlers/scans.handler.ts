@@ -273,7 +273,7 @@ export class ScansHandler implements Handler {
 
                 //Append to xlsx
                 if (this.settingsHandler.appendXLSXEnabled && this.settingsHandler.xlsxPath) {
-                    let rows = ScanModel.ToXLSX(
+                    const rows = ScanModel.ToXLSX(
                         scanSession.scannings, // Warning: contains only the last scan
                         this.settingsHandler.exportOnlyTextXlsx
                     );
@@ -337,9 +337,13 @@ export class ScansHandler implements Handler {
                     let path = new Supplant().text(this.settingsHandler.xlsxPath, variables)
 
                     try {
-                        if (ws) {
-                            const wb = xlsx.utils.book_new();
-                            xlsx.utils.book_append_sheet(wb, ws, path);
+                        if (rows) {
+                            // Reading our test file
+                            const file = xlsx.readFile(path)
+                            // Write only on the first sheet
+                            const sheet1 = file.SheetNames[0];
+                            xlsx.utils.book_append_sheet(file, rows, sheet1);
+                            xlsx.writeFile(file, path);
                         }
                     } catch (error) {
                         dialog.showMessageBox(this.uiHandler.mainWindow, {
