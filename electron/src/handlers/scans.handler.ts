@@ -273,11 +273,6 @@ export class ScansHandler implements Handler {
 
                 //Append to xlsx
                 if (this.settingsHandler.appendXLSXEnabled && this.settingsHandler.xlsxPath) {
-                    const rows = ScanModel.ToXLSX(
-                        scanSession.scannings, // Warning: contains only the last scan
-                        this.settingsHandler.exportOnlyTextXlsx
-                    );
-
                     // Inject variables to the file path
                     let variables = {
                         barcodes: [],
@@ -337,13 +332,14 @@ export class ScansHandler implements Handler {
                     let path = new Supplant().text(this.settingsHandler.xlsxPath, variables)
 
                     try {
-                        if (rows) {
+                        if (scanSession.scannings.length > 0) {
                             // Reading our test file
                             const file = xlsx.readFile(path)
-                            // Write only on the first sheet
-                            const sheet1 = file.SheetNames[0];
-                            xlsx.utils.book_append_sheet(file, rows, sheet1);
-                            xlsx.writeFile(file, path);
+                            //write only in the first sheet
+                            const worksheet = file.Sheets[file.SheetNames[0]];
+                            ScanModel.appendToXLSX(scanSession.scannings, worksheet, this.settingsHandler.exportOnlyTextXlsx);
+                            const out = xlsx.write(file, { type: 'binary', bookType: 'xlsx', bookSST: false });
+                            fs.writeFileSync(path, out, { encoding: 'binary' });
                         }
                     } catch (error) {
                         dialog.showMessageBox(this.uiHandler.mainWindow, {
