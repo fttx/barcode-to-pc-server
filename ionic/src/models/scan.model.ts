@@ -118,14 +118,4 @@ export class ScanModel {
             return scan.outputBlocks.map(outputBlock => outputBlock.value);
         }), { skipHeader: true });
     }
-    static appendToXLSX(scannings: ScanModel[], ws: xlsx.WorkSheet, exportOnlyText: boolean) {
-        return xlsx.utils.sheet_add_json(ws, scannings.map(scan => {
-            if (exportOnlyText) {
-                return scan.outputBlocks
-                    .filter(outputBlock => OutputBlockModel.IsReadable(outputBlock))
-                    .map(outputBlock => outputBlock.value)
-            }
-            return scan.outputBlocks.map(outputBlock => outputBlock.value);
-        }), { origin: -1 });
-    }
 }

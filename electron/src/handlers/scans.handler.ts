@@ -21,6 +21,7 @@ import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 import * as xlsx from 'xlsx';
+import { OutputBlockModel } from '../../../ionic/src/models/output-block.model';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -335,9 +336,16 @@ export class ScansHandler implements Handler {
                         if (scanSession.scannings.length > 0) {
                             // Reading our test file
                             const file = xlsx.readFile(path)
-                            //write only in the first sheet
+                            // Write only in the first sheet
                             const worksheet = file.Sheets[file.SheetNames[0]];
-                            ScanModel.appendToXLSX(scanSession.scannings, worksheet, this.settingsHandler.exportOnlyTextXlsx);
+                            xlsx.utils.sheet_add_aoa(worksheet, scanSession.scannings.map(scan => {
+                                if (this.settingsHandler.exportOnlyTextXlsx) {
+                                    return scan.outputBlocks
+                                        .filter(outputBlock => OutputBlockModel.IsReadable(outputBlock))
+                                        .map(outputBlock => outputBlock.value)
+                                }
+                                return scan.outputBlocks.map(outputBlock => outputBlock.value);
+                            }), { origin: -1 });
                             const out = xlsx.write(file, { type: 'binary', bookType: 'xlsx', bookSST: false });
                             fs.writeFileSync(path, out, { encoding: 'binary' });
                         }
