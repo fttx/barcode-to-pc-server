@@ -334,7 +334,6 @@ export class ScansHandler implements Handler {
 
                     try {
                         if (scanSession.scannings.length > 0) {
-                            // Reading our test file
                             const file = xlsx.readFile(path)
                             // Write only in the first sheet
                             const worksheet = file.Sheets[file.SheetNames[0]];
