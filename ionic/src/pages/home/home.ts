@@ -578,7 +578,7 @@ export class ScanSessionContextMenuPopover {
     let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
     const ws = ScanModel.ToXLSX(
       JSON.parse(JSON.stringify(this.scanSession.scannings)).reverse(),
-      settings.exportOnlyTextXlsx,
+      settings.exportOnlyText,
     );
 
     this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {

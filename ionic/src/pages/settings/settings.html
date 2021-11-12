@@ -378,12 +378,6 @@
 
       </ion-item>
 
-
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-        <ion-label>{{ 'exportOnlyReadableComponents' | translate }}</ion-label>
-        <ion-checkbox [(ngModel)]="settings && settings.exportOnlyTextXlsx"></ion-checkbox>
-      </ion-item>
-
       <ion-item-divider>
         {{ 'eventsDivider' | translate }}
       </ion-item-divider>

@@ -52,9 +52,6 @@ export class SettingsHandler implements Handler {
     get exportOnlyText(): boolean {
         return this.settings.exportOnlyText
     }
-    get exportOnlyTextXlsx(): boolean {
-        return this.settings.exportOnlyTextXlsx
-    }
     get enableQuotes(): boolean {
         return this.settings.enableQuotes
     }

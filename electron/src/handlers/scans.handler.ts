@@ -338,7 +338,7 @@ export class ScansHandler implements Handler {
                             // Write only in the first sheet
                             const worksheet = file.Sheets[file.SheetNames[0]];
                             xlsx.utils.sheet_add_aoa(worksheet, scanSession.scannings.map(scan => {
-                                if (this.settingsHandler.exportOnlyTextXlsx) {
+                                if (this.settingsHandler.exportOnlyText) {
                                     return scan.outputBlocks
                                         .filter(outputBlock => OutputBlockModel.IsReadable(outputBlock))
                                         .map(outputBlock => outputBlock.value)

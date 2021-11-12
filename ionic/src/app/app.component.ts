@@ -354,10 +354,6 @@ export class MyApp {
           })
         }
 
-        if (typeof settings.exportOnlyTextXlsx == 'undefined') {
-          settings.exportOnlyTextXlsx = true;
-        }
-
         if (typeof settings.appendXLSXEnabled == 'undefined') {
           settings.appendXLSXEnabled = false;
         }
