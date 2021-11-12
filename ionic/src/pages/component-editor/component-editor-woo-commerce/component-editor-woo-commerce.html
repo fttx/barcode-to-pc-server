@@ -1,2 +1,19 @@
 <component-editor [outputBlock]="outputBlock">
+  <ion-item no-lines text-wrap>
+    <p [innerHtml]="'woocommerceDescription' | translate"></p>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{ 'action' | translate }}</ion-label>
+    <ion-select [(ngModel)]="outputBlock.value">
+      <ion-option value="Create a product">{{ 'createProduct' | translate }}</ion-option>
+      <ion-option value="Retrive a product">{{ 'retriveProduct' | translate }}</ion-option>
+      <ion-option value="Update a product">{{ 'updateProduct' | translate }}</ion-option>
+      <ion-option value="Delete a product">{{ 'deleteProduct' | translate }}</ion-option>
+      <ion-option value="Create an order">{{ 'createOrder' | translate }}</ion-option>
+      <ion-option value="Retrive an order">{{ 'retriveOrder' | translate }}</ion-option>
+      <ion-option value="Update an order">{{ 'updateOrder' | translate }}</ion-option>
+      <ion-option value="Delete an order">{{ 'deleteOrder' | translate }}</ion-option>
+    </ion-select>
+  </ion-item>
 </component-editor>

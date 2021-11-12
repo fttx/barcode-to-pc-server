@@ -381,5 +381,14 @@
   "preview": "Preview",
   "variablesInjectionInfoBox1": "To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.",
   "variablesInjectionInfoBox2": "See",
-  "variablesInjectionInfoBox3": "this example"
+  "variablesInjectionInfoBox3": "this example", 
+  "action": "Azione",
+  "createProduct":"Crea un prodotto",
+  "retriveProduct":"Recupera un prodotto",
+  "updateProduct":"Aggiorna un prodotto",
+  "deleteProduct":"Elimina un prodotto",
+  "createOrder":"Crea un ordine",
+  "retriveOrder":"Recupera un ordine",
+  "updateOrder":"Aggiorna un ordine",
+  "deleteOrder":"Elimina un ordine"
 }
