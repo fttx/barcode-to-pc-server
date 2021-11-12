@@ -14,4 +14,8 @@ export class ComponentEditorWooCommercePage {
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
   }
+
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ComponentEditorSelectOptionPage');
+  }
 }

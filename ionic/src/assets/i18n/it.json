@@ -390,5 +390,6 @@
   "createOrder":"Crea un ordine",
   "retriveOrder":"Recupera un ordine",
   "updateOrder":"Aggiorna un ordine",
-  "deleteOrder":"Elimina un ordine"
+  "deleteOrder":"Elimina un ordine",
+  "fields": "Parametri"
 }

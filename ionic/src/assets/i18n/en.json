@@ -396,7 +396,8 @@
   "createOrder":"Create an order",
   "retriveOrder":"Retrieve an order",
   "updateOrder":"Update an order",
-  "deleteOrder":"Delete an order"
+  "deleteOrder":"Delete an order",
+  "fields": "Fields"
 
 
 

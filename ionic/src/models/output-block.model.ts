@@ -106,6 +106,12 @@ export class OutputBlockModel {
     beepSpeed?: 'low' | 'medium' | 'fast';
 
     /**
+     * Parameters for the WOOCOMMERCE component
+     */
+     fields?: string;
+     authWoocommerce?: string;
+
+    /**
      * Parameters for the BARCODE, TEXT and NUMBER components
      */
     filter?: string;

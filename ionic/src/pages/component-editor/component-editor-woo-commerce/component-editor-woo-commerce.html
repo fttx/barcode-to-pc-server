@@ -1,19 +1,41 @@
 <component-editor [outputBlock]="outputBlock">
-  <ion-item no-lines text-wrap>
-    <p [innerHtml]="'woocommerceDescription' | translate"></p>
-  </ion-item>
+  <div [hidden]="outputBlock.type != 'woo_commerce'">
+    <ion-item>
+      <ion-label>{{ 'action' | translate }}</ion-label>
+      <ion-select [(ngModel)]="outputBlock.value">
+        <ion-option value="Create a product">{{ 'createProduct' | translate }}</ion-option>
+        <ion-option value="Retrive a product">{{ 'retriveProduct' | translate }}</ion-option>
+        <ion-option value="Update a product">{{ 'updateProduct' | translate }}</ion-option>
+        <ion-option value="Delete a product">{{ 'deleteProduct' | translate }}</ion-option>
+        <ion-option value="Create an order">{{ 'createOrder' | translate }}</ion-option>
+        <ion-option value="Retrive an order">{{ 'retriveOrder' | translate }}</ion-option>
+        <ion-option value="Update an order">{{ 'updateOrder' | translate }}</ion-option>
+        <ion-option value="Delete an order">{{ 'deleteOrder' | translate }}</ion-option>
+      </ion-select>
+    </ion-item>
 
-  <ion-item>
-    <ion-label>{{ 'action' | translate }}</ion-label>
-    <ion-select [(ngModel)]="outputBlock.value">
-      <ion-option value="Create a product">{{ 'createProduct' | translate }}</ion-option>
-      <ion-option value="Retrive a product">{{ 'retriveProduct' | translate }}</ion-option>
-      <ion-option value="Update a product">{{ 'updateProduct' | translate }}</ion-option>
-      <ion-option value="Delete a product">{{ 'deleteProduct' | translate }}</ion-option>
-      <ion-option value="Create an order">{{ 'createOrder' | translate }}</ion-option>
-      <ion-option value="Retrive an order">{{ 'retriveOrder' | translate }}</ion-option>
-      <ion-option value="Update an order">{{ 'updateOrder' | translate }}</ion-option>
-      <ion-option value="Delete an order">{{ 'deleteOrder' | translate }}</ion-option>
-    </ion-select>
-  </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_fields">{{ 'fields' | translate }}</label>
+      <input id="_fields" [(ngModel)]="outputBlock.fields" class="inline-input" type="text" placeholder="(optional)" />
+      <br>
+    </ion-item>
+
+    <!--
+    <ion-item no-lines text-right padding-top>
+      <button ion-button small icon-start (click)="addField()" float-right color="output-block-component-woo_commerce">
+        <ion-icon name="add"></ion-icon>
+        {{ 'add field' | translate }}
+      </button>
+    </ion-item>
+    -->
+
+    <ion-item text-wrap>
+      <label for="_authWoocommerce">{{ 'Auth' | translate }}</label>
+      <input id="_authWoocommerce" [(ngModel)]="outputBlock.authWoocommerce" class="inline-input" type="text"
+        placeholder="(required)" />
+      <br>
+    </ion-item>
+
+  </div>
 </component-editor>
