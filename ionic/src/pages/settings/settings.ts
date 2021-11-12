@@ -104,6 +104,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'CSV_UPDATE', value: '{{ barcode }}', type: 'csv_update', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
       { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
       { name: 'ALERT', value: '', type: 'alert', editable: true, alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
+      { name: 'WOO COMMERCE', value: '', type: 'woo_commerce'},
     ];
   }
 
