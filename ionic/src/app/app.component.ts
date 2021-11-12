@@ -354,6 +354,14 @@ export class MyApp {
           })
         }
 
+        if (typeof settings.appendXLSXEnabled == 'undefined') {
+          settings.appendXLSXEnabled = false;
+        }
+
+        if (typeof settings.xlsxPath == 'undefined') {
+          settings.xlsxPath = null;
+        }
+
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }

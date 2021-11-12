@@ -64,8 +64,14 @@ export class SettingsHandler implements Handler {
     get csvPath(): string {
         return this.settings.csvPath
     }
+    get xlsxPath(): string {
+        return this.settings.xlsxPath
+    }
     get appendCSVEnabled(): boolean {
         return this.settings.appendCSVEnabled
+    }
+    get appendXLSXEnabled(): boolean {
+        return this.settings.appendXLSXEnabled
     }
     get typeMethod() {
         return this.settings.typeMethod

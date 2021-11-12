@@ -313,6 +313,72 @@
       </ion-item>
 
       <ion-item-divider>
+        {{ 'xlsxSettingsDivider' | translate }}
+      </ion-item-divider>
+
+      <ion-item no-lines>
+        <ion-label>{{ 'appendScansToAXlsxFile' | translate }}
+          <!--
+          <button ion-button small color="light" [popper]="appendToXlsxFilePopper" class="help-button">
+            ?
+          </button>
+          <popper-content #appendToXlsxFilePopper>
+            {{ 'appendToXlsxFilePopper1' | translate }}
+            <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/not-available')">
+              {{ 'appendToXlsxFilePopper2' | translate }}
+            </a>
+            {{ 'appendToXlsxFilePopper3' | translate }}
+          </popper-content>
+          -->
+        </ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.appendXLSXEnabled" (click)="onXLSXClick()"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines [hidden]="!settings || !settings.appendXLSXEnabled" class="csv-select-path-form">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <input [(ngModel)]="settings && settings.xlsxPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" />
+            </ion-col>
+            <ion-col>
+              <button ion-button small color="light" (click)="onSelectXLSXPathClick()">{{ 'select' | translate }}</button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+
+        <info-box title="Info">
+          {{ 'variablesInfo' | translate }}<br>
+          <code>
+            <input type="text" value="barcode" disabled />
+            <input type="text" value="barcodes" disabled />
+            <input type="text" value="number" disabled />
+            <input type="text" value="text" disabled />
+            <input type="text" value="timestamp" disabled />
+            <input type="text" value="date_time" disabled />
+            <input type="text" value="scan_session_name" disabled />
+            <input type="text" value="device_name" disabled />
+            <input type="text" value="select_option" disabled />
+            <input type="text" value="http" disabled />
+            <input type="text" value="run" disabled />
+            <input type="text" value="csv_lookup" disabled />
+            <input type="text" value="csv_update" disabled />
+            <input type="text" value="javascript_function" disabled />
+          </code><br>
+          {{ 'note1Header' | translate }}:
+          <p style="margin-left: 13px">
+            {{ 'note1' | translate }}
+          </p><br>
+          {{ 'note2Header' | translate }}:
+          <p style="margin-left: 13px" [innerHtml]="'note2' | translate"></p><br>
+          {{ 'example' | translate }}:<br>
+          <code ngNonBindable>
+            <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.xlsx" disabled />
+          </code><br>
+        </info-box>
+
+      </ion-item>
+
+      <ion-item-divider>
         {{ 'eventsDivider' | translate }}
       </ion-item-divider>
 

@@ -38,6 +38,8 @@ export class SettingsModel {
     openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
     appendCSVEnabled: boolean = false;
     csvPath: string = null;
+    appendXLSXEnabled: boolean = false;
+    xlsxPath: string = null;
     typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
     enableAdvancedSettings: boolean = false;
     autoUpdate: boolean = true;

@@ -395,6 +395,28 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
+  async onSelectXLSXPathClick() {
+    let defaultPath = this.settings.xlsxPath;
+    if (!defaultPath) {
+      defaultPath = this.electronProvider.app.getPath('desktop')
+    }
+
+    let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
+      title: await this.utils.text('selectXLSXPathDialog'),
+      buttonLabel: await this.utils.text('selectXLSXSelectButton'),
+      defaultPath: defaultPath,
+      filters: [
+        { name: await this.utils.text('selectXLSXFilterText'), extensions: ['xlsx'] },
+        { name: await this.utils.text('selectXLSXFilterAll'), extensions: ['*'] }
+      ],
+      properties: ['openFile', 'createDirectory', 'promptToCreate',]
+    });
+
+    if (filePaths && filePaths.length) {
+      this.settings.xlsxPath = filePaths[0];
+    }
+  }
+
   // Handle changes dection through 'mouseup' and 'keyup' DOM events
   // This way it's more efficient compared to the angular way.
   private domEvents: Subscription;
@@ -422,6 +444,14 @@ export class SettingsPage implements OnInit, OnDestroy {
     if (this.settings.appendCSVEnabled) {
       if (!(await this.licenseProvider.canUseCSVAppend(true))) {
         setTimeout(() => this.settings.appendCSVEnabled = false, 1000)
+      }
+    }
+  }
+
+  async onXLSXClick() {
+    if (this.settings.appendXLSXEnabled) {
+      if (!(await this.licenseProvider.canUseCSVAppend(true))) {
+        setTimeout(() => this.settings.appendXLSXEnabled = false, 1000)
       }
     }
   }
