@@ -17,7 +17,7 @@ import { ComponentEditorRunPage } from '../../pages/component-editor/component-e
 import { ComponentEditorSelectOptionPage } from '../../pages/component-editor/component-editor-select-option/component-editor-select-option';
 import { ComponentEditorTextPage } from '../../pages/component-editor/component-editor-text/component-editor-text';
 import { ComponentEditorVariablePage } from '../../pages/component-editor/component-editor-variable/component-editor-variable';
-import { ComponentEditorWooCommercePage } from '../../pages/component-editor/component-editor-woo-commerce/component-editor-woo-commerce';
+import { ComponentEditorWooCommercePage } from '../../pages/component-editor/component-editor-woocommerce/component-editor-woocommerce';
 import { UtilsProvider } from '../../providers/utils/utils';
 
 
@@ -54,7 +54,7 @@ export class OutputComponentComponent {
       case 'select_option': editor = ComponentEditorSelectOptionPage; break;
       case 'text': editor = ComponentEditorTextPage; break;
       case 'variable': editor = ComponentEditorVariablePage; break;
-      case 'woo_commerce' : editor = ComponentEditorWooCommercePage; break;
+      case 'woocommerce' : editor = ComponentEditorWooCommercePage; break;
     }
     let modal = this.modalCtrl
       .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });

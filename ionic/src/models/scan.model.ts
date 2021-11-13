@@ -73,7 +73,7 @@ export class ScanModel {
                 case 'delay': return ''
                 case 'beep': return ''
                 case 'alert': return ''
-                case 'woo_commerce': return block.value;
+                case 'woocommerce': return block.value;
                 default: return '';
             }
         }).join(fieldSeparator).replace(/\s+/g, ' ');

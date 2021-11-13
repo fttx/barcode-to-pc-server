@@ -1,5 +1,5 @@
 <component-editor [outputBlock]="outputBlock">
-  <div [hidden]="outputBlock.type != 'woo_commerce'">
+  <div [hidden]="outputBlock.type != 'woocommerce'">
     <ion-item>
       <ion-label>{{ 'action' | translate }}</ion-label>
       <ion-select [(ngModel)]="outputBlock.value">
@@ -23,7 +23,7 @@
 
     <!--
     <ion-item no-lines text-right padding-top>
-      <button ion-button small icon-start (click)="addField()" float-right color="output-block-component-woo_commerce">
+      <button ion-button small icon-start (click)="addField()" float-right color="output-block-component-woocommerce">
         <ion-icon name="add"></ion-icon>
         {{ 'add field' | translate }}
       </button>
@@ -31,8 +31,15 @@
     -->
 
     <ion-item text-wrap>
-      <label for="_authWoocommerce">{{ 'Auth' | translate }}</label>
-      <input id="_authWoocommerce" [(ngModel)]="outputBlock.authWoocommerce" class="inline-input" type="text"
+      <label for="_consumer_key">{{ 'Consumer Key' | translate }}</label>
+      <input id="_consumer_key" [(ngModel)]="outputBlock.consumer_key" class="inline-input" type="text"
+        placeholder="(required)" />
+      <br>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <label for="_consumer_secret">{{ 'Consumer Secret' | translate }}</label>
+      <input id="_consumer_secret" [(ngModel)]="outputBlock.consumer_secret" class="inline-input" type="text"
         placeholder="(required)" />
       <br>
     </ion-item>
