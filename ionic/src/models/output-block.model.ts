@@ -108,9 +108,9 @@ export class OutputBlockModel {
     /**
      * Parameters for the WOOCOMMERCE component
      */
-     fields?: string;
-     consumer_key?: string;
-     consumer_secret?: string;
+    fields?: {key: string, value: string}[];
+    consumer_key?: string;
+    consumer_secret?: string;
 
     /**
      * Parameters for the BARCODE, TEXT and NUMBER components

@@ -18,4 +18,17 @@ export class ComponentEditorWooCommercePage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad ComponentEditorSelectOptionPage');
   }
+
+  addField() {
+    console.log(this.outputBlock.fields.length);
+    //prevent new field if last field is empty
+    const lastItem = this.outputBlock.fields.slice(-1)[0];
+    if(!(lastItem && lastItem.key === '' && lastItem.value === '')){
+      this.outputBlock.fields.push({key: '',value: ''}); 
+    }
+  }
+
+  deleteField(index: number){
+    this.outputBlock.fields.splice(index,1);
+  }
 }

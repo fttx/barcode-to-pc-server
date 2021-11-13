@@ -14,21 +14,33 @@
       </ion-select>
     </ion-item>
 
-
-    <ion-item text-wrap>
-      <label for="_fields">{{ 'fields' | translate }}</label>
-      <input id="_fields" [(ngModel)]="outputBlock.fields" class="inline-input" type="text" placeholder="(optional)" />
-      <br>
+    <p>{{ outputBlock.fields.length }}</p>
+    <ion-item no-lines>
+      <ion-label no-lines>{{ 'fields' | translate }}</ion-label>
+      <ion-list>
+        <ion-item *ngFor="let field of outputBlock.fields; let i = index;">
+          <ion-row>
+            <ion-col>
+                <ion-input placeholder="key">{{ field.key }}</ion-input>
+            </ion-col>
+            <ion-col> 
+              <ion-input placeholder="value">{{ field.value }}</ion-input> 
+            </ion-col>
+            <ion-col> 
+              <ion-icon (click)="deleteField(i)" name="close"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-item>
+      </ion-list>
     </ion-item>
 
-    <!--
-    <ion-item no-lines text-right padding-top>
+    <ion-item text-right padding-top>
       <button ion-button small icon-start (click)="addField()" float-right color="output-block-component-woocommerce">
         <ion-icon name="add"></ion-icon>
         {{ 'add field' | translate }}
       </button>
     </ion-item>
-    -->
+
 
     <ion-item text-wrap>
       <label for="_consumer_key">{{ 'Consumer Key' | translate }}</label>
