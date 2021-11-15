@@ -256,8 +256,6 @@ export class MyApp {
                 outputBlock.skipOutput = true;
               } else if (outputBlock.type == 'function' && typeof outputBlock.skipOutput == 'undefined') {
                 outputBlock.skipOutput = false;
-              } else if (outputBlock.type == 'woocommerce' && typeof outputBlock.skipOutput == 'undefined') {
-                outputBlock.skipOutput = false;
               }
 
               // filter
