@@ -55,7 +55,7 @@ export class OutputBlockModel {
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -104,6 +104,14 @@ export class OutputBlockModel {
      */
     beepsNumber?: number;
     beepSpeed?: 'low' | 'medium' | 'fast';
+
+    /**
+     * Parameters for the WOOCOMMERCE component
+     */
+    fields?: {key: string, value: string}[];
+    url_woocommerce?: string;
+    consumer_key?: string;
+    consumer_secret?: string;
 
     /**
      * Parameters for the BARCODE, TEXT and NUMBER components

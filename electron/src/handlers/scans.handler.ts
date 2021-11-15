@@ -20,6 +20,7 @@ import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
+import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
@@ -82,7 +83,7 @@ export class ScansHandler implements Handler {
                 // keyboard emulation
                 for (let outputBlock of scan.outputBlocks) {
                     if (outputBlock.skipOutput && outputBlock.type != 'http' && outputBlock.type != 'run'
-                        && outputBlock.type != 'csv_lookup' && outputBlock.type != 'csv_update') {
+                        && outputBlock.type != 'csv_lookup' && outputBlock.type != 'csv_update' && outputBlock.type != 'woocommerce') {
                         // for these components the continue; is called inside the switch below (< v3.12.0)
                         continue;
                     }
@@ -98,6 +99,12 @@ export class ScansHandler implements Handler {
                         case 'delay': {
                             if (isNumeric(outputBlock.value)) {
                                 await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
+                            }
+                            break;
+                        }
+                        case 'woocommerce': {
+                            if (!outputBlock.skipOutput){
+                                this.typeString(outputBlock.value); 
                             }
                             break;
                         }
@@ -231,6 +238,7 @@ export class ScansHandler implements Handler {
                         select_option: null,
                         run: null,
                         http: null,
+                        woocommerce: null,
                         csv_lookup: null,
                         csv_update: null,
                         javascript_function: null,
@@ -317,6 +325,75 @@ export class ScansHandler implements Handler {
                 // Overrides the necessary values of the request.outputBlock
                 // object and sends it back to the app.s
                 switch (request.outputBlock.type) {
+                    case 'woocommerce': {
+                        const wooCommerce = new WooCommerceRestApi({
+                            url: request.outputBlock.url_woocommerce,
+                            consumerKey: request.outputBlock.consumer_key,
+                            consumerSecret: request.outputBlock.consumer_secret,
+                            version:  'wc/v3'
+                          });
+                        let params = request.outputBlock.fields.reduce((params, field) => { params[field.key] = field.value; return params; }, {});
+                        switch(request.outputBlock.value){
+                            case 'Create an order':
+                            case 'Create a product':{
+                                const requestType = request.outputBlock.value == "Create a product" ? 'products' : 'orders'; 
+                                let response = (await wooCommerce.post(requestType, params)).data;
+                                if (typeof response == 'object') {
+                                    response = JSON.stringify(response);
+                                }
+                                responseOutputBlock.value = response;
+                                break;
+                            }
+                            case 'Retrive an order':
+                            case 'Retrive a product':{
+                                const requestType = request.outputBlock.value == "Retrive a product" ? 'products' : 'orders';
+                                if (params.hasOwnProperty('id')){
+                                    let response = (await wooCommerce.get(`${requestType}/${params['id']}`, params)).data;
+                                    if (typeof response == 'object') {
+                                        response = JSON.stringify(response);
+                                    }
+                                    responseOutputBlock.value = response;
+                                }else{
+                                    responseOutputBlock.value = "";
+                                    errorMessage = 'WOOCOMMERCE: ' + request.outputBlock.value + ' request failed. id param required';
+                                }
+                                break;
+                            }
+                            case 'Update an order':
+                            case 'Update a product':{
+                                const requestType = request.outputBlock.value == "Update a product" ? 'products' : 'orders';
+                                if (params.hasOwnProperty('id')){
+                                    let response = (await wooCommerce.put(`${requestType}/${params['id']}`, params)).data;
+                                    if (typeof response == 'object') {
+                                        response = JSON.stringify(response);
+                                    }
+                                    responseOutputBlock.value = response;
+                                }else{
+                                    responseOutputBlock.value = "";
+                                    errorMessage = 'WOOCOMMERCE: ' + request.outputBlock.value + ' request failed. id param required';
+                                }
+                                break;
+                            }
+                            case 'Delete an order':
+                            case 'Delete a product':{
+                                const requestType = request.outputBlock.value == "Delete a product" ? 'products' : 'orders';
+                                if (params.hasOwnProperty('id')){
+                                    let response = (await wooCommerce.delete(`${requestType}/${params['id']}`, params)).data;
+                                    if (typeof response == 'object') {
+                                        response = JSON.stringify(response);
+                                    }
+                                    responseOutputBlock.value = response;
+                                }else{
+                                    responseOutputBlock.value = "";
+                                    errorMessage = 'WOOCOMMERCE: ' + request.outputBlock.value + ' request failed. id param required';
+                                }
+                                break;
+                            }
+                            default: {
+                                break;
+                            }
+                        } 
+                    }
                     case 'http': {
                         try {
                             let params = JSON.parse(request.outputBlock.httpParams || '{}');
