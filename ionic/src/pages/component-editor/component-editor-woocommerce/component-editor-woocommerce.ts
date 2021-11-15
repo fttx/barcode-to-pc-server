@@ -20,12 +20,11 @@ export class ComponentEditorWooCommercePage {
   }
 
   addField() {
-    console.log(this.outputBlock.fields.length);
-    //prevent new field if last field is empty
     const lastItem = this.outputBlock.fields.slice(-1)[0];
-    if(!(lastItem && lastItem.key === '' && lastItem.value === '')){
-      this.outputBlock.fields.push({key: '',value: ''}); 
+    if(lastItem && lastItem.key==='' && lastItem.value === ''){
+      return;
     }
+    this.outputBlock.fields.push({key: '',value: ''}); 
   }
 
   deleteField(index: number){

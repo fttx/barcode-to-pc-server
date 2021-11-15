@@ -45,6 +45,13 @@
   </ion-item>
 
   <ion-item text-wrap>
+    <label for="_url">{{ 'Store url' | translate }}</label>
+    <input id="_url" [(ngModel)]="outputBlock.url_woocommerce" class="inline-input" type="text"
+      placeholder="(required)" />
+    <br>
+  </ion-item>
+
+  <ion-item text-wrap>
     <label for="_consumer_key">{{ 'Consumer Key' | translate }}</label>
     <input id="_consumer_key" [(ngModel)]="outputBlock.consumer_key" class="inline-input" type="text"
       placeholder="(required)" />

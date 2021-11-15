@@ -109,6 +109,7 @@ export class OutputBlockModel {
      * Parameters for the WOOCOMMERCE component
      */
     fields?: {key: string, value: string}[];
+    url_woocommerce?: string;
     consumer_key?: string;
     consumer_secret?: string;
 
