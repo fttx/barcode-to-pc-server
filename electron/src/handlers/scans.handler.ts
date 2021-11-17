@@ -348,7 +348,7 @@ export class ScansHandler implements Handler {
                             case 'Retrive a product':{
                                 const requestType = request.outputBlock.value == "Retrive a product" ? 'products' : 'orders';
                                 if (params.hasOwnProperty('id')){
-                                    let response = (await wooCommerce.get(`${requestType}/${params['id']}`, params)).data;
+                                    let response = (await wooCommerce.get(`${requestType}/${params['id']}`)).data;
                                     if (typeof response == 'object') {
                                         response = JSON.stringify(response);
                                     }
@@ -363,7 +363,9 @@ export class ScansHandler implements Handler {
                             case 'Update a product':{
                                 const requestType = request.outputBlock.value == "Update a product" ? 'products' : 'orders';
                                 if (params.hasOwnProperty('id')){
-                                    let response = (await wooCommerce.put(`${requestType}/${params['id']}`, params)).data;
+                                    // @ts-ignore
+                                    const {id, ...paramsWithoutId} = params;
+                                    let response = (await wooCommerce.put(`${requestType}/${params['id']}`, paramsWithoutId)).data;
                                     if (typeof response == 'object') {
                                         response = JSON.stringify(response);
                                     }
@@ -378,7 +380,9 @@ export class ScansHandler implements Handler {
                             case 'Delete a product':{
                                 const requestType = request.outputBlock.value == "Delete a product" ? 'products' : 'orders';
                                 if (params.hasOwnProperty('id')){
-                                    let response = (await wooCommerce.delete(`${requestType}/${params['id']}`, params)).data;
+                                    // @ts-ignore
+                                    const {id, ...paramsWithoutId} = params;
+                                    let response = (await wooCommerce.delete(`${requestType}/${params['id']}`, paramsWithoutId)).data;
                                     if (typeof response == 'object') {
                                         response = JSON.stringify(response);
                                     }
