@@ -387,5 +387,15 @@
   "preview": "Vista previa",
   "variablesInjectionInfoBox1": "Para acceder a las variables mencionadas anteriormente, DEBE colocar un componente de salida correspondiente en la plantilla de salida que asignará un valor a la variable.",
   "variablesInjectionInfoBox2": "Ver",
-  "variablesInjectionInfoBox3": "este ejemplo"
+  "variablesInjectionInfoBox3": "este ejemplo",
+  "action":"Acción",
+  "createProduct":"Crea un producto",
+  "retriveProduct":"Recuperar un producto",
+  "updateProduct":"Actualizar un producto",
+  "deleteProduct":"Eliminar un producto",
+  "createOrder":"Crear un pedido",
+  "retriveOrder":"Recuperar un pedido",
+  "updateOrder":"Actualizar un pedido",
+  "deleteOrder":"Eliminar un pedido",
+  "fields": "Parámetros"
 }
