@@ -125,6 +125,10 @@ export class HomePage {
     this.selectedScanSessionIndex = index;
   }
 
+  onCopyToClipboardClick(text: string) {
+    this.lastToast.present(`"${text}" copied to clipboard.`);
+  }
+
   onSearch(event) {
     this.selectedScanSessionIndex = null;
   }
