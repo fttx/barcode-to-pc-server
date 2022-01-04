@@ -118,7 +118,7 @@ At this point if all looks good the only thing left to do is to publish the Gith
 | Chinese            | -                 |
 | Deutsch            | Bruno Wenger      |
 | Español            | Juan Manuel       |
-| Italiano           | -                 |
+| Italiano           | Francesco Accardi |
 | English            | -                 |
 
 Are you fluent in any other language than English? If you found a typo, or want to help translate Barcode to PC, get in touch [here](https://barcodetopc.com/contact/).
