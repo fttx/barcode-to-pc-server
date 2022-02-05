@@ -2,66 +2,60 @@
   <ion-item>
     <ion-label>{{ 'action' | translate }}</ion-label>
     <ion-select [(ngModel)]="outputBlock.value">
-      <ion-option value="Create a product">{{ 'createProduct' | translate }}</ion-option>
-      <ion-option value="Retrive a product">{{ 'retriveProduct' | translate }}</ion-option>
-      <ion-option value="Update a product">{{ 'updateProduct' | translate }}</ion-option>
-      <ion-option value="Delete a product">{{ 'deleteProduct' | translate }}</ion-option>
-      <ion-option value="Create an order">{{ 'createOrder' | translate }}</ion-option>
-      <ion-option value="Retrive an order">{{ 'retriveOrder' | translate }}</ion-option>
-      <ion-option value="Update an order">{{ 'updateOrder' | translate }}</ion-option>
-      <ion-option value="Delete an order">{{ 'deleteOrder' | translate }}</ion-option>
+      <ion-option selected value="createProduct">{{ 'createProduct' | translate }}</ion-option>
+      <ion-option value="retriveProduct">{{ 'retriveProduct' | translate }}</ion-option>s
+      <ion-option value="updateProduct">{{ 'updateProduct' | translate }}</ion-option>
+      <ion-option value="deleteProduct">{{ 'deleteProduct' | translate }}</ion-option>
+      <ion-option value="createOrder">{{ 'createOrder' | translate }}</ion-option>s
+      <ion-option value="retriveOrder">{{ 'retriveOrder' | translate }}</ion-option>
+      <ion-option value="updateOrder">{{ 'updateOrder' | translate }}</ion-option>
+      <ion-option value="deleteOrder">{{ 'deleteOrder' | translate }}</ion-option>
     </ion-select>
   </ion-item>
 
   <ion-item no-lines>
     <ion-label no-lines>{{ 'fields' | translate }}</ion-label>
   </ion-item>
-
-  <ion-list>
+  <ion-grid class="fields" [hidden]="!outputBlock.fields || !outputBlock.fields.length">
     <ion-item no-lines *ngFor="let field of outputBlock.fields; let i = index;">
-      <ion-row>
+      <ion-row no-padding>
         <ion-col>
-          <input [(ngModel)]="outputBlock.fields[i].key" class="inline-input" type="text" placeholder="key" />
+          <input [(ngModel)]="outputBlock.fields[i].key" class="inline-input" type="text" placeholder="Key" />
         </ion-col>
-        <ion-col>
-          <input [(ngModel)]="outputBlock.fields[i].value" class="inline-input" type="text" placeholder="value" />
+        <ion-col col-7>
+          <input [(ngModel)]="outputBlock.fields[i].value" class="inline-input" type="text" placeholder="Value" />
         </ion-col>
-        <ion-col>
-          <button ion-button small center clear icon-start color="output-block-component-woocommerce"
-            class="btn-output-template-action" (click)="deleteField(i)">
+        <ion-col col-1>
+          <button ion-button small center clear icon-only color="output-block-component-woocommerce" class="btn-output-template-action" (click)="deleteField(i)">
             <ion-icon name="trash"></ion-icon>
-            {{ 'outputTemplateDelete' | translate }}
           </button>
         </ion-col>
       </ion-row>
     </ion-item>
-  </ion-list>
+  </ion-grid>
 
   <ion-item text-right padding-top>
     <button ion-button small icon-start (click)="addField()" float-right color="output-block-component-woocommerce">
       <ion-icon name="add"></ion-icon>
-      {{ 'add field' | translate }}
+      {{ 'addField' | translate }}
     </button>
   </ion-item>
 
   <ion-item text-wrap>
-    <label for="_url">{{ 'Store url' | translate }}</label>
-    <input id="_url" [(ngModel)]="outputBlock.url_woocommerce" class="inline-input" type="text"
-      placeholder="(required)" />
+    <label for="_url">Store URL</label>
+    <input id="_url" [(ngModel)]="outputBlock.url_woocommerce" class="inline-input" type="text" placeholder="(Required)" />
     <br>
   </ion-item>
 
   <ion-item text-wrap>
-    <label for="_consumer_key">{{ 'Consumer Key' | translate }}</label>
-    <input id="_consumer_key" [(ngModel)]="outputBlock.consumer_key" class="inline-input" type="text"
-      placeholder="(required)" />
+    <label for="_consumer_key">Consumer Key</label>
+    <input id="_consumer_key" [(ngModel)]="outputBlock.consumer_key" class="inline-input" type="text" placeholder="(Required)" />
     <br>
   </ion-item>
 
   <ion-item text-wrap>
-    <label for="_consumer_secret">{{ 'Consumer Secret' | translate }}</label>
-    <input id="_consumer_secret" [(ngModel)]="outputBlock.consumer_secret" class="inline-input" type="text"
-      placeholder="(required)" />
+    <label for="_consumer_secret">Consumer Secret</label>
+    <input id="_consumer_secret" [(ngModel)]="outputBlock.consumer_secret" class="inline-input" type="text" placeholder="(Required)" />
     <br>
   </ion-item>
 </component-editor>
