@@ -384,5 +384,16 @@
   "preview": "Anteprima",
   "variablesInjectionInfoBox1": "Per accedere alle variabili sopra menzionate è necessario inserire un componente di output corrispondente nel tuo Templete di output che assegnerà un valore alla variabile.",
   "variablesInjectionInfoBox2": "Vedi",
-  "variablesInjectionInfoBox3": "questo esempio"
+  "variablesInjectionInfoBox3": "questo esempio",
+  "action": "Azione",
+  "createProduct": "Crea un prodotto",
+  "retriveProduct": "Recupera un prodotto",
+  "updateProduct": "Aggiorna un prodotto",
+  "deleteProduct": "Elimina un prodotto",
+  "createOrder": "Crea un ordine",
+  "retriveOrder": "Recupera un ordine",
+  "updateOrder": "Aggiorna un ordine",
+  "deleteOrder": "Elimina un ordine",
+  "addField": "Aggiungi parametro",
+  "fields": "Parametri"
 }

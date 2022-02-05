@@ -93,6 +93,7 @@
     }
   },
   "dependencies": {
+    "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "axios": "^0.19.0",
     "axios-oauth-1.0a": "^0.3.1",
     "bonjour": "^3.5.0",
@@ -121,6 +122,7 @@
     "@types/mdns": "0.0.33",
     "@types/semver": "^5.5.0",
     "@types/uuid": "^8.0.0",
+    "@types/woocommerce__woocommerce-rest-api": "^1.0.2",
     "electron": "4.0.3",
     "electron-builder": "^21.2.0",
     "electron-log": "^3.0.0",

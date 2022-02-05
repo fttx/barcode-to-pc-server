@@ -34,6 +34,7 @@ import { ComponentEditorRunPage } from '../pages/component-editor/component-edit
 import { ComponentEditorSelectOptionPage } from '../pages/component-editor/component-editor-select-option/component-editor-select-option';
 import { ComponentEditorTextPage } from '../pages/component-editor/component-editor-text/component-editor-text';
 import { ComponentEditorVariablePage } from '../pages/component-editor/component-editor-variable/component-editor-variable';
+import { ComponentEditorWooCommercePage } from '../pages/component-editor/component-editor-woocommerce/component-editor-woocommerce';
 import {
   ConnectedClientsPopover,
   HomePage,
@@ -75,6 +76,7 @@ import { MyApp } from './app.component';
     ComponentEditorSelectOptionPage,
     ComponentEditorTextPage,
     ComponentEditorVariablePage,
+    ComponentEditorWooCommercePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
@@ -141,6 +143,7 @@ import { MyApp } from './app.component';
     ComponentEditorSelectOptionPage,
     ComponentEditorTextPage,
     ComponentEditorVariablePage,
+    ComponentEditorWooCommercePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
