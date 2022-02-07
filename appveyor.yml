@@ -1,7 +1,7 @@
 version: v{build} # doesn't matter because gets overwritten later on with the package.json value
 branches:
-  only:
-    - master
+  except:
+    - gh-pages
 skip_non_tags: false
 clone_depth: 1
 environment:
