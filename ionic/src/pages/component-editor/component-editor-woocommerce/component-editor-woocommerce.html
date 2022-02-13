@@ -41,21 +41,30 @@
     </button>
   </ion-item>
 
-  <ion-item text-wrap>
+
+  <ion-item text-wrap no-lines>
+    <br>
+    <h3>{{ 'wooCommerceRestParameters' | translate }}</h3>
+  </ion-item>
+
+  <ion-item text-wrap no-lines>
     <label for="_url">Store URL</label>
-    <input id="_url" [(ngModel)]="outputBlock.url_woocommerce" class="inline-input" type="text" placeholder="(Required)" />
-    <br>
+    <input id="_url" [(ngModel)]="outputBlock.url_woocommerce" class="inline-input" type="text" placeholder="http://example.com" />
   </ion-item>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap no-lines>
     <label for="_consumer_key">Consumer Key</label>
-    <input id="_consumer_key" [(ngModel)]="outputBlock.consumer_key" class="inline-input" type="text" placeholder="(Required)" />
-    <br>
+    <input id="_consumer_key" [(ngModel)]="outputBlock.consumer_key" class="inline-input" type="text" placeholder="ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
   </ion-item>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap no-lines>
     <label for="_consumer_secret">Consumer Secret</label>
-    <input id="_consumer_secret" [(ngModel)]="outputBlock.consumer_secret" class="inline-input" type="text" placeholder="(Required)" />
-    <br>
+    <input id="_consumer_secret" [(ngModel)]="outputBlock.consumer_secret" class="inline-input" type="text" placeholder="cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
   </ion-item>
+
+  <ion-item no-lines>
+    <ion-label float-right>{{ 'wooCommerceRememberParameters' | translate}}</ion-label>
+    <ion-checkbox [(ngModel)]="rememberParameters"></ion-checkbox>
+  </ion-item>
+
 </component-editor>

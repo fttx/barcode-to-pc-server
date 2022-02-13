@@ -317,6 +317,8 @@
   "oauth": "OAuth 1.0a",
   "consumerKey": "Consumer Key",
   "consumerSecret": "Consumer Secret",
+  "wooCommerceRememberParameters": "Remember parameters",
+  "wooCommerceRestParameters": "REST API Parameters",
   "httpTimeout": "Timeout",
   "httpTimeoutDescription": "The request timeout in milliseconds",
   "command": "Command",

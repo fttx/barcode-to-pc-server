@@ -179,6 +179,7 @@ export class SettingsPage implements OnInit, OnDestroy {
         text: await this.utils.text('restoreDefaultSettingsDialogCancelButton'), role: 'cancel'
       }, {
         text: await this.utils.text('restoreDefaultSettingsDialogRestoreButton'), handler: (opts) => {
+          localStorage.setItem('woocommerce_parameters', null);
           this.settings = new SettingsModel();
           this.apply();
         }
