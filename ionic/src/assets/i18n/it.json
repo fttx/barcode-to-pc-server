@@ -276,7 +276,7 @@
   "helpButton": "Aiuto",
   "saveButton": "Salva",
   "skipOutputToggle": "Ignora l'output",
-  "skipOutputDescription": "Disabilita l'emulazione della tastiera e l'output CSV per questo componente.<br><br>Questa opzione è utile quando vuoi acquisire solo i dati e usare l'output in un momento successivo con componenti come \"JavaScript Function\", \"IF\", \"HTTP\", o come parametro per il nome del file CSV.",
+  "skipOutputDescription": "Disabilita l'emulazione della tastiera e l'output nei file CSV.<br><br>Utilizza questa opzione se vuoi che il componente venga esegutio, e vuoi utilizzare il suo valore all'interno di altri componenti come \"JAVASCRIPT FUNCTION\", \"IF\", \"HTTP\", ecc. senza emettere output.",
   "label": "Etichetta",
   "numberDescription": "Fornisci una breve descrizione come \"Numero di tracking\" or \"ID del prodotto\".<br>L'etichetta verrà mostrata nell'app durante l'acquisizione dei dati.<br><br>Utilizza la sintassi delle doppie parentesi graffe per iniettare una variabile. Esempio:<br><code ngNonBindable>{{ csv_lookup }}</code><br><br>",
   "availableVariables": "È possibile utilizzare le seguenti variabili (minuscole)",
