@@ -319,6 +319,8 @@
   "consumerSecret": "Consumer Secret",
   "wooCommerceRememberParameters": "Recordar Parámetros",
   "wooCommerceRestParameters": "Parámetros de la API REST",
+  "wooCommerceInjectDescription1": "Puede inyectar variables dentro de los Campos, por ejemplo, puede usar ",
+  "wooCommerceInjectDescription2": "un código de barras como Valor con la siguiente sintaxis: ",
   "httpTimeout": "Tiempo de espera",
   "httpTimeoutDescription": "El tiempo de espera de la solicitud en milisegundos",
   "command": "Comando",

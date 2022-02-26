@@ -319,6 +319,8 @@
   "consumerSecret": "Consumer Secret",
   "wooCommerceRememberParameters": "Remember parameters",
   "wooCommerceRestParameters": "REST API Parameters",
+  "wooCommerceInjectDescription1": "You can inject variables inside the Fields, for example you",
+  "wooCommerceInjectDescription2": "can use a barcode as Value with the following syntax: ",
   "httpTimeout": "Timeout",
   "httpTimeoutDescription": "The request timeout in milliseconds",
   "command": "Command",
