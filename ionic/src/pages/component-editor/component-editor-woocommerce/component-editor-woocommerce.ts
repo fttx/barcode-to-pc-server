@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Events, NavParams } from 'ionic-angular';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { WooCommerceParameters } from '../../../models/woocommerce-parameters.model';
+import { ElectronProvider } from '../../../providers/electron/electron';
 @Component({
   selector: 'page-component-editor-woocommerce',
   templateUrl: 'component-editor-woocommerce.html',
@@ -12,6 +13,7 @@ export class ComponentEditorWooCommercePage {
 
   constructor(
     public navParams: NavParams,
+    private electronProvider: ElectronProvider, // required from the template
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
   }

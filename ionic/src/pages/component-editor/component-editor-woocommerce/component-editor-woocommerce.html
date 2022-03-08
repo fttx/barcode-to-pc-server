@@ -79,6 +79,14 @@
   </ion-item>
 
   <ion-item text-wrap no-lines>
+    <ion-label float-right>
+      {{ 'wooCommerceRestParametersInstructions1' | translate }}<br>
+      {{ 'wooCommerceRestParametersInstructions2' | translate }}
+      <a (click)="electronProvider.shell.openExternal('https://woocommerce.com/document/woocommerce-rest-api/')">{{ 'wooCommerceRestParametersInstructions3' | translate }}</a>.
+    </ion-label>
+  </ion-item>
+
+  <ion-item text-wrap no-lines>
     <label for="_url">Store URL</label>
     <input id="_url" [(ngModel)]="outputBlock.url_woocommerce" class="inline-input" type="text" placeholder="http://example.com" />
   </ion-item>
