@@ -355,21 +355,21 @@ export class ScansHandler implements Handler {
                                 }
                                 case 'retriveOrder':
                                 case 'retriveProduct': {
-                                    responseOutputBlock.value = JSON.stringify((await wooCommerce.get(`${endPoint}/${data['id']}`)).data);
+                                    responseOutputBlock.value = JSON.stringify((await wooCommerce.get(`${endPoint}/${data['id'] || ''}`, data)).data);
                                     break;
                                 }
                                 case 'updateOrder':
                                 case 'updateProduct': {
                                     // @ts-ignore
                                     const { id, ...paramsWithoutId } = data;
-                                    responseOutputBlock.value = JSON.stringify((await wooCommerce.put(`${endPoint}/${data['id']}`, paramsWithoutId)).data);
+                                    responseOutputBlock.value = JSON.stringify((await wooCommerce.put(`${endPoint}/${data['id'] || ''}`, paramsWithoutId)).data);
                                     break;
                                 }
                                 case 'deleteOrder':
                                 case 'deleteProduct': {
                                     // @ts-ignore
                                     const { id, ...paramsWithoutId } = data;
-                                    responseOutputBlock.value = JSON.stringify((await wooCommerce.delete(`${endPoint}/${data['id']}`, paramsWithoutId)).data);
+                                    responseOutputBlock.value = JSON.stringify((await wooCommerce.delete(`${endPoint}/${data['id'] || ''}`, paramsWithoutId)).data);
                                     break;
                                 }
                             }
