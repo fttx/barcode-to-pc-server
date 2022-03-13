@@ -321,6 +321,8 @@
   "wooCommerceRestParametersInstructions1": "Puoi ottenere questi parametri dal pannello admin di WooCommerce",
   "wooCommerceRestParametersInstructions2": "Per istruzioni più dettagliate consulta la ",
   "wooCommerceRestParametersInstructions3": " documentazione ufficiale",
+  "wooCommerceFieldsDocs1": "Puoi copiare i nomi dei campi dalla pagina ",
+  "wooCommerceFieldsDocs2": "REST API Docs",
   "httpTimeout": "Timeout",
   "httpTimeoutDescription": "Il timeout della richiesta in millisecondi",
   "command": "Comando",

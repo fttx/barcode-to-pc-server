@@ -33,13 +33,17 @@
       </ion-row>
     </ion-item>
   </ion-grid>
-
   <ion-item text-right padding-top no-lines>
     <button ion-button small icon-start (click)="addField()" float-right color="output-block-component-woocommerce">
       <ion-icon name="add"></ion-icon>
       {{ 'addField' | translate }}
     </button>
   </ion-item>
+  <ion-item no-lines>
+    {{ 'wooCommerceFieldsDocs1' | translate }}
+    <a (click)="electronProvider.shell.openExternal('https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-product')">{{ 'wooCommerceFieldsDocs2' | translate }}</a>.
+  </ion-item>
+
   <ion-item no-wrap>
     <p no-wrap>
       {{ 'wooCommerceInjectDescription1' | translate }} <br>

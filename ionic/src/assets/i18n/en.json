@@ -324,6 +324,8 @@
   "wooCommerceRestParametersInstructions1": "You can find these parameters in your WooCommerce admin panel.",
   "wooCommerceRestParametersInstructions2": "See the ",
   "wooCommerceRestParametersInstructions3": "official instructions",
+  "wooCommerceFieldsDocs1": "You can copy the field names from the ",
+  "wooCommerceFieldsDocs2": "REST API Docs",
   "httpTimeout": "Timeout",
   "httpTimeoutDescription": "The request timeout in milliseconds",
   "command": "Command",
