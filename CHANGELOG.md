@@ -16,12 +16,30 @@
 ### Security
 -->
 
+## [v3.19.0] - 2022-03-19
+
+### Added
+
+- HTTP OAuth 2.0 support
+- WOOCOMMERCE Component
+- Option to allow template selection
+- Scan Session name filter
+- Option to disable Real-Time send from the smartphone
+- Improve variables injection
+
+### Changed
+
+- Improve Settings Page UI
+
+### Fixed
+
+- Prevent accidental dismission for the ALERT component
+
 ## [v3.18.2] - 2021-10-04
 
 ### Fixed
 
 - Multi-line scans
-
 
 ## [v3.18.1] - 2021-08-30
 
@@ -471,6 +489,7 @@
 
 - Included the Apple Bonjour installer
 
+[v3.19.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.2...v3.19.0
 [v3.18.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.1...v3.18.2
 [v3.18.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.0...v3.18.1
 [v3.17.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.1...v3.17.0
