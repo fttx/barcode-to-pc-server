@@ -46,6 +46,7 @@ export class Config {
     public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = Config.URL_WEBSITE + '/tutorial/how-to-create-output-templates/';
     public static URL_TUTORIAL_MACOS_ACCESSIBILITY = Config.URL_WEBSITE + '/tutorial/give-accessibility-permissions-to-barcode-to-pc/';
     public static URL_TUTORIAL_HTTP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-http-output-component/';
+    public static URL_TUTORIAL_WOOCOMMERCE = Config.URL_WEBSITE + '/tutorial/organize-your-woocommerce-store-using-barcodes/';
 
     public static URL_PAIR = 'http://app.barcodetopc.com';
 
