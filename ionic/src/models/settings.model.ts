@@ -1,4 +1,3 @@
-import * as os from 'os';
 import { OutputBlockModel } from './output-block.model';
 import { OutputProfileModel } from './output-profile.model';
 
@@ -10,6 +9,7 @@ import { OutputProfileModel } from './output-profile.model';
  * properly.
  */
 export class SettingsModel {
+    constructor(private os: string) { }
     enableRealtimeStrokes: boolean = true;
     enableOpenInBrowser: boolean = false;
     /**
@@ -30,7 +30,7 @@ export class SettingsModel {
             ]
         },
     ];
-    newLineCharacter: string = os.release().toLowerCase().indexOf('windows') == -1 ? 'LF' : 'CRLF';
+    newLineCharacter: string = (this.os.indexOf('windows') == -1) ? 'LF' : 'CRLF';
     csvDelimiter: string = ",";
     exportOnlyText: boolean = true;
     enableQuotes: boolean = false;

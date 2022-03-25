@@ -5,12 +5,10 @@
             "type": "node",
             "request": "launch",
             "name": "Electron: Main",
-            "protocol": "inspector",
-            "outputCapture": "std",
             "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
             "runtimeArgs": [
                 "--remote-debugging-port=9223",
-                "./dist/electron/src/main.js",
+                ".",
                 "--dev"
             ],
             "windows": {
@@ -23,8 +21,7 @@
             "request": "attach",
             "port": 9223,
             "webRoot": "${workspaceFolder}",
-            "timeout": 3000,
-            "url":"http://localhost:8200/",
+            "timeout": 30000
         }
     ],
     "compounds": [

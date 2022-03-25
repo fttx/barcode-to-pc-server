@@ -5,14 +5,14 @@ import * as network from 'network';
 import * as os from 'os';
 import { Handler } from 'src/models/handler.model';
 import * as WebSocket from 'ws';
-import { requestModel, requestModelHelo } from '../../../ionic/src/models/request.model';
+import { requestModel, requestModelHelo } from '../models/ionic/request.model';
 import {
     responseModel, responseModelHelo,
     responseModelKick,
     responseModelPong,
     responseModelUpdateSettings
-} from '../../../ionic/src/models/response.model';
-import { SettingsModel } from '../../../ionic/src/models/settings.model';
+} from '../models/ionic/response.model';
+import { SettingsModel } from '../models/ionic/settings.model';
 import { Config } from '../config';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';

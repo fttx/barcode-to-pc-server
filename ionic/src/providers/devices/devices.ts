@@ -24,7 +24,7 @@ export class DevicesProvider {
     private ngZone: NgZone,
     private electronProvider: ElectronProvider,
   ) {
-    if (this.electronProvider.isElectron()) {
+    if (ElectronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
         this.ngZone.run(() => {
           this.addDevice(new DeviceModel(request.deviceId, request.deviceName, new SemVer(request.version), true));

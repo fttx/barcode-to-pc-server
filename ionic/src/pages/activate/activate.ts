@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import ElectronStore from 'electron-store';
 import { Events, ViewController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -17,7 +16,6 @@ export class ActivatePage {
   public numberComponent = 'No';
   public appendToCSV = 'No';
 
-  private store: ElectronStore;
 
   constructor(
     private electronProvider: ElectronProvider,
@@ -27,7 +25,6 @@ export class ActivatePage {
     public utils: UtilsProvider,
     public translateService: TranslateService,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
     this.serial = this.licenseProvider.serial;
   }
 
@@ -75,11 +72,11 @@ export class ActivatePage {
     if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
       return this.translateService.instant('featureUnlimited');
     }
-    return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
+    return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
   }
 
   getNextChargeDate() {
-    return new Date(this.store.get(Config.STORAGE_NEXT_CHARGE_DATE, 0)).toLocaleDateString();
+    return new Date(this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE, 0)).toLocaleDateString();
   }
 
   contactSupportClick() {

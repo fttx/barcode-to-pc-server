@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { ElectronProvider } from '../../providers/electron/electron';
-import ElectronStore from 'electron-store';
 
 /**
  * Generates a box in the bottom-right side of the screen.
@@ -20,12 +19,10 @@ export class NotificationComponent {
 
   public hidden = true;
 
-  private store: ElectronStore;
 
   constructor(
     private electronProvider: ElectronProvider,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
   }
 
   ngOnInit() {
@@ -35,7 +32,7 @@ export class NotificationComponent {
       }, this.hideAfter)
     }
 
-    let alreadyViewed = this.store.get(this.getStoreShownKey(), false);
+    let alreadyViewed = this.electronProvider.store.get(this.getStoreShownKey(), false);
     if (!alreadyViewed) {
       this.show();
     }
@@ -47,7 +44,7 @@ export class NotificationComponent {
 
   hide() {
     this.hidden = true;
-    this.store.set(this.getStoreShownKey(), true);
+    this.electronProvider.store.set(this.getStoreShownKey(), true);
   }
 
   onCtaClick() {

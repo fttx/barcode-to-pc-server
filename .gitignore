@@ -1,8 +1,12 @@
 # electron
 /electron/dist
+/electron/bin
+/electron/www
 /electron/app
 /electron/node_modules
-
+/electron/src/models/ionic
+/electrib/src/config.ts
+/electron/*.log
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output

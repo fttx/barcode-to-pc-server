@@ -1,8 +1,7 @@
 import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import ElectronStore from 'electron-store';
 import { NavController, NavParams, ViewController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -23,7 +22,6 @@ export class InfoPage {
   public updateStatus: ('checkingForUpdate' | 'updateAvailable' | 'updateNotAvailable' |
     'updateError' | 'updateDownloaded') = 'updateNotAvailable';
   public settings: SettingsModel; // required for the toggle ngModel to work
-  private store: ElectronStore;
   private _lastUpdateCheck = '';
 
 
@@ -36,12 +34,11 @@ export class InfoPage {
     public utils: UtilsProvider,
     private translateService: TranslateService,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad InfoPage');
-    this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
 
     // the main process communicates the status of the update to the renderer process
     this.electronProvider.ipcRenderer.on('onUpdateStatusChange', (e, updateStatus) => {
@@ -62,9 +59,9 @@ export class InfoPage {
 
   // ion-toggle event
   onAutoUpdateChange(event) {
-    this.store.set(Config.STORAGE_SETTINGS, this.settings);
+    this.electronProvider.store.set(Config.STORAGE_SETTINGS, this.settings);
     // notify the main process that the settings changed
-    if (this.electronProvider.isElectron()) {
+    if (ElectronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.send('settings');
     }
   }
@@ -80,8 +77,8 @@ export class InfoPage {
   getVersion() {
     if (this.electronProvider.isDev()) {
       return '(DEV MODE)'
-    } else if (this.electronProvider.isElectron()) {
-      return this.electronProvider.app.getVersion();
+    } else if (ElectronProvider.isElectron()) {
+      return this.electronProvider.appGetVersion();
     } else {
       return '(BROWSER MODE)'
     }

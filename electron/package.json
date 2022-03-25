@@ -10,30 +10,29 @@
   "license": "MIT",
   "author": {
     "name": "Filippo Tortomasi",
-    "email": "filippo.tortomasi@gmail.com.com",
+    "email": "filippo.tortomasi@gmail.com",
     "url": "https://github.com/fttx"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/fttx/barcode-to-pc-server.git"
   },
-  "main": "electron/src/main.js",
+  "main": "bin/main.js",
   "scripts": {
-    "postinstall": "electron-builder install-app-deps",
-    "start": "npx gulp --cwd ./ionic/ serve",
-    "test": "npx gulp --cwd ./ionic/ test",
-    "dist": "npx gulp --cwd ./ionic/ dist",
-    "build": "npx gulp --cwd ./ionic/ build",
-    "publish": "npx gulp --cwd ./ionic/ publish",
+    "start": "gulp start",
+    "build": "gulp build",
+    "publish": "gulp publish",
     "tsc": "tsc",
-    "mocha": "mocha",
-    "tsc:electron": "tsc -p electron/tsconfig.json",
-    "tsc:watch-electron": "tsc -w -p electron/tsconfig.json",
-    "electron:dev": "npx electron dist/electron/src/main.js --dev",
-    "ionic:build": "cd ionic && npx ionic cordova build browser --prod"
+    "electron": "electron .",
+    "postinstall": "electron-builder install-app-deps && gulp prepare"
   },
   "private": true,
   "build": {
+    "files": [
+      "!./**/*",
+      "!.env",
+      "!src"
+    ],
     "compression": "maximum",
     "appId": "com.barcodetopc.server",
     "fileAssociations": [
@@ -54,12 +53,37 @@
       "extendInfo": {
         "LSUIElement": 1
       },
-      "asarUnpack": [
-        "read-darkmode"
-      ]
+      "target": [
+        {
+          "target": "default",
+          "arch": [
+            "arm64",
+            "x64"
+          ]
+        }
+      ],
+      "icon": "electron-resources/icon.icns"
     },
     "dmg": {
-      "sign": false
+      "icon": "electron-resources/dmg-icon.icns",
+      "background": "electron-resources/background.tiff",
+      "sign": false,
+      "contents": [
+        {
+          "x": 127,
+          "y": 250
+        },
+        {
+          "x": 404,
+          "y": 250,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ],
+      "window": {
+        "width": 542,
+        "height": 430
+      }
     },
     "win": {
       "certificateSha1": "EDEB0B36E791F01F813F36B92EA335C860AC3838",
@@ -72,7 +96,7 @@
           ]
         }
       ],
-      "icon": "build/icon.ico"
+      "icon": "electron-resources/icon.ico"
     },
     "linux": {
       "target": "AppImage",
@@ -87,28 +111,29 @@
     "nsisWeb": {
       "oneClick": false,
       "perMachine": true,
-      "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
+      "installerSidebar": "electron-resources/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
       "shortcutName": "Barcode to PC server",
       "artifactName": "${name}.v${version}.${os}.setup.${ext}"
     }
   },
   "dependencies": {
+    "@electron/remote": "^2.0.8",
+    "@types/gulp": "^4.0.9",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
-    "axios": "^0.19.0",
-    "axios-oauth-1.0a": "^0.3.1",
+    "axios": "^0.26.1",
+    "axios-oauth-1.0a": "^0.3.4",
     "bonjour": "^3.5.0",
     "csv-parse": "^4.10.1",
     "csv-stringify": "^5.6.2",
-    "electron-store": "^2.0.0",
-    "electron-updater": "^4.0.6",
+    "electron-store": "^8.0.1",
+    "electron-updater": "^5.0.0",
     "https": "^1.0.0",
-    "install": "^0.12.1",
     "mdns": "^2.5.1",
     "network": "^0.4.1",
     "node-machine-id": "^1.1.12",
     "papaparse": "^4.4.0",
     "requirejs": "^2.3.5",
-    "robotjs": "^0.5.1",
+    "robotjs": "^0.6.0",
     "rxjs": "^5.5.6",
     "semver": "^5.7.1",
     "supplant": "^0.2.0",
@@ -117,21 +142,22 @@
     "ws": "^4.1.0"
   },
   "devDependencies": {
-    "@types/bonjour": "^3.5.5",
-    "@types/electron-store": "^1.3.0",
-    "@types/mdns": "0.0.33",
-    "@types/semver": "^5.5.0",
-    "@types/uuid": "^8.0.0",
-    "@types/woocommerce__woocommerce-rest-api": "^1.0.2",
-    "electron": "4.0.3",
-    "electron-builder": "^21.2.0",
-    "electron-log": "^3.0.0",
-    "electron-notarize": "^0.2.1",
-    "gulp": "^3.9.1",
+    "electron": "^14.2.7",
+    "electron-builder": "^23.0.2",
+    "electron-notarize": "^1.1.1",
+    "fs-extra": "^10.0.1",
+    "fttx-gulp-github-release": "^1.2.1",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-rm": "^2.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-spawn": "^1.0.0",
+    "gulp-zip": "^5.1.0",
     "iconv-lite": "^0.5.1",
     "mocha": "^5.2.0",
     "npx": "^10.2.0",
     "spectron": "^3.8.0",
-    "typescript": "^3.1.3"
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.2"
   }
 }

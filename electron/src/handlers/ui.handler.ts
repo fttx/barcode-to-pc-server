@@ -1,15 +1,26 @@
-import { execFileSync } from 'child_process';
-import { app, BrowserWindow, Menu, MenuItemConstructorOptions, nativeImage, systemPreferences, Tray } from 'electron';
-import { autoUpdater } from 'electron-updater';
+import { app, BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItemConstructorOptions, nativeImage, nativeTheme, systemPreferences, Tray } from 'electron';
 import * as http from 'http';
 import * as _path from 'path';
 import * as WebSocket from 'ws';
 import { Config } from '../config';
+import { Utils } from '../utils'
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 
 
 export class UiHandler implements Handler {
+    public static WINDOW_OPTIONS: BrowserWindowConstructorOptions = {
+        width: 1024, height: 768,
+        minWidth: 800, minHeight: 600,
+        title: Config.APP_NAME,
+        webPreferences: {
+            preload: _path.join(__dirname, '../preload.js'),
+            contextIsolation: true,
+            nodeIntegration: true,
+            nativeWindowOpen: false,
+        }
+    };
+
     public tray: Tray = null;
     // Keep a global reference of the window object, if you don't, the window
     // will be closed automatically when the JavaScript object is garbage
@@ -31,8 +42,6 @@ export class UiHandler implements Handler {
 
     // Used to trigger the automatic window minimization only on the first launch
     static IsFirstInstanceLaunch = true;
-
-    private isSettingsReady = false;
 
     private static instance: UiHandler;
     private constructor(settingsHandler: SettingsHandler,) {
@@ -85,15 +94,11 @@ export class UiHandler implements Handler {
                 credits: Config.AUTHOR,
             });
         }
-        if (process.platform == 'darwin') {
-            systemPreferences.subscribeNotification('AppleInterfaceThemeChangedNotification', () => { this.updateTray(true); })
-        }
     }
 
     // Waits for the settings to be read and the 'ready' event to be sent
     public onSettingsReady() {
         this.autoMinimize();
-        this.isSettingsReady = true;
     }
 
     static getInstance(settingsHandler: SettingsHandler) {
@@ -103,36 +108,8 @@ export class UiHandler implements Handler {
         return UiHandler.instance;
     }
 
-    private setMacOSTray() {
-        let black = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/icon.png'));
-        let white = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/iconHighlight.png'));
-        // systemPreferences.isDarkMode() is not reilable with electron@4.0.3
-        // For this reason we use an external executable to check the settings
-        // See: https://github.com/fttx/read-darkmode
-        let readDarkModeExecutable = _path.join(__dirname, '/../../../read-darkmode').replace('app.asar', 'app.asar.unpacked');
-        let result = 'light';
-        try {
-            result = execFileSync(readDarkModeExecutable).toString().trim();
-            console.log('read-darkmode: ' + result);
-        } catch (e) {
-            console.log('read-darkmode: ' + e);
-        }
-
-        if (result == 'dark') {
-            if (this.tray == null) this.tray = new Tray(white);
-            // Always update the icon image: we don't know if it's the first
-            // time that setMacOSTray() is called.
-            this.tray.setImage(white);
-        } else {
-            if (this.tray == null) this.tray = new Tray(black);
-            this.tray.setImage(black);
-        }
-        this.tray.setPressedImage(white);
-    }
-
-    private updateTray(forceMacOSUpdate = false) {
+    private updateTray() {
         if (this.settingsHandler.enableTray) {
-            if (forceMacOSUpdate) this.setMacOSTray();
             if (this.tray == null) {
                 let menuItems: MenuItemConstructorOptions[] = [
                     // { label: 'Enable realtime ', type: 'radio', checked: false },
@@ -145,7 +122,9 @@ export class UiHandler implements Handler {
                 ];
                 if (process.platform == 'darwin') {
                     // macOS
-                    this.setMacOSTray();
+                    const icon = nativeImage.createFromPath(_path.join(__dirname, '/../assets/tray/macos/icon.png'));
+                    icon.setTemplateImage(true)
+                    this.tray = new Tray(icon);
                     menuItems.unshift({ label: 'Hide', role: 'hide' });
                     menuItems.unshift({ label: 'Show', click: () => { this.bringWindowUp(); } });
                 } else if (process.platform.indexOf('win') != -1) {
@@ -159,8 +138,9 @@ export class UiHandler implements Handler {
                 }
 
                 this.tray.on('click', (event, bounds) => {
-                    this.mainWindow.isVisible() ? this.mainWindow.hide() : this.mainWindow.show()
+                    if (process.platform != 'darwin') this.mainWindow.isVisible() ? this.mainWindow.hide() : this.mainWindow.show()
                 });
+
                 const contextMenu = Menu.buildFromTemplate(menuItems);
                 this.tray.setContextMenu(contextMenu); // https://github.com/electron/electron/blob/master/docs/api/tray.md
                 this.tray.setToolTip(app.getName() + ' is running');
@@ -210,27 +190,23 @@ export class UiHandler implements Handler {
     }
 
     private createWindow() {
-        this.mainWindow = new BrowserWindow(Config.WINDOW_OPTIONS);
-        if (Config.IS_DEV_MODE) {
+        this.mainWindow = new BrowserWindow(UiHandler.WINDOW_OPTIONS);
+        require("@electron/remote/main").enable(this.mainWindow.webContents)
+        if (Utils.IsDev()) {
             console.log('dev mode on')
             this.mainWindow.webContents.on('did-fail-load', () => {
+                this.mainWindow.webContents.executeJavaScript(`document.write('Building Ionic project, please wait...')`);
                 setTimeout(() => this.mainWindow.reload(), 2000);
             })
             this.mainWindow.loadURL('http://localhost:8200/');
             this.mainWindow.webContents.openDevTools();
-            const log = require("electron-log")
-            log.transports.file.level = "info"
-            autoUpdater.logger = log
-        } else if (Config.IS_TEST_MODE) {
-            console.log('test mode on')
-            this.mainWindow.webContents.on('did-fail-load', () => {
-                setTimeout(() => this.mainWindow.reload(), 2000);
-            })
-            this.mainWindow.webContents.openDevTools();
-            this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
+            // const log = require("electron-log")
+            // log.transports.file.level = "info"
+            // autoUpdater.logger = log
         } else {
-            //console.log(__dirname) // /Users/filippo/Desktop/PROJECTS/barcode-to-pc-server-ionic/dist/electron/src/handlers
-            this.mainWindow.loadURL(_path.join('file://', __dirname, '../../../ionic/www/index.html'));
+            require("@electron/remote/main").enable(this.mainWindow.webContents);
+            this.mainWindow.loadURL(_path.join('file://', __dirname, '../www/index.html'));
+            this.mainWindow.webContents.openDevTools();
         }
 
         if (process.platform === 'darwin') {
@@ -243,7 +219,7 @@ export class UiHandler implements Handler {
                         { role: 'services', submenu: [] },
                         { type: 'separator' },
                         { role: 'hide' },
-                        { role: 'hideothers' },
+                        { role: 'hideOthers' },
                         { role: 'unhide' },
                         { type: 'separator' },
                         {
@@ -276,9 +252,9 @@ export class UiHandler implements Handler {
                 {
                     label: 'View',
                     submenu: [
-                        { role: 'resetzoom' },
-                        { role: 'zoomin' },
-                        { role: 'zoomout' },
+                        { role: 'resetZoom' },
+                        { role: 'zoomIn' },
+                        { role: 'zoomOut' },
                         { type: 'separator' },
                         { role: 'togglefullscreen' }
                     ]
@@ -343,14 +319,6 @@ export class UiHandler implements Handler {
             // app.quit();
         })
 
-        // On Big Sur the tray icon color can change also when the desktop background is changed
-        // regardless of the darkmode settings.
-        // Since we don't have access to such notification on electron v4, we temporarely
-        // fix this way:
-        const forceTrayIconRefresh = () => { if (process.platform == 'darwin' && this.isSettingsReady) this.updateTray(true); }
-        this.mainWindow.on('moved', () => { forceTrayIconRefresh();});
-        this.mainWindow.on('focus', () => { forceTrayIconRefresh();});
-
         if (this.mainWindow.isVisible()) {
             if (app.dock != null) {
                 app.dock.show();
@@ -360,7 +328,7 @@ export class UiHandler implements Handler {
         const selectionMenu = Menu.buildFromTemplate([
             { role: 'copy' },
             { type: 'separator' },
-            { role: 'selectall' },
+            { role: 'selectAll' },
         ]);
 
         const inputMenu = Menu.buildFromTemplate([
@@ -368,7 +336,7 @@ export class UiHandler implements Handler {
             { role: 'copy' },
             { role: 'paste' },
             { type: 'separator' },
-            { role: 'selectall' },
+            { role: 'selectAll' },
         ])
 
         this.mainWindow.webContents.on('context-menu', (e, props) => {

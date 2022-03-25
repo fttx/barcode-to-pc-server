@@ -1,5 +1,4 @@
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import ElectronStore from 'electron-store';
 import { Alert, AlertButton, AlertController, Events, Navbar, NavController, NavParams } from 'ionic-angular';
 import moment from 'moment';
 import { DragulaService } from "ng2-dragula";
@@ -8,7 +7,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { interval } from 'rxjs/observable/interval';
 import { tap, throttle } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
 import { SettingsModel } from '../../models/settings.model';
@@ -31,11 +30,10 @@ export class SettingsPage implements OnInit, OnDestroy {
   @ViewChild(Navbar) navBar: Navbar;
 
   public unsavedSettingsAlert: Alert;
-  public settings: SettingsModel = new SettingsModel();
+  public settings: SettingsModel = new SettingsModel(UtilsProvider.GetOS());
   public availableOutputBlocks: OutputBlockModel[] = this.getAvailableOutputBlocks();
 
   private lastSavedSettings: string;
-  private store: ElectronStore;
 
   public selectedOutputProfile = 0;
   static MAX_SCAN_SESSION_NUMBER_UNLIMITED = 2000; // Update also SettingsModel.maxScanSessionsNumber
@@ -120,7 +118,6 @@ export class SettingsPage implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private utils: UtilsProvider,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
     this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
       copy: (el, source) => {
@@ -158,7 +155,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   ionViewDidLoad() {
-    this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
     this.lastSavedSettings = JSON.stringify(this.settings);
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.goBack();
@@ -180,7 +177,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       }, {
         text: await this.utils.text('restoreDefaultSettingsDialogRestoreButton'), handler: (opts) => {
           localStorage.setItem('woocommerce_parameters', null);
-          this.settings = new SettingsModel();
+          this.settings = new SettingsModel(UtilsProvider.GetOS());
           this.apply();
         }
       }]
@@ -203,15 +200,15 @@ export class SettingsPage implements OnInit, OnDestroy {
       return false;
     }
 
-    this.store.set(Config.STORAGE_SETTINGS, this.settings);
-    if (this.electronProvider.isElectron()) {
-      this.electronProvider.app.setLoginItemSettings({
+    this.electronProvider.store.set(Config.STORAGE_SETTINGS, this.settings);
+    if (ElectronProvider.isElectron()) {
+      this.electronProvider.appSetLoginItemSettings({
         openAtLogin: (this.settings.openAutomatically == 'yes' || this.settings.openAutomatically == 'minimized'),
         openAsHidden: this.settings.openAutomatically == 'minimized'
       })
     }
     this.lastSavedSettings = JSON.stringify(this.settings);
-    if (this.electronProvider.isElectron()) {
+    if (ElectronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.send('settings');
     }
 
@@ -270,9 +267,9 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   async onExportOutputTemplateClick() {
     let outputProfile = this.settings.outputProfiles[this.selectedOutputProfile];
-    outputProfile.version = this.electronProvider.app.getVersion()
+    outputProfile.version = this.electronProvider.appGetVersion()
 
-    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+    const filePath = this.electronProvider.showSaveDialogSync({
       title: await this.utils.text('saveDialogTitle'),
       defaultPath: outputProfile.name + '.btpt',
       buttonLabel: await this.utils.text('saveDialogSaveButton'),
@@ -281,18 +278,17 @@ export class SettingsPage implements OnInit, OnDestroy {
           "appName": Config.APP_NAME,
         }), extensions: ['btpt',]
       }],
-    }, (filename, bookmark) => {
-      if (!filename) return;
-      const fs = this.electronProvider.remote.require('fs');
-      fs.writeFileSync(filename, JSON.stringify(outputProfile), 'utf-8');
     });
+
+    if (!filePath) return;
+    this.electronProvider.fsWriteFileSync(filePath, JSON.stringify(outputProfile), 'utf-8');
   }
 
   async onImportOutputTemplateClick() {
-    let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
+    let filePaths = this.electronProvider.showOpenDialogSync({
       title: await this.utils.text('importDialogTitle'),
       buttonLabel: await this.utils.text('importDialogSelectButton'),
-      defaultPath: this.electronProvider.app.getPath('desktop'),
+      defaultPath: this.electronProvider.appGetPath('desktop'),
       filters: [{
         name: await this.utils.text('saveDialogFilterName', {
           "appName": Config.APP_NAME,
@@ -303,11 +299,21 @@ export class SettingsPage implements OnInit, OnDestroy {
 
     if (!filePaths || !filePaths[0]) return;
 
-    const fs = this.electronProvider.remote.require('fs');
-    fs.readFile(filePaths[0], 'utf-8', (err, data) => {
-      if (err) return console.log(err);
+    // almost duplicate code on app.component.ts
+    try {
+      const data = this.electronProvider.fsReadFileSync(filePaths[0], { encoding: 'utf-8' });
       this.addOutputTemplate(JSON.parse(data));
-    });
+    } catch {
+      const path = this.electronProvider.path;
+      this.alertCtrl.create({
+        title: await this.utils.text('openFileErrorDialogTitle'),
+        message: await this.utils.text('openFileErrorDialogMessage', {
+          "path": path.basename(filePaths[0]),
+        }),
+        buttons: [{ text: await this.utils.text('openFileErrorDialogOkButton'), role: 'cancel', }]
+      }).present();
+      return;
+    }
   }
 
   async onNewOutputTemplateClick() {
@@ -331,7 +337,7 @@ export class SettingsPage implements OnInit, OnDestroy {
           let outputTemplate: OutputProfileModel = {
             name: newTemplateName,
             version: null,
-            outputBlocks: new SettingsModel().outputProfiles[0].outputBlocks
+            outputBlocks: new SettingsModel(UtilsProvider.GetOS()).outputProfiles[0].outputBlocks
           };
           this.addOutputTemplate(outputTemplate)
         }
@@ -378,10 +384,10 @@ export class SettingsPage implements OnInit, OnDestroy {
   async onSelectCSVPathClick() {
     let defaultPath = this.settings.csvPath;
     if (!defaultPath) {
-      defaultPath = this.electronProvider.app.getPath('desktop')
+      defaultPath = this.electronProvider.appGetPath('desktop')
     }
 
-    let filePaths = this.electronProvider.dialog.showOpenDialog(this.electronProvider.remote.getCurrentWindow(), {
+    let filePaths = this.electronProvider.showOpenDialogSync({
       title: await this.utils.text('selectCSVPathDialog'),
       buttonLabel: await this.utils.text('selectCSVSelectButton'),
       defaultPath: defaultPath,
@@ -429,7 +435,7 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   onOpenAutomaticallyChange() {
-    if (this.settings.openAutomatically == 'minimized' && this.electronProvider.process.platform === 'darwin') {
+    if (this.settings.openAutomatically == 'minimized' && this.electronProvider.processPlatform === 'darwin') {
       this.settings.enableTray = true;
     }
   }

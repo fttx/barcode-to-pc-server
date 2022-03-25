@@ -1,7 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { NavController, Slides, ViewController } from 'ionic-angular';
-import * as os from 'os';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
 
@@ -50,7 +49,7 @@ export class WelcomeHelpPage {
   }
 
   isWindows() {
-    return os.release().toLowerCase().indexOf('windows') != -1;
+    return UtilsProvider.GetOS().indexOf('windows') != -1;
   }
 
   onFirewallHelpClick() {

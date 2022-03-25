@@ -1,8 +1,6 @@
 import { Component, HostListener, NgZone, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions, Content, Events, ModalController, NavController, NavParams, Popover, PopoverController, Searchbar, ViewController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelClearScanSessions, requestModelDeleteScan, requestModelDeleteScanSessions, requestModelHelo, requestModelPutScanSessions, requestModelUndoInfiniteLoop, requestModelUpdateScanSession } from '../../models/request.model';
 import { ScanSessionModel } from '../../models/scan-session.model';
@@ -17,6 +15,7 @@ import { ActivatePage } from '../activate/activate';
 import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
 import { throttle } from 'helpful-decorators';
+import { Config } from '../../config';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -33,7 +32,6 @@ export class HomePage {
   @ViewChild('searchbar') searchbar: Searchbar;
 
   private connectedClientPopover: Popover = null;
-  private store: ElectronStore;
   private saveDebounceTimeout = null;
   private noBounces = 0;
   private accessibilityAlert: Alert;
@@ -55,7 +53,6 @@ export class HomePage {
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
-    this.store = new this.electronProvider.ElectronStore();
 
     this.events.subscribe('delete:scanSession', (scanSession) => {
       var index = this.scanSessions.indexOf(scanSession);
@@ -100,7 +97,7 @@ export class HomePage {
         this.animateLast = !!this.animateLast
         setTimeout(() => this.animateLast = false, 1200);
       })
-      this.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
+      this.electronProvider.store.set(Config.STORAGE_SCAN_SESSIONS, this.scanSessions);
       this.noBounces = 0;
     }
 
@@ -150,18 +147,18 @@ export class HomePage {
 
   ionViewDidEnter() {
     // Always refresh settings
-    this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
   }
 
   ionViewDidLoad() {
-    if (!this.settings) this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    if (!this.settings) this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
 
     this.title.setTitle(Config.APP_NAME);
-    this.scanSessions = JSON.parse(JSON.stringify(this.store.get(Config.STORAGE_SCAN_SESSIONS, [])));
+    this.scanSessions = JSON.parse(JSON.stringify(this.electronProvider.store.get(Config.STORAGE_SCAN_SESSIONS, [])));
 
     // If the app isn't package inside electron it will never
     // receive these events, so i won't subscribe to them
-    if (!this.electronProvider.isElectron()) {
+    if (!ElectronProvider.isElectron()) {
       return;
     }
 
@@ -532,7 +529,6 @@ export class ConnectedClientsPopover {
 })
 export class ScanSessionContextMenuPopover {
   private scanSession: ScanSessionModel;
-  private store: ElectronStore;
 
   constructor(
     public viewCtrl: ViewController,
@@ -542,7 +538,6 @@ export class ScanSessionContextMenuPopover {
     private alertCtrl: AlertController,
     private utils: UtilsProvider,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
     this.scanSession = this.navParams.get('scanSession');
   }
 
@@ -552,7 +547,7 @@ export class ScanSessionContextMenuPopover {
 
   async exportAsCSV(index) {
     this.close()
-    let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+    let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
     let newLineCharacter = settings.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
     let rows = ScanModel.ToCSV(
       JSON.parse(JSON.stringify(this.scanSession.scannings)).reverse(),
@@ -562,16 +557,16 @@ export class ScanSessionContextMenuPopover {
       newLineCharacter
     );
 
-    this.electronProvider.dialog.showSaveDialog(this.electronProvider.remote.getCurrentWindow(), {
+    const filePath = this.electronProvider.showSaveDialogSync({
       title: await this.utils.text('exportAsCSVSaveDialogTitle'),
       defaultPath: this.scanSession.name + ".csv",
       buttonLabel: await this.utils.text('exportAsCSVSaveDialogSave'),
       filters: [{ name: 'CSV File', extensions: ['csv', 'txt'] }],
-    }, (filename, bookmark) => {
-      if (!filename) return;
-      const fs = this.electronProvider.remote.require('fs');
-      fs.writeFileSync(filename, rows, 'utf-8');
+      properties: ["createDirectory", "showOverwriteConfirmation",]
     });
+
+    if (!filePath) return;
+    this.electronProvider.fsWriteFileSync(filePath, rows, 'utf-8');
   }
 
   delete() {

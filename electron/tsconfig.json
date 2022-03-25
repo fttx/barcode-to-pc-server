@@ -1,18 +1,21 @@
 {
     "compileOnSave": false,
+    "allowSyntheticDefaultImports": true,
     "compilerOptions": {
-      "outDir": "../dist/",
+      "experimentalDecorators": true,
+      "outDir": "bin/",
       "baseUrl": ".",
       "sourceMap": true,
-      "moduleResolution": "Node",
-      "target": "es5", // es6 uses import wich is not supported by the node version included in electron -> use babel
+      "target": "es6",
+      "module": "commonjs",
       "lib": [
         "es2017",
-        "dom"
-      ]
+        "dom",
+      ],
     },
     "files": [
-      "./src/main.ts"
+      "./src/main.ts",
+      "./src/preload.ts",
     ],
     "exclude": [
       "ionic",

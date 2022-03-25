@@ -1,89 +1,111 @@
 import { Injectable } from '@angular/core';
-import { ipcRenderer, Menu, MenuItem, remote, shell } from 'electron';
-import ElectronStore from 'electron-store';
 import * as v4 from 'uuid/v4';
 
 declare var window: any;
-// If you import a module but never use any of the imported values other than as TypeScript types,
-// the resulting javascript file will look as if you never imported the module at all.
 
-
-/*
- https://electronjs.org/docs/api/remote
-*/
 @Injectable()
 export class ElectronProvider {
   public uuid = 'default-uuid';
 
-  ipcRenderer: typeof ipcRenderer;
-  dialog: typeof remote.dialog;
-  app: typeof remote.app;
-  shell: typeof shell;
-  process: typeof process;
-  remote: typeof remote;
-  menu: typeof Menu;
-  menuItem: typeof MenuItem;
-  ElectronStore: typeof ElectronStore;
-  nodeMachineId;
-  v4: typeof v4;
+  ipcRenderer: any;
+  showSaveDialogSync: any;
+  showMessageBoxSync: any;
+  showOpenDialogSync: any;
+  appGetVersion: any;
+  shell: any;
+  menu: any;
+  menuItem: any;
+  store: any;
+  nodeMachineId: any;
+  v4: any;
+  processArgv: any;
+  fsWriteFileSync: any;
+  fsReadFileSync: any;
+  path: any;
+  systemPreferences: any;
+  systemPreferencesIsTrustedAccessibilityClient: any;
+  os: any;
+  appGetLoginItemSettings: any;
+  appSetLoginItemSettings: any;
+  appGetPath: any;
+  processPlatform: any;
 
   constructor(
   ) {
-    // console.log('test')
-    if (this.isElectron()) {
-      let electron = window.require('electron');
-
-      this.ipcRenderer = electron.ipcRenderer;
-      this.dialog = electron.remote.dialog;
-      this.app = electron.remote.app;
-      this.shell = electron.shell;
-      this.process = electron.remote.process;
-      this.remote = electron.remote;
-      this.menu = electron.remote.Menu;
-      this.menuItem = electron.remote.MenuItem;
-      this.ElectronStore = electron.remote.require('electron-store');
-      this.nodeMachineId = electron.remote.require('node-machine-id');
+    if (ElectronProvider.isElectron()) {
+      // preload
+      this.showSaveDialogSync = window.preload.showSaveDialogSync;
+      this.showMessageBoxSync = window.preload.showMessageBoxSync;
+      this.showOpenDialogSync = window.preload.showOpenDialogSync;
+      this.shell = window.preload.shell;
+      this.menu = window.preload.Menu;
+      this.menuItem = window.preload.MenuItem;
+      this.ipcRenderer = window.preload.ipcRenderer;
+      this.store = window.preload.store;
+      this.nodeMachineId = window.preload.nodeMachineId;
+      this.processArgv = window.preload.processArgv;
+      this.fsWriteFileSync = window.preload.fsWriteFileSync;
+      this.fsReadFileSync = window.preload.fsReadFileSync;
+      this.path = window.preload.path;
+      this.systemPreferences = window.preload.systemPreferences;
+      this.systemPreferencesIsTrustedAccessibilityClient = window.preload.systemPreferencesIsTrustedAccessibilityClient;
+      this.os = window.preload.os;
+      this.appGetVersion = window.preload.appGetVersion;
+      this.appGetLoginItemSettings = window.preload.appGetLoginItemSettings;
+      this.appSetLoginItemSettings = window.preload.appSetLoginItemSettings;
+      this.appGetPath = window.preload.appGetPath;
+      this.processPlatform = window.preload.processPlatform;
 
       // Duplicated code on the settings.handler.ts file
       try {
         this.uuid = this.nodeMachineId.machineIdSync();
       } catch {
         // Generate a one-time random UUID and save it
-        let store = new this.ElectronStore();
-        let uuid = store.get('uuid', null);
+        let uuid = this.store.get('uuid', null);
         if (uuid == null) {
-          this.v4 = electron.remote.require('uuid/v4');
+          this.v4 = window.preload.v4;
           this.uuid = v4();
-          store.set('uuid', this.uuid);
+          this.store.set('uuid', this.uuid);
         } else {
           this.uuid = uuid;
         }
       }
+    } else {
+      this.store = {};
+      this.store.get = function (key, defaultValue) {
+        return JSON.parse(window.localStorage.getItem(key)) || defaultValue;
+      }
+
+      this.store.set = function (key, value) {
+        return window.localStorage.setItem(key, JSON.stringify(value));
+      }
+
+      this.appGetVersion = function () { return '0.0.0' };
+      this.processArgv = '';
+      this.ipcRenderer = { on: (channel, listener) => { }, send: (channel, ...args) => { } };
     }
   }
 
   sendReadyToMainProcess() {
-    if (this.isElectron()) {
+    if (ElectronProvider.isElectron()) {
       this.ipcRenderer.send('pageLoad'); // send the first message from the renderer
       this.ipcRenderer.send('settings');
     }
   }
 
-  isElectron() {
-    // console.log(process)
-    return window.require; // && process.type;
+  public static isElectron() {
+    return window.preload;
   }
 
   isDev() {
-    return !this.isElectron() || (this.process && this.process.argv.indexOf('--dev') != -1);
+    return !ElectronProvider.isElectron() || (this.processArgv && this.processArgv.indexOf('--dev') != -1);
   }
 
   // Always returns true if the platform is not macOS
   checkAndOpenAccessibilitySettigns(prompt: boolean) {
-    if (!this.isElectron() || this.process.platform !== "darwin") {
+    if (!ElectronProvider.isElectron() || this.processPlatform !== "darwin") {
       return true;
     }
-    return this.remote.systemPreferences.isTrustedAccessibilityClient(prompt);
+    return this.systemPreferencesIsTrustedAccessibilityClient(prompt);
   }
-
 }

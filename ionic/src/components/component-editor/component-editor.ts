@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ViewController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';

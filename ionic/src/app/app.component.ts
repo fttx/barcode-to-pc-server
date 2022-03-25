@@ -3,11 +3,10 @@ import { Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import ElectronStore from 'electron-store';
 import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { gt, SemVer } from 'semver';
-import { Config } from '../../../electron/src/config';
+import { Config } from '../config';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
 import { SettingsPage } from '../pages/settings/settings';
@@ -20,8 +19,6 @@ import { UtilsProvider } from '../providers/utils/utils';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  private store: ElectronStore;
-
   // rootPage: any = SettingsPage;
   rootPage: any = null;
 
@@ -39,8 +36,6 @@ export class MyApp {
     public app: App,
     private translate: TranslateService,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
-
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -67,11 +62,10 @@ export class MyApp {
         }
 
         // Read the file content
-        const fs = this.electronProvider.remote.require('fs');
-        const path = this.electronProvider.remote.require('path');
+        const path = this.electronProvider.path;
         let outputTemplate;
         try {
-          outputTemplate = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+          outputTemplate = JSON.parse(this.electronProvider.fsReadFileSync(filePath, { encoding: 'utf-8' }));
         } catch {
           this.alertCtrl.create({
             title: await this.utils.text('openFileErrorDialogTitle'),
@@ -91,12 +85,12 @@ export class MyApp {
           buttons: [{
             text: await this.utils.text('importOutputTemplateDialogYesButton'),
             handler: () => {
-              let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+              let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
               // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
               settings.enableAdvancedSettings = true;
               settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
-              this.store.set(Config.STORAGE_SETTINGS, settings);
-              if (this.electronProvider.isElectron()) {
+              this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
+              if (ElectronProvider.isElectron()) {
                 this.electronProvider.ipcRenderer.send('settings');
               }
             }
@@ -114,7 +108,7 @@ export class MyApp {
         return false;
       };
 
-      window.ondrop = (e) => {
+      window.ondrop = (e: any) => {
         e.preventDefault();
         for (var i = 0; i < e.dataTransfer.files.length; ++i) {
           let path = e.dataTransfer.files[i].path;
@@ -133,14 +127,14 @@ export class MyApp {
           this.events.publish('import_btpt', argv[1])
         }
       }
-      checkArgv(this.electronProvider.process.argv);
+      checkArgv(this.electronProvider.processArgv);
       this.electronProvider.ipcRenderer.on('second-instance-open', (event, argv) => {
         checkArgv(argv)
       })
     });
 
     this.upgrade().then(() => {
-      if (this.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0) == 0) {
+      if (this.electronProvider.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0) == 0) {
         this.rootPage = WelcomePage;
       } else {
         this.rootPage = HomePage;
@@ -149,7 +143,7 @@ export class MyApp {
 
     this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
       if (devicesList.length != 0) {
-        this.store.set(Config.STORAGE_FIRST_CONNECTION_DATE, new Date().getTime())
+        this.electronProvider.store.set(Config.STORAGE_FIRST_CONNECTION_DATE, new Date().getTime())
       }
     });
 
@@ -161,15 +155,15 @@ export class MyApp {
 
   upgrade() {
     return new Promise<void>(async (resolve, reject) => {
-      let lastVersion = new SemVer(this.store.get(Config.STORAGE_LAST_VERSION, '0.0.0'));
-      let currentVersion = new SemVer(this.electronProvider.app.getVersion());
+      let lastVersion = new SemVer(this.electronProvider.store.get(Config.STORAGE_LAST_VERSION, '0.0.0'));
+      let currentVersion = new SemVer(this.electronProvider.appGetVersion());
       // Given a version number MAJOR.MINOR.PATCH, increment the:
       // MAJOR version when you make incompatible API changes,
       // MINOR version when you add functionality in a backwards-compatible manner, and
       // PATCH version when you make backwards-compatible bug fixes.
       // see: https://semver.org/
       if (gt(currentVersion, lastVersion) && lastVersion.compare('0.0.0') != 0) { // update detected (the second proposition is to exclude the first start)
-        let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+        let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
 
         // Changelog alert
         // remove urls
@@ -200,8 +194,8 @@ export class MyApp {
 
         // v3.7.0 upgrade
         if (typeof settings.openAutomatically == 'undefined') {
-          let openAtLogin = this.electronProvider.app.getLoginItemSettings().openAtLogin;
-          let openAsHidden = this.electronProvider.app.getLoginItemSettings().openAsHidden;
+          let openAtLogin = this.electronProvider.appGetLoginItemSettings().openAtLogin;
+          let openAsHidden = this.electronProvider.appGetLoginItemSettings().openAsHidden;
           if (openAtLogin) {
             if (openAsHidden) {
               settings.openAutomatically = 'minimized';
@@ -360,10 +354,10 @@ export class MyApp {
 
         // Upgrade output profiles
         if (typeof settings.outputProfiles == 'undefined') {
-          settings.outputProfiles = new SettingsModel().outputProfiles;
+          settings.outputProfiles = new SettingsModel(UtilsProvider.GetOS()).outputProfiles;
           settings.outputProfiles[0].outputBlocks = settings.typedString;
 
-          let scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
+          let scanSessions = this.electronProvider.store.get(Config.STORAGE_SCAN_SESSIONS, []);
           for (let scanSession of scanSessions) {
             for (let scan of scanSession.scannings) {
               let outputBlocks = [];
@@ -375,24 +369,24 @@ export class MyApp {
               scan.outputBlocks = outputBlocks;
             }
           }
-          this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
+          this.electronProvider.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
         } // Upgrade output profiles end
 
 
         // Upgrade displayValue
         if (
           // if it's upgrading from an older version, and the upgrade was never started (null)
-          (lastVersion.compare('3.1.5') == -1 && this.store.get('upgraded_displayValue', null) == null)
+          (lastVersion.compare('3.1.5') == -1 && this.electronProvider.store.get('upgraded_displayValue', null) == null)
           || // or
           // if the update has been started, but not completed (null)
-          this.store.get('upgraded_displayValue', null) === false) {
+          this.electronProvider.store.get('upgraded_displayValue', null) === false) {
           // then
           await this.utils.upgradeDisplayValue();
         } // Upgrade displayName end
 
-        this.store.set(Config.STORAGE_SETTINGS, JSON.parse(JSON.stringify(settings)));
+        this.electronProvider.store.set(Config.STORAGE_SETTINGS, JSON.parse(JSON.stringify(settings)));
       } // on update detected end
-      this.store.set(Config.STORAGE_LAST_VERSION, currentVersion.version)
+      this.electronProvider.store.set(Config.STORAGE_LAST_VERSION, currentVersion.version)
       resolve();
 
     })

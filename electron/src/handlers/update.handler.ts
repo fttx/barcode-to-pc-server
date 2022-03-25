@@ -2,11 +2,10 @@ import { ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import * as http from 'http';
 import * as WebSocket from 'ws';
-import { SettingsModel } from '../../../ionic/src/models/settings.model';
+import { SettingsModel } from '../models/ionic/settings.model';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
-import ElectronStore = require('electron-store');
 
 /**
  * MAIN PROCESS

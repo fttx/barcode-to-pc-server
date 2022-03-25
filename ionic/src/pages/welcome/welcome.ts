@@ -1,8 +1,8 @@
 import { Component, NgZone } from '@angular/core';
 import { ModalController, NavController, NavParams } from 'ionic-angular';
+import { Config } from '../../config';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
-import { Config } from '../../../../electron/src/config';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -32,8 +32,8 @@ export class WelcomePage {
     public ngZone: NgZone,
     public modalCtrl: ModalController,
   ) {
-    if (this.electronProvider.isElectron()) {
-      this.electronProvider.ipcRenderer.once(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
+    if (ElectronProvider.isElectron()) {
+      this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
         ngZone.run(() => {
           this.navCtrl.setRoot(HomePage);
         })

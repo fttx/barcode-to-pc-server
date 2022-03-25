@@ -2,13 +2,14 @@ import { ipcMain } from 'electron';
 import * as http from 'http';
 import { ReplaySubject } from 'rxjs';
 import * as WebSocket from 'ws';
-import { OutputProfileModel } from '../../../ionic/src/models/output-profile.model';
-import { SettingsModel } from '../../../ionic/src/models/settings.model';
+import { OutputProfileModel } from '../models/ionic/output-profile.model';
+import { SettingsModel } from '../models/ionic/settings.model';
 import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import ElectronStore = require('electron-store');
 import { machineIdSync } from 'node-machine-id';
 import { v4 } from 'uuid';
+import * as os from 'os'
 
 export class SettingsHandler implements Handler {
     public onSettingsChanged: ReplaySubject<SettingsModel> = new ReplaySubject<SettingsModel>(); // triggered after the page load and on every setting change. See ElectronProvider.
@@ -21,7 +22,8 @@ export class SettingsHandler implements Handler {
         this.store = new ElectronStore();
         // this communication is needed because electronStore.onDidChange() triggers only within the same process
         ipcMain.on('settings', (event, arg) => {
-            this.settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel())
+            const settings: any = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel(os.platform().toLowerCase())) ;
+            this.settings = settings;
             this.onSettingsChanged.next(this.settings);
         });
     }
@@ -89,11 +91,12 @@ export class SettingsHandler implements Handler {
     }
 
     // Duplicated code in the electron.ts file
-    public getServerUUID() {
+    public getServerUUID(): string {
         try {
             return machineIdSync();
         } catch {
-            let uuid = this.store.get('uuid', null);
+            let uuid: any;
+            uuid = this.store.get('uuid', null);
             if (uuid == null) {
                 uuid = v4();
                 this.store.set('uuid', uuid);

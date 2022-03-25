@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import moment from 'moment';
-import { Config } from '../../../../../electron/src/config';
+import { Config } from '../../../config';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
 import { UtilsProvider } from '../../../providers/utils/utils';

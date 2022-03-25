@@ -1,10 +1,9 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import ElectronStore from 'electron-store';
 import { Alert, AlertController, AlertOptions, Events } from 'ionic-angular';
 import { interval } from 'rxjs/observable/interval';
 import { throttle } from 'rxjs/operators';
-import { Config } from '../../../../electron/src/config';
+import { Config } from '../../config';
 import { DeviceModel } from '../../models/device.model';
 import { SettingsModel } from '../../models/settings.model';
 import { DevicesProvider } from '../devices/devices';
@@ -44,7 +43,6 @@ export class LicenseProvider {
   public activeLicense = LicenseProvider.LICENSE_FREE;
   public serial = '';
 
-  private store: ElectronStore;
   private upgradeDialog: Alert = null;
 
   constructor(
@@ -55,7 +53,6 @@ export class LicenseProvider {
     private devicesProvider: DevicesProvider,
     public events: Events,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
     this.updateSubscriptionStatus();
     this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
       let lastDevice = devicesList[devicesList.length - 1];
@@ -77,10 +74,10 @@ export class LicenseProvider {
     })
 
     // if it's the first app start, initialize nextChargeDate and lastScanCountResetDate
-    let nextChargeDate = this.store.get(Config.STORAGE_NEXT_CHARGE_DATE, null);
+    let nextChargeDate = this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE, null);
     if (nextChargeDate === null) { // happens only on the first start
-      this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, new Date().getTime() + 1000 * 60 * 60 * 24 * 31); // NOW() + 1 month
-      this.store.set(Config.STORAGE_LAST_SCAN_COUNT_RESET_DATE, 0); // 0 = past moment
+      this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, new Date().getTime() + 1000 * 60 * 60 * 24 * 31); // NOW() + 1 month
+      this.electronProvider.store.set(Config.STORAGE_LAST_SCAN_COUNT_RESET_DATE, 0); // 0 = past moment
     }
   }
 
@@ -101,23 +98,23 @@ export class LicenseProvider {
    * If the serial is passed it'll prompt the user with dialogs
    */
   updateSubscriptionStatus(serial: string = '') {
-    this.activeLicense = this.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.LICENSE_FREE)
+    this.activeLicense = this.electronProvider.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.LICENSE_FREE)
 
     if (serial) {
       this.serial = serial;
-      this.store.set(Config.STORAGE_SERIAL, this.serial);
+      this.electronProvider.store.set(Config.STORAGE_SERIAL, this.serial);
     } else {
-      this.serial = this.store.get(Config.STORAGE_SERIAL, '')
+      this.serial = this.electronProvider.store.get(Config.STORAGE_SERIAL, '')
     }
 
     let now = new Date().getTime();
-    let nextChargeDate = this.store.get(Config.STORAGE_NEXT_CHARGE_DATE);
+    let nextChargeDate = this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE);
     let canResetScanCount = now > nextChargeDate;
 
     // The scanCount is resetted based on the server first run date
     if (canResetScanCount) {
-      this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
-      this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
+      this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+      this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
     }
 
     // Do not bother the license-server if there isn't an active subscription
@@ -132,24 +129,24 @@ export class LicenseProvider {
       serial: this.serial,
       uuid: this.electronProvider.uuid
     }).subscribe(async value => {
-      this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+      this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
       if (value['active'] == true) {
 
         // If the license name changed it means that a license UPGRADE has been performed
         // The 'plan' attribute referes to the license name.
         if (this.activeLicense != value['plan']) {
           console.log('upgrade')
-          this.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
-          this.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
+          this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
+          this.electronProvider.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
           this.activeLicense = value['plan'];
         }
 
         if (serial) {
-          let everActivated = this.store.get(Config.STORAGE_LICENSE_EVER_ACTIVATED, false);
+          let everActivated = this.electronProvider.store.get(Config.STORAGE_LICENSE_EVER_ACTIVATED, false);
           if (!everActivated) {
-            this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+            this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
           }
-          this.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
+          this.electronProvider.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
           this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
           window.confetti.start(3000);
           this.events.publish('license:activate');
@@ -173,14 +170,14 @@ export class LicenseProvider {
         // user to enable the connection.
         // For simplicty the STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE field is used
         // only within this method
-        let firstFailDate = this.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+        let firstFailDate = this.electronProvider.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         let now = new Date().getTime();
         if (firstFailDate && (now - firstFailDate) > 1296000000) { //  15 days = 1296000000 ms
-          this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+          this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
           this.deactivate();
           this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licensePeriodicCheckErrorDialogMessage'));
         } else {
-          this.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
+          this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
         }
       }
     })
@@ -205,9 +202,9 @@ export class LicenseProvider {
   deactivate(clearSerial = false) {
     let downgradeToFree = async () => {
       this.activeLicense = LicenseProvider.LICENSE_FREE;
-      this.store.set(Config.STORAGE_SUBSCRIPTION, this.activeLicense);
+      this.electronProvider.store.set(Config.STORAGE_SUBSCRIPTION, this.activeLicense);
 
-      let settings: SettingsModel = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
+      let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
       if (!(await this.canUseCSVAppend(false))) {
         settings.appendCSVEnabled = false;
       }
@@ -216,7 +213,7 @@ export class LicenseProvider {
           settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'number');
         }
       }
-      this.store.set(Config.STORAGE_SETTINGS, settings);
+      this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
       this.events.publish('license:deactivate');
     }
 
@@ -227,7 +224,7 @@ export class LicenseProvider {
       }).subscribe(value => {
         downgradeToFree();
         this.serial = '';
-        this.store.set(Config.STORAGE_SERIAL, this.serial);
+        this.electronProvider.store.set(Config.STORAGE_SERIAL, this.serial);
       }, async (error: HttpErrorResponse) => {
         this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licenseDeactivationErrorDialogMessage'));
       });
@@ -239,8 +236,8 @@ export class LicenseProvider {
   showPricingPage(refer) {
     // customOutputField
     let customOutputField = false;
-    let settings = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel());
-    let defaultSettings = new SettingsModel();
+    let settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
+    let defaultSettings = new SettingsModel(UtilsProvider.GetOS());
 
     if (settings.outputProfiles.length != 1) {
       customOutputField = true;
@@ -257,12 +254,12 @@ export class LicenseProvider {
 
     // scanLimitReached
     let scanLimitReached =
-      this.getNOMaxAllowedScansPerMonth() - this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) <= 0;
+      this.getNOMaxAllowedScansPerMonth() - this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) <= 0;
 
     // periodOfUseSinceFirstConnection
     let periodOfUseSinceFirstConnection = 'days';
     let days = parseInt(
-      ((new Date().getTime() - this.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0)) / 86400000) + ''
+      ((new Date().getTime() - this.electronProvider.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0)) / 86400000) + ''
     );
     if (days >= 7) {
       periodOfUseSinceFirstConnection = 'weeks';
@@ -312,9 +309,9 @@ export class LicenseProvider {
       return;
     }
 
-    let count = this.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+    let count = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
     count += noNewScans;
-    this.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
+    this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
 
     if (count > this.getNOMaxAllowedScansPerMonth()) {
       let message = await this.utilsProvider.text('scansLimitReachedDialogMessage');

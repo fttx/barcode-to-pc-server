@@ -1,4 +1,4 @@
-require('dotenv').config({ path: '../.env' });
+require('dotenv').config({ path: '.env' });
 const { notarize } = require('electron-notarize');
 
 exports.default = async function notarizing(context) {

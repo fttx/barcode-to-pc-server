@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import ElectronStore from 'electron-store';
 import { AlertController } from 'ionic-angular';
-import { Config } from '../../../../electron/src/config';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';
 import { TranslateService } from '@ngx-translate/core';
 import { OutputBlockModel } from '../../models/output-block.model';
+import { Config } from '../../config';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -167,7 +166,6 @@ export class UtilsProvider {
     { id: "ss", name: "siSwati" },
   ];
 
-  private store: ElectronStore;
   public static DecryptText: (encoded: string) => any;
 
   constructor(
@@ -176,13 +174,12 @@ export class UtilsProvider {
     public storage: Storage,
     private translateService: TranslateService,
   ) {
-    this.store = new this.electronProvider.ElectronStore();
     UtilsProvider.DecryptText = UtilsProvider.decrypt('barcodetopc');
   }
 
   getQrCodeUrl(): Promise<string> {
     return new Promise((resolve, reject) => {
-      if (!this.electronProvider.isElectron()) {
+      if (!ElectronProvider.isElectron()) {
         resolve(Config.URL_PAIR + '/?h=' + encodeURIComponent('DEBUG_HOSTNAME') + '&a=' + encodeURIComponent(['127.0.0.1', 'localhost'].join('-')));
         return;
       }
@@ -206,7 +203,7 @@ export class UtilsProvider {
 
   private getLocalAddresses(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.electronProvider.ipcRenderer.once('localAddresses', (e, localAddresses) => {
+      this.electronProvider.ipcRenderer.on('localAddresses', (e, localAddresses) => {
         resolve(localAddresses);
       });
       this.electronProvider.ipcRenderer.send('getLocalAddresses');
@@ -216,7 +213,7 @@ export class UtilsProvider {
 
   private getDefaultLocalAddress(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.electronProvider.ipcRenderer.once('defaultLocalAddress', (e, defaultLocalAddress) => {
+      this.electronProvider.ipcRenderer.on('defaultLocalAddress', (e, defaultLocalAddress) => {
         resolve(defaultLocalAddress);
       });
       this.electronProvider.ipcRenderer.send('getDefaultLocalAddress');
@@ -226,7 +223,7 @@ export class UtilsProvider {
 
   private getHostname(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.electronProvider.ipcRenderer.once('hostname', (e, hostname) => {
+      this.electronProvider.ipcRenderer.on('hostname', (e, hostname) => {
         resolve(hostname);
       });
       this.electronProvider.ipcRenderer.send('getHostname');
@@ -243,14 +240,14 @@ export class UtilsProvider {
   }
 
   public async showErrorNativeDialog(message: string = '') {
-    this.electronProvider.dialog.showMessageBox(null, { // this.electronProvider.remote.getCurrentWindow()
+    this.electronProvider.showMessageBoxSync({
       type: 'error', title: await this.text('nativeErrorDialogTitle'), buttons: [await this.text('nativeErrorDialogCloseButton')], message: message,
     })
   }
 
 
   public async showSuccessNativeDialog(message: string = '') {
-    this.electronProvider.dialog.showMessageBox(null, {
+    this.electronProvider.showMessageBoxSync({
       type: 'info', title: await this.text('nativeSuccessDialogTitle'), buttons: [await this.text('nativeSuccessDialogCloseButton')], message: message
     })
   }
@@ -268,17 +265,17 @@ export class UtilsProvider {
 
     let scanSessions = JSON.parse(localStorage.getItem(SCAN_SESSIONS)) || [];
     if (scanSessions.length) {
-      this.store.set(Config.STORAGE_SCAN_SESSIONS, scanSessions);
+      this.electronProvider.store.set(Config.STORAGE_SCAN_SESSIONS, scanSessions);
       localStorage.removeItem(SCAN_SESSIONS);
     }
 
     let settings = JSON.parse(localStorage.getItem(SETTINGS));
     if (settings != null) {
-      let newSettings = new SettingsModel();
+      let newSettings = new SettingsModel(UtilsProvider.GetOS());
       Object.keys(settings).forEach(key => {
         newSettings[key] = settings[key];
       })
-      this.store.set(Config.STORAGE_SETTINGS, newSettings);
+      this.electronProvider.store.set(Config.STORAGE_SETTINGS, newSettings);
       localStorage.removeItem(SETTINGS);
     }
   }
@@ -286,7 +283,7 @@ export class UtilsProvider {
   public upgradeDisplayValue(requireRestart = false) {
     return new Promise<void>((resolve, reject) => {
       // mark the update as "started"
-      this.store.set('upgraded_displayValue', false);
+      this.electronProvider.store.set('upgraded_displayValue', false);
 
       let alert = this.alertCtrl.create({
         title: 'Updating database',
@@ -296,17 +293,17 @@ export class UtilsProvider {
 
       // upgrade db
       alert.present();
-      let scanSessions = this.store.get(Config.STORAGE_SCAN_SESSIONS, []);
+      let scanSessions = this.electronProvider.store.get(Config.STORAGE_SCAN_SESSIONS, []);
       for (let scanSession of scanSessions) {
         for (let scan of scanSession.scannings) {
           scan.displayValue = ScanModel.ToString(scan);
         }
       }
-      this.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
+      this.electronProvider.store.set(Config.STORAGE_SCAN_SESSIONS, JSON.parse(JSON.stringify(scanSessions)));
       alert.dismiss();
 
       // mark the update as "finished" (true)
-      this.store.set('upgraded_displayValue', true);
+      this.electronProvider.store.set('upgraded_displayValue', true);
 
       if (requireRestart) {
         this.alertCtrl.create({
@@ -371,5 +368,10 @@ export class UtilsProvider {
   public static GetComponentColor(outputComponent: OutputBlockModel) {
     // sass variable name: output-block-component-barcode: #... in variables.scss file
     return 'output-block-component-' + outputComponent.type;
+  }
+
+  public static GetOS() {
+    if (!ElectronProvider.isElectron()) return "browser";
+    return window.preload.os.platform().toLowerCase();
   }
 }

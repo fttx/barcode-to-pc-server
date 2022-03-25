@@ -7,7 +7,8 @@ import { SettingsHandler } from './handlers/settings.handler';
 import { UiHandler } from './handlers/ui.handler';
 import { UpdateHandler } from './handlers/update.handler';
 import * as http from 'http';
-
+import ElectronStore = require('electron-store');
+require('@electron/remote/main').initialize()
 
 let wss = null;
 const settingsHandler = SettingsHandler.getInstance();
@@ -16,10 +17,18 @@ const scansHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
 const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandler);
 const updateHandler = UpdateHandler.getInstance(uiHandler, settingsHandler);
 
-let ipcClient, lastArgv;
+let ipcClient: Electron.WebContents, lastArgv;
+
+const store = new ElectronStore();
+ipcMain.on('electron-store-get', async (event, key, defaultValue) => {
+    event.returnValue = store.get(key, defaultValue);
+});
+ipcMain.on('electron-store-set', async (event, key, value) => {
+    store.set(key, value);
+});
 
 ipcMain
-    .on('pageLoad', (event, arg) => { // the renderer will send a 'pageLoad' message once the index.html document is loaded. (implies that the mainWindow exists)
+    .on('pageLoad', (event) => { // the renderer will send a 'pageLoad' message once the index.html document is loaded. (implies that the mainWindow exists)
         if (wss != null || event.sender == null) {
             return;
         }
