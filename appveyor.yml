@@ -5,7 +5,7 @@ branches:
 skip_non_tags: false
 clone_depth: 1
 environment:
-  nodejs_version: "8"
+  nodejs_version: "14"
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
   BONJOUR_SDK_DOWNLOAD:
     secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
@@ -36,21 +36,18 @@ install:
   - ps: "[System.IO.File]::WriteAllLines($package_json_path, $package_json, $Utf8NoBomEncoding)" # save the file as UTF-8 with no BOM
 
   - npm cache verify
+  - cd electron
   - npm ci --unsafe-perm
-  - cd ionic
-  - npm ci --unsafe-perm
-  - cd ..
   - set NODE_ENV=production
   - set ECHO=ON
   - echo "%PATH%"
   - echo "%NODE_ENV%"
   - node --version
   - npm --version
-  - npm run tsc --version
 build_script:
-  - cmd: npm run dist
+  - cmd: npm run build
 artifacts:
-  - path: \dist\dist\nsis-web
+  - path: \electron\dist\nsis-web
     name: barcode-to-pc-server.offline-installer
     type: zip
 test: off
