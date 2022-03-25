@@ -38,9 +38,9 @@
 
 ## Overview
 
-The project is divided in two modules/folders:
+The project is divided into two modules/folders:
 
-- electron: contains the core, native dependecies and helper scripts
+- electron: contains the core, native dependencies, and helper scripts
 - ionic: user interface
 
 When executing npm commands make sure to change the current directory to electron: `cd electron`.
