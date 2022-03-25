@@ -4,13 +4,13 @@ branches:
     - master
     - /^v[0-9]+.[0-9]+.[0-9]+$/
 node_js:
-  - 10
+  - 14
 os:
   - osx
 osx_image: xcode11.3
 before_install:
   # - brew update
-  - npm i -g npm@6.4.1
+  # - npm i -g npm
   - brew reinstall gettext
   - brew unlink gettext && brew link gettext --force
   - npm config set unsafe-perm=true
