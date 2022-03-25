@@ -74,7 +74,7 @@ function buildElectron(cb) {
 
 // dist
 function build(cb) {
-    electronBuilder.build().then(() => { cb(); });
+    electronBuilder.build({ publish: 'never' }).then(() => { cb(); });
 }
 
 // publish
