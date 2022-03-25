@@ -25,13 +25,13 @@ install:
   - git config --global user.email "filippo.tortomasi@gmail.com"
   - git config --global user.name "Filippo Tortomasi"
 
-  - ps: $env:package_version = (Get-Content -Raw -Path package.json | ConvertFrom-Json).version # extract the version from package.json
+  - ps: $env:package_version = (Get-Content -Raw -Path electron\package.json | ConvertFrom-Json).version # extract the version from package.json
   - ps: Update-AppveyorBuild -Version "$env:package_version-$env:APPVEYOR_BUILD_NUMBER" # use the package.json version
 
     # Remove certificateSha1 from package.json to avoid build error
-  - ps: $package_json = Get-Content -Raw -Path .\package.json
+  - ps: $package_json = Get-Content -Raw -Path .\electron\package.json
   - ps: $package_json = $package_json -replace ".*certificateSha1.*\r?\n" -replace ",(?=\r?\n\W+})"
-  - ps: $package_json_path = (Get-Item -Path "." -Verbose).FullName + '\package.json'
+  - ps: $package_json_path = (Get-Item -Path "." -Verbose).FullName + '\electron\package.json'
   - ps: $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
   - ps: "[System.IO.File]::WriteAllLines($package_json_path, $package_json, $Utf8NoBomEncoding)" # save the file as UTF-8 with no BOM
 
