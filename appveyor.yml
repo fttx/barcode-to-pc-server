@@ -9,7 +9,7 @@ environment:
   BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
   BONJOUR_SDK_DOWNLOAD:
     secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
-image: Visual Studio 2015
+image: Visual Studio 2019
 install:
   - ps: Install-Product node $env:nodejs_version x64
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
