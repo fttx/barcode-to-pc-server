@@ -87,7 +87,7 @@ function publish(cb) {
                 .pipe(dest('dist/'))
                 .pipe(release({
                     draft: true,
-                    manifest: require('package.json'),
+                    manifest: path.join(__dirname, 'package.json'),
                     reuseRelease: true,
                 }))
                 .on('end', () => { cb(); })
