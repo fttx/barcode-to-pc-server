@@ -16,6 +16,8 @@ export class Config {
   public static URL_ORDER_DEACTIVATE = Config.URL_LICENSE_SERVER + '/order/remove';
 
   public static URL_PRICING = Config.URL_WEBSITE + '/pricing/';
+  public static URL_V4 = Config.URL_WEBSITE + '/v4/';
+  public static URL_V3 = Config.URL_WEBSITE + '/v4/#v3';
   public static URL_DOWNLOAD_SERVER = Config.URL_WEBSITE + '/#download-server';
   public static URL_WINDOWS_FIREWALL = Config.URL_WEBSITE + '/settings/configure-windows-firewall/';
   public static URL_COMMON_ISSUES = Config.URL_WEBSITE + '/settings/common-issues/';
@@ -39,7 +41,7 @@ export class Config {
   public static URL_TUTORIAL_HTTP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-http-output-component/';
   public static URL_TUTORIAL_WOOCOMMERCE = Config.URL_WEBSITE + '/tutorial/organize-your-woocommerce-store-using-barcodes/';
 
-  public static URL_PAIR = 'http://app.barcodetopc.com';
+  public static URL_PAIR = 'https://app.barcodetopc.com';
 
   public static EMAIL_SUPPORT = 'support@barcodetopc.com';
 
