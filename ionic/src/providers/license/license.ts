@@ -44,6 +44,7 @@ export class LicenseProvider {
   public serial = '';
 
   private upgradeDialog: Alert = null;
+  private v4UpgradeDialog: Alert = null;
 
   constructor(
     public http: HttpClient,
@@ -150,6 +151,11 @@ export class LicenseProvider {
           this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
           window.confetti.start(3000);
           this.events.publish('license:activate');
+        }
+
+        // V4 Upgrade
+        if (value['version'] != 'v4') {
+          await this.showV4UpgradeDialog();
         }
       } else {
         // When the license-server says that the subscription is not active
@@ -434,6 +440,34 @@ export class LicenseProvider {
     if (this.upgradeDialog != null) {
       this.upgradeDialog.dismiss();
     }
+  }
+
+  private async showV4UpgradeDialog() {
+    if (this.v4UpgradeDialog != null) {
+      return;
+    }
+    this.v4UpgradeDialog = this.alertCtrl.create({
+      title: 'License upgrade', message: `The server has been updated to v${this.electronProvider.appGetVersion()}.<br><br>
+              Your license can be used for v3.x.x versions of the server only.<br><br><br>
+              You can:<br><br>
+              1) Upgrade your existing license at a reduced price<br><br>
+              or<br><br>
+              2) Install an older version of the server, and continue using it with your current license.`,
+      buttons: [{
+        text: 'Ignore', role: 'cancel'
+      }, {
+        text: 'Download old v3.x.x', handler: (opts: AlertOptions) => {
+          this.electronProvider.shell.openExternal(Config.URL_V3)
+        }
+      }, {
+        text: 'Upgrade license', handler: (opts: AlertOptions) => {
+          this.electronProvider.shell.openExternal(Config.URL_V4)
+        }
+      }],
+      cssClass: 'changelog'
+    });
+    this.v4UpgradeDialog.onDidDismiss(() => this.v4UpgradeDialog = null)
+    this.v4UpgradeDialog.present();
   }
 
   private generateNextChargeDate(): number {

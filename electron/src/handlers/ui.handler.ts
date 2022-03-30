@@ -204,9 +204,7 @@ export class UiHandler implements Handler {
             // log.transports.file.level = "info"
             // autoUpdater.logger = log
         } else {
-            require("@electron/remote/main").enable(this.mainWindow.webContents);
             this.mainWindow.loadURL(_path.join('file://', __dirname, '../www/index.html'));
-            this.mainWindow.webContents.openDevTools();
         }
 
         if (process.platform === 'darwin') {
