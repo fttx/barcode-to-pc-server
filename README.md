@@ -82,7 +82,7 @@ The `npm start` command:
 Notes:
 
 - If you're editing the [electron](./electron) folder, you have to quit the server and  run it again. Use the F6 button on Visual Studio Code.
-- If you're using Windows use cmd.exe
+- If you're using Windows use the PowerShell
 
 ## Release
 
