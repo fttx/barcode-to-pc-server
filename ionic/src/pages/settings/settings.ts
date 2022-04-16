@@ -68,7 +68,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'Custom key', value: '', type: 'key', modifiers: [], editable: true },
 
       // **DATE_TIME**
-      { name: 'DATE_TIME', value: '', type: 'date_time', skipOutput: false, format: 'YYYY-MM-DD', locale: moment.locale() },
+      { name: 'DATE_TIME', value: '', type: 'date_time', skipOutput: false, format: 'YYYY-MM-DD', locale: moment.locale(), matchBarcodeDate: true },
 
       // **VARIABLES**
       { name: 'TIMESTAMP', value: 'timestamp', type: 'variable', skipOutput: false },

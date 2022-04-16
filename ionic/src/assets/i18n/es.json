@@ -393,6 +393,8 @@
   "customFormatDescription1": "Puede ver la lista completa de tokens",
   "customFormatDescription2": "aquí",
   "locale": "Ubicar",
+  "matchBarcodeDate": "Usar la fecha y hora de adquisición del código de barras",
+  "matchBarcodeDateDescription": "Si está habilitado, el componente DATE_TIME generará la fecha y la hora de la adquisición del código de barras",
   "preview": "Vista previa",
   "variablesInjectionInfoBox1": "Para acceder a las variables mencionadas anteriormente, DEBE colocar un componente de salida correspondiente en la plantilla de salida que asignará un valor a la variable.",
   "variablesInjectionInfoBox2": "Ver",

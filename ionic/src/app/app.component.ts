@@ -348,6 +348,17 @@ export class MyApp {
           })
         }
 
+        // v4.0.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'date_time' && typeof outputBlock.matchBarcodeDate == 'undefined') {
+                outputBlock.matchBarcodeDate = true;
+              }
+            });
+          })
+        }
+
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }

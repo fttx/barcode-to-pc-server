@@ -390,6 +390,8 @@
   "customFormatDescription1": "Puoi visualizzare l'elenco completo dei token ",
   "customFormatDescription2": "qui",
   "locale": "Locale",
+  "matchBarcodeDate": "Usa la data e l'ora di acquisizione del barcode",
+  "matchBarcodeDateDescription": "Quando abilitato, il componente DATE_TIME darà in output la stessa data e ora del momento in cui il barcode viene acquisito",
   "preview": "Anteprima",
   "variablesInjectionInfoBox1": "Per accedere alle variabili sopra menzionate è necessario inserire un componente di output corrispondente nel tuo Templete di output che assegnerà un valore alla variabile.",
   "variablesInjectionInfoBox2": "Vedi",

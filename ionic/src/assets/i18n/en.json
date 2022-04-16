@@ -393,6 +393,8 @@
   "customFormatDescription1": "You can view the full token list",
   "customFormatDescription2": "here",
   "locale": "Locale",
+  "matchBarcodeDate": "Output the barcode acquisition date and time",
+  "matchBarcodeDateDescription": "If enabled the DATE_TIME component will output the date and time of the barcode acquisition. When disabled, instead, the value may differ since it'll depend on when the camera is open and not when the barcode is acquired.",
   "preview": "Preview",
   "variablesInjectionInfoBox1": "To access to the variables mentioned above you MUST put a corresponding Output Component in your Output Template that will assign a value to the variable.",
   "variablesInjectionInfoBox2": "See",

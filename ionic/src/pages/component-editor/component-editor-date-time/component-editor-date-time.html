@@ -31,6 +31,16 @@
       </ion-select>
     </ion-item>
 
+    <ion-item no-lines>
+      <ion-label>{{ 'matchBarcodeDate' | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="outputBlock.matchBarcodeDate" item-end> </ion-checkbox>
+    </ion-item>
+    <ion-item text-wrap>
+      <p>
+        {{ 'matchBarcodeDateDescription' | translate }}
+      </p>
+    </ion-item>
+
     <ion-item>
       <label>{{ 'preview' | translate }}</label>
       <ion-note item-end>{{ dateTimeNowExample | amDateFormat: outputBlock.format }}</ion-note>
