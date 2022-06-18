@@ -49,3 +49,6 @@ yarn-error.log
 .DS_Store
 Thumbs.db
 .env
+
+# symbolic link
+electron/src/config.ts
