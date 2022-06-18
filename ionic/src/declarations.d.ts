@@ -13,9 +13,10 @@
 */
 declare module '*';
 
-export {};
+export { };
 declare global {
   interface Window {
-    preload: any
+    preload: any;
+    confetti: any;
   }
 }
