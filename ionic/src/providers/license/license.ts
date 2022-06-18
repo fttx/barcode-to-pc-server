@@ -9,7 +9,6 @@ import { SettingsModel } from '../../models/settings.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
-declare global { interface Window { confetti: any; } }
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -136,6 +135,12 @@ export class LicenseProvider {
         // If the license name changed it means that a license UPGRADE has been performed
         // The 'plan' attribute referes to the license name.
         if (this.activeLicense != value['plan']) {
+          // Prevent activation of v3
+          if (value['version'] != 'v4') {
+            this.showV4UpgradeDialog();
+            return;
+          }
+
           console.log('upgrade')
           this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
           this.electronProvider.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
@@ -452,11 +457,11 @@ export class LicenseProvider {
               You can:<br><br>
               1) Upgrade your existing license at a reduced price<br><br>
               or<br><br>
-              2) Install an older version of the server, and continue using it with your current license.`,
+              2) Install the older version of the server and use your current license`,
       buttons: [{
         text: 'Ignore', role: 'cancel'
       }, {
-        text: 'Download old v3.x.x', handler: (opts: AlertOptions) => {
+        text: 'Keep old version', handler: (opts: AlertOptions) => {
           this.electronProvider.shell.openExternal(Config.URL_V3)
         }
       }, {
