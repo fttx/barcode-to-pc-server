@@ -122,14 +122,17 @@ export class MyApp {
       // Used to open files (double click)
       // On Windows when double-clicking, the system passes the file path
       // of the clicked file to the main exectutable.
-      let checkArgv = (argv) => {
+      let checkArgv = (argv: any[]) => {
         if (argv.length >= 2) { // process.platform == 'win32' &&
-          this.events.publish('import_btpt', argv[1])
+          const btptPath = argv.find(x => x.endsWith('.btpt'));
+          if (btptPath) {
+            this.events.publish('import_btpt', btptPath);
+          }
         }
       }
       checkArgv(this.electronProvider.processArgv);
       this.electronProvider.ipcRenderer.on('second-instance-open', (event, argv) => {
-        checkArgv(argv)
+        checkArgv(argv);
       })
     });
 
