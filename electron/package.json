@@ -38,9 +38,16 @@
     "fileAssociations": [
       {
         "ext": "btpt",
+        "icon": "../electron/electron-resources/btpt.icns",
         "name": "Barcode to PC Output Template",
         "description": "Barcode to PC Output Template",
         "role": "Editor"
+      },
+      {
+        "ext": "btpt",
+        "icon": "../electron/electron-resources/btpt.ico",
+        "name": "Barcode to PC Output Template",
+        "description": "Barcode to PC Output Template"
       }
     ],
     "productName": "Barcode to PC server",
