@@ -455,18 +455,20 @@ export class LicenseProvider {
       title: 'License upgrade', message: `The server has been updated to v${this.electronProvider.appGetVersion()}.<br><br>
               Your license can be used for v3.x.x versions of the server only.<br><br><br>
               You can:<br><br>
-              1) Upgrade your existing license at a reduced price<br><br>
+              1) Install the previous version of the server and use your current license<br><br>
               or<br><br>
-              2) Install the older version of the server and use your current license`,
+              2) Upgrade your existing license at a reduced price`,
       buttons: [{
         text: 'Ignore', role: 'cancel'
       }, {
         text: 'Keep old version', handler: (opts: AlertOptions) => {
-          this.electronProvider.shell.openExternal(Config.URL_V3)
+          this.electronProvider.shell.openExternal(Config.URL_V3);
         }
       }, {
         text: 'Upgrade license', handler: (opts: AlertOptions) => {
-          this.electronProvider.shell.openExternal(Config.URL_V4)
+          const upgradeUrl = new URL(Config.URL_V4);
+          upgradeUrl.searchParams.set('serial', this.serial);
+          this.electronProvider.shell.openExternal(upgradeUrl.href);
         }
       }],
       cssClass: 'changelog'
