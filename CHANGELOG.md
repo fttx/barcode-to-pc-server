@@ -16,24 +16,30 @@
 ### Security
 -->
 
-## [v3.19.0] - 2022-03-19
+## [v4.0.0] - 2022-07-18
 
 ### Added
 
+- Apple Silicon (M1) support
 - HTTP OAuth 2.0 support
 - WOOCOMMERCE Component
 - Option to allow template selection
 - Scan Session name filter
 - Option to disable Real-Time send from the smartphone
-- Improve variables injection
+- Option to detect duplicate barcodes in scan sessions
+- Option to update the DATE_TIME value to the barcode acquisition date
+- Support to allow changing the server port
 
 ### Changed
 
 - Improve Settings Page UI
+- Improve Tray Icon handling on macOS Server
+- Improve UI reactiveness
 
 ### Fixed
 
 - Prevent accidental dismission for the ALERT component
+- Errors in variables injection
 
 ## [v3.18.2] - 2021-10-04
 
@@ -492,6 +498,7 @@
 [v3.19.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.2...v3.19.0
 [v3.18.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.1...v3.18.2
 [v3.18.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.0...v3.18.1
+[v3.18.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.17.0...v3.18.0
 [v3.17.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.1...v3.17.0
 [v3.16.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.0...v3.16.1
 [v3.16.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.15.0...v3.16.0
