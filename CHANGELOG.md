@@ -495,6 +495,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.19.0...v4.0.0
 [v3.19.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.2...v3.19.0
 [v3.18.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.1...v3.18.2
 [v3.18.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.0...v3.18.1
