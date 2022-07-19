@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v4.0.1] - 2022-07-19
+
+### Fixed
+
+- Slow typing speed on Windows
+
 ## [v4.0.0] - 2022-07-18
 
 ### Added
@@ -495,6 +501,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.0.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.19.0...v4.0.0
 [v3.19.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.2...v3.19.0
 [v3.18.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.1...v3.18.2
