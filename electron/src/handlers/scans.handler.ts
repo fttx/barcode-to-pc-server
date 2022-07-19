@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
-import * as robotjs from 'robotjs';
+import * as robotjs from '@fttx/robotjs';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import { lt, SemVer } from 'semver';
 import * as Supplant from 'supplant';
