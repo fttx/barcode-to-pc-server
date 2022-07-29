@@ -125,7 +125,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.8",
-    "@fttx/robotjs": "^0.6.3",
+    "@nut-tree/nut-js": "^2.1.1",
     "@types/gulp": "^4.0.9",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "axios": "^0.26.1",
