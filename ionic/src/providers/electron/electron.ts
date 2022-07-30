@@ -108,4 +108,8 @@ export class ElectronProvider {
     }
     return this.systemPreferencesIsTrustedAccessibilityClient(prompt);
   }
+
+  getPlatform() {
+    return this.processPlatform;
+  }
 }

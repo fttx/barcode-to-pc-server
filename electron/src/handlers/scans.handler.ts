@@ -98,7 +98,7 @@ export class ScansHandler implements Handler {
                     }
 
                     switch (outputBlock.type) {
-                        case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
+                        case 'key': this.keyTap(Number(outputBlock.value), outputBlock.modifierKeys); break;
                         case 'text': this.typeString(outputBlock.value); break;
                         case 'variable': this.typeString(outputBlock.value); break;
                         case 'date_time': this.typeString(outputBlock.value); break;
@@ -542,27 +542,12 @@ export class ScansHandler implements Handler {
         return message;
     }
 
-    keyTap(key, modifiers) {
+    async keyTap(key: number, modifiers: number[]) {
         if (!this.settingsHandler.enableRealtimeStrokes || !key) {
             return;
         }
-
-        // this.modifiers[0] = this.outputBlock.modifiers.findIndex(x => x == 'alt') != -1;
-        // this.modifiers[1] = this.outputBlock.modifiers.findIndex(x => x == 'command') != -1;
-        // this.modifiers[2] = this.outputBlock.modifiers.findIndex(x => x == 'control') != -1;
-        // this.modifiers[3] = this.outputBlock.modifiers.findIndex(x => x == 'shift') != -1;
-
-        // robotjs.keyTap(key, modifiers);
-
-
-        // LeftAlt = 3,
-        // LeftControl = 4,
-        // RightAlt = 5,
-        // RightControl = 6,
-        // LeftShift = 7,
-        // LeftSuper = 8,
-
-        keyboard.pressKey(key);
+        await keyboard.pressKey(...modifiers, key);
+        await keyboard.releaseKey(...modifiers, key);
     }
 
     async typeString(string) {
