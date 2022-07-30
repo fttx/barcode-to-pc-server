@@ -5,14 +5,21 @@
             "type": "node",
             "request": "launch",
             "name": "Electron: Main",
-            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+            "outputCapture": "std",
+            // "runtimeExecutable": "/Users/filippo/.nvm/versions/node/v14.17.6/bin/node",
             "runtimeArgs": [
-                "--remote-debugging-port=9223",
-                ".",
-                "--dev"
+                "${workspaceFolder}/electron/node_modules/.bin/electron",
+                "./electron/bin/main.js",
+                "--dev",
+                "--remote-debugging-port=9223"
             ],
             "windows": {
-                "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+                "runtimeArgs": [
+                    "${workspaceFolder}/electron/node_modules/.bin/electron.cmd",
+                    "./electron/bin/main.js",
+                    "--dev",
+                    "--remote-debugging-port=9223"
+                ],
             }
         },
         {
