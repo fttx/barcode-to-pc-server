@@ -44,30 +44,9 @@ export class SettingsPage implements OnInit, OnDestroy {
     // array below and also enforce compatibility with the previous versions by
     // adding an upgrade script in the app.component.ts/upgrade() method.
     return [
-      // **KEYS**
-      { name: 'BACKSPACE', value: 'backspace', type: 'key', modifiers: [] },
-      { name: 'DELETE', value: 'delete', type: 'key', modifiers: [] },
-      // Warning: keep in sync with settings.model.ts
-      { name: 'ENTER', value: 'enter', type: 'key', modifiers: [] },
-      { name: 'TAB', value: 'tab', type: 'key', modifiers: [] },
-      { name: 'ESCAPE', value: 'escape', type: 'key', modifiers: [] },
-      { name: '&uarr;', value: 'up', type: 'key', modifiers: [] },
-      { name: '&rarr;', value: 'right', type: 'key', modifiers: [] },
-      { name: '&darr;', value: 'down', type: 'key', modifiers: [] },
-      { name: '&larr;', value: 'left', type: 'key', modifiers: [] },
-      { name: 'HOME', value: 'home', type: 'key', modifiers: [] },
-      { name: 'END', value: 'end', type: 'key', modifiers: [] },
-      { name: 'PAGEUP', value: 'pageup', type: 'key', modifiers: [] },
-      { name: 'PAGEDOWN', value: 'pagedown', type: 'key', modifiers: [] },
-      { name: 'COMMAND', value: 'command', type: 'key', modifiers: [] },
-      { name: 'ALT', value: 'alt', type: 'key', modifiers: [] },
-      { name: 'CONTROL', value: 'control', type: 'key', modifiers: [] },
-      { name: 'SHIFT', value: 'shift', type: 'key', modifiers: [] },
-      { name: 'RIGHT_SHIFT', value: 'right_shift', type: 'key', modifiers: [] },
-      { name: 'SPACE', value: 'space', type: 'key', modifiers: [] },
-      { name: 'Custom key', value: '', type: 'key', modifiers: [], editable: true },
-
-      // **DATE_TIME**
+      { name: 'PRESS KEY', value: '0', type: 'key', modifierKeys: [] },
+      { name: 'ENTER', value: SettingsModel.KEY_ID_ENTER, type: 'key', modifierKeys: [] },
+      { name: 'TAB', value: SettingsModel.KEY_ID_TAB, type: 'key', modifierKeys: [] },
       { name: 'DATE_TIME', value: '', type: 'date_time', skipOutput: false, format: 'YYYY-MM-DD', locale: moment.locale(), matchBarcodeDate: true },
 
       // **VARIABLES**
@@ -78,31 +57,31 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'SCAN_SESSION_NAME', value: 'scan_session_name', type: 'variable', skipOutput: false },
       // { name: 'SCAN_INDEX', value: 'scan_index', type: 'variable', skipOutput: false },
       { name: 'DEVICE_NAME', value: 'deviceName', type: 'variable', skipOutput: false },
-      { name: 'NUMBER', value: 'number', type: 'variable', editable: true, skipOutput: false, label: null, filter: null, errorMessage: null, defaultValue: '1' },
-      { name: 'TEXT', value: 'text', type: 'variable', editable: true, skipOutput: false, label: null, filter: null, errorMessage: null, defaultValue: null },
+      { name: 'NUMBER', value: 'number', type: 'variable', skipOutput: false, label: null, filter: null, errorMessage: null, defaultValue: '1' },
+      { name: 'TEXT', value: 'text', type: 'variable', skipOutput: false, label: null, filter: null, errorMessage: null, defaultValue: null },
       // Warning: keep in sync with settings.model.ts
-      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', editable: true, skipOutput: false, label: null, enabledFormats: [], filter: null, errorMessage: null },
+      { name: 'BARCODE', value: 'BARCODE', type: 'barcode', skipOutput: false, label: null, enabledFormats: [], filter: null, errorMessage: null },
 
       // **CONSTANTS**
-      { name: 'Static text', value: '', type: 'text', editable: true },
+      { name: 'Static text', value: '', type: 'text' },
 
       // **DELAY**
-      { name: 'Delay', value: '', type: 'delay', editable: true },
+      { name: 'Delay', value: '', type: 'delay' },
 
       // **CONSTRUCTS**
-      { name: 'IF', value: '', type: 'if', editable: true },
+      { name: 'IF', value: '', type: 'if' },
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
       // **OTHER**
-      { name: 'JAVASCRIPT_FUNCTION', value: '', type: 'function', editable: true, skipOutput: false },
+      { name: 'JAVASCRIPT_FUNCTION', value: '', type: 'function', skipOutput: false },
       { name: 'SELECT_OPTION', value: '', type: 'select_option', title: '', message: '', skipOutput: false },
-      { name: 'HTTP', value: '', type: 'http', httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, httpOAuthMethod: 'disabled', httpOAuthConsumerKey: null, httpOAuthConsumerSecret: null, editable: true, skipOutput: false, timeout: 10000 },
-      { name: 'RUN', value: '', type: 'run', editable: true, skipOutput: false, timeout: 10000 },
-      { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
-      { name: 'CSV_UPDATE', value: '{{ barcode }}', type: 'csv_update', skipOutput: false, editable: true, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
-      { name: 'BEEP', value: 'beep', type: 'beep', editable: true, beepsNumber: 1, beepSpeed: 'medium' },
-      { name: 'ALERT', value: '', type: 'alert', editable: true, alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
-      { name: 'WOOCOMMERCE', value: 'createProduct', type: 'woocommerce', editable: true, fields: [], consumer_key: '', consumer_secret: '', url_woocommerce: '', skipOutput: true },
+      { name: 'HTTP', value: '', type: 'http', httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, httpOAuthMethod: 'disabled', httpOAuthConsumerKey: null, httpOAuthConsumerSecret: null, skipOutput: false, timeout: 10000 },
+      { name: 'RUN', value: '', type: 'run', skipOutput: false, timeout: 10000 },
+      { name: 'CSV_LOOKUP', value: '{{ barcode }}', type: 'csv_lookup', skipOutput: false, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
+      { name: 'CSV_UPDATE', value: '{{ barcode }}', type: 'csv_update', skipOutput: false, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
+      { name: 'BEEP', value: 'beep', type: 'beep', beepsNumber: 1, beepSpeed: 'medium' },
+      { name: 'ALERT', value: '', type: 'alert', alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
+      { name: 'WOOCOMMERCE', value: 'createProduct', type: 'woocommerce', fields: [], consumer_key: '', consumer_secret: '', url_woocommerce: '', skipOutput: true },
     ];
   }
 

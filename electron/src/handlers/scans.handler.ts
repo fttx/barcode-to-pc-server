@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
-import * as robotjs from '@fttx/robotjs';
+import { keyboard, Key } from '@nut-tree/nut-js';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import { lt, SemVer } from 'semver';
 import * as Supplant from 'supplant';
@@ -31,6 +31,7 @@ export class ScansHandler implements Handler {
         private settingsHandler: SettingsHandler,
         private uiHandler: UiHandler,
     ) {
+        keyboard.config.autoDelayMs = 0;
     }
 
     static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler) {
@@ -97,7 +98,7 @@ export class ScansHandler implements Handler {
                     }
 
                     switch (outputBlock.type) {
-                        case 'key': this.keyTap(outputBlock.value, outputBlock.modifiers); break;
+                        case 'key': this.keyTap(Number(outputBlock.value), outputBlock.modifierKeys); break;
                         case 'text': this.typeString(outputBlock.value); break;
                         case 'variable': this.typeString(outputBlock.value); break;
                         case 'date_time': this.typeString(outputBlock.value); break;
@@ -541,28 +542,30 @@ export class ScansHandler implements Handler {
         return message;
     }
 
-    keyTap(key, modifiers) {
+    async keyTap(key: number, modifiers: number[]) {
         if (!this.settingsHandler.enableRealtimeStrokes || !key) {
             return;
         }
-        robotjs.keyTap(key, modifiers);
+        await keyboard.pressKey(...modifiers, key);
+        await keyboard.releaseKey(...modifiers, key);
     }
 
-    typeString(string) {
+    async typeString(string) {
         if (!this.settingsHandler.enableRealtimeStrokes || !string) {
             return;
         }
 
         if (this.settingsHandler.typeMethod == 'keyboard') {
-            if (process.platform === 'linux') {
-                ScansHandler.TypeStringLinuxFix(string);
-            } else {
-                robotjs.typeString(string);
-            }
+            keyboard.type(string);
         } else {
-            var ctrlKey = process.platform === "darwin" ? "command" : "control";
             clipboard.writeText(string);
-            robotjs.keyTap("v", ctrlKey);
+            // if (process.platform === "darwin") {
+            // await keyboard.pressKey(Key.optio, Key.V);
+            // await keyboard.releaseKey(Key.LeftControl, Key.V);
+            // } else {
+            await keyboard.pressKey(Key.LeftControl, Key.V);
+            await keyboard.releaseKey(Key.LeftControl, Key.V);
+            // }
         }
     }
 
@@ -576,27 +579,6 @@ export class ScansHandler implements Handler {
 
     setIpcClient(ipcClient) {
         this.ipcClient = ipcClient;
-    }
-
-    /**
-     * TODO: stop using this function after updating robotjs, related to: https://github.com/fttx/barcode-to-pc-server/issues/219
-     * Fix source: https://github.com/octalmage/robotjs/issues/285#issuecomment-463116360
-     */
-    private static TypeStringLinuxFix(str: string) {
-        const MATCH_REGEX = /[~!@#\$%\^&*()_+{}|:"<>?]/;
-        // minimize delay between robotjs keyboard calls
-        robotjs.setKeyboardDelay(1);
-        while (str) {
-            let match = str.match(MATCH_REGEX);
-            if (match) {
-                robotjs.typeString(str.substr(0, match['index']));
-                robotjs.keyTap(match[0], ['shift']);
-                str = str.substr(match['index'] + 1);
-            } else {
-                robotjs.typeString(str);
-                str = null;
-            }
-        }
     }
 
     /**

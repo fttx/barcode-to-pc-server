@@ -22,11 +22,6 @@ export class OutputBlockModel {
      */
     defaultValue?: string;
     /**
-     * A block is editable if the user is allowed to edit the component
-     * value through the UI
-     */
-    editable?: boolean;
-    /**
      * Defines the type of the value attribute, an thus its behaviour.
      *
      * We are not using an polymorphic approach because it would require to
@@ -64,9 +59,20 @@ export class OutputBlockModel {
     skipOutput?: boolean;
 
     /**
+     * @deprecated Use modifierKeys instead
      * Modifier keys to press along with the component
      */
     modifiers?: string[];
+
+    /**
+     * Modifier keys to enable when typing the PRESS KEY component.
+     * The identifiers can be found in the @nut-tree/nut-js/lib/key.enum file
+     *
+     * Rembember to keep the identifiers in sync with
+     * ComponentEditorKeyPage.NUTJS_KEYS when updating the library
+     */
+    modifierKeys?: number[];
+
 
     /**
      * Used to describe the content of the component, so that when the user is
