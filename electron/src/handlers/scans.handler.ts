@@ -543,7 +543,6 @@ export class ScansHandler implements Handler {
     }
 
     async keyTap(key: number, modifiers: number[]) {
-        console.log('keyTap: ', key, modifiers);
         if (!this.settingsHandler.enableRealtimeStrokes || !key) {
             return;
         }
