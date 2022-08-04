@@ -170,8 +170,10 @@ export class HomePage {
     // loads, so there isn't the need to clear them or perform other checks.
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
       this.ngZone.run(async () => {
-        this.lastToast.present(await this.utils.text('connectionExtablished', { "deviceName": request.deviceName }
-        ))
+        this.lastToast.present(await this.utils.text('connectionExtablished', { "deviceName": request.deviceName }));
+        if (request.version && (request.version.startsWith('3') || request.version.startsWith('v3'))) {
+          this.utils.showV3DowngradeDialog();
+        }
       });
 
       // older versions of the app didn't send the version number

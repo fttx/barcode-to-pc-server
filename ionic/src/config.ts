@@ -39,6 +39,7 @@ export class Config {
   public static URL_TUTORIAL_MACOS_ACCESSIBILITY = Config.URL_WEBSITE + '/tutorial/give-accessibility-permissions-to-barcode-to-pc/';
   public static URL_TUTORIAL_HTTP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-http-output-component/';
   public static URL_TUTORIAL_WOOCOMMERCE = Config.URL_WEBSITE + '/tutorial/organize-your-woocommerce-store-using-barcodes/';
+  public static URL_DOWNGRADE_V3 = Config.URL_WEBSITE + '/downgrade-app-from-v4-to-v3/';
 
   public static URL_PAIR = 'https://app.barcodetopc.com';
 

@@ -5,7 +5,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
-import { gt, SemVer } from 'semver';
+import { eq, gt, SemVer } from 'semver';
 import { Config } from '../config';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
@@ -379,6 +379,9 @@ export class MyApp {
               }
             });
           })
+        }
+        if (eq(currentVersion, new SemVer('4.1.0'))) {
+          this.utils.showV3DowngradeDialog();
         }
 
         if (typeof settings.maxScanSessionsNumber == 'undefined') {

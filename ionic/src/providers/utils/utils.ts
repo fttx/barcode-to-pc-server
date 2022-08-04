@@ -201,6 +201,35 @@ export class UtilsProvider {
     })
   }
 
+  showV3DowngradeDialog() {
+    if (this.electronProvider.store.get('disableV3DowngradeDialog', false)) return;
+    this.alertCtrl.create({
+      cssClass: 'changelog',
+      title: 'Data loss warning',
+      message: 'The server has been updated to version v4.1.0. <br>The app update will be released within the next month.<br><br>\
+      Due to incompatibility issues Android users won\'t be able to retain the data and settings stored on the smartphone after updating the mobile app from v3.x.x to v4.x.x, so please sync it before updating.\
+      Alternatively, disable automatic updates from the PlayStore and keep using the v3.18.x version of the app that is still fully compatible with v4.x.x.',
+      inputs: [{
+        type: 'checkbox',
+        label: 'Do not show this message again',
+        value: 'doNotShowAgain',
+        checked: false,
+      }],
+      buttons: [
+        { role: 'cancel', text: 'Ignore', },
+        {
+          text: 'Get help',
+          handler: (data) => {
+            if (data == 'doNotShowAgain') {
+              this.storage.set('disableV3DowngradeDialog', true);
+            }
+            this.electronProvider.shell.openExternal(Config.URL_DOWNGRADE_V3);
+          }
+        }
+      ]
+    }).present();
+  }
+
   private getLocalAddresses(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.electronProvider.ipcRenderer.on('localAddresses', (e, localAddresses) => {
