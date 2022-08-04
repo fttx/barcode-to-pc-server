@@ -8,6 +8,7 @@ import { interval } from 'rxjs/observable/interval';
 import { tap, throttle } from 'rxjs/operators';
 import { Subscription } from 'rxjs/Subscription';
 import { Config } from '../../config';
+import { NutjsKey } from '../../models/nutjs-key.model';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
 import { SettingsModel } from '../../models/settings.model';
@@ -44,12 +45,12 @@ export class SettingsPage implements OnInit, OnDestroy {
     // array below and also enforce compatibility with the previous versions by
     // adding an upgrade script in the app.component.ts/upgrade() method.
     return [
-      { name: 'PRESS KEY', value: '0', type: 'key', modifierKeys: [] },
-      { name: 'ENTER', value: SettingsModel.KEY_ID_ENTER, type: 'key', modifierKeys: [] },
-      { name: 'TAB', value: SettingsModel.KEY_ID_TAB, type: 'key', modifierKeys: [] },
-      { name: 'DATE_TIME', value: '', type: 'date_time', skipOutput: false, format: 'YYYY-MM-DD', locale: moment.locale(), matchBarcodeDate: true },
+      { name: 'PRESS KEY', value: '', keyId: NutjsKey.Space, type: 'key', modifierKeys: [] },
+      { name: 'ENTER', value: '', keyId: NutjsKey.Enter, type: 'key', modifierKeys: [] },
+      { name: 'TAB', value: '', keyId: NutjsKey.Tab, type: 'key', modifierKeys: [] },
 
       // **VARIABLES**
+      { name: 'DATE_TIME', value: '', type: 'date_time', skipOutput: false, format: 'YYYY-MM-DD', locale: moment.locale(), matchBarcodeDate: true },
       { name: 'TIMESTAMP', value: 'timestamp', type: 'variable', skipOutput: false },
       // { name: 'DATE', value: 'date', type: 'variable', skipOutput: false },
       // { name: 'TIME', value: 'time', type: 'variable', skipOutput: false },

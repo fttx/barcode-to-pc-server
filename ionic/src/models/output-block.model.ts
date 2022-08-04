@@ -1,3 +1,5 @@
+import { NutjsKey } from "./nutjs-key.model";
+
 /**
  * It's an element of the Output template field.
  * It's also called Output component in the UI
@@ -59,10 +61,9 @@ export class OutputBlockModel {
     skipOutput?: boolean;
 
     /**
-     * @deprecated Use modifierKeys instead
-     * Modifier keys to press along with the component
+     * NutjsKey identifier (See utils.ts)
      */
-    modifiers?: string[];
+    keyId?: NutjsKey;
 
     /**
      * Modifier keys to enable when typing the PRESS KEY component.
@@ -71,8 +72,13 @@ export class OutputBlockModel {
      * Rembember to keep the identifiers in sync with
      * ComponentEditorKeyPage.NUTJS_KEYS when updating the library
      */
-    modifierKeys?: number[];
+    modifierKeys?: NutjsKey[];
 
+    /**
+        * @deprecated Use modifierKeys instead
+        * Modifier keys to press along with the component
+        */
+    modifiers?: string[];
 
     /**
      * Used to describe the content of the component, so that when the user is

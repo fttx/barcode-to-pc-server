@@ -7,6 +7,7 @@ import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { eq, gt, SemVer } from 'semver';
 import { Config } from '../config';
+import { NutjsKey } from '../models/nutjs-key.model';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
 import { SettingsPage } from '../pages/settings/settings';
@@ -367,13 +368,14 @@ export class MyApp {
           settings.outputProfiles.forEach(outputProfile => {
             outputProfile.outputBlocks.forEach(outputBlock => {
               if (outputBlock.type == 'key' && typeof outputBlock.modifierKeys == 'undefined') {
+                outputBlock.value = UtilsProvider.RobotjsToNutjs(outputBlock.value);
                 outputBlock.modifierKeys = [];
                 outputBlock.modifiers.forEach(modifier => {
                   switch (modifier) {
-                    case 'alt': outputBlock.modifierKeys.push(SettingsModel.KEYS_MODIFERS.find(x => x.name.includes('LeftAlt')).id); break;
-                    case 'command': outputBlock.modifierKeys.push(SettingsModel.KEYS_MODIFERS.find(x => x.name.includes('LeftSuper')).id); break;
-                    case 'control': outputBlock.modifierKeys.push(SettingsModel.KEYS_MODIFERS.find(x => x.name.includes('LeftControl')).id); break;
-                    case 'shift': outputBlock.modifierKeys.push(SettingsModel.KEYS_MODIFERS.find(x => x.name.includes('LeftShift')).id); break;
+                    case 'alt': outputBlock.modifierKeys.push(NutjsKey.LeftAlt); break;
+                    case 'command': outputBlock.modifierKeys.push(NutjsKey.LeftSuper); break;
+                    case 'control': outputBlock.modifierKeys.push(NutjsKey.LeftControl); break;
+                    case 'shift': outputBlock.modifierKeys.push(NutjsKey.LeftShift); break;
                   }
                 });
               }
@@ -401,7 +403,7 @@ export class MyApp {
               if (scan.quantity) {
                 outputBlocks.push({ editable: false, name: 'NUMBER', value: scan.quantity, type: 'variable', modifiers: [] });
               }
-              outputBlocks.push({ name: 'ENTER', value: SettingsModel.KEY_ID_ENTER, type: 'key', modifiers: [] });
+              outputBlocks.push({ name: 'ENTER', value: '', keyId: NutjsKey.Enter, type: 'key', modifiers: [] });
               scan.outputBlocks = outputBlocks;
             }
           }

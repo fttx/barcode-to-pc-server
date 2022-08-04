@@ -7,6 +7,7 @@ import { ElectronProvider } from '../electron/electron';
 import { TranslateService } from '@ngx-translate/core';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { Config } from '../../config';
+import { NutjsKey } from '../../models/nutjs-key.model';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -403,4 +404,71 @@ export class UtilsProvider {
     if (!ElectronProvider.isElectron()) return "browser";
     return window.preload.os.platform().toLowerCase();
   }
+
+  public static RobotjsToNutjs(robotjs: string): NutjsKey {
+    switch (robotjs) {
+      case 'backspace': return NutjsKey.Backspace;
+      case 'delete': return NutjsKey.Delete;
+      case 'enter': return NutjsKey.Enter;
+      case 'tab': return NutjsKey.Tab;
+      case 'escape': return NutjsKey.Escape;
+      case 'up': return NutjsKey.Up;
+      case 'down': return NutjsKey.Down;
+      case 'right': return NutjsKey.Right;
+      case 'left': return NutjsKey.Left;
+      case 'home': return NutjsKey.Home;
+      case 'end': return NutjsKey.End;
+      case 'pageup': return NutjsKey.PageUp;
+      case 'pagedown': return NutjsKey.PageDown;
+      case 'f1': return NutjsKey.F1;
+      case 'f2': return NutjsKey.F2;
+      case 'f3': return NutjsKey.F3;
+      case 'f4': return NutjsKey.F4;
+      case 'f5': return NutjsKey.F5;
+      case 'f6': return NutjsKey.F6;
+      case 'f7': return NutjsKey.F7;
+      case 'f8': return NutjsKey.F8;
+      case 'f9': return NutjsKey.F9;
+      case 'f10': return NutjsKey.F10;
+      case 'f11': return NutjsKey.F11;
+      case 'f12': return NutjsKey.F12;
+      case 'command': return NutjsKey.LeftSuper;
+      case 'alt': return NutjsKey.LeftAlt;
+      case 'control': return NutjsKey.LeftControl;
+      case 'shift': return NutjsKey.LeftShift;
+      case 'right_shift': return NutjsKey.RightShift;
+      case 'space': return NutjsKey.Space;
+      case 'printscreen': return NutjsKey.Space;
+      case 'insert': return NutjsKey.Insert;
+      case 'audio_mute': return NutjsKey.AudioMute;
+      case 'audio_vol_down': return NutjsKey.AudioVolDown;
+      case 'audio_vol_up': return NutjsKey.AudioVolUp;
+      case 'audio_play': return NutjsKey.AudioPlay;
+      case 'audio_stop': return NutjsKey.AudioStop;
+      case 'audio_pause': return NutjsKey.AudioPause;
+      case 'audio_prev': return NutjsKey.AudioPrev;
+      case 'audio_next': return NutjsKey.AudioNext;
+      case 'audio_rewind': return NutjsKey.AudioRewind;
+      case 'audio_forward': return NutjsKey.AudioForward;
+      case 'audio_repeat': return NutjsKey.AudioRepeat;
+      case 'audio_random': return NutjsKey.AudioRandom;
+      case 'numpad_0': return NutjsKey.NumPad0;
+      case 'numpad_1': return NutjsKey.NumPad1;
+      case 'numpad_2': return NutjsKey.NumPad2;
+      case 'numpad_3': return NutjsKey.NumPad3;
+      case 'numpad_4': return NutjsKey.NumPad4;
+      case 'numpad_5': return NutjsKey.NumPad5;
+      case 'numpad_6': return NutjsKey.NumPad6;
+      case 'numpad_7': return NutjsKey.NumPad7;
+      case 'numpad_8': return NutjsKey.NumPad8;
+      case 'numpad_9': return NutjsKey.NumPad9;
+      case 'lights_mon_up': return NutjsKey.Space;
+      case 'lights_mon_down': return NutjsKey.Space;
+      case 'lights_kbd_toggle': return NutjsKey.Space;
+      case 'lights_kbd_up': return NutjsKey.Space;
+      case 'lights_kbd_down': return NutjsKey.Space;
+    }
+    return NutjsKey.Space;
+  }
 }
+

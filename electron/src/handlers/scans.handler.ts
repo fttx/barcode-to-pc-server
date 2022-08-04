@@ -98,13 +98,13 @@ export class ScansHandler implements Handler {
                     }
 
                     switch (outputBlock.type) {
-                        case 'key': this.keyTap(Number(outputBlock.value), outputBlock.modifierKeys); break;
-                        case 'text': this.typeString(outputBlock.value); break;
-                        case 'variable': this.typeString(outputBlock.value); break;
-                        case 'date_time': this.typeString(outputBlock.value); break;
-                        case 'function': this.typeString(outputBlock.value); break;
-                        case 'barcode': this.typeString(outputBlock.value); break;
-                        case 'select_option': this.typeString(outputBlock.value); break;
+                        case 'key': await this.keyTap(Number(outputBlock.keyId), outputBlock.modifierKeys.map(x => Number(x))); break;
+                        case 'text': await this.typeString(outputBlock.value); break;
+                        case 'variable': await this.typeString(outputBlock.value); break;
+                        case 'date_time': await this.typeString(outputBlock.value); break;
+                        case 'function': await this.typeString(outputBlock.value); break;
+                        case 'barcode': await this.typeString(outputBlock.value); break;
+                        case 'select_option': await this.typeString(outputBlock.value); break;
                         case 'delay': {
                             if (isNumeric(outputBlock.value)) {
                                 await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
@@ -113,7 +113,7 @@ export class ScansHandler implements Handler {
                         }
                         case 'woocommerce': {
                             if (!outputBlock.skipOutput) {
-                                this.typeString(outputBlock.value);
+                                await this.typeString(outputBlock.value);
                             }
                             break;
                         }
@@ -130,7 +130,7 @@ export class ScansHandler implements Handler {
                                         }
                                         outputBlock.value = response;
                                         // message = request;
-                                        this.typeString(outputBlock.value)
+                                        await this.typeString(outputBlock.value)
                                     } catch (error) {
                                         // Do not change the value when the request fails to allow the Send again feature to work
                                         // if (error.code) {
@@ -141,7 +141,7 @@ export class ScansHandler implements Handler {
                                 }
                             } else {
                                 // New versions, where the app is >= v3.12.0
-                                if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
+                                if (!outputBlock.skipOutput) await this.typeString(outputBlock.value)
                                 // When the skipOutput is true, we don't do anything.
                                 // At this point the component has been already
                                 // executed by the ACTION_REMOTE_COMPONENT request.
@@ -157,7 +157,7 @@ export class ScansHandler implements Handler {
                                 } else {
                                     try {
                                         outputBlock.value = execSync(outputBlock.value, { cwd: os.homedir(), timeout: outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT }).toString();
-                                        this.typeString(outputBlock.value)
+                                        await this.typeString(outputBlock.value)
                                     } catch (error) {
                                         // Do not change the value when the command fails to allow the Send again feature to work
                                         // if (error.code) {
@@ -168,7 +168,7 @@ export class ScansHandler implements Handler {
                                     outputBloksValueChanged = true;
                                 }
                             } else {
-                                if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
+                                if (!outputBlock.skipOutput) await this.typeString(outputBlock.value)
                             }
                             break;
                         }
@@ -180,7 +180,7 @@ export class ScansHandler implements Handler {
                                     const records: any[] = parse(content, { columns: false, ltrim: true, rtrim: true, });
                                     const resultRow = records.find(x => x[outputBlock.searchColumn - 1] == outputBlock.value);
                                     outputBlock.value = resultRow[outputBlock.resultColumn - 1];
-                                    this.typeString(outputBlock.value)
+                                    await this.typeString(outputBlock.value)
                                 } catch (error) {
                                     // If there is an error opening the file: do nothing
                                     if (error.code == 'ENOENT') continue;
@@ -190,12 +190,12 @@ export class ScansHandler implements Handler {
                                 }
                                 outputBloksValueChanged = true;
                             } else {
-                                if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
+                                if (!outputBlock.skipOutput) await this.typeString(outputBlock.value)
                             }
                             break;
                         }
                         case 'csv_update': {
-                            if (!outputBlock.skipOutput) this.typeString(outputBlock.value)
+                            if (!outputBlock.skipOutput) await this.typeString(outputBlock.value)
                             break;
                         }
                     } // end switch(outputBlock.type)
@@ -543,6 +543,7 @@ export class ScansHandler implements Handler {
     }
 
     async keyTap(key: number, modifiers: number[]) {
+        console.log('keyTap: ', key, modifiers);
         if (!this.settingsHandler.enableRealtimeStrokes || !key) {
             return;
         }
@@ -556,16 +557,16 @@ export class ScansHandler implements Handler {
         }
 
         if (this.settingsHandler.typeMethod == 'keyboard') {
-            keyboard.type(string);
+            await keyboard.type(string);
         } else {
             clipboard.writeText(string);
-            // if (process.platform === "darwin") {
-            // await keyboard.pressKey(Key.optio, Key.V);
-            // await keyboard.releaseKey(Key.LeftControl, Key.V);
-            // } else {
-            await keyboard.pressKey(Key.LeftControl, Key.V);
-            await keyboard.releaseKey(Key.LeftControl, Key.V);
-            // }
+            if (process.platform === "darwin") {
+                await keyboard.pressKey(Key.LeftSuper, Key.V);
+                await keyboard.releaseKey(Key.LeftSuper, Key.V);
+            } else {
+                await keyboard.pressKey(Key.LeftControl, Key.V);
+                await keyboard.releaseKey(Key.LeftControl, Key.V);
+            }
         }
     }
 
