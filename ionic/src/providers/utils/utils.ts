@@ -8,6 +8,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { Config } from '../../config';
 import { NutjsKey } from '../../models/nutjs-key.model';
+import { OutputProfileModel } from '../../models/output-profile.model';
+import { lt } from 'semver';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -229,6 +231,36 @@ export class UtilsProvider {
         }
       ]
     }).present();
+  }
+
+  upgradeTemplate(outputTemplate: OutputProfileModel): OutputProfileModel {
+    const result: OutputProfileModel = JSON.parse(JSON.stringify(outputTemplate));
+    if (lt(result.version, '4.1.0')) {
+      // Robotjs to Nutjs
+      for (let i = 0; i < result.outputBlocks.length; i++) {
+        const outputBlock = result.outputBlocks[i];
+        if (outputBlock.type == 'key' && typeof outputBlock.modifierKeys == 'undefined') {
+          outputBlock.name = 'PRESS KEY';
+          outputBlock.keyId = UtilsProvider.RobotjsToNutjs(outputBlock.value);
+          if (outputBlock.keyId == NutjsKey.Enter) {
+            outputBlock.name = 'ENTER'
+          } else if (outputBlock.keyId == NutjsKey.Tab) {
+            outputBlock.name = 'TAB'
+          }
+          outputBlock.modifierKeys = [];
+          for (let j = 0; j < outputBlock.modifiers.length; j++) {
+            const modifier = outputBlock.modifiers[j];
+            switch (modifier) {
+              case 'alt': outputBlock.modifierKeys.push(NutjsKey.LeftAlt); break;
+              case 'command': outputBlock.modifierKeys.push(NutjsKey.LeftSuper); break;
+              case 'control': outputBlock.modifierKeys.push(NutjsKey.LeftControl); break;
+              case 'shift': outputBlock.modifierKeys.push(NutjsKey.LeftShift); break;
+            }
+          }
+        }
+      }
+    }
+    return result;
   }
 
   private getLocalAddresses(): Promise<string> {
@@ -467,6 +499,35 @@ export class UtilsProvider {
       case 'lights_kbd_toggle': return NutjsKey.Space;
       case 'lights_kbd_up': return NutjsKey.Space;
       case 'lights_kbd_down': return NutjsKey.Space;
+    }
+
+    switch (robotjs.toUpperCase()) {
+      case 'A': return NutjsKey.A;
+      case 'B': return NutjsKey.B;
+      case 'C': return NutjsKey.C;
+      case 'D': return NutjsKey.D;
+      case 'E': return NutjsKey.E;
+      case 'F': return NutjsKey.F;
+      case 'G': return NutjsKey.G;
+      case 'H': return NutjsKey.H;
+      case 'I': return NutjsKey.I;
+      case 'J': return NutjsKey.J;
+      case 'K': return NutjsKey.K;
+      case 'L': return NutjsKey.L;
+      case 'M': return NutjsKey.M;
+      case 'N': return NutjsKey.N;
+      case 'O': return NutjsKey.O;
+      case 'P': return NutjsKey.P;
+      case 'Q': return NutjsKey.Q;
+      case 'R': return NutjsKey.R;
+      case 'S': return NutjsKey.S;
+      case 'T': return NutjsKey.T;
+      case 'U': return NutjsKey.U;
+      case 'V': return NutjsKey.V;
+      case 'W': return NutjsKey.W;
+      case 'X': return NutjsKey.X;
+      case 'Y': return NutjsKey.Y;
+      case 'Z': return NutjsKey.Z;
     }
     return NutjsKey.Space;
   }

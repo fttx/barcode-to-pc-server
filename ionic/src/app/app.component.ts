@@ -87,6 +87,7 @@ export class MyApp {
             text: await this.utils.text('importOutputTemplateDialogYesButton'),
             handler: () => {
               let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
+              outputTemplate = this.utils.upgradeTemplate(outputTemplate);
               // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
               settings.enableAdvancedSettings = true;
               settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
@@ -365,22 +366,9 @@ export class MyApp {
 
         // v4.1.0
         if (settings.outputProfiles) {
-          settings.outputProfiles.forEach(outputProfile => {
-            outputProfile.outputBlocks.forEach(outputBlock => {
-              if (outputBlock.type == 'key' && typeof outputBlock.modifierKeys == 'undefined') {
-                outputBlock.value = UtilsProvider.RobotjsToNutjs(outputBlock.value);
-                outputBlock.modifierKeys = [];
-                outputBlock.modifiers.forEach(modifier => {
-                  switch (modifier) {
-                    case 'alt': outputBlock.modifierKeys.push(NutjsKey.LeftAlt); break;
-                    case 'command': outputBlock.modifierKeys.push(NutjsKey.LeftSuper); break;
-                    case 'control': outputBlock.modifierKeys.push(NutjsKey.LeftControl); break;
-                    case 'shift': outputBlock.modifierKeys.push(NutjsKey.LeftShift); break;
-                  }
-                });
-              }
-            });
-          })
+          for (let i = 0; i < settings.outputProfiles.length; i++) {
+            settings.outputProfiles[i] = this.utils.upgradeTemplate(settings.outputProfiles[i]);
+          }
         }
         if (eq(currentVersion, new SemVer('4.1.0'))) {
           this.utils.showV3DowngradeDialog();
