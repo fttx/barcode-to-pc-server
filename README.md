@@ -47,17 +47,17 @@ When executing npm commands make sure to change the current directory to electro
 
 # Setup
 
-1. Install the required dependencies:
+1. Install the required System dependencies:
     * Node.js v14
     * Python 3
-    * If you're building on Windows, install these packages:
+    <!-- * If you're building on Windows, install these packages:
         * [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe)
         * [Visual C++ Build Environment 2019](https://github.com/nodejs/node-gyp#on-windows)
           * Download link: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools
           * When installing it check `Desktop Applications (Visual C++)` and `Windows 10 SDK` packages
-          * After the installation run `npm config set msvs_version 2019`
+          * After the installation run `npm config set msvs_version 2019` -->
     * If you're building on macOS, run: `brew install glib`
-    * If you're building on Linux, run: `sudo apt-get install -y libx11-dev libxtst-dev libpng-dev zlib1g-dev icnsutils graphicsmagick libavahi-compat-libdnssd-dev && sudo snap install snapcraft --classic`
+    <!-- * If you're building on Linux, run: `sudo apt-get install -y libx11-dev libxtst-dev libpng-dev zlib1g-dev icnsutils graphicsmagick libavahi-compat-libdnssd-dev && sudo snap install snapcraft --classic` -->
 
 2. Clone the repository
     ```bash
@@ -69,7 +69,7 @@ When executing npm commands make sure to change the current directory to electro
 
 If you get errors check these links:
 
-  * RobotJS: <https://github.com/octalmage/robotjs#building>
+  * nutjs.dev: <https://nutjs.dev/tutorials/first_steps>
   * electron-builder: <https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux>
   * node_mdns: <https://github.com/agnat/node_mdns#installation>
 
