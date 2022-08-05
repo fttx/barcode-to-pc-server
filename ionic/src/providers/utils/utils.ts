@@ -233,9 +233,10 @@ export class UtilsProvider {
     }).present();
   }
 
-  upgradeTemplate(outputTemplate: OutputProfileModel): OutputProfileModel {
+  upgradeTemplate(outputTemplate: OutputProfileModel, version): OutputProfileModel {
     const result: OutputProfileModel = JSON.parse(JSON.stringify(outputTemplate));
-    if (lt(result.version, '4.1.0')) {
+    const isMacos = this.electronProvider.getPlatform() === "darwin";
+    if (lt(version, '4.1.0')) {
       // Robotjs to Nutjs
       for (let i = 0; i < result.outputBlocks.length; i++) {
         const outputBlock = result.outputBlocks[i];
@@ -252,8 +253,8 @@ export class UtilsProvider {
             const modifier = outputBlock.modifiers[j];
             switch (modifier) {
               case 'alt': outputBlock.modifierKeys.push(NutjsKey.LeftAlt); break;
-              case 'command': outputBlock.modifierKeys.push(NutjsKey.LeftSuper); break;
-              case 'control': outputBlock.modifierKeys.push(NutjsKey.LeftControl); break;
+              case 'command': outputBlock.modifierKeys.push(isMacos ? NutjsKey.LeftSuper : NutjsKey.LeftControl); break;
+              case 'control': outputBlock.modifierKeys.push(isMacos ? NutjsKey.LeftControl : NutjsKey.LeftSuper); break;
               case 'shift': outputBlock.modifierKeys.push(NutjsKey.LeftShift); break;
             }
           }
