@@ -21,6 +21,7 @@
 ### Fixed
 
 - Slow Keyboard Emulation on Windows
+- Fix app blank screen issue on Android 11+
 
 ## [v4.0.1] - 2022-07-19
 
