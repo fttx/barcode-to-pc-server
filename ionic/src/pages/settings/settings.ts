@@ -282,7 +282,9 @@ export class SettingsPage implements OnInit, OnDestroy {
     // almost duplicate code on app.component.ts
     try {
       const data = this.electronProvider.fsReadFileSync(filePaths[0], { encoding: 'utf-8' });
-      this.addOutputTemplate(JSON.parse(data));
+      const templateObj = JSON.parse(data);
+      const template = this.utils.upgradeTemplate(templateObj, templateObj.version);
+      this.addOutputTemplate(template);
     } catch {
       const path = this.electronProvider.path;
       this.alertCtrl.create({
