@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from 'ionic-angular';
+import { lt } from 'semver';
+import { Config } from '../../config';
+import { NutjsKey } from '../../models/nutjs-key.model';
+import { OutputBlockModel } from '../../models/output-block.model';
+import { OutputProfileModel } from '../../models/output-profile.model';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';
-import { TranslateService } from '@ngx-translate/core';
-import { OutputBlockModel } from '../../models/output-block.model';
-import { Config } from '../../config';
-import { NutjsKey } from '../../models/nutjs-key.model';
-import { OutputProfileModel } from '../../models/output-profile.model';
-import { lt } from 'semver';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -235,7 +235,6 @@ export class UtilsProvider {
 
   upgradeTemplate(outputTemplate: OutputProfileModel, version): OutputProfileModel {
     const result: OutputProfileModel = JSON.parse(JSON.stringify(outputTemplate));
-    const isMacos = this.electronProvider.getPlatform() === "darwin";
     if (lt(version, '4.1.0')) {
       // Robotjs to Nutjs
       for (let i = 0; i < result.outputBlocks.length; i++) {
@@ -253,8 +252,8 @@ export class UtilsProvider {
             const modifier = outputBlock.modifiers[j];
             switch (modifier) {
               case 'alt': outputBlock.modifierKeys.push(NutjsKey.LeftAlt); break;
-              case 'command': outputBlock.modifierKeys.push(isMacos ? NutjsKey.LeftSuper : NutjsKey.LeftControl); break;
-              case 'control': outputBlock.modifierKeys.push(isMacos ? NutjsKey.LeftControl : NutjsKey.LeftSuper); break;
+              case 'command': outputBlock.modifierKeys.push(NutjsKey.LeftSuper); break;
+              case 'control': outputBlock.modifierKeys.push(NutjsKey.LeftControl); break;
               case 'shift': outputBlock.modifierKeys.push(NutjsKey.LeftShift); break;
             }
           }
