@@ -8,6 +8,10 @@ import * as zip from 'gulp-zip';
 import * as path from 'path';
 import * as release from 'fttx-gulp-github-release';
 
+function cleanZip() {
+    return src(['dist/nsis-web/*'], { read: false, allowEmpty: true }).pipe(rm());
+}
+
 function clean() {
     return src(['dist', 'bin'], { read: false, allowEmpty: true }).pipe(rm());
 }
@@ -99,9 +103,10 @@ function publish(cb) {
 }
 
 exports.clean = clean
+exports.cleanZip = cleanZip
 exports.prepare = series(prepareIonic, prepareElectronAssets, prepareElectronConfig, prepareElectronModels)
 
 exports.start = series(exports.prepare, parallel(startElectron, startElectronTsc, startIonicServe));
 exports.build = series(buildIonic, buildElectron, build);
-exports.publish = series(buildIonic, buildElectron, publish);
+exports.publish = series(cleanZip, buildIonic, buildElectron, publish);
 exports.default = series(clean, exports.prepare, exports.build);
