@@ -207,6 +207,7 @@
   "example": "Esempio",
   "exportOnlyReadableComponents": "Esporta solo componenti leggibili",
   "enableQuotes": "Abilita apici",
+  "enableHeaders": "Abilita le intestazioni",
   "separatorCharacter": "Carattere separatore (Delimitatore)",
   "newLineCharacter": "Carattere di nuova linea",
   "eventsDivider": "Eventi",

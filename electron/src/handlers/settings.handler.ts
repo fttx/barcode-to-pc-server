@@ -22,7 +22,7 @@ export class SettingsHandler implements Handler {
         this.store = new ElectronStore();
         // this communication is needed because electronStore.onDidChange() triggers only within the same process
         ipcMain.on('settings', (event, arg) => {
-            const settings: any = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel(os.platform().toLowerCase())) ;
+            const settings: any = this.store.get(Config.STORAGE_SETTINGS, new SettingsModel(os.platform().toLowerCase()));
             this.settings = settings;
             this.onSettingsChanged.next(this.settings);
         });
@@ -56,6 +56,9 @@ export class SettingsHandler implements Handler {
     }
     get enableQuotes(): boolean {
         return this.settings.enableQuotes
+    }
+    get enableHeaders(): boolean {
+        return this.settings.enableHeaders
     }
     get enableTray(): boolean {
         return this.settings.enableTray

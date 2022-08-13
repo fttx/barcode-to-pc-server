@@ -93,8 +93,21 @@ export class ScanModel {
      * @param newLineCharacter must be composed by \n and \r(s). Be carrefoul,
      * because it's stored as 'LF' and 'CR'(s) in the settings.
      */
-    static ToCSV(scannings: ScanModel[], exportOnlyText: boolean, enableQuotes: boolean, csvDelimiter: string, newLineCharacter: string): string {
-        return Papa.unparse(scannings.map(scan => {
+    static ToCSV(scannings: ScanModel[], exportOnlyText: boolean, enableQuotes: boolean, csvDelimiter: string, newLineCharacter: string, generateHeaders: boolean): string {
+        const options = {
+            quotes: enableQuotes,
+            delimiter: csvDelimiter,
+            newline: newLineCharacter,
+            headers: generateHeaders,
+        };
+
+        // Duplicate the first row to prepare the header
+        let headerAdded = false;
+        if (generateHeaders) {
+            scannings = [scannings[0], ...scannings];
+        }
+
+        const data = scannings.map(scan => {
             if (exportOnlyText) {
                 return scan.outputBlocks
                     .filter(outputBlock => (
@@ -109,13 +122,23 @@ export class ScanModel {
 
                         !outputBlock.skipOutput
                     ))
-                    .map(outputBlock => outputBlock.value)
+                    .map(outputBlock => {
+                        // If the header is enable return the label
+                        if (generateHeaders && !headerAdded) {
+                            headerAdded = true;
+                            if (outputBlock.label && outputBlock.label.length > 0) {
+                                return outputBlock.label;
+                            } else {
+                                return outputBlock.name;
+                            }
+                        }
+
+                        // Return the value all the other times
+                        return outputBlock.value;
+                    })
             }
             return scan.outputBlocks.map(outputBlock => outputBlock.value);
-        }), {
-            quotes: enableQuotes,
-            delimiter: csvDelimiter,
-            newline: newLineCharacter
         });
+        return Papa.unparse(data, options);
     }
 }

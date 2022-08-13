@@ -203,15 +203,6 @@ export class ScansHandler implements Handler {
 
                 // Append to csv
                 if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
-                    let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
-                    // The ToCSV() method includes the skipOutput logic
-                    let rows = ScanModel.ToCSV(
-                        scanSession.scannings, // Warning: contains only the last scan
-                        this.settingsHandler.exportOnlyText,
-                        this.settingsHandler.enableQuotes,
-                        this.settingsHandler.csvDelimiter,
-                        newLineCharacter
-                    );
 
                     // Inject variables to the file path
                     let variables = {
@@ -272,9 +263,56 @@ export class ScansHandler implements Handler {
                     // Finally supplant the variables to the file path
                     let path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
+                    let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
+
+                    // Generate header when needed
+                    let header = null;
+                    if (this.settingsHandler.enableHeaders) {
+                        const headerAndData = ScanModel.ToCSV(
+                            scanSession.scannings,
+                            this.settingsHandler.exportOnlyText,
+                            this.settingsHandler.enableQuotes,
+                            this.settingsHandler.csvDelimiter,
+                            newLineCharacter,
+                            true,
+                        );
+                        const firstRow = fs.existsSync(path) && (fs.readFileSync(path, 'utf8').match(/(^.*)/) || [])[1] || '';
+
+                        // Check if a non-empty and valid header has been generated from the data
+                        if (headerAndData && headerAndData.length > 0 && headerAndData.split(newLineCharacter).length > 0) {
+
+                            // Generate the final string that will be used as header only if it is not already in the file
+                            const isHeaderPresent = firstRow && firstRow != '' && firstRow.includes(headerAndData[0]);
+                            if (!isHeaderPresent) {
+                                header = headerAndData.split(newLineCharacter)[0];
+                            }
+                        }
+                    }
+
+                    // The ToCSV() method includes the skipOutput logic
+                    let rows = ScanModel.ToCSV(
+                        scanSession.scannings, // Warning: contains only the last scan
+                        this.settingsHandler.exportOnlyText,
+                        this.settingsHandler.enableQuotes,
+                        this.settingsHandler.csvDelimiter,
+                        newLineCharacter,
+                        false,
+                    );
                     try {
                         if (rows.length != 0) {
                             fs.appendFileSync(path, rows + newLineCharacter);
+
+                            // Prepend the header
+                            if (header) {
+                                const data = fs.readFileSync(path)
+                                const fd = fs.openSync(path, 'w+')
+                                const insert = Buffer.from(header + newLineCharacter)
+                                fs.writeSync(fd, insert, 0, insert.length, 0)
+                                fs.writeSync(fd, data, 0, data.length, insert.length)
+                                fs.close(fd, (err) => {
+                                    if (err) console.log('CSV Append Header Error:', err);
+                                });
+                            }
                         }
                     } catch (error) {
                         dialog.showMessageBox(this.uiHandler.mainWindow, {

@@ -35,6 +35,7 @@ export class SettingsModel {
   csvDelimiter: string = ",";
   exportOnlyText: boolean = true;
   enableQuotes: boolean = false;
+  enableHeaders: boolean = false;
   enableTray: boolean = true;
   openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
   appendCSVEnabled: boolean = false;

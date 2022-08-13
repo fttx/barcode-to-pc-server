@@ -283,6 +283,11 @@
       </ion-item>
 
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+        <ion-label>{{ 'enableHeaders' | translate }}</ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.enableHeaders"></ion-checkbox>
+      </ion-item>
+
+      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <label for="csvDelimiter">{{ 'separatorCharacter' | translate }}</label>
         <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter" id="csvDelimiter" type="text" placeholder="Eg. ," />
       </ion-item>

@@ -207,6 +207,7 @@
   "example": "Example",
   "exportOnlyReadableComponents": "Export only readable components",
   "enableQuotes": "Enable quotes",
+  "enableHeaders": "Enable headers",
   "separatorCharacter": "Separator character (delimiter)",
   "newLineCharacter": "New Line character",
   "eventsDivider": "Events",

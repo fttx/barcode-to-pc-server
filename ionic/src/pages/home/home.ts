@@ -556,7 +556,8 @@ export class ScanSessionContextMenuPopover {
       settings.exportOnlyText,
       settings.enableQuotes,
       settings.csvDelimiter,
-      newLineCharacter
+      newLineCharacter,
+      settings.enableHeaders,
     );
 
     const filePath = this.electronProvider.showSaveDialogSync({
