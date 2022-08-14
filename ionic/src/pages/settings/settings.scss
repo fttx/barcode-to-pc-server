@@ -19,11 +19,13 @@ page-settings {
         color: black !important;
         margin-top: 36px;
     }
+
     .csv-path {
         width: 100%;
         margin-top: 4px;
         padding-left: 5px;
     }
+
     .csv-select-path-form input,
     .csv-select-path-form ion-grid,
     .csv-select-path-form ion-col,
@@ -60,7 +62,8 @@ page-settings {
         height: 35px;
         vertical-align: middle;
 
-        label, ion-label {
+        label,
+        ion-label {
             padding: 0;
             margin: 0;
         }
@@ -78,7 +81,7 @@ page-settings {
         }
 
         .btn-output-template-action {
-          margin: -10px -5px 0 -5px
+            margin: -10px -5px 0 -5px
         }
 
         .item-inner {
@@ -86,30 +89,36 @@ page-settings {
         }
     }
 
-    .output-template-title > span{
+    .output-template-title>span {
         font-size: 1.6rem;
         font-weight: 500;
         color: color($colors, dark)
     }
 
-    .output-template-title button { margin: -4px 0 0 4px}
+    .output-template-title button {
+        margin: -4px 0 0 4px
+    }
 
     info-box {
         margin: 0 0 0 9px;
         display: block;
     }
 
+    variables-list br {
+        display: none;
+    }
+
     .inline-input {
-      display: block;
-      width: 100%;
-      line-height: 28px;
-      height: 28px;
-      margin-top: 15px;
-      border: 1px solid #b5b5b5;
+        display: block;
+        width: 100%;
+        line-height: 28px;
+        height: 28px;
+        margin-top: 15px;
+        border: 1px solid #b5b5b5;
     }
 
     .slider-max-scans {
-      margin: -17px 0 0 0;
-      padding-bottom: 28px;
+        margin: -17px 0 0 0;
+        padding-bottom: 28px;
     }
 }

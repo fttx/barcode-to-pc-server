@@ -240,23 +240,8 @@
         </ion-grid>
 
         <info-box title="Info">
-          {{ 'variablesInfo' | translate }}<br>
-          <code>
-            <input type="text" value="barcode" disabled />
-            <input type="text" value="barcodes" disabled />
-            <input type="text" value="number" disabled />
-            <input type="text" value="text" disabled />
-            <input type="text" value="timestamp" disabled />
-            <input type="text" value="date_time" disabled />
-            <input type="text" value="scan_session_name" disabled />
-            <input type="text" value="device_name" disabled />
-            <input type="text" value="select_option" disabled />
-            <input type="text" value="http" disabled />
-            <input type="text" value="run" disabled />
-            <input type="text" value="csv_lookup" disabled />
-            <input type="text" value="csv_update" disabled />
-            <input type="text" value="javascript_function" disabled />
-          </code><br>
+          <variables-list [description]="'appendToCSVVariablesDescription' | translate"></variables-list>
+          <br>
           {{ 'note1Header' | translate }}:
           <p style="margin-left: 13px">
             {{ 'note1' | translate }}

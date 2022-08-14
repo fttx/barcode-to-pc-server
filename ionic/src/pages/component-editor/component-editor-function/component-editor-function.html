@@ -13,29 +13,8 @@
       {{ 'javascriptDescription2' | translate }}
       <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.w3schools.com/js/js_string_methods.asp')">
         {{ 'javascriptDescription3' | translate }}</a>.<br><br>
-      {{ 'availableVariables' | translate }}
     </p>
-    <code>
-      <input type="text" value="barcode" disabled class="example-variable" /> <br>
-      <input type="text" value="barcodes" disabled class="example-variable" /> <br>
-      <input type="text" value="number" disabled class="example-variable" /> <br>
-      <input type="text" value="text" disabled class="example-variable" /> <br>
-      <input type="text" value="timestamp" disabled class="example-variable" /> <br>
-      <input type="text" value="date_time" disabled class="example-variable" /> <br>
-      <input type="text" value="scan_session_name" disabled class="example-variable" /> <br>
-      <input type="text" value="device_name" disabled class="example-variable" /> <br>
-      <input type="text" value="select_option" disabled class="example-variable" /> <br>
-      <input type="text" value="http" disabled class="example-variable" /> <br>
-      <input type="text" value="run" disabled class="example-variable" /> <br>
-      <input type="text" value="csv_lookup" disabled class="example-variable" /> <br>
-      <input type="text" value="csv_update" disabled class="example-variable" /> <br>
-      <input type="text" value="javascript_function" disabled class="example-variable" /> <br>
-      <input type="text" value="woocommerce" disabled class="example-variable" /> <br>
-      <!-- Remember to update the other components (9), and the article:
-        https://barcodetopc.com/tutorial/how-to-use-the-run-output-component/#pass-parameters
-        https://barcodetopc.com/tutorial/how-to-use-the-csv_lookup-component/
-        https://barcodetopc.com/tutorial/how-to-use-the-csv_update-component/
-      -->
-    </code>
+
+    <variables-list></variables-list>
   </ion-item>
 </component-editor>

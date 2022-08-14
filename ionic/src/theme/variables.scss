@@ -25,39 +25,39 @@ $label-md-text-color: #000;
 // The "primary" color is the only required color in the map.
 
 
-    // [class.btn-primary]="customVariable.type == 'key'"
-    // [class.btn-success]="customVariable.type == 'variable'"
-    // [class.btn-warning]="customVariable.type == 'text'"
-    // [class.btn-info]="customVariable.type == 'barcode' || customVariable.type == 'function'"
+// [class.btn-primary]="customVariable.type == 'key'"
+// [class.btn-success]="customVariable.type == 'variable'"
+// [class.btn-warning]="customVariable.type == 'text'"
+// [class.btn-info]="customVariable.type == 'barcode' || customVariable.type == 'function'"
 $colors: (
-  primary:    #F44336,
-  secondary:  #B71C1C,
-  danger:     #f53d3d,
-  light:      #f4f4f4,
-  dark:       #222,
-  favorite:   #69BB7B,
-  add-button:   rgb(39, 190, 72),
-  status-bar:   rgb(231, 231, 231),
+  primary: #F44336,
+  secondary: #B71C1C,
+  danger: #f53d3d,
+  light: #f4f4f4,
+  dark: #222,
+  favorite: #69BB7B,
+  add-button: rgb(39, 190, 72),
+  status-bar: rgb(231, 231, 231),
   notification-bg: #f4f4f4,
-  output-block-component-key:   #B71C1C,
-  output-block-component-variable:   #0c7a3a,
-  output-block-component-text:   rgb(207, 152, 0),
+  output-block-component-key: #B71C1C,
+  output-block-component-variable: #0c7a3a,
+  output-block-component-text: rgb(207, 152, 0),
   // output-block-component-barcode:   rgb(128, 128, 128),
-  output-block-component-barcode:   rgb(140, 140, 140),
-  output-block-component-function:   rgb(140, 140, 140),
-  output-block-component-delay:   rgb(149, 0, 168),
-  output-block-component-http:   #db7500,
-  output-block-component-run:   #0066db,
-  output-block-component-beep:   #3dbb26,
-  output-block-component-select_option:   #b6a400,
-  output-block-component-if:   #f53d3d,
-  output-block-component-endif:   #f53d3d,
-  output-block-component-csv_lookup:   #613711,
-  output-block-component-csv_update:   #613711,
-  output-block-component-alert:   #dfdfdf,
-  output-block-component-date_time:  #293b96,
+  output-block-component-barcode: rgb(140, 140, 140),
+  output-block-component-function: rgb(140, 140, 140),
+  output-block-component-delay: rgb(149, 0, 168),
+  output-block-component-http: #db7500,
+  output-block-component-run: #0066db,
+  output-block-component-beep: #3dbb26,
+  output-block-component-select_option: #b6a400,
+  output-block-component-if: #f53d3d,
+  output-block-component-endif: #f53d3d,
+  output-block-component-csv_lookup: #613711,
+  output-block-component-csv_update: #613711,
+  output-block-component-alert: #dfdfdf,
+  output-block-component-date_time: #293b96,
   output-block-component-woocommerce: #7f54b3,
-  text:       #ffffff,
+  text: #ffffff,
   selected: #ebebeb,
 );
 
@@ -122,6 +122,7 @@ ion-item {
 popper-content {
   font-size: 1.19rem;
 }
+
 popper-content a {
   cursor: pointer;
 }
@@ -130,6 +131,7 @@ popper-content a {
   -webkit-appearance: none;
   width: 7px;
 }
+
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background-color: rgba(0, 0, 0, .5);
@@ -180,22 +182,23 @@ blockquote {
 
 // ion-slides dots
 .swiper-pagination-bullet {
-  background: map-get($colors, dark)  !important;
+  background: map-get($colors, dark) !important;
 }
 
 .swiper-pagination-bullet-active {
-  background:  map-get($colors, primary) !important;
+  background: map-get($colors, primary) !important;
   opacity: .8 !important;
 }
 
-.text-muted {
+.text-muted,
+popper-content {
   color: #5c5c5c;
 }
 
 // Pop-over custom height
-@media only screen and (min-height: 600px) and (min-width: 768px){
+@media only screen and (min-height: 600px) and (min-width: 768px) {
   .modal-wrapper {
-      top: calc(50% - (600px/2)) !important;
-      height: 600px !important;
+    top: calc(50% - (600px/2)) !important;
+    height: 600px !important;
   }
 }

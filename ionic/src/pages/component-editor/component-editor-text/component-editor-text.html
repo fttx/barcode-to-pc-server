@@ -1,8 +1,13 @@
 <component-editor [outputBlock]="outputBlock">
-  <ion-item [hidden]="outputBlock.type != 'text'">
+  <ion-item [hidden]="outputBlock.type != 'text'" no-lines>
     <label for="_valueText">
       <h2 color="dark">{{ 'text' | translate }}</h2>
     </label>
     <input id="_valueText" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Lorem ipsum" />
   </ion-item>
+
+  <ion-item>
+    <variables-list></variables-list>
+  </ion-item>
+
 </component-editor>

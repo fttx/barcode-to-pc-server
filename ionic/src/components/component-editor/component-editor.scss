@@ -9,4 +9,56 @@ component-editor {
     line-height: 36px;
     padding: 0 8px;
   }
+
+  .popper-close {
+    position: fixed;
+    top: -9px;
+    right: -10px;
+    background: #da1a1a;
+    border-radius: 999px;
+    border: 1px solid black;
+    width: 22px;
+    height: 22px;
+    text-align: center;
+    font-weight: 900;
+    line-height: 19px;
+    font-family: 'Roboto';
+    color: white;
+    cursor: pointer;
+  }
+
+  popper-content>div {
+    box-shadow: 0 0 15px rgba(0, 0, 0, .5) !important;
+    // left: 10%;
+    width: 75%;
+  }
+
+  .help-button {
+    margin: -2px 0 0 4px;
+    vertical-align: middle;
+    height: 19px;
+    width: 14px;
+    font-size: .7em;
+    border-radius: 116px;
+    border: 1px solid #a2a2a2;
+    color: #737373;
+    box-shadow: none;
+  }
+
+  label>h2 {
+    display: inline-block;
+  }
+
+  ion-label {
+    font-size: 1.6rem !important;
+  }
+
+  .help-button-skip-output {
+    position: absolute;
+    top: 32px;
+    z-index: 1;
+    left: 118px;
+    font-size: 1.1rem;
+    padding: 0 10px;
+  }
 }
