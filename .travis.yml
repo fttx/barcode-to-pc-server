@@ -18,7 +18,7 @@ install:
   - npm install
 
 script:
-  - rm -rf electron/electron-resources/license*
+  - rm -rf electron/build/license*
   - chmod +x macos-signing.sh
   - ./macos-signing.sh
   - npm run publish

@@ -38,14 +38,14 @@
     "fileAssociations": [
       {
         "ext": "btpt",
-        "icon": "../electron/electron-resources/btpt.icns",
+        "icon": "../electron/build/btpt.icns",
         "name": "Barcode to PC Output Template",
         "description": "Barcode to PC Output Template",
         "role": "Editor"
       },
       {
         "ext": "btpt",
-        "icon": "../electron/electron-resources/btpt.ico",
+        "icon": "../electron/build/btpt.ico",
         "name": "Barcode to PC Output Template",
         "description": "Barcode to PC Output Template"
       }
@@ -55,7 +55,7 @@
     "mac": {
       "category": "public.app-category.utilities",
       "hardenedRuntime": true,
-      "entitlements": "../electron/electron-resources/entitlements.mac.plist",
+      "entitlements": "../electron/build/entitlements.mac.plist",
       "gatekeeperAssess": false,
       "extendInfo": {
         "LSUIElement": 1
@@ -69,11 +69,11 @@
           ]
         }
       ],
-      "icon": "electron-resources/icon.icns"
+      "icon": "build/icon.icns"
     },
     "dmg": {
-      "icon": "electron-resources/dmg-icon.icns",
-      "background": "electron-resources/background.tiff",
+      "icon": "build/dmg-icon.icns",
+      "background": "build/background.tiff",
       "sign": false,
       "contents": [
         {
@@ -103,7 +103,7 @@
           ]
         }
       ],
-      "icon": "electron-resources/icon.ico"
+      "icon": "build/icon.ico"
     },
     "linux": {
       "target": "AppImage",
@@ -118,7 +118,7 @@
     "nsisWeb": {
       "oneClick": false,
       "perMachine": true,
-      "installerSidebar": "electron-resources/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
+      "installerSidebar": "build/MUI_WELCOMEFINISHPAGE_BITMAP.bmp",
       "shortcutName": "Barcode to PC server",
       "artifactName": "${name}.v${version}.${os}.setup.${ext}"
     }
