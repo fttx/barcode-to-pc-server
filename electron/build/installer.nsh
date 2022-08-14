@@ -1,11 +1,12 @@
 !macro customInstall
-${If} ${RunningX64}
-  File /oname=$PLUGINSDIR\Bonjour64.msi "${BUILD_RESOURCES_DIR}\Bonjour64.msi"
-  ExecWait '"msiexec" /i "$PLUGINSDIR\Bonjour64.msi" /passive'
-${Else}
-  File /oname=$PLUGINSDIR\Bonjour.msi "${BUILD_RESOURCES_DIR}\Bonjour.msi"
-  ExecWait '"msiexec" /i "$PLUGINSDIR\Bonjour.msi" /passive'
-${EndIf}
+    ${If} ${RunningX64}
+        File /oname=$PLUGINSDIR\Bonjour64.msi "${BUILD_RESOURCES_DIR}\Bonjour64.msi"
+        ExecWait '"msiexec" /i "$PLUGINSDIR\Bonjour64.msi" /passive'
+    ${Else}
+        File /oname=$PLUGINSDIR\Bonjour.msi "${BUILD_RESOURCES_DIR}\Bonjour.msi"
+        ExecWait '"msiexec" /i "$PLUGINSDIR\Bonjour.msi" /passive'
+    ${EndIf}
+    ExecWait 'netsh advfirewall firewall add rule name="Barcode to PC server" dir=in action=allow program="$INSTDIR\Barcode to PC server.exe" enable=yes profile=public,private'
 !macroend
 
 !macro customUnInstall
@@ -16,5 +17,6 @@ ${ifNot} ${isUpdated}
     ExecShell "open" "https://barcodetopc.com/were-sorry-to-see-you-leave/"
   ; false:
     ; DetailPrint "Skipping survey"
+    ExecWait 'netsh advfirewall firewall delete rule name="Barcode to PC server"'
 ${endIf}
 !macroend
