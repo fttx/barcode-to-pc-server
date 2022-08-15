@@ -205,7 +205,6 @@
   "note2Header": "Nota 2",
   "note2": "La variabile <i>timestamp</i> si riferisce alla data di creazione della raccolta",
   "example": "Esempio",
-  "exportOnlyReadableComponents": "Esporta solo componenti leggibili",
   "enableQuotes": "Abilita apici",
   "enableHeaders": "Abilita le intestazioni",
   "separatorCharacter": "Carattere separatore (Delimitatore)",

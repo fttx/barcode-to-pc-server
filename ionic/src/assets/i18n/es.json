@@ -205,7 +205,6 @@
   "note2Header": "Nota 2",
   "note2": "La variable <i>timestamp</i> hace referencia a la fecha de creación de la sesión de escaneo",
   "example": "Ejemplo",
-  "exportOnlyReadableComponents": "Exportar sólo componentes legibles",
   "enableQuotes": "Habilitar comillas",
   "enableHeaders": "Habilitar encabezados",
   "separatorCharacter": "Carácter separador (delimitador)",

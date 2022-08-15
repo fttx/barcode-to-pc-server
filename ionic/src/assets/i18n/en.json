@@ -205,7 +205,6 @@
   "note2Header": "Note 2",
   "note2": "The <i>timestamp</i> variable refers to the scan session creation date",
   "example": "Example",
-  "exportOnlyReadableComponents": "Export only readable components",
   "enableQuotes": "Enable quotes",
   "enableHeaders": "Enable headers",
   "separatorCharacter": "Separator character (delimiter)",

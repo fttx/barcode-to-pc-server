@@ -256,12 +256,6 @@
 
       </ion-item>
 
-
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
-        <ion-label>{{ 'exportOnlyReadableComponents' | translate }}</ion-label>
-        <ion-checkbox [(ngModel)]="settings && settings.exportOnlyText"></ion-checkbox>
-      </ion-item>
-
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <ion-label>{{ 'enableQuotes' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableQuotes"></ion-checkbox>
