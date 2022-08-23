@@ -219,7 +219,14 @@ export class UtilsProvider {
         checked: false,
       }],
       buttons: [
-        { role: 'cancel', text: 'Ignore', },
+        {
+          text: 'Ignore',
+          handler: (data) => {
+            if (data == 'doNotShowAgain') {
+              this.storage.set('disableV3DowngradeDialog', true);
+            }
+          }
+        },
         {
           text: 'Get help',
           handler: (data) => {
