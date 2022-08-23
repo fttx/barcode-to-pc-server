@@ -16,6 +16,27 @@
 ### Security
 -->
 
+## [v4.2.0] - 2022-08-23
+
+### Added
+
+- Option to enable CSV Headers
+- Windows Firewall auto-configuration
+
+### Changed
+
+- Improved Components descriptions
+- Minor UI improvements
+
+### Removed
+
+- "Export only readable components" option
+
+### Fixed
+
+- JavaScript error (missing libnut-win32 module)
+- Bonjour installation issue
+
 ## [v4.1.0] - 2022-08-06
 
 ### Fixed
@@ -508,6 +529,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.2.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.1.0...v4.2.0
 [v4.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.0.1...v4.1.0
 [v4.0.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.19.0...v4.0.0
