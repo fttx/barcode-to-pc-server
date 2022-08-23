@@ -6,7 +6,7 @@
     "app",
     "remote"
   ],
-  "version": "4.1.0",
+  "version": "4.2.0",
   "license": "MIT",
   "author": {
     "name": "Filippo Tortomasi",
@@ -125,7 +125,7 @@
   },
   "dependencies": {
     "@electron/remote": "^2.0.8",
-    "@nut-tree/nut-js": "^2.1.1",
+    "@nut-tree/nut-js": "^2.2.0",
     "@types/gulp": "^4.0.9",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "axios": "^0.26.1",
