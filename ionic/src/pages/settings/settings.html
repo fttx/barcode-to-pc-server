@@ -296,11 +296,11 @@
         </ion-grid>
       </ion-item>
 
-      <ion-item-divider>
+      <ion-item-divider [hidden]="!(settings && settings.enableAdvancedSettings)">
         {{ 'eventsDivider' | translate }}
       </ion-item-divider>
 
-      <ion-item no-lines>
+      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <label for="_onSmartphoneChargeCommand">{{ 'executeCommandLabel' | translate }}</label>
         <input [(ngModel)]="settings && settings.onSmartphoneChargeCommand" id="_onSmartphoneChargeCommand" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
       </ion-item>

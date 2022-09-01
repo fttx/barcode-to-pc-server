@@ -211,7 +211,7 @@
   "newLineCharacter": "New Line character",
   "eventsDivider": "Events",
   "executeCommandLabel": "Execute a command when the smartphone power cord is plugged in",
-  "otherDivider": "Other",
+  "otherDivider": "Other options",
   "maximumNumberOfScanSessions": "Maximum number of scan sessions",
   "maximumNumberOfScanSessionsDescription": "The older scan sessions will be automatically deleted from the server, but you will still able to send them again from the smartphone using the <i>sync</i> button.",
   "showAdvancedSettings": "Show advanced settings",

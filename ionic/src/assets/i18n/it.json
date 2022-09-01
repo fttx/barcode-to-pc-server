@@ -211,7 +211,7 @@
   "newLineCharacter": "Carattere di nuova linea",
   "eventsDivider": "Eventi",
   "executeCommandLabel": "Esegui un comando quando il cavo di alimentazione dello smartphone è inserito",
-  "otherDivider": "Altro",
+  "otherDivider": "Altre opzioni",
   "maximumNumberOfScanSessions": "Numero massimo di raccolte",
   "maximumNumberOfScanSessionsDescription": "Le raccolte precedenti verranno automaticamente eliminate dal server, ma continuerai a inviarle di nuovo dallo smartphone utilizzando il pulsante <i>sync</i>.",
   "showAdvancedSettings": "Mostra impostazioni avanzate",
