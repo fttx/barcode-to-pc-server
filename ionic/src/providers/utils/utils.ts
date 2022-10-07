@@ -204,9 +204,11 @@ export class UtilsProvider {
     })
   }
 
+  private v3DowngradeDialog = null;
   showV3DowngradeDialog() {
     if (this.electronProvider.store.get('disableV3DowngradeDialog', false)) return;
-    this.alertCtrl.create({
+    if (this.v3DowngradeDialog != null) return;
+    this.v3DowngradeDialog = this.alertCtrl.create({
       cssClass: 'changelog',
       title: 'Data loss warning',
       message: 'The server has been updated to version v4.1.0. <br>The app update will be released within the next month.<br><br>\
@@ -237,7 +239,8 @@ export class UtilsProvider {
           }
         }
       ]
-    }).present();
+    });
+    this.v3DowngradeDialog.present();
   }
 
   upgradeTemplate(outputTemplate: OutputProfileModel, version): OutputProfileModel {
