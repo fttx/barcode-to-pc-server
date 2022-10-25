@@ -32,6 +32,12 @@ contextBridge.exposeInMainWorld('preload', {
         send(channel, ...args) {
             return ipcRenderer.send(channel, args);
         },
+        removeAllListeners(channel) {
+            return ipcRenderer.removeAllListeners(channel);
+        },
+        removeListener(channel, listener) {
+            return ipcRenderer.removeListener(channel, listener);
+        },
     },
     showSaveDialogSync: (options) => {
         return dialog.showSaveDialogSync(getCurrentWindow(), options);

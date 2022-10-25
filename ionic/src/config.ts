@@ -1,6 +1,7 @@
 export class Config {
   public static APP_NAME = 'Barcode to PC server';
   public static PORT = 57891;
+  public static OAUTH_HTTP_PORT = Config.PORT + 1;
   public static AUTHOR = 'Filippo Tortomasi';
 
   public static DEFAULT_COMPONENT_TIMEOUT = 10000;
@@ -57,4 +58,12 @@ export class Config {
   public static STORAGE_SETTINGS = 'storage_settings';
   public static STORAGE_LAST_VERSION = 'storage_last_version';
   public static STORAGE_LICENSE_EVER_ACTIVATED = 'storage_license_ever_activated';
+
+  public static GAPIS_CREDENTIALS = {
+    // 1. Generate credentials: https://console.cloud.google.com/apis/
+    // 2. Create OAuth page and set spreadsheets and drive.metadata.readonly scopes
+    client_id: '162261435624-69ubohrvppjr9hcc5t9uighsb7j2cqhv.apps.googleusercontent.com',
+    client_secret: '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',
+    redirect_uri: `http://localhost:${Config.OAUTH_HTTP_PORT}/oauth2callback`
+  };
 }

@@ -20,6 +20,7 @@ import { Config } from '../config';
 import { Handler } from '../models/handler.model';
 import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
+import { GSheetHandler } from './gsheet.handler';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
 export class ScansHandler implements Handler {
@@ -30,13 +31,14 @@ export class ScansHandler implements Handler {
     private constructor(
         private settingsHandler: SettingsHandler,
         private uiHandler: UiHandler,
+        private gsheet: GSheetHandler,
     ) {
         keyboard.config.autoDelayMs = 0;
     }
 
-    static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler) {
+    static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler, gsheet: GSheetHandler) {
         if (!ScansHandler.instance) {
-            ScansHandler.instance = new ScansHandler(settingsHandler, uiHandler);
+            ScansHandler.instance = new ScansHandler(settingsHandler, uiHandler, gsheet);
         }
         return ScansHandler.instance;
     }
@@ -92,7 +94,8 @@ export class ScansHandler implements Handler {
                         outputBlock.type != 'http' &&
                         outputBlock.type != 'run' &&
                         outputBlock.type != 'csv_lookup' &&
-                        outputBlock.type != 'csv_update') {
+                        outputBlock.type != 'csv_update' &&
+                        outputBlock.type != 'google_sheets') {
                         // For these components the continue; is called inside the switch below (< v3.12.0)
                         continue;
                     }
@@ -194,6 +197,7 @@ export class ScansHandler implements Handler {
                             }
                             break;
                         }
+                        case 'google_sheets':
                         case 'csv_update': {
                             if (!outputBlock.skipOutput) await this.typeString(outputBlock.value)
                             break;
@@ -241,6 +245,7 @@ export class ScansHandler implements Handler {
                         woocommerce: null,
                         csv_lookup: null,
                         csv_update: null,
+                        google_sheets: null,
                         javascript_function: null,
                     };
                     // Search if there is a corresponding Output component to assign to the NULL variables
@@ -426,9 +431,9 @@ export class ScansHandler implements Handler {
                     case 'http': {
                         try {
                             let params = JSON.parse(request.outputBlock.httpParams || '{}');
-                            if (params == {}) params = null;
+                            if (Object.keys(params).length === 0) params = null;
                             let haeders = JSON.parse(request.outputBlock.httpHeaders || '{}');
-                            if (haeders == {}) haeders = null;
+                            if (Object.keys(haeders).length === 0) haeders = null;
 
                             // Add OAuth header
                             const client = axios.create();
@@ -498,6 +503,38 @@ export class ScansHandler implements Handler {
                             break;
                         }
 
+                        break;
+                    }
+
+                    case 'google_sheets': {
+                        let result = null;
+
+                        if (request.outputBlock.action === 'get') {
+                            result = await this.gsheet.get(
+                                request.outputBlock.sheetId,
+                                request.outputBlock.workSheetIndex,
+                                request.outputBlock.searchColumnA1,
+                                request.outputBlock.value,
+                                request.outputBlock.columnToReadA1,
+                                request.outputBlock.rowToUpdate,
+                            );
+                        } else if (request.outputBlock.action === 'update') {
+                            result = await this.gsheet.update(
+                                request.outputBlock.sheetId,
+                                request.outputBlock.workSheetIndex,
+                                request.outputBlock.searchColumnA1,
+                                request.outputBlock.value,
+                                request.outputBlock.columnToUpdateA1,
+                                request.outputBlock.newValue,
+                                request.outputBlock.rowToUpdate,
+                            );
+                        }
+
+                        if (result !== null) {
+                            responseOutputBlock.value = result;
+                        } else {
+                            responseOutputBlock.value = request.outputBlock.notFoundValue;
+                        }
                         break;
                     }
 

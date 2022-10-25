@@ -152,6 +152,20 @@ export class MyApp {
       }
     });
 
+    // Periodically request a refresh_token for the GSHEET integration
+    this.electronProvider.ipcRenderer.on('gsheet_refresh_tokens', (event, tokens) => {
+      localStorage.setItem('gsheet_saved_tokens', JSON.stringify(tokens));
+    });
+    this.electronProvider.ipcRenderer.on('gsheet_get_saved_tokens', (event, tokens) => {
+      this.electronProvider.ipcRenderer.send('gsheet_get_saved_tokens', JSON.parse(localStorage.getItem('gsheet_saved_tokens')));
+    });
+    const requestTokenRefresh = () => {
+      const savedTokens = JSON.parse(localStorage.getItem('gsheet_saved_tokens'));
+      this.electronProvider.ipcRenderer.send('gsheet_refresh_tokens', savedTokens);
+    };
+    setInterval(() => { requestTokenRefresh() }, 1000 * 60 * 60 * 12); // Every 12h
+    requestTokenRefresh(); // Every app start
+
     this.translate.setDefaultLang('en');
     this.translate.use(this.translate.getBrowserLang());
 

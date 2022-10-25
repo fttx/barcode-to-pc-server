@@ -178,6 +178,10 @@ export class UtilsProvider {
     private translateService: TranslateService,
   ) {
     UtilsProvider.DecryptText = UtilsProvider.decrypt('barcodetopc');
+    this.electronProvider.ipcRenderer.on('showErrorNativeDialog', async (event, translateStringId, interpolateParams) => {
+      const message = await this.text(translateStringId, interpolateParams);
+      this.showErrorNativeDialog(message, interpolateParams);
+    });
   }
 
   getQrCodeUrl(): Promise<string> {
@@ -311,9 +315,9 @@ export class UtilsProvider {
     return -1;
   }
 
-  public async showErrorNativeDialog(message: string = '') {
+  public async showErrorNativeDialog(message: string = '', interpolateParams?: Object) {
     this.electronProvider.showMessageBoxSync({
-      type: 'error', title: await this.text('nativeErrorDialogTitle'), buttons: [await this.text('nativeErrorDialogCloseButton')], message: message,
+      type: 'error', title: await this.text('nativeErrorDialogTitle'), buttons: [await this.text('nativeErrorDialogCloseButton', interpolateParams)], message: message,
     })
   }
 

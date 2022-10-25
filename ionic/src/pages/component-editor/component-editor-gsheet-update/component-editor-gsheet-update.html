@@ -1,0 +1,125 @@
+<component-editor [outputBlock]="outputBlock">
+  <ion-item no-lines text-wrap>
+    <p [innerHtml]="'gsheetUpdateDescription' | translate"></p>
+  </ion-item>
+
+  <ion-item no-lines text-wrap>
+    <ion-label>
+      {{ 'gsheetAction' | translate }}
+    </ion-label>
+    <ion-select [(ngModel)]="outputBlock.action" (ionChange)="onActionChange($event)">
+      <ion-option value="get">{{ 'gshetActionGet' | translate }}</ion-option>
+      <ion-option value="update">{{ 'gshetActionUpdate' | translate }}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item text-wrap>
+    <p [innerHtml]="'gsheetActionDescription' | translate"></p>
+  </ion-item>
+
+  <ion-item text-wrap>
+    <label for="_searchValue">{{ 'csvUpdateSearchValue' | translate }}</label>
+    <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. 0" />
+
+    <p>
+      <br>
+      {{ 'gsheetUpdateSearchDescription' | translate }}
+    </p>
+  </ion-item>
+
+  <div [hidden]="outputBlock.action !== 'update'">
+    <ion-item no-lines text-wrap>
+      <label for="_newValue">{{ 'newValue' | translate }}</label>
+      <input id="_newValue" [(ngModel)]="outputBlock.newValue" class="inline-input" type="text" placeholder="Eg. 1" />
+
+      <p [innerHtml]="'gsheetNewValueDescription' | translate"></p>
+    </ion-item>
+
+    <ion-item text-wrap>
+      <p>
+        <br>
+        <i>{{ 'newValue' | translate }}</i> {{ 'newValueExample' | translate }}<br>
+        <code ngNonBindable>{{ number }}</code><br><br>
+      </p>
+
+      <variables-list></variables-list>
+    </ion-item>
+  </div>
+
+  <ion-item text-wrap no-lines>
+    <ion-label>
+      {{ 'gsheetSelectedSheet' | translate }}
+    </ion-label>
+    <ion-select [(ngModel)]="outputBlock.sheetId" #sheetId>
+      <ion-option *ngFor="let sheet of availableSheets" [value]="sheet.id">{{ sheet.name }}</ion-option>
+    </ion-select>
+    <!-- <p>The matched row to update that you want to update</p> -->
+  </ion-item>
+
+  <ion-item no-lines>
+    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="logout()" color="output-block-component-gsheet">
+      <ion-icon name="exit"></ion-icon>
+      {{ 'gsheetLogout' | translate }}
+    </button>
+    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-gsheet">
+      <ion-icon name="refresh"></ion-icon>
+      {{ 'gsheetRefreshSheets' | translate }}
+    </button>
+
+    <button [disabled]="isLoading" [hidden]="isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-gsheet">
+      <ion-icon name="link"></ion-icon>
+      {{ 'gsheetSelectSheet' | translate }}
+    </button>
+  </ion-item>
+
+  <ion-item text-wrap>
+    <label for="_workSheetIndex">{{ 'workSheetIndex' | translate }}</label>
+    <input id="_workSheetIndex" [(ngModel)]="outputBlock.workSheetIndex" class="inline-input" type="number" placeholder="0" />
+    <br>
+    <p>{{ 'workSheetIndexDescription' | translate }}</p>
+  </ion-item>
+
+  <ion-item text-wrap>
+    <label for="_searchColumnIndex">{{ 'searchColumnA1' | translate }}</label>
+    <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumnA1" class="inline-input" type="text" placeholder="A" />
+    <br>
+    <p>{{ 'searchColumnA1Description' | translate }}</p>
+  </ion-item>
+
+  <ion-item text-wrap [hidden]="outputBlock.action === 'get'">
+    <label for="_columnToUpdateIndex">{{ 'columnToUpdateA1' | translate }}</label>
+    <input id="_columnToUpdateIndex" [(ngModel)]="outputBlock.columnToUpdateA1" class="inline-input" type="text" placeholder="B" />
+    <br>
+    <p>{{ 'columnToUpdateA1Description' | translate }}</p>
+  </ion-item>
+
+  <ion-item text-wrap [hidden]="outputBlock.action === 'update'">
+    <label for="_columnToReadIndex">{{ 'columnToReadA1' | translate }}</label>
+    <input id="_columnToReadIndex" [(ngModel)]="outputBlock.columnToReadA1" class="inline-input" type="text" placeholder="B" />
+    <br>
+    <p>{{ 'columnToUpdateA1Description' | translate }}</p>
+  </ion-item>
+
+  <ion-item text-wrap>
+    <ion-label>
+      <div [hidden]="outputBlock.action === 'get'">
+        {{ 'rowToEdit' | translate }}
+      </div>
+      <div [hidden]="outputBlock.action !== 'get'">
+        {{ 'rowToRead' | translate }}
+      </div>
+    </ion-label>
+    <ion-select [(ngModel)]="outputBlock.rowToUpdate">
+      <ion-option value="all" *ngIf="outputBlock.action === 'update'">{{ 'all' | translate }}</ion-option>
+      <ion-option value="first">{{ 'firstMatch' | translate }}</ion-option>
+      <ion-option value="last">{{ 'lastMatch' | translate }}</ion-option>
+    </ion-select>
+    <!-- <p>The matched row to update that you want to update</p> -->
+  </ion-item>
+
+  <ion-item text-wrap>
+    <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
+    <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
+    <p>{{ 'csvUpdateNotFoundValueDescription' | translate }}</p>
+  </ion-item>
+
+</component-editor>

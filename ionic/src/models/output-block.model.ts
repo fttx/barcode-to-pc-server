@@ -52,7 +52,7 @@ export class OutputBlockModel {
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce' | 'google_sheets';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -151,6 +151,16 @@ export class OutputBlockModel {
     columnToUpdate?: number;
     rowToUpdate?: 'all' | 'first' | 'last';
     newValue?: string;
+
+    /**
+     * Parameters for the GSHEET component (Extends CSV_UPDATE)
+     */
+    sheetId?: string;
+    workSheetIndex?: number;
+    searchColumnA1?: string;
+    columnToUpdateA1?: string;
+    columnToReadA1?: string;
+    action?: 'get' | 'update';
 
     /**
      * Parameters for the ALERT component

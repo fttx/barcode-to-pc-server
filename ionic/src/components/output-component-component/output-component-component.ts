@@ -10,6 +10,7 @@ import { ComponentEditorDateTimePage } from '../../pages/component-editor/compon
 import { ComponentEditorDelayPage } from '../../pages/component-editor/component-editor-delay/component-editor-delay';
 import { ComponentEditorEndifPage } from '../../pages/component-editor/component-editor-endif/component-editor-endif';
 import { ComponentEditorFunctionPage } from '../../pages/component-editor/component-editor-function/component-editor-function';
+import { ComponentEditorGSheetUpdatePage } from '../../pages/component-editor/component-editor-gsheet-update/component-editor-gsheet-update';
 import { ComponentEditorHttpPage } from '../../pages/component-editor/component-editor-http/component-editor-http';
 import { ComponentEditorIfPage } from '../../pages/component-editor/component-editor-if/component-editor-if';
 import { ComponentEditorKeyPage } from '../../pages/component-editor/component-editor-key/component-editor-key';
@@ -43,6 +44,7 @@ export class OutputComponentComponent {
       case 'beep': editor = ComponentEditorBeepPage; break;
       case 'csv_lookup': editor = ComponentEditorCsvLookupPage; break;
       case 'csv_update': editor = ComponentEditorCsvUpdatePage; break;
+      case 'google_sheets': editor = ComponentEditorGSheetUpdatePage; break;
       case 'date_time': editor = ComponentEditorDateTimePage; break;
       case 'delay': editor = ComponentEditorDelayPage; break;
       case 'endif': editor = ComponentEditorEndifPage; break;
@@ -54,7 +56,7 @@ export class OutputComponentComponent {
       case 'select_option': editor = ComponentEditorSelectOptionPage; break;
       case 'text': editor = ComponentEditorTextPage; break;
       case 'variable': editor = ComponentEditorVariablePage; break;
-      case 'woocommerce' : editor = ComponentEditorWooCommercePage; break;
+      case 'woocommerce': editor = ComponentEditorWooCommercePage; break;
     }
     let modal = this.modalCtrl
       .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });

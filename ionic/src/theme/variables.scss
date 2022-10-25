@@ -54,6 +54,7 @@ $colors: (
   output-block-component-endif: #f53d3d,
   output-block-component-csv_lookup: #613711,
   output-block-component-csv_update: #613711,
+  output-block-component-google_sheets: #34a853,
   output-block-component-alert: #dfdfdf,
   output-block-component-date_time: #293b96,
   output-block-component-woocommerce: #7f54b3,
@@ -200,5 +201,18 @@ popper-content {
   .modal-wrapper {
     top: calc(50% - (600px/2)) !important;
     height: 600px !important;
+  }
+}
+
+
+.alert-gsheet-sheets-list {
+  .alert-wrapper {
+    max-width: 500px !important;
+    width: 500px !important;
+  }
+
+  .alert-radio-group {
+    height: 400px !important;
+    max-height: 400px !important;
   }
 }

@@ -126,6 +126,7 @@
   "dependencies": {
     "@electron/remote": "^2.0.8",
     "@nut-tree/nut-js": "^2.2.0",
+    "@types/google-spreadsheet": "^3.3.0",
     "@types/gulp": "^4.0.9",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
     "axios": "^0.26.1",
@@ -135,6 +136,9 @@
     "csv-stringify": "^5.6.2",
     "electron-store": "^8.0.1",
     "electron-updater": "^5.0.0",
+    "google-auth-library": "^8.6.0",
+    "google-spreadsheet": "^3.3.0",
+    "googleapis": "^108.0.0",
     "https": "^1.0.0",
     "mdns": "^2.5.1",
     "network": "^0.6.1",

@@ -5,6 +5,7 @@ import { ConnectionHandler } from './handlers/connection.handler';
 import { ScansHandler } from './handlers/scans.handler';
 import { SettingsHandler } from './handlers/settings.handler';
 import { UiHandler } from './handlers/ui.handler';
+import { GSheetHandler } from './handlers/gsheet.handler';
 import { UpdateHandler } from './handlers/update.handler';
 import * as http from 'http';
 import ElectronStore = require('electron-store');
@@ -13,7 +14,8 @@ require('@electron/remote/main').initialize()
 let wss = null;
 const settingsHandler = SettingsHandler.getInstance();
 const uiHandler = UiHandler.getInstance(settingsHandler);
-const scansHandler = ScansHandler.getInstance(settingsHandler, uiHandler);
+const gsheetHandler = GSheetHandler.getInstance();
+const scansHandler = ScansHandler.getInstance(settingsHandler, uiHandler, gsheetHandler);
 const connectionHandler = ConnectionHandler.getInstance(uiHandler, settingsHandler);
 const updateHandler = UpdateHandler.getInstance(uiHandler, settingsHandler);
 
@@ -50,6 +52,7 @@ ipcMain
         uiHandler.setIpcClient(ipcClient);
         updateHandler.setIpcClient(ipcClient);
         scansHandler.setIpcClient(ipcClient);
+        gsheetHandler.setIpcClient(ipcClient);
 
         // wss events should be registered immediately
         wss.on('connection', (ws, req: http.IncomingMessage) => {

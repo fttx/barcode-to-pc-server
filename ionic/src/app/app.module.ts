@@ -27,6 +27,7 @@ import { ComponentEditorDateTimePage } from '../pages/component-editor/component
 import { ComponentEditorDelayPage } from '../pages/component-editor/component-editor-delay/component-editor-delay';
 import { ComponentEditorEndifPage } from '../pages/component-editor/component-editor-endif/component-editor-endif';
 import { ComponentEditorFunctionPage } from '../pages/component-editor/component-editor-function/component-editor-function';
+import { ComponentEditorGSheetUpdatePage } from '../pages/component-editor/component-editor-gsheet-update/component-editor-gsheet-update';
 import { ComponentEditorHttpPage } from '../pages/component-editor/component-editor-http/component-editor-http';
 import { ComponentEditorIfPage } from '../pages/component-editor/component-editor-if/component-editor-if';
 import { ComponentEditorKeyPage } from '../pages/component-editor/component-editor-key/component-editor-key';
@@ -65,6 +66,7 @@ import { MyApp } from './app.component';
     ComponentEditorBeepPage,
     ComponentEditorCsvLookupPage,
     ComponentEditorCsvUpdatePage,
+    ComponentEditorGSheetUpdatePage,
     ComponentEditorDateTimePage,
     ComponentEditorDelayPage,
     ComponentEditorEndifPage,
@@ -132,6 +134,7 @@ import { MyApp } from './app.component';
     ComponentEditorBeepPage,
     ComponentEditorCsvLookupPage,
     ComponentEditorCsvUpdatePage,
+    ComponentEditorGSheetUpdatePage,
     ComponentEditorDateTimePage,
     ComponentEditorDelayPage,
     ComponentEditorEndifPage,
