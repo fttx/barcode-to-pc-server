@@ -66,4 +66,5 @@ export class Config {
     client_secret: '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',
     redirect_uri: `http://localhost:${Config.OAUTH_HTTP_PORT}/oauth2callback`
   };
+  public static BTPLINK_PROTOCOL = "btplink";
 }

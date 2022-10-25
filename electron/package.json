@@ -50,6 +50,14 @@
         "description": "Barcode to PC Output Template"
       }
     ],
+    "protocols": [
+      {
+        "name": "Barcode to PC Link",
+        "schemes": [
+          "btplink"
+        ]
+      }
+    ],
     "productName": "Barcode to PC server",
     "afterSign": "../electron/notarize.js",
     "mac": {

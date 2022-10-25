@@ -148,7 +148,8 @@ export class GSheetHandler implements Handler {
                             const tokenResponse = await oAuth2Client.getToken(code);
                             oAuth2Client.setCredentials(tokenResponse.tokens);
                             this.ipcClient.send('gsheet_refresh_tokens', tokenResponse.tokens); // Save this token to login again
-                            res.end('Authentication successful! You can close this page and return to Barcode to PC.');
+                            res.writeHead(200, { 'Content-Type': 'text/html' });
+                            res.end(`Authentication successful! You can close this page and return to Barcode to PC.<script>window.location="${Config.BTPLINK_PROTOCOL}://loginSuccess"</script>`);
                             server.close();
                             resolve(oAuth2Client);
                             return;

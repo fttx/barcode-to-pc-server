@@ -1,4 +1,4 @@
-import { app, BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItemConstructorOptions, nativeImage, nativeTheme, systemPreferences, Tray } from 'electron';
+import { app, BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItemConstructorOptions, nativeImage, nativeTheme, systemPreferences, Tray, protocol } from 'electron';
 import * as http from 'http';
 import * as _path from 'path';
 import * as WebSocket from 'ws';
@@ -58,6 +58,7 @@ export class UiHandler implements Handler {
             // main.ts>open-file event
             this.mainWindow.webContents.send('second-instance-open', argv)
             // Someone tried to run a second instance, we should focus the main window.
+            // This can also be triggered from a btplink:// opening
             this.bringWindowUp();
         })
 
@@ -73,7 +74,16 @@ export class UiHandler implements Handler {
         app.on('ready', () => { // This method will be called when Electron has finished initialization and is ready to create browser windows. Some APIs can only be used after this event occurs.
             this.createWindow();
             canTriggerSettingsReadyCounter++;
-            if (canTriggerSettingsReadyCounter == 2) this.onSettingsReady()
+            if (canTriggerSettingsReadyCounter == 2) this.onSettingsReady();
+
+            // Register btplink:// protocol
+            if (process.platform === 'win32') {
+                // Register the private URI scheme differently for Windows
+                // https://stackoverflow.com/questions/45570589/electron-protocol-handler-not-working-on-windows
+                app.setAsDefaultProtocolClient(Config.BTPLINK_PROTOCOL, process.execPath, [app.getAppPath()]);
+            } else {
+                app.setAsDefaultProtocolClient(Config.BTPLINK_PROTOCOL);
+            }
         });
 
         app.on('window-all-closed', () => {  // Quit when all windows are closed.

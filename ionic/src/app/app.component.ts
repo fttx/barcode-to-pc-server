@@ -163,8 +163,8 @@ export class MyApp {
       const savedTokens = JSON.parse(localStorage.getItem('gsheet_saved_tokens'));
       this.electronProvider.ipcRenderer.send('gsheet_refresh_tokens', savedTokens);
     };
-    setInterval(() => { requestTokenRefresh() }, 1000 * 60 * 60 * 12); // Every 12h
-    requestTokenRefresh(); // Every app start
+    setInterval(() => { requestTokenRefresh(); }, 1000 * 60 * 60 * 12); // Every 12h
+    setTimeout(() => { requestTokenRefresh(); }, 1000 * 60) // After 1 minute the app starts
 
     this.translate.setDefaultLang('en');
     this.translate.use(this.translate.getBrowserLang());

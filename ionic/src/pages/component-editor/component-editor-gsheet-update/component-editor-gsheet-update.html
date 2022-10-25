@@ -45,7 +45,7 @@
     </ion-item>
   </div>
 
-  <ion-item text-wrap no-lines>
+  <ion-item text-wrap no-lines [hidden]="!availableSheets || availableSheets.length === 0">
     <ion-label>
       {{ 'gsheetSelectedSheet' | translate }}
     </ion-label>
