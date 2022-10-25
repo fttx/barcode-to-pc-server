@@ -56,16 +56,16 @@
   </ion-item>
 
   <ion-item no-lines>
-    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="logout()" color="output-block-component-gsheet">
+    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="logout()" color="output-block-component-google_sheets">
       <ion-icon name="exit"></ion-icon>
       {{ 'gsheetLogout' | translate }}
     </button>
-    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-gsheet">
+    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-google_sheets">
       <ion-icon name="refresh"></ion-icon>
       {{ 'gsheetRefreshSheets' | translate }}
     </button>
 
-    <button [disabled]="isLoading" [hidden]="isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-gsheet">
+    <button [disabled]="isLoading" [hidden]="isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-google_sheets">
       <ion-icon name="link"></ion-icon>
       {{ 'gsheetSelectSheet' | translate }}
     </button>
