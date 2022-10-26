@@ -91,6 +91,18 @@
 
     <ng-content></ng-content>
 
+    <div [hidden]="outputBlock.allowOOBExecution === undefined">
+      <ion-item no-lines>
+        <ion-label>{{ 'allowOOBExecution' | translate }}</ion-label>
+        <ion-checkbox [(ngModel)]="outputBlock.allowOOBExecution" item-end> </ion-checkbox>
+      </ion-item>
+      <ion-item text-wrap>
+        <p>
+          {{ 'allowOOBExecutionDescription' | translate }}
+        </p>
+      </ion-item>
+    </div>
+
     <!-- JAVASCRIPT_FUNCTION Variables injection example -->
     <ion-item [hidden]="!(outputBlock.type == 'function' || outputBlock.type == 'if' || outputBlock.type == 'select_option' || outputBlock.type == 'http' || outputBlock.type == 'run' || outputBlock.type == 'csv_lookup' || outputBlock.type == 'csv_update')">
       <info-box title="Info">

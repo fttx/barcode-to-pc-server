@@ -61,6 +61,15 @@ export class OutputBlockModel {
     skipOutput?: boolean;
 
     /**
+     * Remote components can perform actions through the server (Eg. modify a
+     * file on the computer).
+     * Since the server may be not reachable we need to store the execution
+     * status of the remote operation associated with the component, so that it
+     * can be executed later when syninc the scan.
+     */
+    allowOOBExecution?: boolean;
+
+    /**
      * NutjsKey identifier (See utils.ts)
      */
     keyId?: NutjsKey;

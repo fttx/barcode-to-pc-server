@@ -377,6 +377,8 @@
   "gshetActionGet": "Leggi il valore di una cella",
   "gshetActionUpdate": "Aggiorna i(l) valore(i)",
   "gsheetActionDescription": "L'azione da eseguire quando viene riscontrato il <i>Valore cercato</i>",
+  "allowOOBExecution": "Esegui di nuovo in fase di sincronizzazione",
+  "allowOOBExecutionDescription": "Se abilitato, quando si utilizza il bottone di sincronizzazione questo componente verrà eseguito nuovamente.",
   "beepDescription": "Il beep verrà riprodotto sullo smartphone.<br> Assicurati che il volume multimediale dello smartphone sia attivato.<br><br><b>Note</b>: Per disabilitare il beep quando si esegue la scansione di un barcode utilizza l'opzione \"Abilita beep fotocamera\" presente nelle impostazioni dell'app",
   "sound": "Suono",
   "beep": "Beep",

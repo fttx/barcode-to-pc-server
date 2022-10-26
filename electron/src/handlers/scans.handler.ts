@@ -81,6 +81,8 @@ export class ScansHandler implements Handler {
 
                 // Set this variable to TRUE when an outputBlock.value is changed from the server
                 // This way the ACK response will communicate to the app the updated scan value.
+                // This was the v3.12.0 way of executing remote components
+                // @deprecated
                 let outputBloksValueChanged = false;
 
                 // Keyboard emulation
@@ -453,7 +455,8 @@ export class ScansHandler implements Handler {
                                 headers: haeders,
                                 method: request.outputBlock.method || request.outputBlock.httpMethod,
                                 timeout: request.outputBlock.timeout || Config.DEFAULT_COMPONENT_TIMEOUT,
-                                httpAgent: new https.Agent({ rejectUnauthorized: false }),
+                                httpAgent: new http.Agent(),
+                                httpsAgent: new https.Agent({ rejectUnauthorized: false }),
                             })).data;
                             if (typeof response == 'object') response = JSON.stringify(response);
                             responseOutputBlock.value = response;

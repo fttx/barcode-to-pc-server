@@ -380,6 +380,8 @@
   "gshetActionGet": "Get a cell value",
   "gshetActionUpdate": "Update a cell value",
   "gsheetActionDescription": "The action to perform when there is a match with the <i>Search value</i>",
+  "allowOOBExecution": "Execute again when syncing",
+  "allowOOBExecutionDescription": "If enabled, when Sync button is used this component will be executed again.",
   "beepDescription": "The beep sound will be played on the smartphone.<br>Make you sure that the smartphone Media volume is turned on.<br><br><b>Note</b>: to disable the beep when you scan a barcode use the \"Enable camera beep\" option present in the app settings",
   "sound": "Sound",
   "beep": "Beep",

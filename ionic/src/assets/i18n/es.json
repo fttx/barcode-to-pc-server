@@ -380,6 +380,8 @@
   "gshetActionGet": "Obtener un valor de celda",
   "gshetActionUpdate": "Actualizar un valor de celda",
   "gsheetActionDescription": "La acción a realizar cuando hay una coincidencia con el <i>Valor de búsqueda</i>",
+  "allowOOBExecution": "Ejecutar de nuevo al sincronizar",
+  "allowOOBExecutionDescription": "Si está habilitado, cuando se usa el botón Sincronizar, este componente se ejecutará nuevamente",
   "beepDescription": "El pitido se reproducirá en el smartphone.<br>Asegúrese de que el volumen multimedia del smartphone esté encendido.<br><br><b>Nota</b>: para deshabilitar el pitido cuando se escanea un código de barras, use la opción \"Habilitar el pitido de la cámara \" presente en la configuración de la aplicación",
   "sound": "Sonido",
   "beep": "Pitido",

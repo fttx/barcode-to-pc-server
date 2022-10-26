@@ -45,11 +45,11 @@
     </ion-item>
   </div>
 
-  <ion-item text-wrap no-lines [hidden]="!availableSheets || availableSheets.length === 0">
+  <ion-item text-wrap no-lines>
     <ion-label>
       {{ 'gsheetSelectedSheet' | translate }}
     </ion-label>
-    <ion-select [(ngModel)]="outputBlock.sheetId" #sheetId>
+    <ion-select [(ngModel)]="outputBlock.sheetId" #sheetId [hidden]="!availableSheets || availableSheets.length === 0">
       <ion-option *ngFor="let sheet of availableSheets" [value]="sheet.id">{{ sheet.name }}</ion-option>
     </ion-select>
     <!-- <p>The matched row to update that you want to update</p> -->
@@ -119,6 +119,7 @@
   <ion-item text-wrap>
     <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
     <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
+    <br>
     <p>{{ 'csvUpdateNotFoundValueDescription' | translate }}</p>
   </ion-item>
 

@@ -13,6 +13,7 @@ export class GSheetHandler implements Handler {
     public static scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive.metadata.readonly'];
     private ipcClient;
     private static instance: GSheetHandler;
+    public static httpAuthServer: http.Server;
 
     constructor(
     ) {
@@ -59,7 +60,7 @@ export class GSheetHandler implements Handler {
         for (let i = 0; i < rows.length; i++) {
             const index = matchCriteria === 'last' ? rows.length - 1 - i : i;
             const row = rows[index];
-            if (row._rawData[lookupColumnIndex] === searchValue) {
+            if (row._rawData[lookupColumnIndex] == searchValue) {
                 return row._rawData[replaceColumnIndex];
             }
         }
@@ -136,7 +137,10 @@ export class GSheetHandler implements Handler {
 
             // Open an http server to accept the oauth callback. In this simple example, the
             // only request to our webserver is to /oauth2callback?code=<code>
-            const server = http.createServer(async (req, res) => {
+            if (GSheetHandler.httpAuthServer && GSheetHandler.httpAuthServer.listening) {
+                GSheetHandler.httpAuthServer.close();
+            }
+            GSheetHandler.httpAuthServer = http.createServer(async (req, res) => {
                 try {
                     const searchParams = new Url.URL(req.url!, `http://localhost:${Config.OAUTH_HTTP_PORT}`).searchParams;
 
@@ -150,7 +154,7 @@ export class GSheetHandler implements Handler {
                             this.ipcClient.send('gsheet_refresh_tokens', tokenResponse.tokens); // Save this token to login again
                             res.writeHead(200, { 'Content-Type': 'text/html' });
                             res.end(`Authentication successful! You can close this page and return to Barcode to PC.<script>window.location="${Config.BTPLINK_PROTOCOL}://loginSuccess"</script>`);
-                            server.close();
+                            GSheetHandler.httpAuthServer.close();
                             resolve(oAuth2Client);
                             return;
                         }
@@ -158,15 +162,15 @@ export class GSheetHandler implements Handler {
 
                     const error = searchParams.get('error');
                     res.end('Error: ' + error + '\n\nIf persists please contact ' + Config.EMAIL_SUPPORT);
-                    server.close();
+                    GSheetHandler.httpAuthServer.close();
                     reject();
                 } catch (e) {
                     res.end('Error: ' + e + '\n\nIf persists please contact ' + Config.EMAIL_SUPPORT);
-                    server.close();
+                    GSheetHandler.httpAuthServer.close();
                     reject(e);
                 }
             });
-            server.listen(Config.OAUTH_HTTP_PORT, () => { shell.openExternal(authorizeUrl); });
+            GSheetHandler.httpAuthServer.listen(Config.OAUTH_HTTP_PORT, () => { shell.openExternal(authorizeUrl); });
         });
     }
 

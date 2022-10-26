@@ -74,6 +74,7 @@ export class ScanModel {
                 case 'beep': return ''
                 case 'alert': return ''
                 case 'woocommerce': return block.value;
+                case 'google_sheets': return block.value;
                 default: return '';
             }
         }).join(fieldSeparator).replace(/\s+/g, ' ');
