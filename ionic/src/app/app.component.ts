@@ -388,6 +388,21 @@ export class MyApp {
           this.utils.showV3DowngradeDialog();
         }
 
+ // v4.3.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if ((outputBlock.type == 'function' ||
+                outputBlock.type == 'http' ||
+                outputBlock.type == 'run' ||
+                outputBlock.type == 'csv_lookup' ||
+                outputBlock.type == 'csv_update' ||
+                outputBlock.type == 'woocommerce') && typeof outputBlock.allowOOBExecution == 'undefined') {
+                outputBlock.allowOOBExecution = false;
+              }
+            });
+          })
+        }
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }
