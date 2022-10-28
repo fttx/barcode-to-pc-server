@@ -1,5 +1,5 @@
-import { Component, NgZone, ViewChild } from '@angular/core';
-import { NavParams, Platform, Select } from 'ionic-angular';
+import { Component, EventEmitter, NgZone, Output, ViewChild } from '@angular/core';
+import { Content, Events, NavParams, Platform, Select } from 'ionic-angular';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
 
@@ -20,16 +20,20 @@ export class ComponentEditorGSheetUpdatePage {
     public electronProvider: ElectronProvider,
     public ngZone: NgZone,
     public platform: Platform,
+    public events: Events,
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
+    this.loadLocalStorage();
+  }
+
+  loadLocalStorage() {
+    this.savedTokens = JSON.parse(localStorage.getItem('gsheet_saved_tokens'));
+    this.availableSheets = JSON.parse(localStorage.getItem('gsheet_available_sheets'));
   }
 
   ionViewDidEnter() {
-    this.platform.ready().then(() => {
-      this.sheetId.selectOptions = { cssClass: 'alert-gsheet-sheets-list' };
-      this.savedTokens = JSON.parse(localStorage.getItem('gsheet_saved_tokens'));
-      this.availableSheets = JSON.parse(localStorage.getItem('gsheet_available_sheets'));
-    });
+    this.sheetId.selectOptions = { cssClass: 'alert-gsheet-sheets-list' };
+    this.loadLocalStorage();
 
 
     // There is another listener on the app.component.ts to refresh & save the token from time to time
@@ -65,6 +69,9 @@ export class ComponentEditorGSheetUpdatePage {
     this.outputBlock.sheetId = '';
     localStorage.removeItem('gsheet_saved_tokens');
     localStorage.removeItem('gsheet_available_sheets');
+    setTimeout(() => {
+      this.events.publish('google:logout');
+    }, 200);
   }
 
   refreshData() {

@@ -1,5 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ViewController } from 'ionic-angular';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Content, Events, ViewController } from 'ionic-angular';
 import { Config } from '../../config';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { ElectronProvider } from '../../providers/electron/electron';
@@ -10,13 +10,23 @@ import { UtilsProvider } from '../../providers/utils/utils';
   templateUrl: 'component-editor.html'
 })
 export class ComponentEditorComponent implements OnInit {
+  @ViewChild(Content) content: Content;
   @Input() outputBlock: OutputBlockModel;
+  @Input() locked = false;
   public color: string;
 
   constructor(
     public viewCtrl: ViewController,
     public electronProvider: ElectronProvider,
+    private events: Events,
   ) {
+    this.events.subscribe('google:logout', () => {
+      this.content.scrollToTop();
+    });
+  }
+
+  ionViewDidLeave() {
+    this.events.unsubscribe('google:logout');
   }
 
   ngOnInit(): void {

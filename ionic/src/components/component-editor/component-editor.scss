@@ -61,4 +61,9 @@ component-editor {
     font-size: 1.1rem;
     padding: 0 10px;
   }
+
+  .locked .scroll-content,
+  .locked .fixed-content {
+    overflow: hidden !important;
+  }
 }

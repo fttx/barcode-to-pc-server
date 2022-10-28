@@ -1,4 +1,12 @@
-<component-editor [outputBlock]="outputBlock">
+<component-editor [outputBlock]="outputBlock" [locked]="!isLoggedIn()">
+
+  <div class="google-login" [hidden]="isLoggedIn()">
+    <div style="margin: 189px auto 30px auto; font-size: 18px; color: #525252;">{{ 'gsheetSelectSheet' | translate }}</div>
+    <div (click)="refreshData()">
+      <img src="assets/btn_google_signin_dark_normal_web@2x.png" style="max-height: 50px; cursor: pointer;" alt="Login With Google">
+    </div>
+  </div>
+
   <ion-item no-lines text-wrap>
     <p [innerHtml]="'gsheetUpdateDescription' | translate"></p>
   </ion-item>
@@ -63,11 +71,6 @@
     <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-google_sheets">
       <ion-icon name="refresh"></ion-icon>
       {{ 'gsheetRefreshSheets' | translate }}
-    </button>
-
-    <button [disabled]="isLoading" [hidden]="isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-google_sheets">
-      <ion-icon name="link"></ion-icon>
-      {{ 'gsheetSelectSheet' | translate }}
     </button>
   </ion-item>
 

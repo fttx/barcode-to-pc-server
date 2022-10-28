@@ -369,7 +369,7 @@
   "workSheetIndexDescription": "Il numero del foglio di lavoro (Iniziando a contare da 0, a partire da sinistra)",
   "workSheetIndex": "Numero foglio di lavoro",
   "gsheetRefreshSheets": "Aggiorna la lista dei fogli di calcolo",
-  "gsheetSelectSheet": "Collega Google Sheets",
+  "gsheetSelectSheet": "Collega il tuo account Google per accedere a Sheets",
   "gsheetLogout": "Scollega account",
   "gsheetErrorFailedToGetList": "Impossibile ottenere la lista dei fogli di calcolo. Prova a scollegare e collegare l'account di nuovo. Se il problema persiste contatta {{ email }}",
   "cannotAccessSpreadsheetError": "Impossibile accedere al foglio di calcolo. Prova a ricollegare l'account Google.",
