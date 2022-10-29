@@ -531,6 +531,12 @@ export class ScansHandler implements Handler {
                                 request.outputBlock.newValue,
                                 request.outputBlock.rowToUpdate,
                             );
+                        } else if (request.outputBlock.action === 'append') {
+                            result = await this.gsheet.append(
+                                request.outputBlock.sheetId,
+                                request.outputBlock.workSheetIndex,
+                                request.outputBlock.columnsToAppend,
+                            );
                         }
 
                         if (result !== null) {

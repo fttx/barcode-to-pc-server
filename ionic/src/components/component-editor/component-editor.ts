@@ -20,13 +20,17 @@ export class ComponentEditorComponent implements OnInit {
     public electronProvider: ElectronProvider,
     private events: Events,
   ) {
-    this.events.subscribe('google:logout', () => {
+    this.events.subscribe('componentEditor:scrollToTop', () => {
       this.content.scrollToTop();
+    });
+    this.events.subscribe('componentEditor:scrollToBottom', () => {
+      this.content.scrollToBottom();
     });
   }
 
   ionViewDidLeave() {
-    this.events.unsubscribe('google:logout');
+    this.events.unsubscribe('componentEditor:scrollToTop');
+    this.events.unsubscribe('componentEditor:scrollToBottom');
   }
 
   ngOnInit(): void {

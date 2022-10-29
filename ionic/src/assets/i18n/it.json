@@ -376,6 +376,8 @@
   "gsheetAction": "Azione",
   "gshetActionGet": "Leggi il valore di una cella",
   "gshetActionUpdate": "Aggiorna i(l) valore(i)",
+  "gshetActionAppend": "Accoda valori al foglio",
+  "gsheetsColumns": "Colonne da accodare",
   "gsheetActionDescription": "L'azione da eseguire quando viene riscontrato il <i>Valore cercato</i>",
   "allowOOBExecution": "Esegui di nuovo in fase di sincronizzazione",
   "allowOOBExecutionDescription": "Se abilitato, quando si utilizza il bottone di sincronizzazione questo componente verrà eseguito nuovamente.",

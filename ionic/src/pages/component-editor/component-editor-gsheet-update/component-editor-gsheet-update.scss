@@ -9,4 +9,16 @@ page-component-editor-gsheet-update {
     z-index: 999999;
     text-align: center;
   }
+
+  ion-col {
+    padding: 0 10px 0 0 !important;
+
+    input {
+      margin-top: 1px !important
+    }
+  }
+
+  .fields ion-label {
+    margin: 0;
+  }
 }

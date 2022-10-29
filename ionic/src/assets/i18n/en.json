@@ -379,6 +379,8 @@
   "gsheetAction": "Action",
   "gshetActionGet": "Get a cell value",
   "gshetActionUpdate": "Update a cell value",
+  "gshetActionAppend": "Append values to worksheet",
+  "gsheetsColumns": "Columns to append",
   "gsheetActionDescription": "The action to perform when there is a match with the <i>Search value</i>",
   "allowOOBExecution": "Execute again when syncing",
   "allowOOBExecutionDescription": "If enabled, when 'Sync button' is used this component will be executed again.",

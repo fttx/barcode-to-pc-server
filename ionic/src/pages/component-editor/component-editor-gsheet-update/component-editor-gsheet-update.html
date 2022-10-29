@@ -18,13 +18,14 @@
     <ion-select [(ngModel)]="outputBlock.action" (ionChange)="onActionChange($event)">
       <ion-option value="get">{{ 'gshetActionGet' | translate }}</ion-option>
       <ion-option value="update">{{ 'gshetActionUpdate' | translate }}</ion-option>
+      <ion-option value="append">{{ 'gshetActionAppend' | translate }}</ion-option>
     </ion-select>
   </ion-item>
   <ion-item text-wrap>
     <p [innerHtml]="'gsheetActionDescription' | translate"></p>
   </ion-item>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
     <label for="_searchValue">{{ 'csvUpdateSearchValue' | translate }}</label>
     <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. 0" />
 
@@ -81,30 +82,30 @@
     <p>{{ 'workSheetIndexDescription' | translate }}</p>
   </ion-item>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
     <label for="_searchColumnIndex">{{ 'searchColumnA1' | translate }}</label>
     <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumnA1" class="inline-input" type="text" placeholder="A" />
     <br>
     <p>{{ 'searchColumnA1Description' | translate }}</p>
   </ion-item>
 
-  <ion-item text-wrap [hidden]="outputBlock.action === 'get'">
+  <ion-item text-wrap [hidden]="outputBlock.action !== 'update' || outputBlock.action === 'append'">
     <label for="_columnToUpdateIndex">{{ 'columnToUpdateA1' | translate }}</label>
     <input id="_columnToUpdateIndex" [(ngModel)]="outputBlock.columnToUpdateA1" class="inline-input" type="text" placeholder="B" />
     <br>
     <p>{{ 'columnToUpdateA1Description' | translate }}</p>
   </ion-item>
 
-  <ion-item text-wrap [hidden]="outputBlock.action === 'update'">
+  <ion-item text-wrap [hidden]="outputBlock.action !== 'get' || outputBlock.action === 'append'">
     <label for="_columnToReadIndex">{{ 'columnToReadA1' | translate }}</label>
     <input id="_columnToReadIndex" [(ngModel)]="outputBlock.columnToReadA1" class="inline-input" type="text" placeholder="B" />
     <br>
     <p>{{ 'columnToUpdateA1Description' | translate }}</p>
   </ion-item>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
     <ion-label>
-      <div [hidden]="outputBlock.action === 'get'">
+      <div [hidden]="outputBlock.action !== 'update'">
         {{ 'rowToEdit' | translate }}
       </div>
       <div [hidden]="outputBlock.action !== 'get'">
@@ -112,18 +113,43 @@
       </div>
     </ion-label>
     <ion-select [(ngModel)]="outputBlock.rowToUpdate">
-      <ion-option value="all" *ngIf="outputBlock.action === 'update'">{{ 'all' | translate }}</ion-option>
+      <ion-option value="all" *ngIf="outputBlock.action !== 'get'">{{ 'all' | translate }}</ion-option>
       <ion-option value="first">{{ 'firstMatch' | translate }}</ion-option>
       <ion-option value="last">{{ 'lastMatch' | translate }}</ion-option>
     </ion-select>
     <!-- <p>The matched row to update that you want to update</p> -->
   </ion-item>
 
-  <ion-item text-wrap>
+  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
     <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
     <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
     <br>
     <p>{{ 'csvUpdateNotFoundValueDescription' | translate }}</p>
   </ion-item>
 
+  <div [hidden]="outputBlock.action !== 'append'">
+    <ion-item no-lines>
+      <ion-label no-lines>{{ 'gsheetsColumns' | translate }}</ion-label>
+    </ion-item>
+    <ion-grid class="fields" [hidden]="!outputBlock.columnsToAppend || !outputBlock.columnsToAppend.length">
+      <ion-item no-lines *ngFor="let column of outputBlock.columnsToAppend; let i = index;">
+        <ion-row no-padding>
+          <ion-col>
+            <input [(ngModel)]="outputBlock.columnsToAppend[i]" class="inline-input" type="text" [placeholder]="'Column ' + (i+1)" />
+          </ion-col>
+          <ion-col col-1>
+            <button ion-button small center clear icon-only color="output-block-component-google_sheets" class="btn-output-template-action" (click)="removeColumn(i)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-grid>
+    <ion-item text-right padding-top no-lines>
+      <button ion-button small icon-start (click)="addColumn()" float-right color="output-block-component-google_sheets">
+        <ion-icon name="add"></ion-icon>
+        {{ 'addField' | translate }}
+      </button>
+    </ion-item>
+  </div>
 </component-editor>

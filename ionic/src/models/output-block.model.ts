@@ -169,7 +169,8 @@ export class OutputBlockModel {
     searchColumnA1?: string;
     columnToUpdateA1?: string;
     columnToReadA1?: string;
-    action?: 'get' | 'update';
+    columnsToAppend?: string[];
+    action?: 'get' | 'update' | 'append';
 
     /**
      * Parameters for the ALERT component

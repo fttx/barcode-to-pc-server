@@ -80,7 +80,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'RUN', value: '', type: 'run', allowOOBExecution: true, skipOutput: false, label: null, timeout: 10000 },
       { name: 'CSV_LOOKUP', value: '{{ barcode }}', allowOOBExecution: true, type: 'csv_lookup', skipOutput: false, label: null, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
       { name: 'CSV_UPDATE', value: '{{ barcode }}', allowOOBExecution: true, type: 'csv_update', skipOutput: true, label: null, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
-      { name: 'GOOGLE_SHEETS', value: '{{ barcode }}', type: 'google_sheets', allowOOBExecution: true, skipOutput: false, label: null, sheetId: '', workSheetIndex: 0, searchColumnA1: 'A', columnToUpdateA1: 'B', columnToReadA1: 'B', rowToUpdate: 'first', newValue: '', notFoundValue: '', action: 'get' },
+      { name: 'GOOGLE_SHEETS', value: '{{ barcode }}', type: 'google_sheets', allowOOBExecution: true, skipOutput: false, label: null, sheetId: '', workSheetIndex: 0, searchColumnA1: 'A', columnToUpdateA1: 'B', columnToReadA1: 'B', rowToUpdate: 'first', columnsToAppend: ['{{ barcode }}'], newValue: '', notFoundValue: '', action: 'get' },
       { name: 'BEEP', value: 'beep', type: 'beep', beepsNumber: 1, beepSpeed: 'medium' },
       { name: 'ALERT', value: '', type: 'alert', alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
       { name: 'WOOCOMMERCE', value: 'createProduct', type: 'woocommerce', allowOOBExecution: true, fields: [], consumer_key: '', consumer_secret: '', url_woocommerce: '', skipOutput: true, label: null },

@@ -70,7 +70,7 @@ export class ComponentEditorGSheetUpdatePage {
     localStorage.removeItem('gsheet_saved_tokens');
     localStorage.removeItem('gsheet_available_sheets');
     setTimeout(() => {
-      this.events.publish('google:logout');
+      this.events.publish('componentEditor:scrollToTop');
     }, 200);
   }
 
@@ -94,4 +94,15 @@ export class ComponentEditorGSheetUpdatePage {
       this.outputBlock.rowToUpdate = 'first';
     }
   }
+
+  addColumn() {
+    this.outputBlock.columnsToAppend = [...this.outputBlock.columnsToAppend, ''];
+    this.events.publish('componentEditor:scrollToBottom');
+  }
+
+  removeColumn(removeIndex: number) {
+    this.outputBlock.columnsToAppend = this.outputBlock.columnsToAppend.filter((x, index) => index != removeIndex);
+    this.events.publish('componentEditor:scrollToBottom');
+  }
+
 }

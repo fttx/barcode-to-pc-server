@@ -379,6 +379,8 @@
   "gsheetAction": "Acción",
   "gshetActionGet": "Obtener un valor de celda",
   "gshetActionUpdate": "Actualizar un valor de celda",
+  "gshetActionAppend": "Agregar valores a la hoja de trabajo",
+  "gsheetsColumns": "Columnas para agregar",
   "gsheetActionDescription": "La acción a realizar cuando hay una coincidencia con el <i>Valor de búsqueda</i>",
   "allowOOBExecution": "Ejecutar de nuevo al sincronizar",
   "allowOOBExecutionDescription": "Si está habilitado, cuando se usa el botón Sincronizar, este componente se ejecutará nuevamente",

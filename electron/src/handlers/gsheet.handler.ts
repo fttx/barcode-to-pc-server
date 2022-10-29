@@ -44,14 +44,7 @@ export class GSheetHandler implements Handler {
     }
 
     async get(sheetId: string, workSheetIndex: number, searchColumnA1: string, searchValue: string, columnToReadA1: string, matchCriteria: 'all' | 'first' | 'last' = 'first'): Promise<string> {
-        const savedTokens = await this.getSavedTokens();
-        const spreadSheet = new GoogleSpreadsheet(sheetId);
-        spreadSheet.useOAuth2Client(await this.getAuthenticatedClient(savedTokens));
-        await spreadSheet.loadInfo();
-
-        const workSheet = spreadSheet.sheetsByIndex[workSheetIndex];
-        await workSheet.loadCells();
-
+        const workSheet = await this.getWorkSheet(sheetId, workSheetIndex);
         const rows = await workSheet.getRows();
         const lookupColumnIndex = searchColumnA1.toUpperCase().charCodeAt(0) - 65;
         const replaceColumnIndex = columnToReadA1.toUpperCase().charCodeAt(0) - 65;
@@ -68,14 +61,7 @@ export class GSheetHandler implements Handler {
     }
 
     async update(sheetId: string, workSheetIndex: number, searchColumnA1: string, searchValue: string, columnToUpdateA1: string, newValue: string, matchCriteria: 'all' | 'first' | 'last' = 'first'): Promise<string> {
-        const savedTokens = await this.getSavedTokens();
-        const spreadSheet = new GoogleSpreadsheet(sheetId);
-        spreadSheet.useOAuth2Client(await this.getAuthenticatedClient(savedTokens));
-        await spreadSheet.loadInfo();
-
-        const workSheet = spreadSheet.sheetsByIndex[workSheetIndex];
-        await workSheet.loadCells();
-
+        const workSheet = await this.getWorkSheet(sheetId, workSheetIndex);
         const rows = await workSheet.getRows();
         const lookupColumnIndex = searchColumnA1.toUpperCase().charCodeAt(0) - 65;
         const replaceColumnIndex = columnToUpdateA1.toUpperCase().charCodeAt(0) - 65;
@@ -95,6 +81,25 @@ export class GSheetHandler implements Handler {
         }
         return needleFound ? newValue : null;
     }
+
+    async append(sheetId: string, workSheetIndex: number, columnsToAppend: string[]): Promise<boolean> {
+        const workSheet = await this.getWorkSheet(sheetId, workSheetIndex);
+        await workSheet.addRow(columnsToAppend);
+        await workSheet.saveUpdatedCells();
+        return true;
+    }
+
+
+    private async getWorkSheet(sheetId: string, workSheetIndex: number) {
+        const savedTokens = await this.getSavedTokens();
+        const spreadSheet = new GoogleSpreadsheet(sheetId);
+        spreadSheet.useOAuth2Client(await this.getAuthenticatedClient(savedTokens));
+        await spreadSheet.loadInfo();
+        const workSheet = spreadSheet.sheetsByIndex[workSheetIndex];
+        await workSheet.loadCells();
+        return workSheet;
+    }
+
 
     private getSavedTokens(): Promise<Credentials> {
         return new Promise<Credentials>(resolve => {
