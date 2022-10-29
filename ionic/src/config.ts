@@ -62,9 +62,16 @@ export class Config {
   public static GAPIS_CREDENTIALS = {
     // 1. Generate credentials: https://console.cloud.google.com/apis/
     // 2. Create OAuth page and set spreadsheets and drive.metadata.readonly scopes
-    client_id: '162261435624-69ubohrvppjr9hcc5t9uighsb7j2cqhv.apps.googleusercontent.com',
-    client_secret: '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',
-    redirect_uri: `http://localhost:${Config.OAUTH_HTTP_PORT}/oauth2callback`
+    "client_id": "162261435624-mpjie85srspdo0nsbsr72nfcibp8c8sf.apps.googleusercontent.com",
+    "project_id": "ace-scarab-366420",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_secret": "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",
+    "redirect_uri": "https://barcodetopc.com/oauth",
+    "javascript_origins": [
+      "https://barcodetopc.com"
+    ]
   };
   public static BTPLINK_PROTOCOL = "btplink";
 }

@@ -121,22 +121,39 @@ export class MyApp {
 
       window.ondragleave = () => { return false; };
 
+      const checkDeepLink = (url) => {
+        if (url.indexOf('oauth') !== -1) {
+          const token = new URL(url).searchParams.get('code');
+          this.electronProvider.ipcRenderer.send('oauth_token', token);
+        }
+      };
+
       // Used to open files (double click)
       // On Windows when double-clicking, the system passes the file path
       // of the clicked file to the main exectutable.
-      let checkArgv = (argv: any[]) => {
+      const checkArgv = (argv: any[]) => {
         if (argv.length >= 2) { // process.platform == 'win32' &&
           const btptPath = argv.find(x => x.endsWith('.btpt'));
           if (btptPath) {
             this.events.publish('import_btpt', btptPath);
           }
+
+          const oauthUrl = argv.find(x => x.indexOf('oauth') != -1);
+          if (oauthUrl) {
+            checkDeepLink(oauthUrl);
+          }
         }
-      }
+      };
       checkArgv(this.electronProvider.processArgv);
       this.electronProvider.ipcRenderer.on('second-instance-open', (event, argv) => {
         checkArgv(argv);
-      })
-    });
+      });
+
+      this.electronProvider.ipcRenderer.on('open-url', (event, url) => {
+        checkDeepLink(url);
+      });
+
+    }); // app.ready
 
     this.upgrade().then(() => {
       if (this.electronProvider.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0) == 0) {
@@ -388,7 +405,7 @@ export class MyApp {
           this.utils.showV3DowngradeDialog();
         }
 
- // v4.3.0
+        // v4.3.0
         if (settings.outputProfiles) {
           settings.outputProfiles.forEach(outputProfile => {
             outputProfile.outputBlocks.forEach(outputBlock => {
@@ -403,6 +420,12 @@ export class MyApp {
             });
           })
         }
+
+        // v4.4.0
+        if (typeof settings.demoShown == 'undefined') {
+          settings.demoShown = false;
+        }
+
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }

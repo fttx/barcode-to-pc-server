@@ -5,6 +5,8 @@
     <div (click)="refreshData()">
       <img src="assets/btn_google_signin_dark_normal_web@2x.png" style="max-height: 50px; cursor: pointer;" alt="Login With Google">
     </div>
+
+    <input type="url" class="redirect-token" placeholder="Paste the authentication code here" [(ngModel)]="redirectToken" (change)="onRedirectTokenChange($event)" (keyup)="onRedirectTokenChange($event)" [hidden]="hideTokenInput" />
   </div>
 
   <ion-item no-lines text-wrap>

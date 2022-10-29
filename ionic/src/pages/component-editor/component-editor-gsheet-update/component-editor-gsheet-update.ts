@@ -1,5 +1,5 @@
-import { Component, EventEmitter, NgZone, Output, ViewChild } from '@angular/core';
-import { Content, Events, NavParams, Platform, Select } from 'ionic-angular';
+import { Component, NgZone, ViewChild } from '@angular/core';
+import { Events, NavParams, Platform, Select } from 'ionic-angular';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { ElectronProvider } from '../../../providers/electron/electron';
 
@@ -14,6 +14,8 @@ export class ComponentEditorGSheetUpdatePage {
   public availableSheets = [];
   public isLoading = false;
   public savedTokens: any = null;
+  public hideTokenInput = true;
+  public redirectToken = '';
 
   constructor(
     public navParams: NavParams,
@@ -70,12 +72,15 @@ export class ComponentEditorGSheetUpdatePage {
     localStorage.removeItem('gsheet_saved_tokens');
     localStorage.removeItem('gsheet_available_sheets');
     setTimeout(() => {
+      this.hideTokenInput = true;
+      this.redirectToken = '';
       this.events.publish('componentEditor:scrollToTop');
-    }, 200);
+    }, 600);
   }
 
   refreshData() {
     this.isLoading = true;
+    this.hideTokenInput = false;
     setTimeout(() => { this.isLoading = false; }, 30000);
     // Here is used the same topic to send and receive messages
     this.electronProvider.ipcRenderer.send('gsheet_refresh_data', { tokens: this.savedTokens, spreadSheets: null });
@@ -105,4 +110,8 @@ export class ComponentEditorGSheetUpdatePage {
     this.events.publish('componentEditor:scrollToBottom');
   }
 
+  // When the token is pasted in the UI
+  onRedirectTokenChange(event) {
+    this.electronProvider.ipcRenderer.send('oauth_token', this.redirectToken);
+  }
 }

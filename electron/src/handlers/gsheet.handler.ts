@@ -145,26 +145,32 @@ export class GSheetHandler implements Handler {
             if (GSheetHandler.httpAuthServer && GSheetHandler.httpAuthServer.listening) {
                 GSheetHandler.httpAuthServer.close();
             }
+            const onGetToken = async (token) => {
+                const tokenResponse = await oAuth2Client.getToken(token);
+                oAuth2Client.setCredentials(tokenResponse.tokens);
+                this.ipcClient.send('gsheet_refresh_tokens', tokenResponse.tokens); // Save this token to login again
+                resolve(oAuth2Client);
+            }
+
+            // The oauth token can be obtained either from btplink://
+            ipcMain.on('oauth_token', async (event, args) => {
+                const token = args[0];
+                onGetToken(token);
+            });
+            // Or from a request to http://localhost:OAUTH_HTTP_PORT/oauth
             GSheetHandler.httpAuthServer = http.createServer(async (req, res) => {
                 try {
                     const searchParams = new Url.URL(req.url!, `http://localhost:${Config.OAUTH_HTTP_PORT}`).searchParams;
-
-                    if (req.url!.indexOf('/oauth2callback') > -1) {
-                        // acquire the code from the querystring, and close the web server.
-                        const code = searchParams.get('code');
-
-                        if (code) {
-                            const tokenResponse = await oAuth2Client.getToken(code);
-                            oAuth2Client.setCredentials(tokenResponse.tokens);
-                            this.ipcClient.send('gsheet_refresh_tokens', tokenResponse.tokens); // Save this token to login again
+                    if (req.url!.indexOf('/oauth') > -1) {
+                        const token = searchParams.get('code');
+                        if (token) {
                             res.writeHead(200, { 'Content-Type': 'text/html' });
-                            res.end(`Authentication successful! You can close this page and return to Barcode to PC.<script>window.location="${Config.BTPLINK_PROTOCOL}://loginSuccess"</script>`);
+                            res.end(`Ok`);
                             GSheetHandler.httpAuthServer.close();
-                            resolve(oAuth2Client);
+                            onGetToken(token);
                             return;
                         }
                     }
-
                     const error = searchParams.get('error');
                     res.end('Error: ' + error + '\n\nIf persists please contact ' + Config.EMAIL_SUPPORT);
                     GSheetHandler.httpAuthServer.close();
@@ -175,7 +181,8 @@ export class GSheetHandler implements Handler {
                     reject(e);
                 }
             });
-            GSheetHandler.httpAuthServer.listen(Config.OAUTH_HTTP_PORT, () => { shell.openExternal(authorizeUrl); });
+            try { GSheetHandler.httpAuthServer.listen(Config.OAUTH_HTTP_PORT, () => { }); } catch { }
+            shell.openExternal(authorizeUrl);
         });
     }
 

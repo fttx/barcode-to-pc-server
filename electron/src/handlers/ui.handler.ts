@@ -60,7 +60,12 @@ export class UiHandler implements Handler {
             // Someone tried to run a second instance, we should focus the main window.
             // This can also be triggered from a btplink:// opening
             this.bringWindowUp();
-        })
+        });
+        // macOS Only -- We listen for the btplink:// here. On Windows, a second-instance-open event is triggered istead.
+        app.on('open-url', (event, url) => {
+            event.preventDefault();
+            this.mainWindow.webContents.send('open-url', url);
+        });
 
         let canTriggerSettingsReadyCounter = 0;
         this.settingsHandler = settingsHandler;
