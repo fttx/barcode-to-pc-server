@@ -433,5 +433,8 @@
   "updateOrder": "Update an order",
   "deleteOrder": "Delete an order",
   "addField": "Add field",
-  "fields": "Fields"
+  "fields": "Fields",
+  "componentEditorValidationErrorTitle": "Error",
+  "componentEditorValidationErrorMessage": "You forgot to fill one or more required fields. Check the component again.",
+  "componentEditorValidationErrorButton": "Save"
 }

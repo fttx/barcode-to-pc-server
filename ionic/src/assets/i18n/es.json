@@ -433,5 +433,8 @@
   "updateOrder": "Actualizar un pedido",
   "deleteOrder": "Eliminar un pedido",
   "addField": "Agregue campo",
-  "fields": "Parámetros"
+  "fields": "Parámetros",
+  "componentEditorValidationErrorTitle": "Error",
+  "componentEditorValidationErrorMessage": "Olvidaste completar uno o más campos obligatorios. Revisa el componente nuevamente.",
+  "componentEditorValidationErrorButton": "Guardar"
 }

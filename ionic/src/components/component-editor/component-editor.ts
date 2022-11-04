@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { Content, Events, ViewController } from 'ionic-angular';
+import { AlertController, Content, Events, ViewController } from 'ionic-angular';
 import { Config } from '../../config';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { ElectronProvider } from '../../providers/electron/electron';
@@ -13,12 +13,15 @@ export class ComponentEditorComponent implements OnInit {
   @ViewChild(Content) content: Content;
   @Input() outputBlock: OutputBlockModel;
   @Input() locked = false;
+  @Input() validated = true;
   public color: string;
 
   constructor(
     public viewCtrl: ViewController,
     public electronProvider: ElectronProvider,
     private events: Events,
+    public alertCtrl: AlertController,
+    public utils: UtilsProvider,
   ) {
     this.events.subscribe('componentEditor:scrollToTop', () => {
       this.content.scrollToTop();
@@ -37,8 +40,19 @@ export class ComponentEditorComponent implements OnInit {
     this.color = UtilsProvider.GetComponentColor(this.outputBlock);
   }
 
-  public onCloseClick() {
-    this.viewCtrl.dismiss();
+  public async onCloseClick() {
+    if (!this.validated) {
+      await this.alertCtrl.create({
+        title: await this.utils.text('componentEditorValidationErrorTitle'),
+        message: await this.utils.text('componentEditorValidationErrorMessage'),
+        buttons: [{
+          text: await this.utils.text('componentEditorValidationErrorButton'),
+          handler: () => { this.viewCtrl.dismiss(); }
+        }],
+      }).present();
+    } else {
+      this.viewCtrl.dismiss();
+    }
   }
 
   public onHelpClick() {

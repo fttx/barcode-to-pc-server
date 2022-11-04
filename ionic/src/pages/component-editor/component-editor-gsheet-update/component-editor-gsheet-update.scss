@@ -29,4 +29,9 @@ page-component-editor-gsheet-update {
     margin-top: 32px;
     padding: 0 12px;
   }
+
+  .field-error {
+    border: 3px solid red !important;
+    background: #ff00001f;
+  }
 }

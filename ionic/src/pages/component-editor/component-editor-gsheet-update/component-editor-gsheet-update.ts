@@ -16,6 +16,7 @@ export class ComponentEditorGSheetUpdatePage {
   public savedTokens: any = null;
   public hideTokenInput = true;
   public redirectToken = '';
+  public validated = false;
 
   constructor(
     public navParams: NavParams,
@@ -113,5 +114,9 @@ export class ComponentEditorGSheetUpdatePage {
   // When the token is pasted in the UI
   onRedirectTokenChange(event) {
     this.electronProvider.ipcRenderer.send('oauth_token', this.redirectToken);
+  }
+
+  isValid() {
+    return this.outputBlock.sheetId && this.outputBlock.sheetId.length;
   }
 }
