@@ -359,6 +359,7 @@
   "lastMatch": "Last match",
   "csvUpdateNotFoundValueDescription": "The text to output when the lookup doesn't produce results",
   "rowToRead": "Row to Read",
+  "csvUpdateColumnToUpdateIndex": "The column number (starting with 1 for the left-most column of the CSV file) that you want to update",
   "gsheetSelectedSheet": "Selected spreadsheet",
   "gsheetUpdateSearchDescription": "The text or number to search in the spreadsheet. You can use the variables listed below to search values coming from other components.",
   "gsheetNewValueDescription": "<br>The text or number to use to replace the <i>Search value</i> in the spreadsheet. You can use the variables listed below to search values coming from other components.",

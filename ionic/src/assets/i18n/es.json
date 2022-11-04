@@ -359,6 +359,7 @@
   "lastMatch": "Última coincidencia",
   "csvUpdateNotFoundValueDescription": "El texto que se genera cuando la búsqueda no produce resultados",
   "rowToRead": "Fila para leer",
+  "csvUpdateColumnToUpdateIndex": "El número de columna (que comienza con 1 para la columna más a la izquierda del archivo CSV) que desea actualizar",
   "gsheetSelectedSheet": "Hoja de cálculo seleccionada",
   "gsheetUpdateSearchDescription": "El texto o número para buscar en la hoja de cálculo. Puede usar las variables enumeradas a continuación para buscar valores provenientes de otros componentes.",
   "gsheetNewValueDescription": "<br>El texto o el número que se usará para reemplazar el <i>Valor de búsqueda</i> en la hoja de cálculo. Puede usar las variables enumeradas a continuación para buscar valores provenientes de otros componentes.",

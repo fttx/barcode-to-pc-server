@@ -356,6 +356,7 @@
   "lastMatch": "Ultimo risultato",
   "csvUpdateNotFoundValueDescription": "Il testo da emettere quando la ricerca non produce risultati",
   "rowToRead": "Row to Read",
+  "csvUpdateColumnToUpdateIndex": "Il numero di colonna (contando da sinistra e partendo da 1) che vuoi modificare",
   "gsheetSelectedSheet": "Foglio di calcolo selezionato",
   "gsheetUpdateSearchDescription": "Il valore da cercare all'interno del foglio di calcolo. Puoi utilizzare il valore delle variabili relative ad altri componenti.",
   "gsheetNewValueDescription": "<br>Il valore da scrivere in corrispondenza del <i>Valore di ricerca</i> nel foglio di calcolo. Puoi utilizzare il valore delle variabili relative ad altri componenti.",
