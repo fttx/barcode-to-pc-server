@@ -119,4 +119,8 @@ export class ComponentEditorGSheetUpdatePage {
   isValid() {
     return this.outputBlock.sheetId && this.outputBlock.sheetId.length;
   }
+
+  trackColumnsIndex(index, item) {
+    return index;
+  }
 }

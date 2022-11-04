@@ -134,7 +134,7 @@
       <ion-label no-lines>{{ 'gsheetsColumns' | translate }}</ion-label>
     </ion-item>
     <ion-grid class="fields" [hidden]="!outputBlock.columnsToAppend || !outputBlock.columnsToAppend.length">
-      <ion-item no-lines *ngFor="let column of outputBlock.columnsToAppend; let i = index;">
+      <ion-item no-lines *ngFor="let column of outputBlock.columnsToAppend; let i = index; trackBy: trackColumnsIndex">
         <ion-row no-padding>
           <ion-col>
             <input [(ngModel)]="outputBlock.columnsToAppend[i]" class="inline-input" type="text" [placeholder]="'Column ' + (i+1)" />

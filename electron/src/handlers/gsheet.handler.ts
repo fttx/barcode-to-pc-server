@@ -138,6 +138,7 @@ export class GSheetHandler implements Handler {
             }
 
             // Generate the url that will be used for the consent dialog and put the scope as sheets
+            // The refres_token is retreived only the first time the app is approved. To force it use `prompt: 'consent'`
             const authorizeUrl = oAuth2Client.generateAuthUrl({ access_type: 'offline', scope: GSheetHandler.scopes, });
 
             // Open an http server to accept the oauth callback. In this simple example, the
