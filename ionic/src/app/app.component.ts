@@ -422,9 +422,9 @@ export class MyApp {
         }
 
         // v4.4.0
-        if (typeof settings.demoShown == 'undefined') {
-          settings.demoShown = false;
-        }
+        // if (typeof settings.demoShown == 'undefined') {
+        //   settings.demoShown = false;
+        // }
 
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
