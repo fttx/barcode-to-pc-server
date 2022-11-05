@@ -29,6 +29,7 @@
 
 ### Fixed
 
+- Connections issues on iOS
 - Minimization option on macOS Ventura (server side)
 
 ## [v4.3.0] - 2022-10-27
