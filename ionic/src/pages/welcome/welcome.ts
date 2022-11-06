@@ -3,6 +3,7 @@ import { ModalController, NavController, NavParams } from 'ionic-angular';
 import { Config } from '../../config';
 
 import { requestModel, requestModelHelo } from '../../models/request.model';
+import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
@@ -35,6 +36,9 @@ export class WelcomePage {
     if (ElectronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
         ngZone.run(() => {
+          const settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
+          settings.openAutomatically = 'minimized';
+          this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
           this.navCtrl.setRoot(HomePage);
         })
       });
