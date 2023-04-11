@@ -17,6 +17,44 @@
 -->
 
 
+
+## [v4.4.3] - 2023-04-11
+
+### Fixed
+
+- Fix Android 12+ crash issue
+
+## [v4.4.2] - 2023-04-09
+
+### Changed
+
+- Improve Acquisition screen
+- Improve Auto-focus capabilities
+
+### Removed
+
+- OCR support
+
+## [v4.4.1] - 2023-04-06
+
+### Added
+
+- Wide lens support
+
+### Changed
+
+- Many barcode decoding improvements
+- Improved acquisition screen
+- Support for GS1 characters
+
+
+## [v4.3.2] - 2022-11-24
+
+### Fixed
+
+- Variables injection in GOOGLE_SHEETS component
+
+
 ## [v4.3.1] - 2022-11-05
 
 ### Added
@@ -558,6 +596,11 @@
 
 - Included the Apple Bonjour installer
 
+[v4.4.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.2...v4.4.3
+[v4.4.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.1...v4.4.2
+[v4.4.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.0...v4.4.1
+[v4.4.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.3.2...v4.4.0
+[v4.3.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.3.1...v4.3.2
 [v4.3.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.3.0...v4.3.1
 [v4.3.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.2.0...v4.3.0
 [v4.2.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.1.0...v4.2.0
