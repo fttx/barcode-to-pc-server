@@ -30,16 +30,16 @@ export class Config {
   public static URL_ORDERS_SUPPORT = 'https://questionacharge.com/';
   public static URL_GITHUB_CHANGELOG = 'https://raw.githubusercontent.com/fttx/barcode-to-pc-server/master/CHANGELOG.md';
 
-  public static URL_TUTORIAL_KEYBOARD_EMULATION = Config.URL_WEBSITE + '/tutorial/keyboard-emulation/';
-  public static URL_TUTORIAL_JAVASCRIPT_FUNCTION = Config.URL_WEBSITE + '/tutorial/how-to-use-the-javascript-function-component/';
-  public static URL_TUTORIAL_IF = Config.URL_WEBSITE + '/tutorial/use-conditions-in-the-output-template/';
-  public static URL_TUTORIAL_RUN = Config.URL_WEBSITE + '/tutorial/how-to-use-the-run-output-component/';
-  public static URL_TUTORIAL_CSV_LOOKUP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-csv_lookup-component';
-  public static URL_TUTORIAL_CSV_UPDATE = Config.URL_WEBSITE + '/tutorial/how-to-use-the-csv_update-component';
-  public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = Config.URL_WEBSITE + '/tutorial/how-to-create-output-templates/';
-  public static URL_TUTORIAL_MACOS_ACCESSIBILITY = Config.URL_WEBSITE + '/tutorial/give-accessibility-permissions-to-barcode-to-pc/';
-  public static URL_TUTORIAL_HTTP = Config.URL_WEBSITE + '/tutorial/how-to-use-the-http-output-component/';
-  public static URL_TUTORIAL_WOOCOMMERCE = Config.URL_WEBSITE + '/tutorial/organize-your-woocommerce-store-using-barcodes/';
+  public static URL_TUTORIAL_KEYBOARD_EMULATION = 'https://docs.barcodetopc.com/keyboard-emulation/';
+  public static URL_TUTORIAL_JAVASCRIPT_FUNCTION = 'https://docs.barcodetopc.com/output-template/components/javascript_function/';
+  public static URL_TUTORIAL_IF = 'https://docs.barcodetopc.com/output-template/components/if/';
+  public static URL_TUTORIAL_RUN = 'https://docs.barcodetopc.com/output-template/components/run/';
+  public static URL_TUTORIAL_CSV_LOOKUP = 'https://docs.barcodetopc.com/output-template/components/csv_lookup/';
+  public static URL_TUTORIAL_CSV_UPDATE = 'https://docs.barcodetopc.com/output-template/components/csv_update/';
+  public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = 'https://docs.barcodetopc.com/output-template/how-it-works/';
+  public static URL_TUTORIAL_MACOS_ACCESSIBILITY = 'https://docs.barcodetopc.com/keyboard-emulation/#nothing-gets-type-macos-only';
+  public static URL_TUTORIAL_HTTP = 'https://docs.barcodetopc.com/output-template/components/http/';
+  public static URL_TUTORIAL_WOOCOMMERCE = 'http://localhost:5000/output-template/components/woocommerce/';
   public static URL_DOWNGRADE_V3 = Config.URL_WEBSITE + '/downgrade-app-from-v4-to-v3/';
 
   public static URL_PAIR = 'https://app.barcodetopc.com';

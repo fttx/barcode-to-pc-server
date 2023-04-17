@@ -62,13 +62,9 @@
       <ion-item no-lines>
         <ion-label>
           {{ 'enableKeyboardEmulation' | translate }}
-          <button ion-button small color="light" [popper]="keyboardEmulationPopper" class="help-button">
+          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/keyboard-emulation/')" class="help-button">
             ?
           </button>
-          <popper-content #keyboardEmulationPopper>
-            {{ 'enableKeyboardEmulationPopper1' | translate }} <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/keyboard-emulation/')">{{ 'enableKeyboardEmulationPopper2' | translate }}</a>
-            {{ 'enableKeyboardEmulationPopper3' | translate }}
-          </popper-content>
         </ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
       </ion-item>
@@ -96,44 +92,7 @@
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
           <span>{{ 'availableComponents' | translate }}</span>
-          <button ion-button small color="light" popperPlacement="bottom-start" [popper]="popper1Content" class="help-button">
-            ?
-          </button>
         </div>
-        <popper-content #popper1Content>
-          {{ 'availableComponentsPopper1' | translate }}
-          &amp;
-          {{ 'availableComponentsPopper2' | translate }}
-          <br>
-          <b>
-            {{ 'availableComponentsPopper3' | translate }}
-          </b>
-          {{ 'availableComponentsPopper4' | translate }}
-          <b>
-            {{ 'availableComponentsPopper5' | translate }}
-          </b>
-          {{ 'availableComponentsPopper6' | translate }}
-          <br>
-          {{ 'availableComponentsPopper7' | translate }}
-          <br>
-          {{ 'availableComponentsPopper8' | translate }}
-          <b>
-            {{ 'availableComponentsPopper9' | translate }}
-          </b>
-          {{ 'availableComponentsPopper10' | translate }}
-          <br>
-          {{ 'availableComponentsPopper11' | translate }}or transform the barcode
-          <br>
-          {{ 'availableComponentsPopper12' | translate }}
-          <b>
-            {{ 'availableComponentsPopper13' | translate }}
-          </b>
-          {{ 'availableComponentsPopper14' | translate }}
-          <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">
-            {{ 'availableComponentsPopper15' | translate }}
-          </a>
-          {{ 'availableComponentsPopper16' | translate }}
-        </popper-content>
         <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
           <h2 padding-vertical>
             {{ 'limitReacheadHeader' | translate }}
@@ -148,23 +107,16 @@
         </div>
       </ion-item>
 
+      <!-- <h1 id="demoExampleH1">Example</h1>
+      <div id="demoOverlay"></div>
+      <video src="assets/video/demo_output_template.mp4" id="demoVideo" #demoVideo [hidden]="hideDemo"></video> -->
+
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
           <span>{{ 'outputTemplate' | translate }}</span>
-          <button ion-button small color="light" popperPlacement="right-start" [popper]="outputTemplatePopper" class="help-button">
+          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('http://localhost:5000/output-template/how-it-works/')"  class="help-button">
             ?
           </button>
-          <popper-content #outputTemplatePopper>
-            {{ 'outputTemplatePopper1' | translate }}
-            <br>
-            {{ 'outputTemplatePopper2' | translate }}
-            <br>
-            {{ 'outputTemplatePopper3' | translate }}
-            <a (click)=" electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/how-to-create-output-templates/')">
-              {{ 'outputTemplatePopper4' | translate }}
-            </a>
-            {{ 'outputTemplatePopper5' | translate }}
-          </popper-content>
         </div>
 
         <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
@@ -213,16 +165,9 @@
 
       <ion-item no-lines>
         <ion-label>{{ 'appendScansToACsvFile' | translate }}
-          <button ion-button small color="light" [popper]="appendToCsvFilePopper" class="help-button">
+          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/csv-files/method1/')" class="help-button">
             ?
           </button>
-          <popper-content #appendToCsvFilePopper>
-            {{ 'appendToCsvFilePopper1' | translate }}
-            <a (click)="electronProvider.shell.openExternal('https://barcodetopc.com/tutorial/3-ways-to-save-scans-to-csv-files/#method-2-append-the-scans-to-a-file-in-real-time-synchronously')">
-              {{ 'appendToCsvFilePopper2' | translate }}
-            </a>
-            {{ 'appendToCsvFilePopper3' | translate }}
-          </popper-content>
         </ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.appendCSVEnabled" (click)="onCSVClick()"></ion-checkbox>
       </ion-item>

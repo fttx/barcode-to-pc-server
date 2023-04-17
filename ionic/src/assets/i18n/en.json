@@ -273,7 +273,7 @@
   "nativeSuccessDialogTitle": "Success",
   "nativeSuccessDialogCloseButton": "Close",
   "================================EDIT_OUTPUT_BLOCK_POPOVER====================": "",
-  "helpButton": "Help",
+  "helpButton": "Instructions",
   "saveButton": "Save",
   "skipOutputToggle": "Skip output",
   "skipOutputDescription": "Disables the Keyboard Emulation and CSV output.<br><br>Use this option when you want to execute the component and use its value inside other components such as JAVASCRIPT FUNCTION, IF, HTTP, etc. without outputting the value.",
