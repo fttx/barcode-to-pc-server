@@ -13,7 +13,6 @@ import { UtilsProvider } from '../../providers/utils/utils';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-image-viewer',
   templateUrl: 'image-viewer.html',
