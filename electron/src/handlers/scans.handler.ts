@@ -114,12 +114,8 @@ export class ScansHandler implements Handler {
                         case 'image': {
                             if (outputBlock.outputImagePath) {
                                 const buffer: Buffer =  Buffer.from(outputBlock.image.data);
-                                const filename = scan.displayValue.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
-                                const outputPath = path.join(outputBlock.outputImagePath, filename);
-                                fs.writeFile(outputPath, buffer, (err) => {
-                                    if (err) {
-                                        console.error(err);
-                                    }
+                                fs.writeFile(outputBlock.outputImagePath, buffer, (err) => {
+                                    if (err) { console.error(err); }
                                 });
                             }
                             break;

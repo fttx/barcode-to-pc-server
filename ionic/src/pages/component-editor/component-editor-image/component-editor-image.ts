@@ -7,6 +7,9 @@ import { OutputBlockModel } from '../../../models/output-block.model';
   templateUrl: 'component-editor-image.html',
 })
 export class ComponentEditorImagePage {
+  public curlyOpen = '{{';
+  public curlyClose = '}}';
+
   public outputBlock: OutputBlockModel;
   public enabled = false;
 

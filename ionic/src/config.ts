@@ -40,6 +40,7 @@ export class Config {
   public static URL_TUTORIAL_MACOS_ACCESSIBILITY = 'https://docs.barcodetopc.com/keyboard-emulation/#nothing-gets-type-macos-only';
   public static URL_TUTORIAL_HTTP = 'https://docs.barcodetopc.com/output-template/components/http/';
   public static URL_TUTORIAL_WOOCOMMERCE = 'http://localhost:5000/output-template/components/woocommerce/';
+  public static URL_TUTORIAL_IMAGE = 'http://localhost:5000/output-template/components/image/';
   public static URL_DOWNGRADE_V3 = Config.URL_WEBSITE + '/downgrade-app-from-v4-to-v3/';
 
   public static URL_PAIR = 'https://app.barcodetopc.com';

@@ -74,6 +74,7 @@ export class ComponentEditorComponent implements OnInit {
       case 'csv_update': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CSV_UPDATE); break;
       case 'alert': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
       case 'woocommerce': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_WOOCOMMERCE); break;
+      case 'image': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IMAGE); break;
       default: this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
     }
   }
