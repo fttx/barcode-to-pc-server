@@ -76,7 +76,7 @@ export class ComponentEditorGSheetUpdatePage {
       this.hideTokenInput = true;
       this.redirectToken = '';
       this.events.publish('componentEditor:scrollToTop');
-    }, 600);
+    }, 1400);
   }
 
   refreshData() {
