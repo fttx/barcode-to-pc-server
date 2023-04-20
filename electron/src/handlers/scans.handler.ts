@@ -5,6 +5,7 @@ import * as parse from 'csv-parse/lib/sync';
 import * as stringify from 'csv-stringify';
 import { clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
+import * as path from 'path';
 import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
@@ -110,6 +111,19 @@ export class ScansHandler implements Handler {
                         case 'function': await this.typeString(outputBlock.value); break;
                         case 'barcode': await this.typeString(outputBlock.value); break;
                         case 'select_option': await this.typeString(outputBlock.value); break;
+                        case 'image': {
+                            if (outputBlock.outputImagePath) {
+                                const buffer: Buffer =  Buffer.from(outputBlock.image.data);
+                                const filename = scan.displayValue.replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.jpg';
+                                const outputPath = path.join(outputBlock.outputImagePath, filename);
+                                fs.writeFile(outputPath, buffer, (err) => {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                });
+                            }
+                            break;
+                        }
                         case 'delay': {
                             if (isNumeric(outputBlock.value)) {
                                 await new Promise(resolve => setTimeout(resolve, parseInt(outputBlock.value)))
@@ -530,6 +544,7 @@ export class ScansHandler implements Handler {
                                 request.outputBlock.columnToUpdateA1,
                                 request.outputBlock.newValue,
                                 request.outputBlock.rowToUpdate,
+                                request.outputBlock.appendIfNotFound,
                             );
                         } else if (request.outputBlock.action === 'append') {
                             result = await this.gsheet.append(

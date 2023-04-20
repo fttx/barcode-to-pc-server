@@ -20,6 +20,7 @@ import { ComponentEditorTextPage } from '../../pages/component-editor/component-
 import { ComponentEditorVariablePage } from '../../pages/component-editor/component-editor-variable/component-editor-variable';
 import { ComponentEditorWooCommercePage } from '../../pages/component-editor/component-editor-woocommerce/component-editor-woocommerce';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { ComponentEditorImagePage } from '../../pages/component-editor/component-editor-image/component-editor-image';
 
 
 @Component({
@@ -57,6 +58,7 @@ export class OutputComponentComponent {
       case 'text': editor = ComponentEditorTextPage; break;
       case 'variable': editor = ComponentEditorVariablePage; break;
       case 'woocommerce': editor = ComponentEditorWooCommercePage; break;
+      case 'image': editor = ComponentEditorImagePage; break;
     }
     let modal = this.modalCtrl
       .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });

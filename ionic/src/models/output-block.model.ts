@@ -1,5 +1,4 @@
 import { NutjsKey } from "./nutjs-key.model";
-
 /**
  * It's an element of the Output template field.
  * It's also called Output component in the UI
@@ -52,7 +51,7 @@ export class OutputBlockModel {
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce' | 'google_sheets';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'image' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce' | 'google_sheets';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -171,6 +170,7 @@ export class OutputBlockModel {
     columnToReadA1?: string;
     columnsToAppend?: string[];
     action?: 'get' | 'update' | 'append';
+    appendIfNotFound?: boolean;
 
     /**
      * Parameters for the ALERT component
@@ -199,6 +199,12 @@ export class OutputBlockModel {
      */
     format?: string;
     locale?: string;
+
+    /**
+     * Parameter for the IMAGE component
+     */
+    image?: any;
+    outputImagePath?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

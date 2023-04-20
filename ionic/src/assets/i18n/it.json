@@ -250,6 +250,8 @@
   "selectCSVSelectButton": "Seleziona",
   "selectCSVFilterText": "File di testo",
   "selectCSVFilterAll": "Tutti i file",
+  "outputImagePathEnable": "Archiava le immagini in una cartella",
+  "outputImagePath": "Percorso cartella",
   "================================LICENSE======================================": "",
   "commercialUseDialogTitle": "Upgrade",
   "commercialUseDialogMessage": "La licenza corrente è solo per uso non commerciale. È richesta una licenza a pagamento se si utilizza Barcode to PC per scopi commerciali",
@@ -434,5 +436,7 @@
   "fields": "Parametri",
   "componentEditorValidationErrorTitle": "Errore",
   "componentEditorValidationErrorMessage": "Uno o più campi obbligatori non sono stati validati. Ricontrolla il componente.",
-  "componentEditorValidationErrorButton": "Salva"
+  "componentEditorValidationErrorButton": "Salva",
+  "================================IMAGE_VIEWER_PAGE======================================": "",
+  "save": "Salva"
 }

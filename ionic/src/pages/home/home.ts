@@ -16,6 +16,7 @@ import { InfoPage } from '../info/info';
 import { SettingsPage } from '../settings/settings';
 import { throttle } from 'helpful-decorators';
 import { Config } from '../../config';
+import { ImageViewerPage } from '../image-viewer/image-viewer';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -383,6 +384,15 @@ export class HomePage {
 
   getUrlKeyboardEmulationTutorial() {
     return Config.URL_TUTORIAL_KEYBOARD_EMULATION;
+  }
+
+  public viewImage(scan: ScanModel) {
+    const image = scan.outputBlocks.find(x => x.image != null).image;
+    const uint8Array = new Uint8Array(image.data);
+    const binaryString = String.fromCharCode.apply(null, uint8Array);
+    const base64String = btoa(binaryString);
+    const base64Image = 'data:image/jpeg;base64,' + base64String;
+    this.navCtrl.push(ImageViewerPage, { 'image': base64Image, title: scan.displayValue });
   }
 
   private randomScan() {

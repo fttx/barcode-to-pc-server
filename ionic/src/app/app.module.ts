@@ -53,6 +53,8 @@ import { LastToastProvider } from '../providers/last-toast/last-toast';
 import { LicenseProvider } from '../providers/license/license';
 import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
+import { ComponentEditorImagePage } from '../pages/component-editor/component-editor-image/component-editor-image';
+import { ImageViewerPage } from '../pages/image-viewer/image-viewer';
 
 @NgModule({
   declarations: [
@@ -79,12 +81,14 @@ import { MyApp } from './app.component';
     ComponentEditorTextPage,
     ComponentEditorVariablePage,
     ComponentEditorWooCommercePage,
+    ComponentEditorImagePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
     QrCodePairingModal,
     MainMenuPopover,
     SettingsPage,
+    ImageViewerPage,
   ],
   imports: [
     BrowserModule,
@@ -147,12 +151,14 @@ import { MyApp } from './app.component';
     ComponentEditorTextPage,
     ComponentEditorVariablePage,
     ComponentEditorWooCommercePage,
+    ComponentEditorImagePage,
     ActivatePage,
     ScanSessionContextMenuPopover,
     ConnectedClientsPopover,
     QrCodePairingModal,
     MainMenuPopover,
     SettingsPage,
+    ImageViewerPage,
   ],
   providers: [
     StatusBar,

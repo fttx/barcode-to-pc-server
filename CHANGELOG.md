@@ -22,7 +22,7 @@
 
 ### Fixed
 
-- Fix Android 12+ crash issue
+- Crash issue on Android 12+ devices
 
 ## [v4.4.2] - 2023-04-09
 

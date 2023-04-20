@@ -71,6 +71,9 @@
                 <input class="scan-text" type="text" [value]="scan.displayValue" disabled />
               </ion-col>
               <ion-col col-auto>
+                <button ion-button clear color="dark" (click)="viewImage(scan)" *ngIf="scan.hasImage">
+                  <ion-icon name="image"></ion-icon>
+                </button>
                 <button ion-button clear color="dark" ngxClipboard [cbContent]="scan.displayValue" (click)="onCopyToClipboardClick(scan.displayValue)">
                   <ion-icon name="copy"></ion-icon>
                 </button>

@@ -250,6 +250,8 @@
   "selectCSVSelectButton": "Select",
   "selectCSVFilterText": "Text files",
   "selectCSVFilterAll": "All Files",
+  "outputImagePathEnable": "Archive images in a folder",
+  "outputImagePath": "Folder path",
   "================================LICENSE======================================": "",
   "commercialUseDialogTitle": "Upgrade",
   "commercialUseDialogMessage": "Your current license is for non-commercial use only. Please switch to a paid license if you are using Barcode to PC for commercial purposes",
@@ -437,5 +439,7 @@
   "fields": "Fields",
   "componentEditorValidationErrorTitle": "Error",
   "componentEditorValidationErrorMessage": "You forgot to fill one or more required fields. Check the component again.",
-  "componentEditorValidationErrorButton": "Save"
+  "componentEditorValidationErrorButton": "Save",
+  "================================IMAGE_VIEWER_PAGE======================================": "",
+  "save": "Save"
 }

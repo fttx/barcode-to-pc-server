@@ -32,6 +32,8 @@ export class ScanModel {
      */
     text: string;
 
+    hasImage: boolean;
+
     /**
     * This is static because most of the times the ScanModel object is parsed
     * from a JSON object, so the instance methods won't be available until you
@@ -64,6 +66,7 @@ export class ScanModel {
                 case 'variable': return block.value;
                 case 'date_time': return block.value;
                 case 'select_option': return block.value;
+                case 'image': return '';
                 case 'function': return block.value;
                 case 'http': return block.value;
                 case 'run': return block.value;

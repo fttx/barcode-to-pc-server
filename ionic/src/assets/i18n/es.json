@@ -250,6 +250,8 @@
   "selectCSVSelectButton": "Seleccionar",
   "selectCSVFilterText": "Archivos de texto",
   "selectCSVFilterAll": "Todos los archivos",
+  "outputImagePathEnable": "Archivar imágenes en una carpeta",
+  "outputImagePath": "Ruta de la carpeta",
   "================================LICENSE======================================": "",
   "commercialUseDialogTitle": "Actualizar",
   "commercialUseDialogMessage": "Su licencia actual es solo para uso no comercial. Cambie a una licencia de pago si utiliza Barcode to PC server con fines comerciales",
@@ -437,5 +439,7 @@
   "fields": "Parámetros",
   "componentEditorValidationErrorTitle": "Error",
   "componentEditorValidationErrorMessage": "Olvidaste completar uno o más campos obligatorios. Revisa el componente nuevamente.",
-  "componentEditorValidationErrorButton": "Guardar"
+  "componentEditorValidationErrorButton": "Guardar",
+  "================================IMAGE_VIEWER_PAGE======================================": "",
+  "save": "Guardar"
 }
