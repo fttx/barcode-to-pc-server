@@ -184,10 +184,13 @@ export class SettingsPage implements OnInit, OnDestroy {
 
     this.electronProvider.store.set(Config.STORAGE_SETTINGS, this.settings);
     if (ElectronProvider.isElectron()) {
-      this.electronProvider.appSetLoginItemSettings({
-        openAtLogin: (this.settings.openAutomatically == 'yes' || this.settings.openAutomatically == 'minimized'),
-        openAsHidden: this.settings.openAutomatically == 'minimized'
-      })
+      // Skip saving login items if the settings didn't change (to avoid macOS notification)
+      if (JSON.parse(this.lastSavedSettings).openAutomatically != this.settings.openAutomatically) {
+        this.electronProvider.appSetLoginItemSettings({
+          openAtLogin: (this.settings.openAutomatically == 'yes' || this.settings.openAutomatically == 'minimized'),
+          openAsHidden: this.settings.openAutomatically == 'minimized'
+        });
+      }
     }
     this.lastSavedSettings = JSON.stringify(this.settings);
     if (ElectronProvider.isElectron()) {
