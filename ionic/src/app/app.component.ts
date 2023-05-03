@@ -184,6 +184,15 @@ export class MyApp {
     setTimeout(() => { requestTokenRefresh(); }, 1000 * 60) // After 1 minute the app starts
 
     this.translate.setDefaultLang('en');
+
+    this.translate.onLangChange.subscribe(event => {
+      if (event.lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+      }
+    });
+
     this.translate.use(this.translate.getBrowserLang());
 
     utils.upgradeIonicStoreToElectronStore();

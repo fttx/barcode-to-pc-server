@@ -45,3 +45,7 @@
 .clickable:hover {
   text-decoration: underline;
 }
+
+ion-navbar {
+  direction: ltr !important;
+}
