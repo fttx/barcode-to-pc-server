@@ -252,6 +252,7 @@
   "selectCSVFilterText": "ملفات نصية",
   "selectCSVFilterAll": "جميع الملفات",
   "outputImagePathEnable": "أرشفة الصور في مجلد",
+  "imageHd": "الحصول على صور عالية الدقة",
   "outputImagePath": "مسار المجلد",
   "includeServerSettings": "تضمين إعدادات الخادم",
   "includeServerSettingsDescription": "إذا تم تمكين هذا الخيار، سيتم تضمين إعدادات الخادم العامة في الملف المصدر",

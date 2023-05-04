@@ -62,7 +62,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'TEXT', value: 'text', type: 'variable', skipOutput: false, label: null, filter: null, errorMessage: null, defaultValue: null },
       // Warning: keep in sync with settings.model.ts
       { name: 'BARCODE', value: 'BARCODE', type: 'barcode', skipOutput: false, label: null, enabledFormats: [], filter: null, errorMessage: null },
-      { name: 'IMAGE', value: '', type: 'image'},
+      { name: 'IMAGE', value: '', type: 'image', outputImagePath: '', imageHd: false },
 
       // **CONSTANTS**
       { name: 'Static text', value: '', type: 'text', skipOutput: false, label: null },

@@ -8,4 +8,9 @@
     <label for="_outputImagePath">{{ 'outputImagePath' | translate }}</label>
     <input id="_outputImagePath"  [(ngModel)]="outputBlock.outputImagePath" class="inline-input" type="text"  placeholder="C&#58;&#92;folder&#92;{{ curlyOpen }} barcode {{ curlyClose }}.jpg" />
   </ion-item>
+
+  <ion-item text-wrap no-lines>
+    <ion-label for="_imageHd">{{ 'imageHd' | translate }}</ion-label>
+    <ion-toggle id="_imageHd" [(ngModel)]="outputBlock.imageHd"></ion-toggle>
+  </ion-item>
 </component-editor>

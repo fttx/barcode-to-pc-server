@@ -251,6 +251,7 @@
   "selectCSVFilterText": "Text files",
   "selectCSVFilterAll": "All Files",
   "outputImagePathEnable": "Archive images in a folder",
+  "imageHd": "Acquire High Definition images",
   "outputImagePath": "Folder path",
   "================================LICENSE======================================": "",
   "commercialUseDialogTitle": "Upgrade",

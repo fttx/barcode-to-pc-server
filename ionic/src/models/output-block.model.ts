@@ -204,6 +204,7 @@ export class OutputBlockModel {
      * Parameter for the IMAGE component
      */
     image?: any;
+    imageHd?: boolean;
     outputImagePath?: string;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
