@@ -35,6 +35,8 @@ export class ComponentEditorDateTimePage implements OnInit, OnDestroy {
         this.enableCustomFormat = true;
       }
     }
+
+    moment.locale(this.outputBlock.locale || moment.locale());
   }
 
   ngOnDestroy(): void {
