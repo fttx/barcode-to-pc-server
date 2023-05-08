@@ -203,7 +203,7 @@ export class OutputBlockModel {
     /**
      * Parameter for the IMAGE component
      */
-    image?: any;
+    image?: string;
     imageHd?: boolean;
     outputImagePath?: string;
 

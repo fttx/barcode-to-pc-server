@@ -387,20 +387,8 @@ export class HomePage {
   }
 
   public viewImage(scan: ScanModel) {
-    const image = scan.outputBlocks.find(x => x.image != null).image;
-    const uint8Array = new Uint8Array(image.data);
-
-    // Convert to binary string (calling String.fromCharCode.apply causes a stack overflow, so we break it into chunks)
-    let binaryString = '';
-    const chunkSize = 0x8000; // 32k
-    for (let i = 0; i < uint8Array.length; i += chunkSize) {
-      const chunk = uint8Array.subarray(i, i + chunkSize);
-      binaryString += String.fromCharCode.apply(null, chunk);
-    }
-
-    const base64String = btoa(binaryString);
-    const base64Image = 'data:image/jpeg;base64,' + base64String;
-    this.navCtrl.push(ImageViewerPage, { 'image': base64Image, title: scan.displayValue });
+    const base64 = scan.outputBlocks.find(x => x.image != null).image;
+    this.navCtrl.push(ImageViewerPage, { 'image': base64, title: scan.displayValue });
   }
 
   private randomScan() {

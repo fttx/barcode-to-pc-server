@@ -113,7 +113,8 @@ export class ScansHandler implements Handler {
                         case 'select_option': await this.typeString(outputBlock.value); break;
                         case 'image': {
                             if (outputBlock.outputImagePath) {
-                                const buffer: Buffer =  Buffer.from(outputBlock.image.data);
+                                const base64 = outputBlock.image.split(',')[1];
+                                const buffer = Buffer.from(base64, 'base64');
                                 fs.writeFile(outputBlock.outputImagePath, buffer, (err) => {
                                     if (err) { console.error(err); }
                                 });
