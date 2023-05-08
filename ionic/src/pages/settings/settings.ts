@@ -1,5 +1,5 @@
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Alert, AlertButton, AlertController, Events, Navbar, NavController, NavParams } from 'ionic-angular';
+import { Alert, AlertButton, AlertController, Events, Modal, ModalController, Navbar, NavController, NavParams, PopoverController } from 'ionic-angular';
 import moment from 'moment';
 import { DragulaService } from "ng2-dragula";
 import { Observable } from 'rxjs/Observable';
@@ -15,6 +15,8 @@ import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { OutputProfileExportedModel } from '../../models/output-profile-exported.model';
+import { ExportOutputTemplatePopoverPage } from '../export-output-template-popover/export-output-template-popover';
 
 /**
  * Generated class for the SettingsPage page.
@@ -30,7 +32,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 export class SettingsPage implements OnInit, OnDestroy {
   @ViewChild(Navbar) navBar: Navbar;
 
-  public unsavedSettingsAlert: Alert;
+  public unsavedSettingsAlert: Alert = null;
   public settings: SettingsModel = new SettingsModel(UtilsProvider.GetOS());
   public availableOutputBlocks: OutputBlockModel[] = this.getAvailableOutputBlocks();
 
@@ -38,6 +40,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   public selectedOutputProfile = 0;
   static MAX_SCAN_SESSION_NUMBER_UNLIMITED = 2000; // Update also SettingsModel.maxScanSessionsNumber
+  private exportModal: Modal;
 
 
   private getAvailableOutputBlocks(): OutputBlockModel[] {
@@ -75,7 +78,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'ENDIF', value: 'endif', type: 'endif' },
 
       // **OTHER**
-      { name: 'JAVASCRIPT_FUNCTION', value: '', type: 'function', allowOOBExecution: true, skipOutput: false, label: null },
+      { name: 'JAVASCRIPT_FUNCTION', value: '', type: 'function', allowOOBExecution: false, skipOutput: false, label: null },
       { name: 'SELECT_OPTION', value: '', type: 'select_option', title: '', message: '', skipOutput: false, label: null },
       { name: 'HTTP', value: '', type: 'http', allowOOBExecution: true, httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, httpOAuthMethod: 'disabled', httpOAuthConsumerKey: null, httpOAuthConsumerSecret: null, skipOutput: false, label: null, timeout: 10000 },
       { name: 'RUN', value: '', type: 'run', allowOOBExecution: true, skipOutput: false, label: null, timeout: 10000 },
@@ -99,6 +102,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     public events: Events,
     private ngZone: NgZone,
     private utils: UtilsProvider,
+    public modalCtrl: ModalController,
   ) {
     this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
@@ -144,6 +148,14 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
+  ionViewDidEnter() {
+
+  }
+
+  ionViewDidLeave() {
+    if (this.exportModal != null) this.exportModal.dismiss();
+    this.events.publish('settings:goBack');
+  }
   // willExit -> apply
 
   onApplyClick() {
@@ -166,40 +178,36 @@ export class SettingsPage implements OnInit, OnDestroy {
     }).present();
   }
 
-  async apply(pop = false) {
-    let noIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'if').length;
-    let noEndIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'endif').length;
-    if (noIfs != noEndIfs) {
-      let buttons: AlertButton[] = [{ text: await this.utils.text('applyDialogOKButton'), role: 'cancel', },];
-      if (pop) {
-        buttons.unshift({ text: await this.utils.text('applyDialogDiscardButton'), handler: () => { this.navCtrl.pop(); } });
+  async apply() {
+    return new Promise(async (resolve) => {
+      let noIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'if').length;
+      let noEndIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'endif').length;
+      if (noIfs != noEndIfs) {
+        let buttons: AlertButton[] = [{ text: await this.utils.text('applyDialogOKButton'), role: 'cancel', },];
+        this.alertCtrl.create({
+          title: await this.utils.text('syntaxErrorDialogTitle'),
+          message: await this.utils.text('syntaxErrorDialogMessage'),
+          buttons: buttons
+        }).present();
+        return resolve(false);
       }
-      this.alertCtrl.create({
-        title: await this.utils.text('syntaxErrorDialogTitle'),
-        message: await this.utils.text('syntaxErrorDialogMessage'),
-        buttons: buttons
-      }).present();
-      return false;
-    }
 
-    this.electronProvider.store.set(Config.STORAGE_SETTINGS, this.settings);
-    if (ElectronProvider.isElectron()) {
-      // Skip saving login items if the settings didn't change (to avoid macOS notification)
-      if (JSON.parse(this.lastSavedSettings).openAutomatically != this.settings.openAutomatically) {
-        this.electronProvider.appSetLoginItemSettings({
-          openAtLogin: (this.settings.openAutomatically == 'yes' || this.settings.openAutomatically == 'minimized'),
-          openAsHidden: this.settings.openAutomatically == 'minimized'
-        });
+      this.electronProvider.store.set(Config.STORAGE_SETTINGS, this.settings);
+      if (ElectronProvider.isElectron()) {
+        // Skip saving login items if the settings didn't change (to avoid macOS notification)
+        if (JSON.parse(this.lastSavedSettings).openAutomatically != this.settings.openAutomatically) {
+          this.electronProvider.appSetLoginItemSettings({
+            openAtLogin: (this.settings.openAutomatically == 'yes' || this.settings.openAutomatically == 'minimized'),
+            openAsHidden: this.settings.openAutomatically == 'minimized'
+          });
+        }
       }
-    }
-    this.lastSavedSettings = JSON.stringify(this.settings);
-    if (ElectronProvider.isElectron()) {
-      this.electronProvider.ipcRenderer.send('settings');
-    }
-
-    if (pop) {
-      this.navCtrl.pop();
-    }
+      this.lastSavedSettings = JSON.stringify(this.settings);
+      if (ElectronProvider.isElectron()) {
+        this.electronProvider.ipcRenderer.send('settings');
+      }
+      resolve(true);
+    });
   }
 
   async onEditOutputProfileNameClick() {
@@ -251,9 +259,8 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   async onExportOutputTemplateClick() {
-    let outputProfile = this.settings.outputProfiles[this.selectedOutputProfile];
-    outputProfile.version = this.electronProvider.appGetVersion()
-
+    const outputProfile = await this.showOutputTemplateExportDialog();
+    if (!outputProfile) return;
     const filePath = this.electronProvider.showSaveDialogSync({
       title: await this.utils.text('saveDialogTitle'),
       defaultPath: outputProfile.name + '.btpt',
@@ -264,9 +271,20 @@ export class SettingsPage implements OnInit, OnDestroy {
         }), extensions: ['btpt',]
       }],
     });
-
     if (!filePath) return;
     this.electronProvider.fsWriteFileSync(filePath, JSON.stringify(outputProfile), 'utf-8');
+  }
+
+  showOutputTemplateExportDialog(): Promise<OutputProfileExportedModel> {
+    const selectedOutputProfile: OutputProfileExportedModel = this.settings.outputProfiles[this.selectedOutputProfile];
+    return new Promise(async (resolve, reject) => {
+      if (this.exportModal != null) this.exportModal.dismiss();
+      this.exportModal = this.modalCtrl.create(ExportOutputTemplatePopoverPage, { outputProfile: selectedOutputProfile, settings: JSON.stringify(this.settings) }, { enableBackdropDismiss: false, showBackdrop: true });
+      this.exportModal.onDidDismiss((exportedOutputProfile) => {
+        resolve(exportedOutputProfile);
+      });
+      this.exportModal.present();
+    });
   }
 
   async onImportOutputTemplateClick() {
@@ -348,21 +366,32 @@ export class SettingsPage implements OnInit, OnDestroy {
     if (!this.checkSettingsChanged()) { // settings up to date
       this.navCtrl.pop();
     } else { // usnaved settings
+      if (this.unsavedSettingsAlert !== null) {
+        this.unsavedSettingsAlert.dismiss();
+        this.unsavedSettingsAlert = null;
+        return;
+      }
       this.unsavedSettingsAlert = this.alertCtrl.create({
+        enableBackdropDismiss: false,
         title: await this.utils.text('unsavedSettingsDialogTitle'),
         message: await this.utils.text('unsavedSettingsDialogMessage'),
-        buttons: [{
-          text: await this.utils.text('unsavedSettingsDialogSaveButton'),
-          handler: () => {
-            this.apply(true);
-          }
-        }, {
-          text: await this.utils.text('unsavedSettingsDialogDiscardButton'),
-          role: 'cancel',
-          handler: () => {
-            this.navCtrl.pop();
-          }
-        }]
+        buttons: [
+          {
+            text: await this.utils.text('unsavedSettingsDialogCancelButton'),
+            handler: () => {   }
+          }, {
+            text: await this.utils.text('unsavedSettingsDialogDiscardButton'),
+            handler: () => {
+              this.navCtrl.pop();
+            }
+          },
+          {
+            text: await this.utils.text('unsavedSettingsDialogSaveButton'),
+            handler: async () => {
+              await this.apply();
+              this.navCtrl.pop();
+            }
+          }]
       });
       this.unsavedSettingsAlert.present();
     }
@@ -402,13 +431,19 @@ export class SettingsPage implements OnInit, OnDestroy {
     ).subscribe();
   }
   ngOnDestroy(): void {
-    this.domEvents.unsubscribe(); // don't forget to unsubscribe
+    this.domEvents.unsubscribe();
   }
 
   // ESC button => Go back
   domEvent(event) {
-    if (event.keyCode && event.keyCode == 27 && !this.unsavedSettingsAlert && this.electronProvider.isDev) {
-      this.events.publish('settings:goBack');
+    if (event.keyCode && event.keyCode == 27) {
+      event.stopPropagation();
+      event.preventDefault();
+      if (this.unsavedSettingsAlert !== null) {
+        this.unsavedSettingsAlert.dismiss();
+        this.unsavedSettingsAlert = null;
+        return;
+      }
       this.goBack();
     }
   }

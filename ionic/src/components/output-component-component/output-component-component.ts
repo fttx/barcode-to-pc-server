@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Events, ModalController, ViewController } from 'ionic-angular';
+import { Events, Modal, ModalController, ViewController } from 'ionic-angular';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { ComponentEditorAlertPage } from '../../pages/component-editor/component-editor-alert/component-editor-alert';
 import { ComponentEditorBarcodePage } from '../../pages/component-editor/component-editor-barcode/component-editor-barcode';
@@ -30,11 +30,16 @@ import { ComponentEditorImagePage } from '../../pages/component-editor/component
 export class OutputComponentComponent {
   @Input() outputBlock: OutputBlockModel;
 
+  static lastModal: Modal;
+  static goBackSubscriptionDone = false;
+
   constructor(
     public modalCtrl: ModalController,
     public events: Events,
     public viewCtrl: ViewController,
-  ) { }
+  ) {
+
+  }
 
   onClick(event) {
     event.stopPropagation();
@@ -62,8 +67,12 @@ export class OutputComponentComponent {
     }
     let modal = this.modalCtrl
       .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });
-    this.events.subscribe('settings:goBack', () => { modal.dismiss(); });
-    modal.onDidDismiss(() => { this.events.unsubscribe('settings:goBack'); })
+    this.events.subscribe('settings:goBack', () => {
+      modal.dismiss();
+    });
+    modal.onDidDismiss(() => {
+      this.events.unsubscribe('settings:goBack');
+    });
     modal.present();
   }
 

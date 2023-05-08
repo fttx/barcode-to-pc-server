@@ -1,0 +1,20 @@
+page-export-output-template-popover {
+  .description p {
+    padding-left: 57px;;
+  }
+
+  .inline-input {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    border: 1px solid #b5b5b5;
+    border-radius: 5px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0 8px;
+  }
+
+  .description ion-label {
+    margin-top: 0 !important;
+  }
+}

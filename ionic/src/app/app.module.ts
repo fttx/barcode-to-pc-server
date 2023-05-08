@@ -55,6 +55,7 @@ import { UtilsProvider } from '../providers/utils/utils';
 import { MyApp } from './app.component';
 import { ComponentEditorImagePage } from '../pages/component-editor/component-editor-image/component-editor-image';
 import { ImageViewerPage } from '../pages/image-viewer/image-viewer';
+import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template-popover/export-output-template-popover';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { ImageViewerPage } from '../pages/image-viewer/image-viewer';
     ConnectedClientsPopover,
     QrCodePairingModal,
     MainMenuPopover,
+    ExportOutputTemplatePopoverPage,
     SettingsPage,
     ImageViewerPage,
   ],
@@ -157,6 +159,7 @@ import { ImageViewerPage } from '../pages/image-viewer/image-viewer';
     ConnectedClientsPopover,
     QrCodePairingModal,
     MainMenuPopover,
+    ExportOutputTemplatePopoverPage,
     SettingsPage,
     ImageViewerPage,
   ],

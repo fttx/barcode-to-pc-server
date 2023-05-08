@@ -15,6 +15,7 @@ import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { UtilsProvider } from '../providers/utils/utils';
+import { OutputProfileExportedModel } from '../models/output-profile-exported.model';
 
 @Component({
   templateUrl: 'app.html'
@@ -64,7 +65,7 @@ export class MyApp {
 
         // Read the file content
         const path = this.electronProvider.path;
-        let outputTemplate;
+        let outputTemplate: OutputProfileExportedModel;
         try {
           outputTemplate = JSON.parse(this.electronProvider.fsReadFileSync(filePath, { encoding: 'utf-8' }));
         } catch {
@@ -78,23 +79,60 @@ export class MyApp {
           return;
         }
 
+        // Alert
+        const warnings = [];
+        if (outputTemplate.extras) {
+          if (outputTemplate.extras.deleteOtherTemplates) {
+            warnings.push('⚠️ All the other templates will be deleted');
+          }
+
+          if (outputTemplate.extras.settings != null) {
+            warnings.push('⚠️ All your server settings will be overwritten');
+          }
+        }
+
+        const importTemplateSuccess = await this.utils.text('importTemplateSuccess');
+
         this.alertCtrl.create({
           title: await this.utils.text('importOutputTemplateDialogTitle'),
           message: await this.utils.text('importOutputTemplateDialogMessage', {
             "templateName": outputTemplate.name,
+            "warnings": '<br>' + warnings.join('<br>')
           }),
           buttons: [{
             text: await this.utils.text('importOutputTemplateDialogYesButton'),
             handler: () => {
-              let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
-              outputTemplate = this.utils.upgradeTemplate(outputTemplate, outputTemplate.version);
-              // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
-              settings.enableAdvancedSettings = true;
-              settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
-              this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
-              if (ElectronProvider.isElectron()) {
-                this.electronProvider.ipcRenderer.send('settings');
-              }
+              this.showRebaseTemplatePathDialog(outputTemplate).then(async (rebasedOutputTemplate) => {
+                outputTemplate = rebasedOutputTemplate;
+
+                let settings: SettingsModel = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
+                outputTemplate = this.utils.upgradeTemplate(outputTemplate, outputTemplate.version);
+
+                // Set the new template in the settings object
+                if (outputTemplate.extras.deleteOtherTemplates) {
+                  settings.outputProfiles = [outputTemplate];
+                } else {
+                  // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
+                  settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
+                  settings.enableAdvancedSettings = true;
+                }
+
+                // Override the extra settings if are present in the template
+                if (outputTemplate.extras && outputTemplate.extras.settings != null) {
+                  const settingsToOverride = Object.keys(outputTemplate.extras.settings);
+                  for (let key of settingsToOverride) {
+                    settings[key] = outputTemplate.extras.settings[key];
+                  }
+                }
+
+                // Save
+                this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
+                if (ElectronProvider.isElectron()) {
+                  this.electronProvider.ipcRenderer.send('settings');
+                }
+
+                this.utils.showSuccessNativeDialog(importTemplateSuccess);
+              });
             }
           }, {
             text: await this.utils.text('importOutputTemplateDialogCancelButton'),
@@ -477,5 +515,32 @@ export class MyApp {
       resolve();
 
     })
+  }
+
+  showRebaseTemplatePathDialog(outputProfile: OutputProfileExportedModel): Promise<OutputProfileExportedModel> {
+    if (!outputProfile.extras.basePath) {
+      return new Promise(resolve => { resolve(outputProfile) });
+    }
+
+    return new Promise(async resolve => {
+      this.utils.showSuccessNativeDialog(await this.utils.text('importOutputTemplateRebaseAlert'));
+      const folderPaths = this.electronProvider.showOpenDialogSync({
+        title: await this.utils.text('rebaseTemplateDialogTitle'),
+        buttonLabel: await this.utils.text('selectCSVSelectButton'),
+        defaultPath: this.electronProvider.appGetPath('desktop'),
+        properties: ['openDirectory', 'createDirectory', 'promptToCreate',]
+      });
+
+      if (folderPaths && folderPaths.length) {
+        outputProfile.outputBlocks = outputProfile.outputBlocks.map(x => {
+          x.outputImagePath = x.outputImagePath ? x.outputImagePath.replace(outputProfile.extras.basePath, folderPaths[0]) : x.outputImagePath;
+          x.csvFile = x.csvFile ? x.csvFile.replace(outputProfile.extras.basePath, folderPaths[0]) : x.csvFile;
+          x.value = x.value ? x.value.replace(outputProfile.extras.basePath, folderPaths[0]) : x.value;
+          x.outputImagePath = x.outputImagePath ? x.outputImagePath.replace(outputProfile.extras.basePath, folderPaths[0]) : x.outputImagePath;
+          return x;
+        });
+      }
+      resolve(outputProfile);
+    });
   }
 }

@@ -1,0 +1,75 @@
+<!--
+  Generated template for the ExportOutputTemplatePopoverPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>{{ 'exportOutputTemplate' | translate:{'templateName': selectedOutputProfile.name} }}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-end solid color="primary" (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+
+    <!-- Include server settings -->
+    <ion-item no-lines>
+      <ion-label color="dark" text-wrap>{{ 'includeServerSettings' | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="includeServerSettings"></ion-checkbox>
+    </ion-item>
+    <ion-item text-wrap class="description">
+      <p>
+        {{ 'includeServerSettingsDescription' | translate }}
+      </p>
+    </ion-item>
+
+    <!-- Delete other templates -->
+    <ion-item no-lines>
+      <ion-label color="dark" text-wrap>{{ 'deleteOtherTemplates' | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="deleteOtherTemplates"></ion-checkbox>
+    </ion-item>
+    <ion-item text-wrap class="description">
+      <p>
+        {{ 'deleteOtherTemplatesDescription' | translate }}
+      </p>
+    </ion-item>
+
+    <!-- Adjust base paths -->
+    <div [hidden]="!hasComponentsWithPaths()">
+      <ion-item no-lines >
+        <ion-label color="dark" text-wrap>{{ 'replaceComponentsBasePath' | translate }}</ion-label>
+        <ion-checkbox [(ngModel)]="replaceComponentsBasePath"></ion-checkbox>
+      </ion-item>
+      <ion-item text-wrap no-lines class="description">
+        <p>
+          {{ 'replaceComponentsBasePathDescription' | translate }}
+        </p>
+      </ion-item>
+
+      <ion-item no-lines  style="padding-left: 73px" [hidden]="!replaceComponentsBasePath">
+        <label>
+          Base path
+        </label>
+        <input  [(ngModel)]="basePath" class="inline-input" type="text" placeholder="C&#58;&#92;base_folder&#92;" />
+      </ion-item>
+    </div>
+
+  </ion-list>
+
+
+</ion-content>
+
+<ion-footer>
+  <button ion-button style="display: block; margin: 20px auto" (click)="export()">
+    Export
+  </button>
+</ion-footer>
+
