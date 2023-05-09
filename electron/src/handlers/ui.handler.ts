@@ -294,6 +294,8 @@ export class UiHandler implements Handler {
             ]
             const menu = Menu.buildFromTemplate(template)
             Menu.setApplicationMenu(menu)
+        } else if (process.platform === 'win32') {
+            Menu.setApplicationMenu(Menu.buildFromTemplate([]));
         }
 
         this.mainWindow.on('close', (event) => { // occours when app.quit() is called or when the app is closed by the OS (eg. click close button)
