@@ -16,6 +16,11 @@
 ### Security
 -->
 
+## [v4.5.1] - 2023-05-08
+
+### Changed
+
+- Minor UX improvements on Windows
 
 
 ## [v4.5.0] - 2023-05-08
@@ -25,7 +30,7 @@
 - IMAGE component
 - Links to the new documentation
 - Arabic translation
-- Portoguese translation
+- Portuguese translation
 - QR Bill instructions
 - Inverted barcode colors option
 
@@ -619,6 +624,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.5.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.5.0...v4.5.1
 [v4.5.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.3...v4.5.0
 [v4.4.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.2...v4.4.3
 [v4.4.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.1...v4.4.2
