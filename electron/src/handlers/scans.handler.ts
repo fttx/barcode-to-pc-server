@@ -541,7 +541,6 @@ export class ScansHandler implements Handler {
                                 request.outputBlock.columnToUpdateA1,
                                 request.outputBlock.newValue,
                                 request.outputBlock.rowToUpdate,
-                                request.outputBlock.appendIfNotFound,
                             );
                         } else if (request.outputBlock.action === 'append') {
                             result = await this.gsheet.append(
