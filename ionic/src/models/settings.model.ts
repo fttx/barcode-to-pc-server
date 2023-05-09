@@ -37,7 +37,7 @@ export class SettingsModel {
   enableQuotes: boolean = false;
   enableHeaders: boolean = false;
   enableTray: boolean = true;
-  openAutomatically: ('yes' | 'no' | 'minimized') = 'minimized';
+  openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
   appendCSVEnabled: boolean = false;
   csvPath: string = null;
   typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
