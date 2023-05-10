@@ -43,7 +43,7 @@
 
 - DATE_TIME locale value not being applied
 - iOS 13 crash issue
-- Android 12+ crash issue
+- Fix crash on non-iOS devices
 
 
 ## [v4.4.3] - 2023-04-11
