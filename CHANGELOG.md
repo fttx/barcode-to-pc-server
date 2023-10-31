@@ -16,11 +16,29 @@
 ### Security
 -->
 
+<!-- ## [v4.6.0] - XXXX
+
+### Added
+
+- STATIC_TEXT variable
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security -->
+
+
 ## [v4.5.1] - 2023-05-08
 
 ### Changed
 
 - Minor UX improvements on Windows
+- Improve compatibility with newer mobile devices
 
 
 ## [v4.5.0] - 2023-05-08
