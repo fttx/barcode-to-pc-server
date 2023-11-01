@@ -181,7 +181,7 @@
   "limitReachead2": "oppure",
   "limitReacheadUpgradeButton": "Acquista una licenza",
   "outputTemplate": "Template di Output",
-  "outputTemplatePopper1": "Definisce il modello che verrà utilizzato per l'output della tastiera.",
+  "outputTemplatePopper1": "Definisce lo schema che verrà utilizzato per l'output della tastiera.",
   "outputTemplatePopper2": "Puoi cambiare l'ordine degli elementi trascinandoli. Per rimuoverne uno trascinalo fuori ",
   "outputTemplatePopper3": "tenendo premuto il tasto del mouse. Clicca ",
   "outputTemplatePopper4": "qui",
