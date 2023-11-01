@@ -68,7 +68,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'IMAGE', value: '', type: 'image', outputImagePath: '', imageHd: false },
 
       // **CONSTANTS**
-      { name: 'Static text', value: '', type: 'text', skipOutput: false, label: null },
+      { name: 'STATIC_TEXT', value: '', type: 'text', skipOutput: false, label: null },
 
       // **DELAY**
       { name: 'Delay', value: '', type: 'delay' },

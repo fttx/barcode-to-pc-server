@@ -473,6 +473,17 @@ export class MyApp {
         //   settings.demoShown = false;
         // }
 
+        // v4.6.0
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              if (outputBlock.type == 'text') {
+                outputBlock.name = 'STATIC_TEXT';
+              }
+            });
+          })
+        }
+
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }

@@ -260,6 +260,7 @@ export class ScansHandler implements Handler {
                         csv_update: null,
                         google_sheets: null,
                         javascript_function: null,
+                        static_text: null,
                     };
                     // Search if there is a corresponding Output component to assign to the NULL variables
                     let keys = Object.keys(variables);
