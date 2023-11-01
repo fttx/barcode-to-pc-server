@@ -27,7 +27,7 @@ export class Config {
   public static URL_API = Config.URL_WEBSITE + "http-api.json"
   public static URL_GITHUB_SERVER = 'https://github.com/fttx/barcode-to-pc-server';
   public static URL_GITHUB_APP = 'https://github.com/fttx/barcode-to-pc-app';
-  public static URL_ORDERS_SUPPORT = 'https://questionacharge.com/';
+  public static URL_ORDERS_SUPPORT = 'https://barcodetopc.com/invoicing/';
   public static URL_GITHUB_CHANGELOG = 'https://raw.githubusercontent.com/fttx/barcode-to-pc-server/master/CHANGELOG.md';
 
   public static URL_TUTORIAL_KEYBOARD_EMULATION = 'https://docs.barcodetopc.com/keyboard-emulation/';
