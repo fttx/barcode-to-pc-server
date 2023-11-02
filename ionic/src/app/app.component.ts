@@ -109,7 +109,7 @@ export class MyApp {
                 outputTemplate = this.utils.upgradeTemplate(outputTemplate, outputTemplate.version);
 
                 // Set the new template in the settings object
-                if (outputTemplate.extras.deleteOtherTemplates) {
+                if (outputTemplate.extras && outputTemplate.extras.deleteOtherTemplates) {
                   settings.outputProfiles = [outputTemplate];
                 } else {
                   // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
@@ -529,7 +529,7 @@ export class MyApp {
   }
 
   showRebaseTemplatePathDialog(outputProfile: OutputProfileExportedModel): Promise<OutputProfileExportedModel> {
-    if (!outputProfile.extras.basePath) {
+    if (!outputProfile.extras || !outputProfile.extras.basePath) {
       return new Promise(resolve => { resolve(outputProfile) });
     }
 
