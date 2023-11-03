@@ -16,22 +16,20 @@
 ### Security
 -->
 
-<!-- ## [v4.6.0] - XXXX
+## [v4.6.0] - 2023-10-03
 
 ### Added
 
-- STATIC_TEXT variable
-
-### Changed
-
-### Deprecated
-
-### Removed
+- GEOLOCATION component
+- More modifier keys for the PRESS_KEY component
+- static_text variable
+- Option to set a CSV basepath when importing templates
+- Option to disable "Enable Wi-Fi" dialog
 
 ### Fixed
 
-### Security -->
-
+- Issue with the "Disable special characters" option
+- Issue importing v3 templates
 
 ## [v4.5.1] - 2023-05-08
 
