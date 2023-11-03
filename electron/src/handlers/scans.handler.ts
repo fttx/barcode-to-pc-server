@@ -261,6 +261,7 @@ export class ScansHandler implements Handler {
                         google_sheets: null,
                         javascript_function: null,
                         static_text: null,
+                        geolocation: null,
                     };
                     // Search if there is a corresponding Output component to assign to the NULL variables
                     let keys = Object.keys(variables);

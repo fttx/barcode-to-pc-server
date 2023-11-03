@@ -51,7 +51,7 @@ export class OutputBlockModel {
      *
      * Warning: remeber to update also edit-output-block-pop-over.ts/onHelpClick() method when chaning this field.
      */
-    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'image' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce' | 'google_sheets';
+    type: 'key' | 'text' | 'variable' | 'function' | 'barcode' | 'delay' | 'if' | 'endif' | 'http' | 'run' | 'select_option' | 'image' | 'beep' | 'csv_lookup' | 'csv_update' | 'alert' | 'date_time' | 'woocommerce' | 'google_sheets' | 'geolocation';
     /**
      * When true means that the user doesn't want to type or append to files
      * the component value but instead he wants to acquire the data, and use it
@@ -206,6 +206,13 @@ export class OutputBlockModel {
     image?: string;
     imageHd?: boolean;
     outputImagePath?: string;
+
+
+    /**
+     * Parameter for the GEOLOCATION component
+     */
+    outputMode?: 'coordinates' | 'savedLocation';
+    maxDistanceFromSavedLocation?: number; // meters
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

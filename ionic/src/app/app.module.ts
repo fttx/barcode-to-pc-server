@@ -56,6 +56,7 @@ import { MyApp } from './app.component';
 import { ComponentEditorImagePage } from '../pages/component-editor/component-editor-image/component-editor-image';
 import { ImageViewerPage } from '../pages/image-viewer/image-viewer';
 import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template-popover/export-output-template-popover';
+import { ComponentEditorGeolocationPage } from '../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template
     ComponentEditorAlertPage,
     ComponentEditorBarcodePage,
     ComponentEditorBeepPage,
+    ComponentEditorGeolocationPage,
     ComponentEditorCsvLookupPage,
     ComponentEditorCsvUpdatePage,
     ComponentEditorGSheetUpdatePage,
@@ -138,6 +140,7 @@ import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template
     ComponentEditorAlertPage,
     ComponentEditorBarcodePage,
     ComponentEditorBeepPage,
+    ComponentEditorGeolocationPage,
     ComponentEditorCsvLookupPage,
     ComponentEditorCsvUpdatePage,
     ComponentEditorGSheetUpdatePage,

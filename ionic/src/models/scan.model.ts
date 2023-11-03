@@ -78,6 +78,7 @@ export class ScanModel {
                 case 'alert': return ''
                 case 'woocommerce': return block.value;
                 case 'google_sheets': return block.value;
+                case 'geolocation': return block.value;
                 default: return '';
             }
         }).join(fieldSeparator).replace(/\s+/g, ' ');

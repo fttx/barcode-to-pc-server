@@ -67,6 +67,7 @@ export class ConnectionHandler implements Handler {
                 ws.send(JSON.stringify(new responseModelUpdateSettings().fromObject({
                     outputProfiles: this.settingsHandler.outputProfiles,
                     events: this.getEnabledEvents(),
+                    savedGeoLocations: this.settingsHandler.savedGeoLocations
                 })));
             }
         });
@@ -151,7 +152,8 @@ export class ConnectionHandler implements Handler {
                      * @deprecated
                      */
                     quantityEnabled: false,
-                    serverUUID: this.settingsHandler.getServerUUID()
+                    serverUUID: this.settingsHandler.getServerUUID(),
+                    savedGeoLocations: this.settingsHandler.savedGeoLocations as { name: string, latitude: number, longitude: number }[]
                 });
 
                 if (request && request.deviceId) {

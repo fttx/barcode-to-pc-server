@@ -7,6 +7,8 @@
   <ion-item text-wrap no-lines [hidden]="!enabled" >
     <label for="_outputImagePath">{{ 'outputImagePath' | translate }}</label>
     <input id="_outputImagePath"  [(ngModel)]="outputBlock.outputImagePath" class="inline-input" type="text"  placeholder="C&#58;&#92;folder&#92;{{ curlyOpen }} barcode {{ curlyClose }}.jpg" />
+    <!-- Add Path selector -->
+    <!-- (also to csv lookup) -->
   </ion-item>
 
   <ion-item text-wrap no-lines>

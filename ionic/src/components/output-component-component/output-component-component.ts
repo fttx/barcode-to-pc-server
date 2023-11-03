@@ -21,6 +21,7 @@ import { ComponentEditorVariablePage } from '../../pages/component-editor/compon
 import { ComponentEditorWooCommercePage } from '../../pages/component-editor/component-editor-woocommerce/component-editor-woocommerce';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { ComponentEditorImagePage } from '../../pages/component-editor/component-editor-image/component-editor-image';
+import { ComponentEditorGeolocationPage } from '../../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
 
 
 @Component({
@@ -64,6 +65,7 @@ export class OutputComponentComponent {
       case 'variable': editor = ComponentEditorVariablePage; break;
       case 'woocommerce': editor = ComponentEditorWooCommercePage; break;
       case 'image': editor = ComponentEditorImagePage; break;
+      case 'geolocation': editor = ComponentEditorGeolocationPage; break;
     }
     let modal = this.modalCtrl
       .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });

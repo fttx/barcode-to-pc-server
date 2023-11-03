@@ -81,7 +81,9 @@ export class SettingsHandler implements Handler {
     get onSmartphoneChargeCommand() {
         return this.settings.onSmartphoneChargeCommand
     }
-
+    get savedGeoLocations() {
+        return this.store.get(Config.STORAGE_SAVED_GEOLOCATIONS, []);
+    }
     async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         throw new Error("Method not implemented.");
         return message;
