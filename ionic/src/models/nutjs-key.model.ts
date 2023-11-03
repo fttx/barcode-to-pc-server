@@ -129,5 +129,11 @@ export enum NutjsKey {
   AudioRewind = '123',
   AudioForward = '124',
   AudioRepeat = '125',
-  AudioRandom = '126'
+  AudioRandom = '126',
+  LeftWin = '127',
+  RightWin = '128',
+  LeftCmd = '129',
+  RightCmd = '130',
+  Menu = '131',
+  Fn = '13'
 }

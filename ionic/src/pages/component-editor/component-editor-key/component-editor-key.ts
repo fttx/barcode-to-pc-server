@@ -21,6 +21,10 @@ export class ComponentEditorKeyPage implements OnInit {
     { name: 'LeftSuper', id: NutjsKey.LeftSuper, enabled: false, },
     { name: 'RightShift', id: NutjsKey.RightShift, enabled: false, },
     { name: 'RightSuper', id: NutjsKey.RightSuper, enabled: false, },
+    { name: 'LeftWin', id: NutjsKey.LeftWin, enabled: false, },
+    { name: 'RightWin', id: NutjsKey.RightWin, enabled: false, },
+    { name: 'LeftCmd', id: NutjsKey.LeftCmd, enabled: false, },
+    { name: 'RightCmd', id: NutjsKey.RightCmd, enabled: false, },
   ];
 
   // Rembember to keep the identifiers in sync when updating the nutjs library and utils, and nutjskey.model file
@@ -144,6 +148,8 @@ export class ComponentEditorKeyPage implements OnInit {
     { name: 'AudioForward', id: NutjsKey.AudioForward, },
     { name: 'AudioRepeat', id: NutjsKey.AudioRepeat, },
     { name: 'AudioRandom', id: NutjsKey.AudioRandom },
+    { name: 'Menu', id: NutjsKey.Menu },
+    { name: 'Fn', id: NutjsKey.Fn },
   ];
 
   public keyId: string = ComponentEditorKeyPage.KEYS[0].id;
