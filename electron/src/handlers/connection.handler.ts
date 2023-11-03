@@ -67,7 +67,7 @@ export class ConnectionHandler implements Handler {
                 ws.send(JSON.stringify(new responseModelUpdateSettings().fromObject({
                     outputProfiles: this.settingsHandler.outputProfiles,
                     events: this.getEnabledEvents(),
-                    savedGeoLocations: this.settingsHandler.savedGeoLocations
+                    savedGeoLocations: this.settingsHandler.savedGeoLocations as { name: string, latitude: number, longitude: number }[]
                 })));
             }
         });
