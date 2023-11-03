@@ -88,7 +88,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'BEEP', value: 'beep', type: 'beep', beepsNumber: 1, beepSpeed: 'medium' },
       { name: 'ALERT', value: '', type: 'alert', alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
       { name: 'WOOCOMMERCE', value: 'createProduct', type: 'woocommerce', allowOOBExecution: true, fields: [], consumer_key: '', consumer_secret: '', url_woocommerce: '', skipOutput: true, label: null },
-      { name: 'GEOLOCATION', value: '', type: 'geolocation', outputMode: 'coordinates', maxDistanceFromSavedLocation: 1, skipOutput: true, label: null },
+      { name: 'GEOLOCATION', value: '', type: 'geolocation', outputMode: 'coordinates', maxDistanceFromSavedLocation: 1, skipOutput: false, label: null },
     ];
   }
 
