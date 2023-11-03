@@ -57,24 +57,26 @@ export class ComponentEditorComponent implements OnInit {
 
   public onHelpClick() {
     switch (this.outputBlock.type) {
-      case 'barcode': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'key': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'text': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
+      case 'key': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/press-key/'); break;
+      case 'date_time': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/date_time/'); break;
       case 'variable': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'function': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_JAVASCRIPT_FUNCTION); break;
-      case 'barcode': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'delay': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'if': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IF); break;
-      case 'endif': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IF); break;
-      case 'http': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_HTTP); break;
-      case 'run': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_RUN); break;
-      case 'select_option': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'beep': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'csv_lookup': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CSV_LOOKUP); break;
-      case 'csv_update': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CSV_UPDATE); break;
-      case 'alert': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
-      case 'woocommerce': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_WOOCOMMERCE); break;
-      case 'image': this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_IMAGE); break;
+      case 'barcode': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/barcode/'); break;
+      case 'image': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/image/'); break;
+      case 'text': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/text/'); break;
+      case 'delay': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/delay/'); break;
+      case 'if': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/if/'); break;
+      case 'endif': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/endif/'); break;
+      case 'function': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/javascript_function/'); break;
+      case 'select_option': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/select_option/'); break;
+      case 'http': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/http/'); break;
+      case 'run': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/run/'); break;
+      case 'csv_lookup': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/csv_lookup/'); break;
+      case 'csv_update': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/csv_update/'); break;
+      case 'google_sheets': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/google_sheets/'); break;
+      case 'beep': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/beep/'); break;
+      case 'alert': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/alert/'); break;
+      case 'woocommerce': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/woocommerce/'); break;
+      case 'geolocation': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/geolocation/'); break;
       default: this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE); break;
     }
   }
