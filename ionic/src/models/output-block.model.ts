@@ -179,6 +179,8 @@ export class OutputBlockModel {
     alertDiscardScanButton?: string;
     alertScanAgainButton?: string;
     alertOkButton?: string;
+    alertTimeout?: number;
+    alertDefaultAction?: 'ok' | 'scan_again';
 
     /**
      * Parameters for RUN and HTTP component

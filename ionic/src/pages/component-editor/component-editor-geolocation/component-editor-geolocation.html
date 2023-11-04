@@ -48,7 +48,7 @@
 
   <ion-item text-wrap [hidden]="!savedGeoLocations || !savedGeoLocations.length">
     <label for="_maxDistanceFromSavedLocation">{{ 'geoLocationMaxDistanceFromSavedLocation' | translate }}</label>
-    <input id="_maxDistanceFromSavedLocation" [(ngModel)]="outputBlock.maxDistanceFromSavedLocation" class="inline-input" type="number" placeholder="0" />
+    <input id="_maxDistanceFromSavedLocation" [(ngModel)]="outputBlock.maxDistanceFromSavedLocation" class="inline-input" type="number" placeholder="0" min="0" />
     <br>
     <p>{{ 'geoLocationMaxDistanceFromSavedLocationDescription' | translate }}</p>
   </ion-item>

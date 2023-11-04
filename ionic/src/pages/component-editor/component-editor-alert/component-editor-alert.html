@@ -35,4 +35,21 @@
       {{ 'alertLeaveBlank' | translate }}
     </p>
   </ion-item>
+
+  <ion-item no-lines text-wrap>
+    <label for="_alertTimeout">{{ 'alertTimeout' | translate }}</label>
+    <input id="_alertTimeout" [(ngModel)]="outputBlock.alertTimeout" class="inline-input" type="number" min="0" placeholder="0" />
+    <br>
+    <p >
+      {{ 'alertTimeoutDescription' | translate }}
+    </p>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>{{ 'alertDefaultAction' | translate }}</ion-label>
+    <ion-select [(ngModel)]="outputBlock.alertDefaultAction">
+      <ion-option value="scan_again">{{ 'alertScanAgain' | translate }}</ion-option>
+      <ion-option value="ok">{{ 'alertOk' | translate }}</ion-option>
+    </ion-select>
+  </ion-item>
 </component-editor>

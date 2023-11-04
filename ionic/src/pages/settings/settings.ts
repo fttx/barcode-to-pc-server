@@ -86,7 +86,7 @@ export class SettingsPage implements OnInit, OnDestroy {
       { name: 'CSV_UPDATE', value: '{{ barcode }}', allowOOBExecution: true, type: 'csv_update', skipOutput: true, label: null, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
       { name: 'GOOGLE_SHEETS', value: '{{ barcode }}', type: 'google_sheets', allowOOBExecution: true, skipOutput: false, label: null, sheetId: '', workSheetIndex: 0, searchColumnA1: 'A', columnToUpdateA1: 'B', columnToReadA1: 'B', rowToUpdate: 'first', columnsToAppend: ['{{ barcode }}'], newValue: '', notFoundValue: '', action: 'get' },
       { name: 'BEEP', value: 'beep', type: 'beep', beepsNumber: 1, beepSpeed: 'medium' },
-      { name: 'ALERT', value: '', type: 'alert', alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok' },
+      { name: 'ALERT', value: '', type: 'alert', alertTitle: 'Alert', alertDiscardScanButton: 'Discard scan', alertScanAgainButton: 'Scan again', alertOkButton: 'Ok', alertTimeout: null, alertDefaultAction: 'ok' },
       { name: 'WOOCOMMERCE', value: 'createProduct', type: 'woocommerce', allowOOBExecution: true, fields: [], consumer_key: '', consumer_secret: '', url_woocommerce: '', skipOutput: true, label: null },
       { name: 'GEOLOCATION', value: '', type: 'geolocation', outputMode: 'coordinates', maxDistanceFromSavedLocation: 1, skipOutput: false, label: null },
     ];
