@@ -3,13 +3,12 @@ import addOAuthInterceptor from 'axios-oauth-1.0a';
 import { exec, execSync } from 'child_process';
 import * as parse from 'csv-parse/lib/sync';
 import * as stringify from 'csv-stringify';
-import { clipboard, dialog, shell } from 'electron';
+import { app, clipboard, dialog, shell } from 'electron';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as http from 'http';
 import * as https from 'https';
 import * as os from 'os';
-import { keyboard, Key } from '@nut-tree/nut-js';
 import { isNumeric } from 'rxjs/util/isNumeric';
 import { lt, SemVer } from 'semver';
 import * as Supplant from 'supplant';
@@ -24,6 +23,21 @@ import { UiHandler } from './ui.handler';
 import { GSheetHandler } from './gsheet.handler';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 
+// Instead of using the classic import syntax, we dynamically load nutjs, so that
+// we can apply a fallback when the library is not supported.
+//
+// Original import: import { keyboard, Key } from '@nut-tree/nut-js';
+let keyboard, Key;
+
+try {
+  // Attempt to import the library
+  const nutjs = require('@nut-tree/nut-js');
+  keyboard = nutjs.keyboard;
+  Key = nutjs.Key;
+} catch (error) {
+    console.log('failed to load @nut-tree/nut-js', error);
+}
+
 export class ScansHandler implements Handler {
     private static instance: ScansHandler;
     private devices = {};
@@ -34,7 +48,22 @@ export class ScansHandler implements Handler {
         private uiHandler: UiHandler,
         private gsheet: GSheetHandler,
     ) {
-        keyboard.config.autoDelayMs = 0;
+        if (!keyboard) {
+            app.on('ready', async () => {
+                const result = await dialog.showMessageBox(this.uiHandler.mainWindow, {
+                    type: 'error',
+                    title: 'Platform not supported',
+                    buttons: ['Download v3.18.1'],
+                    message: 'Please downgrade the server version to v3.18.1 to use it on this computer. (Use the Versions archive link)',
+                });
+                if (result.response === 0) {
+                    await shell.openExternal('https://barcodetopc.com/download/');
+                }
+                process.exit(1);
+            });
+        } else {
+            keyboard.config.autoDelayMs = 0;
+        }
     }
 
     static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler, gsheet: GSheetHandler) {
@@ -543,6 +572,7 @@ export class ScansHandler implements Handler {
                                 request.outputBlock.columnToUpdateA1,
                                 request.outputBlock.newValue,
                                 request.outputBlock.rowToUpdate,
+                                request.outputBlock.appendIfNotFound,
                             );
                         } else if (request.outputBlock.action === 'append') {
                             result = await this.gsheet.append(
