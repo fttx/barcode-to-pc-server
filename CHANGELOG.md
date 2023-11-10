@@ -16,6 +16,23 @@
 ### Security
 -->
 
+
+## [v4.6.1] - 2023-10-10
+
+### Added
+
+- Timeout option for the ALERT component
+- Intent Action for PDA devices
+
+### Changed
+
+- Minor UX improvements
+
+### Fixed
+
+- Adjent duplicate barcode detection issue
+
+
 ## [v4.6.0] - 2023-10-03
 
 ### Added
