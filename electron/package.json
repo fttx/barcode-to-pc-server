@@ -101,7 +101,8 @@
       }
     },
     "win": {
-      "certificateSha1": "EDEB0B36E791F01F813F36B92EA335C860AC3838",
+      "certificateSha1": "05D962401654A814740A5DA9709E65FEBB7B59EF",
+      "timeStampServer": "http://timestamp.digicert.com/",
       "target": [
         {
           "target": "nsis-web",
