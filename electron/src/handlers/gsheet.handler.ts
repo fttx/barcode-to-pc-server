@@ -60,7 +60,7 @@ export class GSheetHandler implements Handler {
         return null;
     }
 
-    async update(sheetId: string, workSheetIndex: number, searchColumnA1: string, searchValue: string, columnToUpdateA1: string, newValue: string, matchCriteria: 'all' | 'first' | 'last' = 'first'): Promise<string> {
+    async update(sheetId: string, workSheetIndex: number, searchColumnA1: string, searchValue: string, columnToUpdateA1: string, newValue: string, matchCriteria: 'all' | 'first' | 'last' = 'first', appendIfNotFound: boolean): Promise<string> {
         const workSheet = await this.getWorkSheet(sheetId, workSheetIndex);
         const rows = await workSheet.getRows();
         const lookupColumnIndex = searchColumnA1.toUpperCase().charCodeAt(0) - 65;
@@ -139,6 +139,8 @@ export class GSheetHandler implements Handler {
 
             // Generate the url that will be used for the consent dialog and put the scope as sheets
             // The refres_token is retreived only the first time the app is approved. To force it use `prompt: 'consent'`
+            // If the user has approved the app on multiple computer, the second computer won't receive the refres_token (I guess).
+            // So, force the promp here:
             const authorizeUrl = oAuth2Client.generateAuthUrl({ access_type: 'offline', scope: GSheetHandler.scopes, });
 
             // Open an http server to accept the oauth callback. In this simple example, the
