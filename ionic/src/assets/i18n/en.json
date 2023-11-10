@@ -417,7 +417,7 @@
   "geoLocationDescription": "Collect GPS coordinates (latitude and longitude). Use &quot;Saved locations&quot; to output a custom location name instead. To get accurate location information, that is reffering at moment of the the barcode acquisition, make sure to put the GEOLOCATION component after blocking components such as BARCODE.",
   "geoLocationAssignNames": "Assign names to coordinates so that when scanning barcodes near that location its name will be outputed instead of coordinates.",
   "geoLocationCoordinatesTutorial": "How to find coordinates?",
-  "geoLocationNotfound":" No Saved locations found'",
+  "geoLocationNotfound":" No Saved locations found",
   "geoLocationAddLocation": "Add location",
   "geoLocationMaxDistanceFromSavedLocation": "Max distance from saved location",
   "geoLocationMaxDistanceFromSavedLocationDescription": "The maximum distance in kilometers from the saved location to output its name instead of coordinates",
