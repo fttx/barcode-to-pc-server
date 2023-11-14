@@ -16,6 +16,13 @@
 ### Security
 -->
 
+## [v4.6.2] - 2023-10-14
+
+### Changed
+
+- Minor UX Improvements
+- Improve support for PDA devices
+
 
 ## [v4.6.1] - 2023-10-10
 
