@@ -48,22 +48,24 @@ export class ScansHandler implements Handler {
         private uiHandler: UiHandler,
         private gsheet: GSheetHandler,
     ) {
-        if (!keyboard) {
-            app.on('ready', async () => {
-                const result = await dialog.showMessageBox(this.uiHandler.mainWindow, {
-                    type: 'error',
-                    title: 'Platform not supported',
-                    buttons: ['Download v3.18.1'],
-                    message: 'Please downgrade the server version to v3.18.1 to use it on this computer. (Use the Versions archive link)',
+        setTimeout(() => {
+            if (!keyboard) {
+                app.on('ready', async () => {
+                    const result = await dialog.showMessageBox(this.uiHandler.mainWindow, {
+                        type: 'error',
+                        title: 'Platform not supported',
+                        buttons: ['Download v3.18.1'],
+                        message: 'Please downgrade the server version to v3.18.1 to use it on this computer. (Use the "Versions archive" button)',
+                    });
+                    if (result.response === 0) {
+                        await shell.openExternal('https://barcodetopc.com/download/');
+                    }
+                    process.exit(1);
                 });
-                if (result.response === 0) {
-                    await shell.openExternal('https://barcodetopc.com/download/');
-                }
-                process.exit(1);
-            });
-        } else {
-            keyboard.config.autoDelayMs = 0;
-        }
+            } else {
+                keyboard.config.autoDelayMs = 0;
+            }
+        }, 60000);
     }
 
     static getInstance(settingsHandler: SettingsHandler, uiHandler: UiHandler, gsheet: GSheetHandler) {
