@@ -233,6 +233,14 @@ export class MyApp {
 
     this.translate.use(this.translate.getBrowserLang());
 
+    // Detect first time the window is hidden
+    this.electronProvider.ipcRenderer.on('window-hide', () => {
+      const hasEverHidden = localStorage.getItem('hasEverHidden');
+      localStorage.setItem('hasEverHidden', 'true');
+      if (!hasEverHidden) {
+        this.electronProvider.ipcRenderer.send('onFirstHide');
+      }
+    });
     utils.upgradeIonicStoreToElectronStore();
   }
 

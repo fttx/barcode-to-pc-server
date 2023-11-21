@@ -1,4 +1,4 @@
-import { app, BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItemConstructorOptions, nativeImage, nativeTheme, systemPreferences, Tray, protocol } from 'electron';
+import { app, BrowserWindow, BrowserWindowConstructorOptions, Menu, MenuItemConstructorOptions, nativeImage, nativeTheme, systemPreferences, Tray, protocol, dialog, ipcMain } from 'electron';
 import * as http from 'http';
 import * as _path from 'path';
 import * as WebSocket from 'ws';
@@ -109,6 +109,16 @@ export class UiHandler implements Handler {
                 credits: Config.AUTHOR,
             });
         }
+
+        ipcMain.on("onFirstHide", (e, a) => {
+            // Warn the user that the window is hidden and is accessible from the tray icon
+            dialog.showMessageBox(null, {
+                message: 'Window hidden',
+                detail: app.getName() + " has been hidden and will continue running in background. You can open the main window from the tray icon.",
+                type: 'info',
+                buttons: ["I understand"],
+            });
+        });
     }
 
     // Waits for the settings to be read and the 'ready' event to be sent
@@ -377,5 +387,8 @@ export class UiHandler implements Handler {
 
     setIpcClient(ipcClient) {
         this.ipcClient = ipcClient;
+        this.mainWindow.on('hide', () => {
+            this.ipcClient.send('window-hide');
+        });
     }
 }
