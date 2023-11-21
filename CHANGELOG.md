@@ -19,9 +19,14 @@
 
 ## [v4.6.3] - 2023-11-20
 
+### Added
+
+- Minimization instructions
+
 ### Fixed
 
 - Keyboard input issue
+- False positive "Unsupported platform" error
 
 ## [v4.6.2] - 2023-10-14
 
