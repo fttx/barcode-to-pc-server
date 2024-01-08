@@ -84,6 +84,9 @@ export class SettingsHandler implements Handler {
     get savedGeoLocations() {
         return this.store.get(Config.STORAGE_SAVED_GEOLOCATIONS, []);
     }
+    get autoDelayMs() {
+        return this.settings.autoDelayMs;
+    }
     async onWsMessage(ws: WebSocket, message: any, req: http.IncomingMessage): Promise<any> {
         throw new Error("Method not implemented.");
         return message;

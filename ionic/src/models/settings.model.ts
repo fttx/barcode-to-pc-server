@@ -46,4 +46,5 @@ export class SettingsModel {
   onSmartphoneChargeCommand: string = '';
   maxScanSessionsNumber: number = 2000; // Update also SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED
   savedGeoLocations:{ name: string, latitude: number, longitude: number }[] = [];
+  autoDelayMs: number = 0;
 }

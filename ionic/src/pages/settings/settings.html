@@ -78,7 +78,33 @@
             <ion-col>
               <select [(ngModel)]="settings && settings.typeMethod">
                 <option value="keyboard" selected="selected">{{ 'keyboard' | translate }}</option>
-                <option value="clipboard">{{ 'clipboard' | translate }}</option>
+                <option value="clipboard">{{ 'clipboardCopyPaste' | translate }}</option>
+                <option value="clipboardCopy">{{ 'clipboardCopy' | translate }}</option>
+              </select>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+
+      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+        <ion-grid no-padding>
+          <ion-row>
+            <ion-col col-sm-2>
+              {{ 'keyboardDelay' | translate }}&nbsp;
+            </ion-col>
+            <ion-col>
+              <select [(ngModel)]="settings && settings.autoDelayMs">
+                <option value="0">Instant</option>
+                <option value="100">100 ms</option>
+                <option value="200">200 ms</option>
+                <option value="300">300 ms</option>
+                <option value="400">400 ms</option>
+                <option value="500">500 ms</option>
+                <option value="600">600 ms</option>
+                <option value="700">700 ms</option>
+                <option value="800">800 ms</option>
+                <option value="900">900 ms</option>
+                <option value="1000">1000 ms</option>
               </select>
             </ion-col>
           </ion-row>
@@ -114,7 +140,7 @@
       <ion-item no-lines text-wrap>
         <div class="output-template-title">
           <span>{{ 'outputTemplate' | translate }}</span>
-          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/how-it-works/')"  class="help-button">
+          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/how-it-works/')" class="help-button">
             ?
           </button>
         </div>

@@ -492,6 +492,13 @@ export class MyApp {
           })
         }
 
+        // v4.7.0
+        if (!settings.autoDelayMs) {
+          if (settings.autoDelayMs !== 0) {
+            settings.autoDelayMs = 0;
+          }
+        }
+
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
         }

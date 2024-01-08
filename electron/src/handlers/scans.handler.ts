@@ -30,10 +30,10 @@ import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
 let keyboard, Key;
 
 try {
-  // Attempt to import the library
-  const nutjs = require('@nut-tree/nut-js');
-  keyboard = nutjs.keyboard;
-  Key = nutjs.Key;
+    // Attempt to import the library
+    const nutjs = require('@nut-tree/nut-js');
+    keyboard = nutjs.keyboard;
+    Key = nutjs.Key;
 } catch (error) {
     console.log('failed to load @nut-tree/nut-js', error);
 }
@@ -62,8 +62,6 @@ export class ScansHandler implements Handler {
                     }
                     process.exit(1);
                 });
-            } else {
-                keyboard.config.autoDelayMs = 0;
             }
         }, 60000);
     }
@@ -685,8 +683,9 @@ export class ScansHandler implements Handler {
         }
 
         if (this.settingsHandler.typeMethod == 'keyboard') {
+            keyboard.config.autoDelayMs = this.settingsHandler.autoDelayMs;
             await keyboard.type(string);
-        } else {
+        } else if (this.settingsHandler.typeMethod == 'clipboard') {
             clipboard.writeText(string);
             if (process.platform === "darwin") {
                 await keyboard.pressKey(Key.LeftSuper, Key.V);
@@ -695,6 +694,8 @@ export class ScansHandler implements Handler {
                 await keyboard.pressKey(Key.LeftControl, Key.V);
                 await keyboard.releaseKey(Key.LeftControl, Key.V);
             }
+        } else if (this.settingsHandler.typeMethod == 'clipboardCopy') {
+            clipboard.writeText(string);
         }
     }
 
