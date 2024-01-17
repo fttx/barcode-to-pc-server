@@ -65,7 +65,7 @@
     "istanbul-instrumenter-loader": "^3.0.1",
     "jasmine": "^3.1.0",
     "jasmine-spec-reporter": "^4.2.1",
-    "karma": "^2.0.2",
+    "karma": "^6.4.1",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage-istanbul-reporter": "^2.0.0",
     "karma-jasmine": "^1.1.2",
@@ -74,7 +74,7 @@
     "karma-webpack": "^3.0.0",
     "node-sass": "^5.0.0",
     "null-loader": "^0.1.1",
-    "protractor": "^5.3.2",
+    "protractor": "^5.4.4",
     "ts-loader": "^3.5.0",
     "typescript": "~2.6.2"
   },
