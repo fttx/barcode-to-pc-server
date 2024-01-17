@@ -138,7 +138,7 @@
     "@types/google-spreadsheet": "^3.3.0",
     "@types/gulp": "^4.0.9",
     "@woocommerce/woocommerce-rest-api": "^1.0.1",
-    "axios": "^0.26.1",
+    "axios": "^1.6.0",
     "axios-oauth-1.0a": "^0.3.4",
     "bonjour": "^3.5.0",
     "csv-parse": "^4.10.1",
