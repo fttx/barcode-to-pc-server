@@ -16,6 +16,15 @@
 ### Security
 -->
 
+## [v4.6.4] - 2024-03-02
+
+### Added
+
+- Privacy Policy links
+
+### Changed
+
+- Minor UI improvements
 
 ## [v4.6.3] - 2023-11-20
 
@@ -35,7 +44,6 @@
 - Minor UX Improvements
 - Improve support for PDA devices
 
-
 ## [v4.6.1] - 2023-10-10
 
 ### Added
@@ -50,7 +58,6 @@
 ### Fixed
 
 - Adjent duplicate barcode detection issue
-
 
 ## [v4.6.0] - 2023-10-03
 
@@ -74,7 +81,6 @@
 - Minor UX improvements on Windows
 - Improve compatibility with newer mobile devices
 
-
 ## [v4.5.0] - 2023-05-08
 
 ### Added
@@ -96,7 +102,6 @@
 - DATE_TIME locale value not being applied
 - iOS 13 crash issue
 - Fix crash on non-iOS devices
-
 
 ## [v4.4.3] - 2023-04-11
 
@@ -127,13 +132,11 @@
 - Improved acquisition screen
 - Support for GS1 characters
 
-
 ## [v4.3.2] - 2022-11-24
 
 ### Fixed
 
 - Variables injection in GOOGLE_SHEETS component
-
 
 ## [v4.3.1] - 2022-11-05
 
@@ -161,7 +164,6 @@
 ### Fixed
 
 - Minor UI issues
-
 
 ## [v4.2.0] - 2022-08-23
 
@@ -275,7 +277,6 @@
 
 - CSV_UPDATE empty output issue
 
-
 ## [v3.15.0] - 2021-05-25
 
 ### Added
@@ -307,13 +308,11 @@
 - DELAY component
 - Sync button issue
 
-
 ## [v3.13.2] - 2021-03-07
 
 ### Fixed
 
 - QR Code pairing issue
-
 
 ## [v3.13.1] - 2020-12-06
 
@@ -328,7 +327,6 @@
 ### Fixed
 
 - macOS Big Sur menu icon dark mode color
-
 
 ## [v3.13.0] - 2020-09-23
 
@@ -369,7 +367,6 @@
 
 - "enableTray" error
 - "image not found" error
-
 
 ## [v3.11.1] - 2020-07-06
 
