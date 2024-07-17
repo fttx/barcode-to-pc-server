@@ -72,7 +72,7 @@
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <ion-grid no-padding>
           <ion-row>
-            <ion-col col-sm-2>
+            <ion-col col-sm-2 class="btp-settings-select-label">
               {{ 'typeMethod' | translate }}&nbsp;
             </ion-col>
             <ion-col>
@@ -89,7 +89,7 @@
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <ion-grid no-padding>
           <ion-row>
-            <ion-col col-sm-2>
+            <ion-col col-sm-2 class="btp-settings-select-label">
               {{ 'keyboardDelay' | translate }}&nbsp;
             </ion-col>
             <ion-col>
@@ -185,6 +185,82 @@
         </div>
       </ion-item>
 
+
+      <ion-item-divider>
+        {{ 'excelSettingsDivider' | translate }}
+      </ion-item-divider>
+
+      <ion-item no-lines>
+        <ion-label>{{ 'outputToAExcelFile' | translate }}
+          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('xxxxxxxxxxxxxxxxxxxxxx')" class="help-button" style="margin-left: 4px">
+            ?
+          </button>
+        </ion-label>
+        <ion-checkbox [(ngModel)]="settings && settings.outputToExcelEnabled" (click)="onCSVClick()"></ion-checkbox><br><br>
+      </ion-item>
+
+
+      <div [hidden]="!settings || !settings.outputToExcelEnabled" class="excel-option">
+
+
+        <ion-item no-lines [hidden]="!settings || !settings.outputToExcelEnabled" class="csv-select-path-form" style="margin: 8px 0 -8px -9px;">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <input [(ngModel)]="settings && settings.xlsxPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" />
+              </ion-col>
+              <ion-col>
+                <button ion-button small color="light" (click)="onSelectCSVPathClick()">{{ 'select' | translate }}</button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+
+        <ion-item no-lines>
+          <ion-label>
+            {{ 'mapComponentsToColumns' | translate }}
+            <button ion-button small color="light" (click)="electronProvider.shell.openExternal('xxxxxxxxxxxxxxxxxxxxxx')" class="help-button">
+              ?
+            </button>
+          </ion-label>
+          <ion-checkbox [(ngModel)]="settings && settings.mapExcelHeadersToComponents" [disabled]="settings && settings.outputToExcelMode == 'update'"></ion-checkbox><br><br>
+        </ion-item>
+
+        <ion-item no-lines>
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col col-sm-2 class="btp-settings-select-label">
+                {{ 'outputToExcelMode' | translate }}&nbsp;
+              </ion-col>
+              <ion-col>
+                <select [(ngModel)]="settings && settings.outputToExcelMode" (change)="onOutputToExcelModeChange()">
+                  <option value="add" selected="selected">{{ 'addNewrows' | translate }}</option>
+                  <option value="update">{{ 'updateValues' | translate }}</option>
+                </select>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+
+        <ion-item no-lines [hidden]="settings && settings.outputToExcelMode == 'add'">
+          <ion-grid no-padding>
+            <ion-row>
+              <ion-col col-sm-2 class="btp-settings-select-label">
+                {{ 'outputToExcelHeaderKey' | translate }}&nbsp;
+              </ion-col>
+              <ion-col>
+                <input [(ngModel)]="settings && settings.updateHeaderKey" type="text" [placeholder]="'barcode' | translate" />
+
+                <button ion-button small color="light" (click)="electronProvider.shell.openExternal('xxxxxxxxxxxxxxxxxxxxxx')" class="help-button" style="margin-top: -2px; margin-left: 4px">
+                  ?
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+      </div>
+
+
       <ion-item-divider>
         {{ 'csvSettingsDivider' | translate }}
       </ion-item-divider>
@@ -253,7 +329,7 @@
       <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
         <ion-grid no-padding>
           <ion-row>
-            <ion-col col-md-2>
+            <ion-col col-md-2 class="btp-settings-select-label">
               {{ 'newLineCharacter' | translate}}
             </ion-col>
             <ion-col col-md-10>

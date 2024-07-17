@@ -379,7 +379,7 @@ export class SettingsPage implements OnInit, OnDestroy {
         buttons: [
           {
             text: await this.utils.text('unsavedSettingsDialogCancelButton'),
-            handler: () => {   }
+            handler: () => { }
           }, {
             text: await this.utils.text('unsavedSettingsDialogDiscardButton'),
             handler: () => {
@@ -470,5 +470,11 @@ export class SettingsPage implements OnInit, OnDestroy {
   getMaxScanSessionNumber() { return SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED };
   onMaxScanSessionNumberChange(e) {
     this.checkSettingsChanged();
+  }
+
+  onOutputToExcelModeChange() {
+    if (this.settings.outputToExcelMode == 'update') {
+      this.settings.mapExcelHeadersToComponents = true;
+    }
   }
 }

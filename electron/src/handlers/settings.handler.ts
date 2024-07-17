@@ -69,8 +69,23 @@ export class SettingsHandler implements Handler {
     get csvPath(): string {
         return this.settings.csvPath
     }
+    get xlsxPath(): string {
+        return this.settings.xlsxPath
+    }
     get appendCSVEnabled(): boolean {
         return this.settings.appendCSVEnabled
+    }
+    get outputToExcelEnabled(): boolean {
+        return this.settings.outputToExcelEnabled
+    }
+    get mapExcelHeadersToComponents(): boolean {
+        return this.settings.mapExcelHeadersToComponents
+    }
+    get outputToExcelMode(): 'update' | 'add' {
+        return this.settings.outputToExcelMode;
+    }
+    get updateHeaderKey(): string {
+        return this.settings.updateHeaderKey;
     }
     get typeMethod() {
         return this.settings.typeMethod

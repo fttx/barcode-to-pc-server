@@ -159,7 +159,8 @@
     "supplant": "^0.2.0",
     "systemjs": "^0.21.0",
     "uuid": "^8.3.0",
-    "ws": "^4.1.0"
+    "ws": "^4.1.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "electron": "^14.2.7",

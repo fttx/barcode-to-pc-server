@@ -39,12 +39,17 @@ export class SettingsModel {
   enableTray: boolean = true;
   openAutomatically: ('yes' | 'no' | 'minimized') = 'yes';
   appendCSVEnabled: boolean = false;
+  outputToExcelEnabled: boolean = false;
+  mapExcelHeadersToComponents: boolean = false;
   csvPath: string = null;
+  xlsxPath: string = null;
+  outputToExcelMode: 'update' | 'add' = 'add';
+  updateHeaderKey: string = '';
   typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
   enableAdvancedSettings: boolean = false;
   autoUpdate: boolean = true;
   onSmartphoneChargeCommand: string = '';
   maxScanSessionsNumber: number = 2000; // Update also SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED
-  savedGeoLocations:{ name: string, latitude: number, longitude: number }[] = [];
+  savedGeoLocations: { name: string, latitude: number, longitude: number }[] = [];
   autoDelayMs: number = 0;
 }

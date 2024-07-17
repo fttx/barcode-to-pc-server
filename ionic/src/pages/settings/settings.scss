@@ -36,6 +36,10 @@ page-settings {
         margin-top: 0;
     }
 
+    .excel-option {
+      margin-left: 6px;
+    }
+
     .csv-delimiter {
         margin-top: 4px;
         padding-left: 5px;
@@ -120,5 +124,13 @@ page-settings {
     .slider-max-scans {
         margin: -17px 0 0 0;
         padding-bottom: 28px;
+    }
+
+    .btp-settings-select-label {
+        margin-top: 3px;
+    }
+
+    .checkbox-md {
+      margin-right: 18px !important;
     }
 }

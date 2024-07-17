@@ -22,6 +22,9 @@ import { SettingsHandler } from './settings.handler';
 import { UiHandler } from './ui.handler';
 import { GSheetHandler } from './gsheet.handler';
 import WooCommerceRestApi from '@woocommerce/woocommerce-rest-api';
+import * as XLSX from 'xlsx';
+XLSX.set_fs(fs);
+
 
 // Instead of using the classic import syntax, we dynamically load nutjs, so that
 // we can apply a fallback when the library is not supported.
@@ -247,72 +250,144 @@ export class ScansHandler implements Handler {
                     } // end switch(outputBlock.type)
                 } // end for
 
-                // Append to csv
-                if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
+                // Append to CSV/Excel
 
-                    // Inject variables to the file path
-                    let variables = {
-                        barcodes: [],
-                        barcode: null, // ''
-                        number: null,
-                        text: null,
-                        /**
-                         * We use the date of the Scan Session because it may be
-                         * get synced later, and this may cause even days of
-                         * difference => We use the most close date we've have
-                         * compared to the actual scan date.
-                         *
-                         * We're not using the date from the Output template
-                         * because there isn't a way to tell if a block
-                         * contains a date since the TIMESTAMP component is of
-                         * variable type. Solution => create a separate type
-                         *
-                         * Note that in the Output Template is handled
-                         * differently (app side) by using the actual scan date
-                         * instead.
-                        */
-                        timestamp: (scanSession.date * 1000),
-                        // We assign a default value to date for backwards compatibility
-                        // If the output template is created with a v3.17.0+ version
-                        // the value of the date variable will be overwritten below.
-                        date: new Date(scanSession.date).toISOString().slice(0, 10),
-                        // The time variable is @deprecated. We keep it for backwards compatibility
-                        time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
-                        date_time: null,
-                        scan_session_name: scanSession.name,
-                        device_name: null,
-                        select_option: null,
-                        run: null,
-                        http: null,
-                        woocommerce: null,
-                        csv_lookup: null,
-                        csv_update: null,
-                        google_sheets: null,
-                        javascript_function: null,
-                        static_text: null,
-                        geolocation: null,
-                    };
-                    // Search if there is a corresponding Output component to assign to the NULL variables
-                    let keys = Object.keys(variables);
-                    for (let i = 0; i < keys.length; i++) {
-                        let key = keys[i];
-                        if (variables[key] === null) { // Skips barcodes, timestamp, date, etc.
-                            // Extract the variable value from the Output template
-                            let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
-                            let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
-                            if (typeof (outputBlock) != "undefined") {
-                                value = outputBlock.value;
+                // Compute the variables for the file path
+                let variables = {
+                    barcodes: [],
+                    barcode: null, // ''
+                    number: null,
+                    text: null,
+                    /**
+                     * We use the date of the Scan Session because it may be
+                     * get synced later, and this may cause even days of
+                     * difference => We use the most close date we've have
+                     * compared to the actual scan date.
+                     *
+                     * We're not using the date from the Output template
+                     * because there isn't a way to tell if a block
+                     * contains a date since the TIMESTAMP component is of
+                     * variable type. Solution => create a separate type
+                     *
+                     * Note that in the Output Template is handled
+                     * differently (app side) by using the actual scan date
+                     * instead.
+                    */
+                    timestamp: (scanSession.date * 1000),
+                    // We assign a default value to date for backwards compatibility
+                    // If the output template is created with a v3.17.0+ version
+                    // the value of the date variable will be overwritten below.
+                    date: new Date(scanSession.date).toISOString().slice(0, 10),
+                    // The time variable is @deprecated. We keep it for backwards compatibility
+                    time: new Date(scanSession.date).toLocaleTimeString().replace(/:/g, '-'),
+                    date_time: null,
+                    scan_session_name: scanSession.name,
+                    device_name: null,
+                    select_option: null,
+                    run: null,
+                    http: null,
+                    woocommerce: null,
+                    csv_lookup: null,
+                    csv_update: null,
+                    google_sheets: null,
+                    javascript_function: null,
+                    static_text: null,
+                    geolocation: null,
+                };
+                // Search if there is a corresponding Output component to assign to the NULL variables
+                let keys = Object.keys(variables);
+                for (let i = 0; i < keys.length; i++) {
+                    let key = keys[i];
+                    if (variables[key] === null) { // Skips barcodes, timestamp, date, etc.
+                        // Extract the variable value from the Output template
+                        let value = 'Add a ' + key.toUpperCase() + ' component to the Output template';
+                        let outputBlock = scanSession.scannings[0].outputBlocks.find(x => x.name.toLowerCase() == key);
+                        if (typeof (outputBlock) != "undefined") {
+                            value = outputBlock.value;
+                        }
+                        variables[key] = value;
+                    } else if (key == 'barcodes') {
+                        let barcodes = scanSession.scannings[0].outputBlocks.filter(x => x.name.toLowerCase() == 'barcode').map(x => x.value);
+                        variables.barcodes = barcodes;
+                    }
+                }
+
+                const newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
+
+                if (this.settingsHandler.outputToExcelEnabled && this.settingsHandler.xlsxPath) {
+                    // Inject the variables to the file path
+                    const path = new Supplant().text(this.settingsHandler.xlsxPath, variables)
+                    const workbook = XLSX.readFile(path);
+                    const sheetName = workbook.SheetNames[0];
+                    const worksheet = workbook.Sheets[sheetName];
+                    let jsonExistingData: any = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                    const existingDataHeaders = jsonExistingData[0];
+
+                    const csvDataWithHeaders = ScanModel.ToCSV(
+                        scanSession.scannings, // Warning: contains only the last scan
+                        this.settingsHandler.exportOnlyText,
+                        this.settingsHandler.enableQuotes,
+                        this.settingsHandler.csvDelimiter,
+                        newLineCharacter,
+                        this.settingsHandler.mapExcelHeadersToComponents,
+                    );
+
+                    // Append a new line to the existing data
+                    let jsonNewRow;
+                    let headers2ComponentsIndexMap = {};
+                    if (this.settingsHandler.mapExcelHeadersToComponents) {
+                        // Match the headers with the existing data
+                        const newDataHeaders = csvDataWithHeaders.split(newLineCharacter)[0].split(this.settingsHandler.csvDelimiter);
+                        const newData = csvDataWithHeaders.split(newLineCharacter)[1].split(this.settingsHandler.csvDelimiter);
+                        console.log('New data headers:', newDataHeaders);
+                        console.log('New data:', newData);
+
+                        // Create an empty array that has the same length as the existingDataHeaders
+                        jsonNewRow = new Array(existingDataHeaders.length).fill(null);
+                        for (let i = 0; i < newDataHeaders.length; i++) {
+                            // try to put the newDataCSV into the same order of the existing header that we have in existingDataHeaders
+                            const index = existingDataHeaders.indexOf(newDataHeaders[i]);
+                            if (index != -1) {
+                                jsonNewRow[index] = newData[i];
+                                headers2ComponentsIndexMap[index] = i;
+                                console.log(`Mapped component ${newDataHeaders[i]} to Excel header ${existingDataHeaders[index]} (${i} -> ${index})`);
+                            } else {
+                                console.log(`Cannot map component ${newDataHeaders[i]} (index: ${i}) to any of the Excel header items ${existingDataHeaders}`);
                             }
-                            variables[key] = value;
-                        } else if (key == 'barcodes') {
-                            let barcodes = scanSession.scannings[0].outputBlocks.filter(x => x.name.toLowerCase() == 'barcode').map(x => x.value);
-                            variables.barcodes = barcodes;
+                        }
+                    } else {
+                        // Simple append
+                        jsonNewRow = csvDataWithHeaders.split(newLineCharacter)[0].split(this.settingsHandler.csvDelimiter);
+                    }
+
+                    if (this.settingsHandler.outputToExcelMode == 'add') {
+                        jsonExistingData.push(jsonNewRow.map(x => x || '')); // Fill the empty cells with empty strings
+                    } else if (this.settingsHandler.outputToExcelMode == 'update') {
+                        // Find the column Header that matches the component Label
+                        const hederIndex = existingDataHeaders.indexOf(this.settingsHandler.updateHeaderKey);
+
+                        const componentsLabels = csvDataWithHeaders.split(newLineCharacter)[0].split(this.settingsHandler.csvDelimiter);
+                        const keyComponentIndex = componentsLabels.indexOf(this.settingsHandler.updateHeaderKey);
+
+                        let success = false;
+                        if (hederIndex != -1 && keyComponentIndex != -1) {
+                            // Find the first match
+                            success = ScansHandler.updateFirstMatch(jsonExistingData, jsonNewRow, headers2ComponentsIndexMap, hederIndex, keyComponentIndex);
+                        }
+                        if (!success) {
+                            // Fallback to 'add'
+                            jsonExistingData.push(jsonNewRow);
                         }
                     }
-                    // Finally supplant the variables to the file path
-                    let path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
-                    let newLineCharacter = this.settingsHandler.newLineCharacter.replace('CR', '\r').replace('LF', '\n');
+                    const newWorksheet = XLSX.utils.aoa_to_sheet(jsonExistingData);
+                    workbook.Sheets[sheetName] = newWorksheet;
+                    XLSX.writeFile(workbook, path);
+                }
+
+                if (this.settingsHandler.appendCSVEnabled && this.settingsHandler.csvPath) {
+                    // Inject the variables to the file path
+                    const path = new Supplant().text(this.settingsHandler.csvPath, variables)
 
                     // Generate header when needed
                     let header = null;
@@ -370,7 +445,7 @@ export class ScansHandler implements Handler {
                             buttons: ['OK'],
                             message: "An error occurred while appending the scan to the specified CSV file. Please make sure that:\n\n\t1) the file is not open in other programs\n\t2) the server has the write permissions to the specified path\n\t3) the file name doesn't contain special characters"
                         });
-                        console.log('CSV Write error:', error);
+                        console.log('Excel/CSV Write error:', error);
                     }
                 }
 
@@ -728,5 +803,25 @@ export class ScansHandler implements Handler {
                 return l;
         }
         return -1;
+    }
+
+
+    public static updateFirstMatch(jsonExistingData, jsonNewRow, headers2ComponentsIndexMap, hederIndex, keyComponentIndex) {
+        console.log(jsonExistingData, jsonNewRow, headers2ComponentsIndexMap, hederIndex, keyComponentIndex)
+        for (let i = 1; i < jsonExistingData.length; i++) {
+            const row = jsonExistingData[i];
+            if (row[hederIndex] == jsonNewRow[keyComponentIndex]) {
+                console.log(`Found match in row ${i}, overriding the matching columns now...`)
+                console.log('Row= ', row);
+                console.log('NewRow= ', jsonNewRow);
+                for (let colIndex = 0; colIndex < jsonNewRow.length; colIndex++) {
+                    if (colIndex == keyComponentIndex) continue;
+                    const newCellValue = jsonNewRow[colIndex];
+                    if (newCellValue !== null) row[colIndex] = newCellValue;
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }
