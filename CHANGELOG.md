@@ -16,6 +16,27 @@
 ### Security
 -->
 
+## [v4.5.6] - 2024-07-09
+
+### Added
+
+- "Keyboard delay" option
+- "Clipboard (copy only)" option
+
+### Fixed
+
+- Issue causing duplicates in CSV files
+
+## [v4.6.5] - 2024-03-15
+
+### Added
+
+- Expose server variables to the Output components
+
+### Changed
+
+- Privacy Policy links
+
 ## [v4.6.4] - 2024-03-02
 
 ### Added
@@ -673,6 +694,9 @@
 
 - Included the Apple Bonjour installer
 
+[v4.6.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.5...v4.6.6
+[v4.6.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.4...v4.6.5
+[v4.6.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.3...v4.6.4
 [v4.6.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.2...v4.6.3
 [v4.6.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.1...v4.6.2
 [v4.6.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.0...v4.6.1
