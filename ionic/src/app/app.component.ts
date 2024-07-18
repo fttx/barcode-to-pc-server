@@ -498,6 +498,9 @@ export class MyApp {
             settings.autoDelayMs = 0;
           }
         }
+        if (!settings.outputToExcelMode) {
+          settings.outputToExcelMode = 'add';
+        }
 
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
