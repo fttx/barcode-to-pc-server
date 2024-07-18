@@ -24,7 +24,12 @@
     </ion-item>
 
     <div [hidden]="licenseProvider.isSubscribed()">
-      <ion-item no-lines text-wrap no-padding>
+      <ion-item no-lines text-wrap no-padding hidden>
+        <b>{{ 'E-mail' | translate }}</b>
+        <input [(ngModel)]="email" type="text" class="serial-container" />
+      </ion-item>
+
+      <ion-item no-lines text-wrap no-padding class="serial-item">
         <b>{{ 'serial' | translate }}</b>
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
@@ -36,7 +41,12 @@
     </div>
 
     <div [hidden]="!licenseProvider.isSubscribed()">
-      <ion-item no-lines text-wrap no-padding>
+      <ion-item no-lines text-wrap no-padding hidden>
+        <b>{{ 'E-mail' | translate }}</b>
+        <input [(ngModel)]="email" type="text" class="serial-container" />
+      </ion-item>
+
+      <ion-item no-lines text-wrap no-padding class="serial-item">
         <b>{{ 'serial' | translate }}</b>
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
       </ion-item>
