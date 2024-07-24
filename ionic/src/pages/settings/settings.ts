@@ -420,6 +420,28 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
+  async onSelectExcelPathClick() {
+    let defaultPath = this.settings.csvPath;
+    if (!defaultPath) {
+      defaultPath = this.electronProvider.appGetPath('desktop')
+    }
+
+    let filePaths = this.electronProvider.showOpenDialogSync({
+      title: await this.utils.text('selectExcelPathDialog'),
+      buttonLabel: await this.utils.text('selectCSVSelectButton'),
+      defaultPath: defaultPath,
+      filters: [
+        { name: await this.utils.text('selectExcelFilterText'), extensions: ['xls', 'xlsx', 'xlsm', 'xlsb', 'xlt', 'xltx', 'xltm', 'csv'] },
+        { name: await this.utils.text('selectCSVFilterAll'), extensions: ['*'] }
+      ],
+      properties: ['openFile', 'createDirectory', 'promptToCreate',]
+    });
+
+    if (filePaths && filePaths.length) {
+      this.settings.xlsxPath = filePaths[0];
+    }
+  }
+
   // Handle changes dection through 'mouseup' and 'keyup' DOM events
   // This way it's more efficient compared to the angular way.
   private domEvents: Subscription;
