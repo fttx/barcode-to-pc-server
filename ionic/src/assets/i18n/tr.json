@@ -256,6 +256,8 @@
   "selectCSVSelectButton": "Seç",
   "selectCSVFilterText": "Metin dosyaları",
   "selectCSVFilterAll": "Tüm Dosyalar",
+  "selectExcelPathDialog": "Excel dosya yolunu seçin",
+  "selectExcelFilterText": "Excel dosyaları",
   "outputImagePathEnable": "Görüntüleri bir klasörde arşivle",
   "imageHd": "Yüksek Çözünürlüklü görüntüler edin",
   "outputImagePath": "Klasör yolu",

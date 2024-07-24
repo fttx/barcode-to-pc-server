@@ -256,6 +256,8 @@
   "selectCSVSelectButton": "اختر",
   "selectCSVFilterText": "ملفات نصية",
   "selectCSVFilterAll": "جميع الملفات",
+  "selectExcelPathDialog": "حدد مسار ملف Excel",
+  "selectExcelFilterText": "ملفات Excel",
   "outputImagePathEnable": "أرشفة الصور في مجلد",
   "imageHd": "الحصول على صور عالية الدقة",
   "outputImagePath": "مسار المجلد",

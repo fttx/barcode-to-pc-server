@@ -256,6 +256,8 @@
   "selectCSVSelectButton": "選擇",
   "selectCSVFilterText": "文字文件",
   "selectCSVFilterAll": "所有文件",
+  "selectExcelPathDialog": "選擇Excel文件路徑",
+  "selectExcelFilterText": "Excel文件",
   "outputImagePathEnable": "將圖片存檔到文件夾",
   "imageHd": "獲取高解析度圖像",
   "outputImagePath": "文件夾路徑",

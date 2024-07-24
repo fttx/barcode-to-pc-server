@@ -256,6 +256,8 @@
   "selectCSVSelectButton": "Seleccionar",
   "selectCSVFilterText": "Archivos de texto",
   "selectCSVFilterAll": "Todos los archivos",
+  "selectExcelPathDialog": "Seleccione la ruta del archivo de Excel",
+  "selectExcelFilterText": "Archivos de Excel",
   "outputImagePathEnable": "Archivar imágenes en una carpeta",
   "imageHd": "Adquirir imágenes de alta definición",
   "outputImagePath": "Ruta de la carpeta",
