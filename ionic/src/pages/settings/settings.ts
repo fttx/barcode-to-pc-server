@@ -479,6 +479,14 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
+  async onExcelClick() {
+    if (this.settings.outputToExcelEnabled) {
+      if (!(await this.licenseProvider.canUseCSVAppend(true))) {
+        setTimeout(() => this.settings.outputToExcelEnabled = false, 1000)
+      }
+    }
+  }
+
   onOpenAutomaticallyChange() {
     if (this.settings.openAutomatically == 'minimized' && this.electronProvider.processPlatform === 'darwin') {
       this.settings.enableTray = true;
