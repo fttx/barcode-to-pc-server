@@ -69,6 +69,7 @@
   "versionMismatchDialogTitle": "Sunucu/Uygulama sürüm uyumsuzluğu",
   "versionMismatchDialogMessage": "Lütfen hem uygulamayı hem de sunucuyu güncelleyin, aksi takdirde düzgün çalışmayabilirler.<br><br>Sunucuyu {{ websiteName }}'den indirebilirsiniz",
   "versionMismatchDialogCancel": "İptal",
+  "updateAvailable": "Barcode to PC'nin yeni bir sürümü mevcut",
   "versionMismatchDialogDownload": "İndir",
   "scanSessionContextMenuHeader": "Seçenekler",
   "scanSessionContextExportAsCSV": "CSV olarak dışa aktar",

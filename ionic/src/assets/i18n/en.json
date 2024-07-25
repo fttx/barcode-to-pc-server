@@ -68,6 +68,7 @@
   "accessibilityPermissionsDialogSystemPreferences": "Open System Preferences",
   "versionMismatchDialogTitle": "Server/app version mismatch",
   "versionMismatchDialogMessage": "Please update both app and server, otherwise they may not work properly.<br><br>Server can be downloaded at {{ websiteName }}",
+  "updateAvailable": "A new version of Barcode to PC is available",
   "versionMismatchDialogCancel": "Cancel",
   "versionMismatchDialogDownload": "Download",
   "scanSessionContextMenuHeader": "Options",

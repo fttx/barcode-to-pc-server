@@ -69,6 +69,7 @@
   "versionMismatchDialogTitle": "伺服器/應用程式版本不匹配",
   "versionMismatchDialogMessage": "請同時更新應用程式和伺服器，否則它們可能無法正常工作。<br><br>伺服器可以在 {{ websiteName }} 下載",
   "versionMismatchDialogCancel": "取消",
+  "updateAvailable": "Barcode to PC的新版本可用",
   "versionMismatchDialogDownload": "下載",
   "scanSessionContextMenuHeader": "選項",
   "scanSessionContextExportAsCSV": "匯出為 CSV",

@@ -69,6 +69,7 @@
   "versionMismatchDialogTitle": "Incompatibilidade de versão do servidor/app",
   "versionMismatchDialogMessage": "Por favor, atualize tanto o aplicativo quanto o servidor, caso contrário, eles podem não funcionar corretamente.<br><br>O servidor pode ser baixado em {{ websiteName }}",
   "versionMismatchDialogCancel": "Cancelar",
+  "updateAvailable": "Uma nova versão do Barcode to PC está disponível",
   "versionMismatchDialogDownload": "Baixar",
   "scanSessionContextMenuHeader": "Opções",
   "scanSessionContextExportAsCSV": "Exportar como CSV",

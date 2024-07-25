@@ -145,8 +145,19 @@ export class InfoPage {
         this.newVersion = data.tag_name;
         if (this.newVersion !== this.getVersion()) {
           this.updateStatus = 'updateAvailable';
-          this.electronProvider.ipcRenderer.send('downloadUpdate');
-          // Dialog will be shown by the native elctron-update-app package.
+          // this.electronProvider.ipcRenderer.send('downloadUpdate');
+          this.alertController.create({
+            title: this.translateService.instant('update'),
+            message: this.translateService.instant('updateAvailable'),
+            buttons: [{
+              text: this.translateService.instant('cancel'), role: 'cancel'
+            }, {
+              text: this.translateService.instant('download'), handler: () => {
+                this.electronProvider.shell.openExternal(Config.URL_DOWNLOAD_SERVER);
+              }
+            }]
+          }).present();
+
         } else {
           this.updateStatus = 'updateNotAvailable';
           this.alertController.create({ title: 'No Updates', message: this.translateService.instant('youAreUsingLatestVersion'), buttons: [await this.utils.text('ok')] }).present();

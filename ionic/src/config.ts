@@ -19,7 +19,7 @@ export class Config {
   public static URL_PRICING = Config.URL_WEBSITE + '/pricing/';
   public static URL_V4 = Config.URL_WEBSITE + '/updates/v4/#why-upgrade-the-license';
   public static URL_V3 = Config.URL_WEBSITE + '/updates/v4/#v3';
-  public static URL_DOWNLOAD_SERVER = Config.URL_WEBSITE + '/#download-server';
+  public static URL_DOWNLOAD_SERVER = Config.URL_WEBSITE + '/download';
   public static URL_WINDOWS_FIREWALL = Config.URL_WEBSITE + '/settings/configure-windows-firewall/';
   public static URL_COMMON_ISSUES = Config.URL_WEBSITE + '/settings/common-issues/';
   public static URL_FAQ = Config.URL_WEBSITE + '/frequently-asked-questions/';

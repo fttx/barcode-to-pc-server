@@ -70,6 +70,7 @@
   "versionMismatchDialogMessage": "يرجى تحديث كل من التطبيق والخادم، وإلا قد لا يعملان بشكل صحيح. <br><br>يمكن تنزيل الخادم من {{ websiteName }}",
   "versionMismatchDialogCancel": "إلغاء",
   "versionMismatchDialogDownload": "تحميل",
+  "updateAvailable": "إصدار جديد من Barcode to PC متاح",
   "scanSessionContextMenuHeader": "الخيارات",
   "scanSessionContextExportAsCSV": "تصدير كـ CSV",
   "scanSessionContextMenuDelete": "حذف",
