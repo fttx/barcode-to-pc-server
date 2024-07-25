@@ -16,7 +16,18 @@
 ### Security
 -->
 
-## [v4.5.6] - 2024-07-09
+## [v4.7.0] - 2024-07-25
+
+### Added
+
+- Excel output option
+- Translation for Turkish, Taiwanese and Portuguese languages
+
+### Fixed
+
+- Auto-update logic
+
+## [v4.6.6] - 2024-07-09
 
 ### Added
 
@@ -694,6 +705,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.6...v4.7.0
 [v4.6.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.5...v4.6.6
 [v4.6.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.4...v4.6.5
 [v4.6.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.3...v4.6.4
