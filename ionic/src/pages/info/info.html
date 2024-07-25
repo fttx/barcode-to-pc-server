@@ -38,7 +38,7 @@
       <h2>{{ getUpdateStatus() }}</h2>
       <p>{{ 'version' | translate }}: {{ getVersion() }}</p>
       <p>{{ 'lastChecked' | translate }}: {{ getLastUpdateCheck() }}</p>
-      <button ion-button color="secondary" item-end (click)="onUpdateClick()" [disabled]="updateStatus == 'checkingForUpdate'">{{ getUpdateButtonText() }}</button>
+      <button ion-button color="secondary" item-end (click)="checkForUpdates()" [disabled]="updateStatus == 'checkingForUpdate'">{{ getUpdateButtonText() }}</button>
     </ion-item>
 
     <ion-item text-wrap>
@@ -46,8 +46,7 @@
       <ion-label>
         <h2>{{ 'automaticUpdates' | translate }}</h2>
         <p>
-          ⚠️{{ 'automaticUpdatesDescription1' | translate }}
-          {{ 'automaticUpdatesDescription2' | translate }}<b>{{ 'automaticUpdatesDescription3' | translate }}</b>{{ 'automaticUpdatesDescription4' | translate }}<b>{{ 'automaticUpdatesDescription5' | translate }}</b>{{ 'automaticUpdatesDescription6' | translate }}<b>{{ 'automaticUpdatesDescription7' | translate }}</b>{{ 'automaticUpdatesDescription8' | translate }}
+          ⚠️{{ 'automaticUpdatesDescription' | translate }}
         </p>
       </ion-label>
       <ion-toggle (ionChange)="onAutoUpdateChange($event)" [(ngModel)]="settings && settings.autoUpdate" color="secondary"></ion-toggle>

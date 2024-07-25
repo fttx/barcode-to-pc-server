@@ -1,10 +1,11 @@
 import { Component, NgZone } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { AlertController, NavController, NavParams, ViewController } from 'ionic-angular';
 import { Config } from '../../config';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { HttpClient } from '@angular/common/http';
 
 /**
  * Generated class for the InfoPage page.
@@ -20,10 +21,9 @@ import { UtilsProvider } from '../../providers/utils/utils';
 export class InfoPage {
   // the same variable can be found in the update.handler.ts of the main process
   public updateStatus: ('checkingForUpdate' | 'updateAvailable' | 'updateNotAvailable' |
-    'updateError' | 'updateDownloaded') = 'updateNotAvailable';
+    'updateError') = 'updateNotAvailable';
   public settings: SettingsModel; // required for the toggle ngModel to work
-  private _lastUpdateCheck = '';
-
+  public newVersion: string;
 
   constructor(
     public navCtrl: NavController,
@@ -33,6 +33,8 @@ export class InfoPage {
     public ngZone: NgZone,
     public utils: UtilsProvider,
     private translateService: TranslateService,
+    private http: HttpClient,
+    private alertController: AlertController
   ) {
   }
 
@@ -44,9 +46,6 @@ export class InfoPage {
     this.electronProvider.ipcRenderer.on('onUpdateStatusChange', (e, updateStatus) => {
       this.ngZone.run(() => {
         this.updateStatus = updateStatus;
-        if (updateStatus != 'checkingForUpdate') {
-          this._lastUpdateCheck = new Date().toLocaleString();
-        }
       })
     });
 
@@ -68,10 +67,6 @@ export class InfoPage {
 
   close() {
     this.viewCtrl.dismiss();
-  }
-
-  getLastUpdateCheck() {
-    return this._lastUpdateCheck;
   }
 
   getVersion() {
@@ -132,7 +127,36 @@ export class InfoPage {
     if (this.updateStatus == 'updateAvailable') return 'refresh-circle';
     if (this.updateStatus == 'updateNotAvailable') return 'checkmark-circle';
     if (this.updateStatus == 'updateError') return 'close-circle';
-    if (this.updateStatus == 'updateDownloaded') return 'refresh';
+  }
+
+  getLastUpdateCheck() {
+    return localStorage.getItem('lastUpdateCheck') || 'Never';
+  }
+
+  checkForUpdates() {
+    const repoOwner = 'fttx';
+    const repoName = 'barcode-to-pc-server';
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/releases/latest`;
+
+    localStorage.setItem('lastUpdateCheck', new Date().toLocaleString());
+    this.updateStatus = 'checkingForUpdate';
+    this.http.get(url).subscribe(
+      async (data: any) => {
+        this.newVersion = data.tag_name;
+        if (this.newVersion !== this.getVersion()) {
+          this.updateStatus = 'updateAvailable';
+          this.electronProvider.ipcRenderer.send('downloadUpdate');
+          // Dialog will be shown by the native elctron-update-app package.
+        } else {
+          this.updateStatus = 'updateNotAvailable';
+          this.alertController.create({ title: 'No Updates', message: this.translateService.instant('youAreUsingLatestVersion'), buttons: [await this.utils.text('ok')] }).present();
+        }
+      },
+      async (error) => {
+        this.updateStatus = 'updateError';
+        this.alertController.create({ title: 'Error', message: this.translateService.instant('couldNotCheckForUpdates'), buttons: [await this.utils.text('ok')] }).present();
+      }
+    );
   }
 
   getUpdateButtonText() {
@@ -140,17 +164,6 @@ export class InfoPage {
     if (this.updateStatus == 'updateAvailable') return this.translateService.instant('update');
     if (this.updateStatus == 'updateNotAvailable') return this.translateService.instant('update');
     if (this.updateStatus == 'updateError') return this.translateService.instant('update');
-    if (this.updateStatus == 'updateDownloaded') return this.translateService.instant('relaunch');
   }
 
-  onUpdateClick() {
-    if (this.updateStatus == 'updateAvailable') {
-      this.electronProvider.ipcRenderer.send('downloadUpdate');
-      this.updateStatus = 'checkingForUpdate';
-    } else if (this.updateStatus == 'updateDownloaded') {
-      this.electronProvider.ipcRenderer.send('quitAndInstall');
-    } else {
-      this.electronProvider.ipcRenderer.send('checkForUpdates');
-    }
-  }
 }
