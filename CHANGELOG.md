@@ -23,6 +23,10 @@
 - Excel output option
 - Translation for Turkish, Taiwanese and Portuguese languages
 
+### Changed
+
+- Minor UX improvements
+
 ### Fixed
 
 - Auto-update logic
