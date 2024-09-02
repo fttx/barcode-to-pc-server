@@ -313,16 +313,18 @@ export class LicenseProvider {
   /**
    * This method should be called when retrieving a set of new scans.
    * It kicks out all devices and shows a dialog when the monthly limit of scans
-   * has been exceeded
+   * has been exceeded.
+   *
+   * @returns the current scan count
    */
   async limitMonthlyScans(noNewScans = 1) {
-    if (this.activeLicense == LicenseProvider.LICENSE_UNLIMITED) {
-      return;
-    }
-
     let count = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
     count += noNewScans;
     this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
+
+    if (this.activeLicense == LicenseProvider.LICENSE_UNLIMITED) {
+      return count;
+    }
 
     if (count > this.getNOMaxAllowedScansPerMonth()) {
       let message = await this.utilsProvider.text('scansLimitReachedDialogMessage');
@@ -333,6 +335,7 @@ export class LicenseProvider {
         message
       );
     }
+    return count;
   }
 
   /**
@@ -404,11 +407,17 @@ export class LicenseProvider {
 
   getNOMaxAllowedScansPerMonth() {
     switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 300;
-      case LicenseProvider.LICENSE_BASIC: return 1000;
-      case LicenseProvider.LICENSE_PRO: return 10000;
+      case LicenseProvider.LICENSE_FREE: return 300 + this.getScanOffset();
+      case LicenseProvider.LICENSE_BASIC: return 1000 + this.getScanOffset();
+      case LicenseProvider.LICENSE_PRO: return 10000 + this.getScanOffset();
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
     }
+  }
+
+  getScanOffset() {
+    let offset = 0;
+    // offset += localStorage.getItem('email') ? Config.SCAN_OFFSET_EMAIL_INCENTIVE : 0;
+    return offset;
   }
 
   isSubscribed() {

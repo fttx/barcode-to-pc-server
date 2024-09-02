@@ -18,5 +18,6 @@ declare global {
   interface Window {
     preload: any;
     confetti: any;
+    confetti_v2: any;
   }
 }

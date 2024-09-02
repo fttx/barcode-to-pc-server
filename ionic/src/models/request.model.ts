@@ -23,6 +23,7 @@ export abstract class requestModel {
     public static readonly ACTION_ON_SMARTPHONE_CHARGE = 'action_on_smartphone_charge';
     public static readonly ACTION_UNDO_INFINITE_LOOP = 'undo_infinite_loop';
     public static readonly ACTION_REMOTE_COMPONENT = 'remoteComponent';
+    public static readonly ACTION_EMAIL_INCENTIVE_COMPLETED = 'action_email_incentive_completed';
 }
 
 /**
@@ -54,6 +55,17 @@ export class requestModelHelo extends requestModel {
         this.version = obj.version;
         this.deviceName = obj.deviceName;
         this.deviceId = obj.deviceId;
+        return this;
+    }
+}
+
+
+export class requestModelEmailIncentiveCompleted extends requestModel {
+    action = requestModel.ACTION_EMAIL_INCENTIVE_COMPLETED;
+    email: string;
+
+    public fromObject(obj: ({ email: string })) {
+        this.email = obj.email;
         return this;
     }
 }

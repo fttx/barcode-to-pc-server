@@ -47,6 +47,9 @@ export class Config {
 
   public static EMAIL_SUPPORT = 'support@barcodetopc.com';
 
+  public static INCENTIVE_EMAIL_SHOW_THRESHOLD = 10;
+
+
   // Constants
   public static STORAGE_SUBSCRIPTION = 'subscription';
   public static STORAGE_SERIAL = 'serial';

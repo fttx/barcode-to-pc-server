@@ -189,7 +189,7 @@ export class HomePage {
       // }
     });
 
-    this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, (e, request: requestModelPutScanSessions) => {
+    this.electronProvider.ipcRenderer.on(requestModel.ACTION_PUT_SCAN_SESSIONS, async (e, request: requestModelPutScanSessions) => {
       // Uncomment this line when there will be support for multiple scanSessions per event
       // let initialNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
       request.scanSessions.forEach(newScanSession => {
@@ -252,7 +252,11 @@ export class HomePage {
       // Uncomment this section when there will be support for multiple scanSessions per event
       // let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
       // this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
-      this.licenseProvider.limitMonthlyScans(1);
+      const currentCount = await this.licenseProvider.limitMonthlyScans(1);
+
+      if (!localStorage.getItem('email') && currentCount > Config.INCENTIVE_EMAIL_SHOW_THRESHOLD) {
+        this.electronProvider.ipcRenderer.send('ipc_show_incentive_email_alert', currentCount);
+      }
 
       this.save();
 
