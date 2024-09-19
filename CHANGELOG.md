@@ -16,6 +16,22 @@
 ### Security
 -->
 
+## [v4.7.5] - 2024-09-19
+
+### Fixed
+
+- Connection issues
+
+### Changed
+
+- Minor UI Improvements in the Select Server Page
+
+## [v4.7.4] - 2024-09-14
+
+### Fixed
+
+- Welcome Page UI issue on small screens
+
 ## [v4.7.3] - 2024-09-12
 
 ### Changed
@@ -722,6 +738,8 @@
 
 - Included the Apple Bonjour installer
 
+[v4.7.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.4...v4.7.5
+[v4.7.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.3...v4.7.4
 [v4.7.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.2...v4.7.3
 [v4.7.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.0...v4.7.2
 [v4.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.6...v4.7.0
