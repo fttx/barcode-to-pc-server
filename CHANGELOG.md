@@ -21,6 +21,7 @@
 ### Fixed
 
 - Connection issues
+- Issue with the "Continue for Free!" message
 
 ### Changed
 
