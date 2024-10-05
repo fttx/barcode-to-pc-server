@@ -61,13 +61,15 @@ export class requestModelHelo extends requestModel {
 
 
 export class requestModelEmailIncentiveCompleted extends requestModel {
-    action = requestModel.ACTION_EMAIL_INCENTIVE_COMPLETED;
-    email: string;
+  action = requestModel.ACTION_EMAIL_INCENTIVE_COMPLETED;
+  email: string;
+  name: string;
 
-    public fromObject(obj: ({ email: string })) {
-        this.email = obj.email;
-        return this;
-    }
+  public fromObject(obj: ({ email: string, name: string })) {
+      this.email = obj.email;
+      this.name = obj.name;
+      return this;
+  }
 }
 
 export class requestModelPutScanSessions extends requestModel {

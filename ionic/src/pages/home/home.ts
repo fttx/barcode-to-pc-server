@@ -254,7 +254,7 @@ export class HomePage {
       // this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
       const currentCount = await this.licenseProvider.limitMonthlyScans(1);
 
-      if (!localStorage.getItem('email') && currentCount > Config.INCENTIVE_EMAIL_SHOW_THRESHOLD) {
+      if (!localStorage.getItem('email') && currentCount > Config.INCENTIVE_EMAIL_SHOW_THRESHOLD && this.licenseProvider.activeLicense === LicenseProvider.LICENSE_FREE) {
         this.electronProvider.ipcRenderer.send('ipc_show_incentive_email_alert', currentCount);
       }
 
