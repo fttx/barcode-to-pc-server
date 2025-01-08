@@ -6,20 +6,10 @@ skip_non_tags: false
 clone_depth: 1
 environment:
   nodejs_version: "14"
-  BONJOUR_SDK_HOME: 'C:\\Program Files\\Bonjour SDK'
-  BONJOUR_SDK_DOWNLOAD:
-    secure: 1uWToJLKf6uUn0/fsVHbrRSHDDgyxJ9KgD4cslGCqmz486RoS5levXRMLCKm3E7flrnyhSXcUWFHK9KcUxPlO2LYHYRVR+OGkndJ0fbrxhY=
 image: Visual Studio 2019
 install:
   - ps: Install-Product node $env:nodejs_version x64
   - set PATH=%programfiles(x86)%\\Microsoft SDKs\TypeScript\2.4;%PATH%
-
-  - appveyor DownloadFile https://github.com/fttx/barcode-to-pc-server/blob/master/electron/build/Bonjour64.msi?raw=true
-  - msiexec /i Bonjour64.msi /qn
-  - del Bonjour64.msi
-  - appveyor DownloadFile %BONJOUR_SDK_DOWNLOAD%
-  - bonjoursdksetup.exe /quiet
-  - del bonjoursdksetup.exe
 
   - git config --global user.email "filippo.tortomasi@gmail.com"
   - git config --global user.name "Filippo Tortomasi"

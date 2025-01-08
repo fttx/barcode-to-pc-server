@@ -1,4 +1,3 @@
-
 <div align="center">
   <img width="128" height="128" src="https://raw.githubusercontent.com/fttx/barcode-to-pc-app/master/resources/icon.png">
 </div>
@@ -27,14 +26,14 @@
 
 **Server**
 
-* 💾 Download (Windows, macOS and Linux): <https://barcodetopc.com/#download-server>
-* 📁 Source-code: <https://github.com/fttx/barcode-to-pc-server>
+- 💾 Download (Windows, macOS and Linux): <https://barcodetopc.com/#download-server>
+- 📁 Source-code: <https://github.com/fttx/barcode-to-pc-server>
 
 **App**
 
-* 📱Download (Android): <https://play.google.com/store/apps/details?id=com.barcodetopc>
-* 📱 Download (iOS): <https://itunes.apple.com/app/id1180168368>
-* 📁 Source-code: <https://github.com/fttx/barcode-to-pc-app>
+- 📱Download (Android): <https://play.google.com/store/apps/details?id=com.barcodetopc>
+- 📱 Download (iOS): <https://itunes.apple.com/app/id1180168368>
+- 📁 Source-code: <https://github.com/fttx/barcode-to-pc-app>
 
 ## Overview
 
@@ -48,51 +47,57 @@ When executing npm commands make sure to change the current directory to electro
 # Setup
 
 1. Install the required System dependencies:
-    * Node.js v14
-    * Python 3
-    <!-- * If you're building on Windows, install these packages:
-        * [Bonjour SDK for Windows v3.0](https://developer.apple.com/download/more/) (bonjoursdksetup.exe)
-        * [Visual C++ Build Environment 2019](https://github.com/nodejs/node-gyp#on-windows)
-          * Download link: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools
-          * When installing it check `Desktop Applications (Visual C++)` and `Windows 10 SDK` packages
-          * After the installation run `npm config set msvs_version 2019` -->
-    * If you're building on macOS, run: `brew install glib`
-    <!-- * If you're building on Linux, run: `sudo apt-get install -y libx11-dev libxtst-dev libpng-dev zlib1g-dev icnsutils graphicsmagick libavahi-compat-libdnssd-dev && sudo snap install snapcraft --classic` -->
 
-2. Clone the repository
-    ```bash
-    git clone https://github.com/fttx/barcode-to-pc-server/
-    cd barcode-to-pc-server
-    cd electron
-    npm install
-    ```
+   - Node.js v14.17
+   - Python 3
+   <!-- * If you're building on Windows, install these packages:
+       * [Visual C++ Build Environment 2019](https://github.com/nodejs/node-gyp#on-windows)
+         * Download link: https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools
+         * When installing it check `Desktop Applications (Visual C++)` and `Windows 10 SDK` packages
+         * After the installation run `npm config set msvs_version 2019` -->
+   - If you're using Windows install [Visual Studio Build Tools](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=BuildTools) (select "Visual C++ build tools")
+   - If you're building on macOS, run: `brew install glib && pip install setuptools`
+   <!-- * If you're building on Linux, run: `sudo apt-get install -y libx11-dev libxtst-dev libpng-dev zlib1g-dev icnsutils graphicsmagick libavahi-compat-libdnssd-dev && sudo snap install snapcraft --classic` -->
+   - Spin the VM up, and connect to it using the Microsoft Remote DesktappleIdop app from the host machine (Thinkpad). Connect the token to the host machine.
+
+2. Run the project
+   ```bash
+   nvm use 14.17
+   git clone --recurse-submodules https://github.com/fttx/barcode-to-pc-server/
+   cd barcode-to-pc-server
+   cd electron
+   npm install
+   npm start
+   ```
 
 If you get errors check these links:
 
-  * nutjs.dev: <https://nutjs.dev/tutorials/first_steps>
-  * electron-builder: <https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux>
-  * node_mdns: <https://github.com/agnat/node_mdns#installation>
+- nutjs.dev: <https://nutjs.dev/tutorials/first_steps>
+- electron-builder: <https://github.com/electron-userland/electron-builder/wiki/Multi-Platform-Build#linux>
+- node_mdns: <https://github.com/agnat/node_mdns#installation>
 
 ## Run
 
 The `npm start` command:
+
 - Runs the Electron app in development mode
 - Launches the ionic project in livereload mode
 
 Notes:
 
-- If you're editing the [electron](./electron) folder, you have to quit the server and  run it again. Use the F6 button on Visual Studio Code.
+- If you're editing the [electron](./electron) folder, you have to quit the server and run it again. Use the F6 button on Visual Studio Code.
 - If you're using Windows use the PowerShell
 
 ## Release
 
-  ```bash
-  npm run build # builds the angular project in prod mode and generates the signed installer for the current platform
-  npm run publish # same as build, but uploads the installer to GitHub releases
-  ```
-* To enable the publishing to GitHub releases set `GH_TOKEN` environment variable and give all the `repo` permissions
-* The installer will be put in the electron/dist/ folder.
-* If you get sass errors run `cd ../ionic && npm rebuild node-sass --force`
+```bash
+npm run build # builds the angular project in prod mode and generates the signed installer for the current platform
+npm run publish # same as build, but uploads the installer to GitHub releases
+```
+
+- To enable the publishing to GitHub releases set `GH_TOKEN` environment variable and give all the `repo` permissions
+- The installer will be put in the electron/dist/ folder.
+- If you get sass errors run `cd ../ionic && npm rebuild node-sass --force`
 
 ## Code Signing
 
@@ -101,9 +106,10 @@ Notes:
 3. Run `npm run publish`
 
 Resources:
--  [Code Signing - electron-builder](https://www.electron.build/code-signing)
--  [Any Windows Target - electron-builder](https://www.electron.build/configuration/win)
--  [electron-builder source-code](https://github.com/electron-userland/electron-builder/blob/ebbd9f796e2d8d5b0720b2b699ba24dc159ee692/packages/app-builder-lib/src/codeSign/windowsCodeSign.ts#L116)
+
+- [Code Signing - electron-builder](https://www.electron.build/code-signing)
+- [Any Windows Target - electron-builder](https://www.electron.build/configuration/win)
+- [electron-builder source-code](https://github.com/electron-userland/electron-builder/blob/ebbd9f796e2d8d5b0720b2b699ba24dc159ee692/packages/app-builder-lib/src/codeSign/windowsCodeSign.ts#L116)
 
 ## Simulate updates
 
@@ -120,25 +126,28 @@ To publish an update:
    release](https://github.com/fttx/barcode-to-pc-server/releases/new) on GitHub
    and name it `v<new version number>`
 2. Increase the version number of the package.json
-3. Commit & push the changes
+3. Commit & push the changes and then `cd electron && git push`
 4. Add a tag and name it `v<new version number>`
 5. Push the tag
-6. Run `npm run publish`
+6. From other machines run `git pull --recurse-submodules && cd electron && npm run publish`
+7. Run `npm run publish`
 
-Note: for macOS delete the `electron/electron-resources/*.rtf` folder and run: `npm run publish`
+Note: for macOS delete the `electron/build/*.rtf` folder and run: `npm run publish`
 
 At this point if all looks good the only thing left to do is to publish the Github release draft.
 
 ## Translations
 
-| Language           | Contributors      |
-| :----------------- |:------------------|
-| Chinese            | -                 |
-| Deutsch            | Bruno Wenger      |
-| Español            | Juan Manuel       |
-| Italiano           | Francesco Accardi |
-| English            | Filippo Tortomasi |
-| Arabic             | Bassam Mawardi    |
-
+| Language   | Contributors      |
+| :--------- | :---------------- |
+| Deutsch    | Bruno Wenger      |
+| Español    | Juan Manuel       |
+| Italiano   | Francesco Accardi |
+| English    | Filippo Tortomasi |
+| Arabic     | Bassam Mawardi    |
+| Portoguese | GPT-4o            |
+| Turkish    | GPT-4o            |
+| Chinese    | -                 |
+| Taiwanese  | GPT-4o            |
 
 Are you fluent in any other language than English? If you found a typo, or want to help translate Barcode to PC, get in touch [here](https://barcodetopc.com/contact/).
