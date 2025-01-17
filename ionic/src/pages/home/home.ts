@@ -437,10 +437,6 @@ export class HomePage {
       return;
     }
 
-    if (this.connectedDevices.length == 0) {
-      return;
-    }
-
     this.connectedClientPopover = this.popoverCtrl.create(ConnectedClientsPopover, { 'connectedDevices': this.connectedDevices });
     this.connectedClientPopover.onDidDismiss((data, role) => {
       this.connectedClientPopover = null;
@@ -509,13 +505,20 @@ export class HomePage {
       <ion-list-header>
         {{ 'connectedDevices' | translate }}
       </ion-list-header>
-      <ion-item no-padding *ngFor="let connectedDevice of connectedDevices; let i = index;" [class.kicked]="connectedDevice.kicked">
-        <ion-avatar item-start text-center padding-vertical>
-          <ion-icon name="phone-portrait"></ion-icon>
-        </ion-avatar>
-        <h2>{{ connectedDevice.name }}</h2>
-        <!-- p>{{ connectedDevice.name }}</p -->
-      </ion-item>
+      <div *ngIf="connectedDevices.length != 0">
+        <ion-item no-padding *ngFor="let connectedDevice of connectedDevices; let i = index;" [class.kicked]="connectedDevice.kicked">
+          <ion-avatar item-start text-center padding-vertical>
+            <ion-icon name="phone-portrait"></ion-icon>
+          </ion-avatar>
+          <h2>{{ connectedDevice.name }}</h2>
+          <!-- p>{{ connectedDevice.name }}</p -->
+        </ion-item>
+      </div>
+      <div *ngIf="connectedDevices.length == 0">
+        <ion-item no-padding text-center no-lines>
+          <h2>{{ "No connected device found" | translate }}</h2>
+        </ion-item>
+      </div>
     </ion-list>`,
   styles: [`.kicked { color: lightgrey !important;}`],
 })
