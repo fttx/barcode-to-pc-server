@@ -4,6 +4,7 @@ import { Config } from '../../config';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
 
 @Component({
   selector: 'component-editor',
@@ -20,7 +21,7 @@ export class ComponentEditorComponent implements OnInit {
     public viewCtrl: ViewController,
     public electronProvider: ElectronProvider,
     private events: Events,
-    public alertCtrl: AlertController,
+    public alertCtrl: BtpAlertController,
     public utils: UtilsProvider,
   ) {
     this.events.subscribe('componentEditor:scrollToTop', () => {

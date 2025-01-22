@@ -16,6 +16,7 @@ import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { UtilsProvider } from '../providers/utils/utils';
 import { OutputProfileExportedModel } from '../models/output-profile-exported.model';
+import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
 
 @Component({
   templateUrl: 'app.html'
@@ -31,7 +32,7 @@ export class MyApp {
     public electronProvider: ElectronProvider,
     public devicesProvider: DevicesProvider,
     public http: Http,
-    public alertCtrl: AlertController,
+    public alertCtrl: BtpAlertController,
     public markdownService: MarkdownService,
     public events: Events,
     public utils: UtilsProvider,

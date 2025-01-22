@@ -1,5 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import { Alert, AlertController, AlertOptions, Events } from 'ionic-angular';
 import { interval } from 'rxjs/observable/interval';
 import { throttle } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
+import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -39,6 +40,11 @@ export class LicenseProvider {
   public static LICENSE_PRO = 'barcode-to-pc-pro-license';
   public static LICENSE_UNLIMITED = 'barcode-to-pc-unlimited-license';
 
+  public static LICENSE_PRO_MONTHLY = 'barcode-to-pc-pro-monthly-subscription';
+  public static LICENSE_PRO_YEARLY = 'barcode-to-pc-pro-yearly-subscription';
+  public static LICENSE_STARTER_MONTHLY = 'barcode-to-pc-starter-monthly-subscription';
+  public static LICENSE_STARTER_YEARLY = 'barcode-to-pc-starter-yearly-subscription';
+
   public activeLicense = LicenseProvider.LICENSE_FREE;
   public serial = '';
 
@@ -48,12 +54,16 @@ export class LicenseProvider {
   constructor(
     public http: HttpClient,
     private electronProvider: ElectronProvider,
-    private alertCtrl: AlertController,
+    private alertCtrl: BtpAlertController,
     private utilsProvider: UtilsProvider,
     private devicesProvider: DevicesProvider,
     public events: Events,
-  ) {
-    this.updateSubscriptionStatus();
+  ) { this.init(); }
+
+  async init(): Promise<void> {
+    console.log('license.ts init()')
+    await this.updateSubscriptionStatus();
+
     this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
       let lastDevice = devicesList[devicesList.length - 1];
       this.limitNOMaxConnectedDevices(lastDevice, devicesList);
@@ -97,102 +107,92 @@ export class LicenseProvider {
    *
    * If the serial is passed it'll prompt the user with dialogs
    */
-  updateSubscriptionStatus(serial: string = '') {
-    this.activeLicense = this.electronProvider.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.LICENSE_FREE)
+  updateSubscriptionStatus(serial: string = ''): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      this.activeLicense = this.electronProvider.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.LICENSE_FREE);
 
-    if (serial) {
-      this.serial = serial;
-      this.electronProvider.store.set(Config.STORAGE_SERIAL, this.serial);
-    } else {
-      this.serial = this.electronProvider.store.get(Config.STORAGE_SERIAL, '')
-    }
-
-    let now = new Date().getTime();
-    let nextChargeDate = this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE);
-    let canResetScanCount = now > nextChargeDate;
-
-    // The scanCount is resetted based on the server first run date
-    if (canResetScanCount) {
-      this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
-      this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
-    }
-
-    // Do not bother the license-server if there isn't an active subscription
-    if (serial == '' && this.serial == '' && this.activeLicense == LicenseProvider.LICENSE_FREE) {
-      // it's also required to check this.serial == '' because when there isn't
-      // a internet connection the license gets downgraded but the serial is
-      // still saved to the storage
-      return;
-    }
-
-    this.http.post(Config.URL_ORDER_CHECK, {
-      serial: this.serial,
-      uuid: this.electronProvider.uuid
-    }).subscribe(async value => {
-      this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
-      if (value['active'] == true) {
-
-        // If the license name changed it means that a license UPGRADE has been performed
-        // The 'plan' attribute referes to the license name.
-        if (this.activeLicense != value['plan']) {
-          // Prevent activation of v3
-          if (value['version'] != 'v4') {
-            this.showV4UpgradeDialog();
-            return;
-          }
-
-          console.log('upgrade')
-          this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
-          this.electronProvider.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
-          this.activeLicense = value['plan'];
-        }
-
-        if (serial) {
-          let everActivated = this.electronProvider.store.get(Config.STORAGE_LICENSE_EVER_ACTIVATED, false);
-          if (!everActivated) {
-            this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
-          }
-          this.electronProvider.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
-          this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
-          window.confetti.start(3000);
-          this.events.publish('license:activate');
-        }
-
-        // V4 Upgrade
-        if (value['version'] != 'v4') {
-          await this.showV4UpgradeDialog();
-        }
-      } else {
-        // When the license-server says that the subscription is not active
-        // the user should be propted immediatly, no matter what is passed a
-        // serial or not.
-        this.deactivate();
-        this.utilsProvider.showErrorNativeDialog(value['message']);
-      }
-    }, async (error: HttpErrorResponse) => {
       if (serial) {
-        // if (error.status == 503) {
-        //   this.utilsProvider.showErrorNativeDialog('Unable to fetch the subscription information, try later (FS problem)');
-        // }
-        this.deactivate();
-        this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licenseActivationErrorDialogMessage'));
+        this.serial = serial;
+        this.electronProvider.store.set(Config.STORAGE_SERIAL, this.serial);
       } else {
-        // Perhaps there is a connection problem, wait 15 days before asking the
-        // user to enable the connection.
-        // For simplicty the STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE field is used
-        // only within this method
-        let firstFailDate = this.electronProvider.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
-        let now = new Date().getTime();
-        if (firstFailDate && (now - firstFailDate) > 1296000000) { //  15 days = 1296000000 ms
-          this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
-          this.deactivate();
-          this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licensePeriodicCheckErrorDialogMessage'));
-        } else {
-          this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
-        }
+        this.serial = this.electronProvider.store.get(Config.STORAGE_SERIAL, '');
       }
-    })
-  } // updateSubscriptionStatus
+
+      let now = new Date().getTime();
+      let nextChargeDate = this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE);
+      let canResetScanCount = now > nextChargeDate;
+
+      if (canResetScanCount) {
+        this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+        this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
+      }
+
+      if (serial === '' && this.serial === '' && this.activeLicense === LicenseProvider.LICENSE_FREE) {
+        resolve();
+        return;
+      }
+
+      this.http.post(Config.URL_ORDER_CHECK, {
+        serial: this.serial,
+        uuid: this.electronProvider.uuid
+      }).subscribe(async value => {
+        this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+        if (value['active'] === true) {
+
+          localStorage.setItem('license', JSON.stringify(value));
+
+          if (this.activeLicense !== value['plan']) {
+            if (value['version'] === 'v3') {
+              await this.showV4UpgradeDialog();
+              resolve();
+              return;
+            }
+
+            console.log('upgrade');
+            this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
+            this.electronProvider.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
+            this.activeLicense = value['plan'];
+          }
+
+          if (serial) {
+            let everActivated = this.electronProvider.store.get(Config.STORAGE_LICENSE_EVER_ACTIVATED, false);
+            if (!everActivated) {
+              this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+            }
+            this.electronProvider.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
+            this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
+            window.confetti.start(3000);
+            this.events.publish('license:activate');
+          }
+
+          if (value['version'] === 'v3') {
+            await this.showV4UpgradeDialog();
+          }
+        } else {
+          this.deactivate();
+          this.utilsProvider.showErrorNativeDialog(value['message']);
+        }
+        resolve();
+      }, async (error: HttpErrorResponse) => {
+        if (serial) {
+          this.deactivate();
+          this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licenseActivationErrorDialogMessage'));
+        } else {
+          let firstFailDate = this.electronProvider.store.get(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+          let now = new Date().getTime();
+          if (firstFailDate && (now - firstFailDate) > 1296000000) { // 15 days
+            this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
+            this.deactivate();
+            this.utilsProvider.showErrorNativeDialog(await this.utilsProvider.text('licensePeriodicCheckErrorDialogMessage'));
+          } else {
+            this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, now);
+          }
+        }
+        resolve();
+      });
+    });
+  }
+
 
   /**
    * Resets the license to FREE.
@@ -350,6 +350,14 @@ export class LicenseProvider {
         case LicenseProvider.LICENSE_BASIC: available = true; break;
         case LicenseProvider.LICENSE_PRO: available = true; break;
         case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
+
+        case LicenseProvider.LICENSE_PRO_MONTHLY:
+        case LicenseProvider.LICENSE_PRO_YEARLY:
+        case LicenseProvider.LICENSE_STARTER_MONTHLY:
+        case LicenseProvider.LICENSE_STARTER_YEARLY:
+        default: {
+          return true;
+        }
       }
 
       if (!available && showUpgradeDialog) {
@@ -375,6 +383,14 @@ export class LicenseProvider {
         case LicenseProvider.LICENSE_BASIC: available = true; break;
         case LicenseProvider.LICENSE_PRO: available = true; break;
         case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
+
+        case LicenseProvider.LICENSE_PRO_MONTHLY:
+        case LicenseProvider.LICENSE_PRO_YEARLY:
+        case LicenseProvider.LICENSE_STARTER_MONTHLY:
+        case LicenseProvider.LICENSE_STARTER_YEARLY:
+        default: {
+          return true;
+        }
       }
       if (!available && showUpgradeDialog) {
         await this.showUpgradeDialog(
@@ -393,6 +409,35 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_BASIC: return 5;
       case LicenseProvider.LICENSE_PRO: return 10;
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+
+      case LicenseProvider.LICENSE_PRO_MONTHLY:
+      case LicenseProvider.LICENSE_PRO_YEARLY:
+      case LicenseProvider.LICENSE_STARTER_MONTHLY:
+      case LicenseProvider.LICENSE_STARTER_YEARLY:
+      default: {
+        const license = JSON.parse(localStorage.getItem('license'));
+        return license['plan_data'].components;
+      }
+    }
+  }
+
+  getNOMaxTemplates() {
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE:
+        return 1;
+
+      case LicenseProvider.LICENSE_BASIC:
+      case LicenseProvider.LICENSE_PRO:
+      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+
+      case LicenseProvider.LICENSE_PRO_MONTHLY:
+      case LicenseProvider.LICENSE_PRO_YEARLY:
+      case LicenseProvider.LICENSE_STARTER_MONTHLY:
+      case LicenseProvider.LICENSE_STARTER_YEARLY:
+      default: {
+        const license = JSON.parse(localStorage.getItem('license'));
+        return license['plan_data'].templates;
+      }
     }
   }
 
@@ -402,6 +447,14 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_BASIC: return 1;
       case LicenseProvider.LICENSE_PRO: return 3;
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+
+      case LicenseProvider.LICENSE_PRO_MONTHLY:
+      case LicenseProvider.LICENSE_PRO_YEARLY:
+      case LicenseProvider.LICENSE_STARTER_MONTHLY:
+      case LicenseProvider.LICENSE_STARTER_YEARLY:
+      default: {
+        return LicenseProvider.GetPlanData().devices;
+      }
     }
   }
 
@@ -411,6 +464,9 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_BASIC: return 1000 + this.getScanOffset();
       case LicenseProvider.LICENSE_PRO: return 10000 + this.getScanOffset();
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+      default: {
+        return LicenseProvider.GetPlanData().scans;
+      }
     }
   }
 
@@ -429,7 +485,12 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_FREE: return 'Free';
       case LicenseProvider.LICENSE_BASIC: return 'Basic';
       case LicenseProvider.LICENSE_PRO: return 'Pro';
-      case LicenseProvider.LICENSE_UNLIMITED: return 'Unlimited'
+      case LicenseProvider.LICENSE_UNLIMITED: return 'Unlimited';
+
+      case LicenseProvider.LICENSE_PRO_MONTHLY: return 'Pro';
+      case LicenseProvider.LICENSE_PRO_YEARLY: return 'Pro';
+      case LicenseProvider.LICENSE_STARTER_MONTHLY: return 'Starter';
+      case LicenseProvider.LICENSE_STARTER_YEARLY: return 'Starter';
     }
   }
 
@@ -488,5 +549,10 @@ export class LicenseProvider {
 
   private generateNextChargeDate(): number {
     return new Date().getTime() + 1000 * 60 * 60 * 24 * 31; // NOW() + 1 month
+  }
+
+  private static GetPlanData() {
+    const license = JSON.parse(localStorage.getItem('license'));
+    return license['plan_data'];
   }
 }

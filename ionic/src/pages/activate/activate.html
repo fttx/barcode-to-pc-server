@@ -19,10 +19,6 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item no-lines no-padding>
-      {{ 'activateInstruction1' | translate }} <a (click)="licenseProvider.showPricingPage('activatePageShowPricing')">{{ 'activateInstruction2' | translate }}</a> {{ 'activateInstruction3' | translate }}
-    </ion-item>
-
     <div [hidden]="licenseProvider.isSubscribed()">
       <ion-item no-lines text-wrap no-padding hidden>
         <b>{{ 'E-mail' | translate }}</b>
@@ -34,7 +30,7 @@
         <input [(ngModel)]="serial" type="text" class="serial-container" />
       </ion-item>
 
-      <ion-item no-lines no-padding>
+      <ion-item no-lines no-padding class="activation-controls">
         <button ion-button color="secondary" default float-right (click)="onActivationClick()">{{ 'activateButton' | translate }}</button>
         <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">{{ 'clearButton' | translate }}</button>
       </ion-item>
@@ -55,40 +51,51 @@
       </ion-item>
     </div>
 
-    <ion-item no-lines text-wrap no-padding>
-      <b [hidden]="licenseProvider.isSubscribed()">{{ 'licenseDetails' | translate }}</b> <br>
+    <ion-item no-lines text-wrap no-padding class="license-info">
       <img class="badge" [hidden]="!licenseProvider.isSubscribed()" src="assets/activate/badge.png" alt="">
       <ion-grid [class.license-plate]="licenseProvider.isSubscribed()">
         <ion-row>
-          <ion-col>{{ 'licenseName' | translate }}</ion-col>
-          <ion-col>{{ licenseProvider.getLicenseName() }}</ion-col>
+          <ion-col><b>Barcode to PC {{ licenseProvider.getLicenseName() }}</b></ion-col>
         </ion-row>
-        <ion-row [hidden]="isUnlimited()">
+        <!-- <ion-row [hidden]="isUnlimited()">
           <ion-col>{{ 'nextResetDate' | translate }}</ion-col>
-          <!-- <ion-col [hidden]="!licenseProvider.isSubscribed()">Next bill</ion-col> -->
           <ion-col>{{ getNextChargeDate() }}</ion-col>
+        </ion-row> -->
+        <ion-row>
+          <ion-col>{{ 'Scans' | translate }}</ion-col>
+          <ion-col>{{ getScans() }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>{{ 'remaingScans' | translate }}</ion-col>
-          <ion-col>{{ getRemainingScans() }}</ion-col>
-        </ion-row>
-        <ion-row>
-          <ion-col>{{ 'maxNumberofSmartphones' | translate }}</ion-col>
+          <ion-col>{{ 'Smartphones' | translate }}</ion-col>
           <ion-col>{{ toReadable(licenseProvider.getNOMaxAllowedConnectedDevices()) }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>{{ 'maxNumberOfComponents' | translate }}</ion-col>
+          <ion-col>{{ 'Output Templates' | translate }}</ion-col>
+          <ion-col>{{ toReadable(licenseProvider.getNOMaxTemplates()) }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{ 'Output Components' | translate }}</ion-col>
           <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>{{ 'numberComponent' | translate }}</ion-col>
+          <ion-col>{{ 'NUMBER Component' | translate }}</ion-col>
           <ion-col>{{ numberComponent }}</ion-col>
         </ion-row>
         <ion-row>
-          <ion-col>{{ 'appendToCSV' | translate }}</ion-col>
+          <ion-col>{{ 'Real-time CSV Output' | translate }}</ion-col>
+          <ion-col>{{ appendToCSV }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{ 'Real-time Excel Output' | translate }}</ion-col>
           <ion-col>{{ appendToCSV }}</ion-col>
         </ion-row>
       </ion-grid>
+    </ion-item>
+
+    <ion-item no-padding class="pulsing">
+      <button ion-button default color="secondary" text-center (click)="licenseProvider.showPricingPage('activatePageShowPricing')" class="upgrade-button pulsable">
+        {{ 'Upgrade' | translate }}
+      </button>
     </ion-item>
 
     <ion-item no-lines no-padding>

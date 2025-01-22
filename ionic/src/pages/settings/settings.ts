@@ -17,6 +17,7 @@ import { LicenseProvider } from '../../providers/license/license';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { OutputProfileExportedModel } from '../../models/output-profile-exported.model';
 import { ExportOutputTemplatePopoverPage } from '../export-output-template-popover/export-output-template-popover';
+import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
 
 /**
  * Generated class for the SettingsPage page.
@@ -99,7 +100,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     private dragulaService: DragulaService,
     private electronProvider: ElectronProvider,
     private licenseProvider: LicenseProvider,
-    private alertCtrl: AlertController,
+    private alertCtrl: BtpAlertController,
     public events: Events,
     private ngZone: NgZone,
     private utils: UtilsProvider,
@@ -379,7 +380,8 @@ export class SettingsPage implements OnInit, OnDestroy {
         buttons: [
           {
             text: await this.utils.text('unsavedSettingsDialogCancelButton'),
-            handler: () => { }
+            handler: () => { },
+            role: 'cancel'
           }, {
             text: await this.utils.text('unsavedSettingsDialogDiscardButton'),
             handler: () => {

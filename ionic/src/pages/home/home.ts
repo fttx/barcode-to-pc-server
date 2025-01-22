@@ -17,6 +17,7 @@ import { SettingsPage } from '../settings/settings';
 import { throttle } from 'helpful-decorators';
 import { Config } from '../../config';
 import { ImageViewerPage } from '../image-viewer/image-viewer';
+import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -48,9 +49,10 @@ export class HomePage {
     public events: Events,
     public title: Title,
     public devicesProvider: DevicesProvider,
-    private alertCtrl: AlertController,
+    private alertCtrl: BtpAlertController,
     public licenseProvider: LicenseProvider,
     public utils: UtilsProvider,
+    public modalCtrl: ModalController,
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
@@ -495,6 +497,10 @@ export class HomePage {
   public virtualTrackById(index, scan: ScanModel) {
     return scan.id;
   }
+
+  onActivateClick() {
+    this.modalCtrl.create(ActivatePage).present();
+  }
 }
 
 
@@ -550,7 +556,7 @@ export class ScanSessionContextMenuPopover {
     public navParams: NavParams,
     public electronProvider: ElectronProvider,
     public events: Events,
-    private alertCtrl: AlertController,
+    private alertCtrl: BtpAlertController,
     private utils: UtilsProvider,
   ) {
     this.scanSession = this.navParams.get('scanSession');
@@ -598,7 +604,6 @@ export class ScanSessionContextMenuPopover {
     <ion-list>
       <ion-list-header>{{ 'mainMenuPopoverHeader' | translate }}</ion-list-header>
       <button ion-item (click)="onShowPairQrCodeClick()" class="show-pair-qr-code-button">{{ 'mainMenuPopoverPair' | translate }}</button>
-      <button ion-item (click)="onActivateClick()">{{ 'mainMenuPopoverActivate' | translate }}</button>
       <button ion-item (click)="onInfoClick()">{{ 'mainMenuPopoverInfo' | translate }}</button>
     </ion-list>
   `
@@ -621,11 +626,6 @@ export class MainMenuPopover {
   onInfoClick() {
     this.close()
     this.modalCtrl.create(InfoPage).present();
-  }
-
-  onActivateClick() {
-    this.close();
-    this.modalCtrl.create(ActivatePage).present();
   }
 }
 

@@ -68,11 +68,11 @@ export class ActivatePage {
     this.licenseProvider.deactivate(true);
   }
 
-  getRemainingScans() {
+  getScans() {
     if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
       return this.translateService.instant('featureUnlimited');
     }
-    return this.licenseProvider.getNOMaxAllowedScansPerMonth() - this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0)
+    return this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) + '/' + this.licenseProvider.getNOMaxAllowedScansPerMonth();
   }
 
   getNextChargeDate() {

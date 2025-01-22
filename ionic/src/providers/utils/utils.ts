@@ -10,6 +10,7 @@ import { OutputProfileModel } from '../../models/output-profile.model';
 import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';
+import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -173,7 +174,7 @@ export class UtilsProvider {
 
   constructor(
     private electronProvider: ElectronProvider,
-    private alertCtrl: AlertController,
+    private alertCtrl: BtpAlertController,
     public storage: Storage,
     private translateService: TranslateService,
   ) {
@@ -546,4 +547,3 @@ export class UtilsProvider {
     return NutjsKey.Space;
   }
 }
-

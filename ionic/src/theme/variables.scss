@@ -218,3 +218,96 @@ popper-content {
     max-height: 400px !important;
   }
 }
+
+// BTPv2 alert
+.btpv2-alert {
+  @media screen and (max-height: 400px) {
+    padding-top: 8px !important;
+  }
+
+  .button-md {
+    border-radius: 100px !important;
+    box-shadow: none !important;
+  }
+
+  ion-item-options .button-md {
+    border-radius: 0 !important;
+  }
+
+  .alert-input-group {
+    padding-bottom: 8px !important;
+  }
+
+  .alert-head {
+    padding-bottom: 0 !important;
+  }
+
+  .alert-wrapper {
+    border-radius: 20px !important;
+    width: 85vw !important;
+    max-width: 350px !important;
+    justify-content: space-between !important;
+    min-height: 210px;
+  }
+
+  .alert-message {
+    color: #4f4f4f !important;
+    margin-top: 10px;
+    padding-bottom: 0 !important;
+  }
+
+  .btpv2-btn {
+    justify-content: center !important;
+    margin: 8px 0 0 0 !important;
+    text-align: center !important;
+
+    .button-inner {
+      justify-content: center !important;
+    }
+  }
+
+  .alert-button-group {
+    flex-direction: column !important;
+    padding: 0px 23px 23px 23px !important;
+    margin: 15px 0 0 0 !important;
+  }
+
+  .alert-checkbox-group {
+    border: none !important;
+    margin: 11px 0 -11px 11px !important;
+  }
+
+  .btpv2-btn-primary {
+    background-color: map-get($colors, primary) !important;
+    color: map-get($colors, text) !important;
+    border-radius: 100px !important;
+  }
+
+  .btpv2-btn-cancel {
+    border: 1px solid map-get($colors, primary) !important;
+    color: map-get($colors, primary) !important;
+    border-radius: 100px !important;
+  }
+
+  .btpv2-btn-text-cancel {
+    color: #878787 !important;
+    text-transform: none !important;
+    text-decoration: underline !important;
+    font-weight: normal !important;
+    padding: 5px 0 0px 0 !important;
+  }
+
+  .btpv2-btn-text-cancel.activated {
+    background-color: transparent !important;
+  }
+
+  .alert-input {
+    border: 1px solid map-get($colors, info) !important;
+    border-radius: 4px !important;
+    padding: 10px !important;
+  }
+
+  .alert-input:focus {
+    border: 1px solid map-get($colors, primary) !important;
+  }
+}
