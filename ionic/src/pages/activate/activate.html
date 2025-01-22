@@ -46,12 +46,12 @@
         <b>{{ 'serial' | translate }}</b>
         <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
       </ion-item>
-      <ion-item no-lines no-padding>
+      <ion-item no-lines no-padding class="activation-controls">
         <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">{{ 'deactivate' | translate }}</button>
       </ion-item>
     </div>
 
-    <ion-item no-lines text-wrap no-padding class="license-info">
+    <ion-item no-lines text-wrap no-padding class="license-info" [class.ees-activated]="licenseProvider.isSubscribed()">
       <img class="badge" [hidden]="!licenseProvider.isSubscribed()" src="assets/activate/badge.png" alt="">
       <ion-grid [class.license-plate]="licenseProvider.isSubscribed()">
         <ion-row>
@@ -92,13 +92,14 @@
       </ion-grid>
     </ion-item>
 
-    <ion-item no-padding class="pulsing">
+    <ion-item no-lines no-padding class="pulsing">
       <button ion-button default color="secondary" text-center (click)="licenseProvider.showPricingPage('activatePageShowPricing')" class="upgrade-button pulsable">
         {{ 'Upgrade' | translate }}
       </button>
+      <br>
     </ion-item>
 
-    <ion-item no-lines no-padding>
+    <ion-item no-lines no-padding style="margin-top: -20px">
       {{ 'contactSupport1' | translate }} <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a><br>
       {{ 'contactSupport2' | translate }} <a (click)="ordersSupportClick()">{{ 'contactSupportClickHere' | translate }}</a>.<br>
     </ion-item>
