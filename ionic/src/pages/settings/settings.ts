@@ -324,6 +324,18 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   async onNewOutputTemplateClick() {
+    if (this.settings.outputProfiles.length >= this.licenseProvider.getNOMaxTemplates()) {
+      await this.alertCtrl.create({
+        title: await this.utils.text('outputTemplateLimitReachedDialogTitle'),
+        message: await this.utils.text('outputTemplateLimitReachedDialogMessage'),
+        buttons: [
+          { text: await this.utils.text('upgradeDialogDismissButton'), role: 'cancel' },
+          { text: await this.utils.text('upgradeDialogUpgradeButton'), handler: () => this.licenseProvider.showPricingPage('customOutputFieldOnSubscribeClick') }
+        ]
+      }).present();
+      return;
+    }
+
     let newTemplateName = await this.utils.text('newOutputTemplateName', {
       "number": (this.settings.outputProfiles.length + 1)
     });

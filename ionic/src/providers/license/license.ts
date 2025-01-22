@@ -338,6 +338,25 @@ export class LicenseProvider {
     return count;
   }
 
+  getNOMaxTemplates() {
+    switch (this.activeLicense) {
+      case LicenseProvider.LICENSE_FREE:
+        return 1;
+
+      case LicenseProvider.LICENSE_BASIC:
+      case LicenseProvider.LICENSE_PRO:
+      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+
+      case LicenseProvider.LICENSE_PRO_MONTHLY:
+      case LicenseProvider.LICENSE_PRO_YEARLY:
+      case LicenseProvider.LICENSE_STARTER_MONTHLY:
+      case LicenseProvider.LICENSE_STARTER_YEARLY:
+      default: {
+        LicenseProvider.GetPlanData().templates;
+      }
+    }
+  }
+
   /**
    * Shuld be called when the user tries to drag'n drop the number component.
    * @returns FALSE if the feature should be limited
@@ -415,28 +434,7 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_STARTER_MONTHLY:
       case LicenseProvider.LICENSE_STARTER_YEARLY:
       default: {
-        const license = JSON.parse(localStorage.getItem('license'));
-        return license['plan_data'].components;
-      }
-    }
-  }
-
-  getNOMaxTemplates() {
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE:
-        return 1;
-
-      case LicenseProvider.LICENSE_BASIC:
-      case LicenseProvider.LICENSE_PRO:
-      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
-
-      case LicenseProvider.LICENSE_PRO_MONTHLY:
-      case LicenseProvider.LICENSE_PRO_YEARLY:
-      case LicenseProvider.LICENSE_STARTER_MONTHLY:
-      case LicenseProvider.LICENSE_STARTER_YEARLY:
-      default: {
-        const license = JSON.parse(localStorage.getItem('license'));
-        return license['plan_data'].templates;
+        LicenseProvider.GetPlanData().components;
       }
     }
   }
