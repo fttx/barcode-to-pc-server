@@ -338,7 +338,7 @@ export class LicenseProvider {
     return count;
   }
 
-  getNOMaxTemplates() {
+  getNOMaxTemplates(): number {
     switch (this.activeLicense) {
       case LicenseProvider.LICENSE_FREE:
         return 1;
@@ -352,9 +352,10 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_STARTER_MONTHLY:
       case LicenseProvider.LICENSE_STARTER_YEARLY:
       default: {
-        LicenseProvider.GetPlanData().templates;
+        return LicenseProvider.GetPlanData().templates;
       }
     }
+    return 1;
   }
 
   /**
@@ -422,7 +423,7 @@ export class LicenseProvider {
     });
   }
 
-  getNOMaxComponents() {
+  getNOMaxComponents(): number {
     switch (this.activeLicense) {
       case LicenseProvider.LICENSE_FREE: return 4;
       case LicenseProvider.LICENSE_BASIC: return 5;
@@ -434,12 +435,13 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_STARTER_MONTHLY:
       case LicenseProvider.LICENSE_STARTER_YEARLY:
       default: {
-        LicenseProvider.GetPlanData().components;
+        return LicenseProvider.GetPlanData().components;
       }
     }
+    return 4;
   }
 
-  getNOMaxAllowedConnectedDevices() {
+  getNOMaxAllowedConnectedDevices(): number {
     switch (this.activeLicense) {
       case LicenseProvider.LICENSE_FREE: return 1;
       case LicenseProvider.LICENSE_BASIC: return 1;
@@ -454,6 +456,7 @@ export class LicenseProvider {
         return LicenseProvider.GetPlanData().devices;
       }
     }
+    return 1;
   }
 
   getNOMaxAllowedScansPerMonth() {
@@ -466,6 +469,7 @@ export class LicenseProvider {
         return LicenseProvider.GetPlanData().scans;
       }
     }
+    return 300 + this.getScanOffset();
   }
 
   getScanOffset() {
