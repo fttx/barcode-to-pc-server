@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as v4 from 'uuid/v4';
+import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
 
 declare var window: any;
 
@@ -31,6 +32,7 @@ export class ElectronProvider {
   processPlatform: any;
 
   constructor(
+    private alertCtrl: BtpAlertController,
   ) {
     if (ElectronProvider.isElectron()) {
       // preload
@@ -83,6 +85,13 @@ export class ElectronProvider {
       this.appGetVersion = function () { return '0.0.0' };
       this.processArgv = '';
       this.ipcRenderer = { on: (channel, listener) => { }, send: (channel, ...args) => { } };
+      this.showMessageBoxSync = (options) => {
+        this.alertCtrl.create({
+          title: options.title,
+          subTitle: options.message,
+          buttons: options.buttons,
+        }).present();
+      };
     }
   }
 
