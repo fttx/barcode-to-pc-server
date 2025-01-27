@@ -99,6 +99,10 @@
       <br>
     </ion-item>
 
+    <ion-item *ngIf="electronProvider.isDev()" text-wrap no-padding>
+      <b>Debug</b> - License = {{ getLicense() | json }}<br><br>
+    </ion-item>
+
     <ion-item no-lines no-padding style="margin-top: -20px">
       {{ 'contactSupport1' | translate }} <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a><br>
       {{ 'contactSupport2' | translate }} <a (click)="ordersSupportClick()">{{ 'contactSupportClickHere' | translate }}</a>.<br>

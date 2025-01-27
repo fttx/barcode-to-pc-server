@@ -58,11 +58,16 @@ export class LicenseProvider {
     private utilsProvider: UtilsProvider,
     private devicesProvider: DevicesProvider,
     public events: Events,
-  ) { this.init(); }
+  ) {
+    this.init();
+  }
 
   async init(): Promise<void> {
-    console.log('license.ts init()')
     await this.updateSubscriptionStatus();
+
+    setInterval(() => {
+      this.updateSubscriptionStatus();
+    }, 1000 * 60 * 60 * 24 * 15); // 15 days (We cannot use 31 since we excede 32 bit-intergers)
 
     this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
       let lastDevice = devicesList[devicesList.length - 1];
@@ -124,7 +129,15 @@ export class LicenseProvider {
 
       if (canResetScanCount) {
         this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
-        this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
+        // For the life-time license type we generate then next charge date automatically
+        switch (this.activeLicense) {
+          case LicenseProvider.LICENSE_FREE:
+          case LicenseProvider.LICENSE_BASIC:
+          case LicenseProvider.LICENSE_PRO:
+          case LicenseProvider.LICENSE_UNLIMITED: {
+            this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
+          }
+        }
       }
 
       if (serial === '' && this.serial === '' && this.activeLicense === LicenseProvider.LICENSE_FREE) {
@@ -139,16 +152,29 @@ export class LicenseProvider {
         this.electronProvider.store.set(Config.STORAGE_FIRST_LICENSE_CHECK_FAIL_DATE, 0);
         if (value['active'] === true) {
 
+          // We always override what we have in the storage
           localStorage.setItem('license', JSON.stringify(value));
+          switch (value['plan']) {
+            case LicenseProvider.LICENSE_PRO_MONTHLY:
+            case LicenseProvider.LICENSE_PRO_YEARLY:
+            case LicenseProvider.LICENSE_STARTER_MONTHLY:
+            case LicenseProvider.LICENSE_STARTER_YEARLY: {
+              // For the subscription model we use the server data as source of truth for the next charge date
+              // This way the user sees coherent data between the app and the account management page
+              // The only caevat is that the user must have an internet connection at least once a month or
+              // the app won't never reset the scan count
+              const nextChargeDate = new Date(value['next_charge_date']).getTime();
+              this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, nextChargeDate);
+            }
+          }
 
+          // This happens only if  we manually change the license from the db
           if (this.activeLicense !== value['plan']) {
             if (value['version'] === 'v3') {
               await this.showV4UpgradeDialog();
               resolve();
               return;
             }
-
-            console.log('upgrade');
             this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, this.generateNextChargeDate());
             this.electronProvider.store.set(Config.STORAGE_SUBSCRIPTION, value['plan']);
             this.activeLicense = value['plan'];
@@ -340,22 +366,18 @@ export class LicenseProvider {
 
   getNOMaxTemplates(): number {
     switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE:
-        return 1;
+      case LicenseProvider.LICENSE_FREE: { return 1; }
 
       case LicenseProvider.LICENSE_BASIC:
       case LicenseProvider.LICENSE_PRO:
-      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
+      case LicenseProvider.LICENSE_UNLIMITED: { return Number.MAX_SAFE_INTEGER; }
 
       case LicenseProvider.LICENSE_PRO_MONTHLY:
       case LicenseProvider.LICENSE_PRO_YEARLY:
       case LicenseProvider.LICENSE_STARTER_MONTHLY:
       case LicenseProvider.LICENSE_STARTER_YEARLY:
-      default: {
-        return LicenseProvider.GetPlanData().templates;
-      }
+      default: { return LicenseProvider.GetPlanData().templates; }
     }
-    return 1;
   }
 
   /**
@@ -375,9 +397,7 @@ export class LicenseProvider {
         case LicenseProvider.LICENSE_PRO_YEARLY:
         case LicenseProvider.LICENSE_STARTER_MONTHLY:
         case LicenseProvider.LICENSE_STARTER_YEARLY:
-        default: {
-          return true;
-        }
+        default: { available = true; }
       }
 
       if (!available && showUpgradeDialog) {
@@ -408,9 +428,7 @@ export class LicenseProvider {
         case LicenseProvider.LICENSE_PRO_YEARLY:
         case LicenseProvider.LICENSE_STARTER_MONTHLY:
         case LicenseProvider.LICENSE_STARTER_YEARLY:
-        default: {
-          return true;
-        }
+        default: { available = true; }
       }
       if (!available && showUpgradeDialog) {
         await this.showUpgradeDialog(
@@ -430,15 +448,8 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_PRO: return 10;
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
 
-      case LicenseProvider.LICENSE_PRO_MONTHLY:
-      case LicenseProvider.LICENSE_PRO_YEARLY:
-      case LicenseProvider.LICENSE_STARTER_MONTHLY:
-      case LicenseProvider.LICENSE_STARTER_YEARLY:
-      default: {
-        return LicenseProvider.GetPlanData().components;
-      }
+      default: { return LicenseProvider.GetPlanData().components; }
     }
-    return 4;
   }
 
   getNOMaxAllowedConnectedDevices(): number {
@@ -448,15 +459,8 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_PRO: return 3;
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
 
-      case LicenseProvider.LICENSE_PRO_MONTHLY:
-      case LicenseProvider.LICENSE_PRO_YEARLY:
-      case LicenseProvider.LICENSE_STARTER_MONTHLY:
-      case LicenseProvider.LICENSE_STARTER_YEARLY:
-      default: {
-        return LicenseProvider.GetPlanData().devices;
-      }
+      default: { return LicenseProvider.GetPlanData().devices; }
     }
-    return 1;
   }
 
   getNOMaxAllowedScansPerMonth() {
@@ -465,11 +469,8 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_BASIC: return 1000 + this.getScanOffset();
       case LicenseProvider.LICENSE_PRO: return 10000 + this.getScanOffset();
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
-      default: {
-        return LicenseProvider.GetPlanData().scans;
-      }
+      default: { return LicenseProvider.GetPlanData().scans; }
     }
-    return 300 + this.getScanOffset();
   }
 
   getScanOffset() {

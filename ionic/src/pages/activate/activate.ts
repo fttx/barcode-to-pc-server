@@ -106,4 +106,8 @@ export class ActivatePage {
   isUnlimited() {
     return this.licenseProvider.activeLicense == LicenseProvider.LICENSE_UNLIMITED;
   }
+
+  getLicense() {
+    return JSON.parse(localStorage.getItem('license'));
+  }
 }
