@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "Permissões de Acessibilidade",
   "accessibilityPermissionsDialogMessage": "Para habilitar o recurso \"Emulação de Teclado\", você deve conceder permissões de Acessibilidade ao {{ appName }}. <br/><br/>Por favor, certifique-se de que {{\u00a0appName }}:<br><br>&bullet; Está presente na lista permitida<br>&bullet; E que está marcado",
   "accessibilityPermissionsDialogCancel": "Cancelar",
-  "accessibilityPermissionsDialogHelp": "Ajuda",
+  "accessibilityPermissionsDialogHelp": "Mostrar instruções",
   "accessibilityPermissionsDialogSystemPreferences": "Abrir Preferências do Sistema",
   "versionMismatchDialogTitle": "Incompatibilidade de versão do servidor/app",
   "versionMismatchDialogMessage": "Por favor, atualize tanto o aplicativo quanto o servidor, caso contrário, eles podem não funcionar corretamente.<br><br>O servidor pode ser baixado em {{ websiteName }}",

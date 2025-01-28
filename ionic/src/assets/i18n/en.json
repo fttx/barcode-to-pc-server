@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "Accessibility permissions",
   "accessibilityPermissionsDialogMessage": "In order to enable the \"Keyboard Emulation\" feature, you must give {{ appName }}  the Accessibility permissions. <br/><br/>Please make you sure that {{ appName }}:<br><br>&bullet; Is present in the allowed list<br>&bullet; And that it is checked",
   "accessibilityPermissionsDialogCancel": "Cancel",
-  "accessibilityPermissionsDialogHelp": "welcome_help",
+  "accessibilityPermissionsDialogHelp": "Show instructions",
   "accessibilityPermissionsDialogSystemPreferences": "Open System Preferences",
   "versionMismatchDialogTitle": "Server/app version mismatch",
   "versionMismatchDialogMessage": "Please update both app and server, otherwise they may not work properly.<br><br>Server can be downloaded at {{ websiteName }}",

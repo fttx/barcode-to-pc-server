@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "Erişilebilirlik izinleri",
   "accessibilityPermissionsDialogMessage": "\"Klavye Emülasyonu\" özelliğini etkinleştirmek için {{ appName }}'e Erişilebilirlik izinleri vermelisiniz. <br/><br/>Lütfen {{\u00a0appName }}'in:<br><br>&bullet; İzin verilenler listesinde olduğundan<br>&bullet; Ve işaretlendiğinden emin olun",
   "accessibilityPermissionsDialogCancel": "İptal",
-  "accessibilityPermissionsDialogHelp": "Yardım",
+  "accessibilityPermissionsDialogHelp": "Talimatları göster",
   "accessibilityPermissionsDialogSystemPreferences": "Sistem Tercihlerini Aç",
   "versionMismatchDialogTitle": "Sunucu/Uygulama sürüm uyumsuzluğu",
   "versionMismatchDialogMessage": "Lütfen hem uygulamayı hem de sunucuyu güncelleyin, aksi takdirde düzgün çalışmayabilirler.<br><br>Sunucuyu {{ websiteName }}'den indirebilirsiniz",

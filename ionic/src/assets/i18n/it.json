@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "Permessi di Accessibilità",
   "accessibilityPermissionsDialogMessage": "Per abilitare l'\"Emulazione della tastiera\", è necessario autorizzare {{ appName }} nelle impostazioni di Accessibilità di sistema. <br/><br/>Assicurati che {{ appName }} sia:<br><br>&bullet; Sia presente nella lista dei consentiti<br>&bullet; E che sia selezionato (spunta attiva)",
   "accessibilityPermissionsDialogCancel": "Annulla",
-  "accessibilityPermissionsDialogHelp": "Aiuto",
+  "accessibilityPermissionsDialogHelp": "Mostra istruzioni",
   "accessibilityPermissionsDialogSystemPreferences": "Apri Preferenze di Sistema",
   "versionMismatchDialogTitle": "Aggiornamento disponibile",
   "versionMismatchDialogMessage": "Assicurati che l'app e il server siano aggiornati onde evitare problemi di incompatibilità.<br><br>Il server può essere scaricato da {{ websiteName }}",

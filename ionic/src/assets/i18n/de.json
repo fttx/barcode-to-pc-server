@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "Zugänglichkeitsberechtigungen",
   "accessibilityPermissionsDialogMessage": "Um die Funktion \"Tastaturemulation\" zu aktivieren, müssen Sie {{ appName }} die Zugänglichkeitsberechtigungen erteilen. <br/><br/>Bitte stellen Sie sicher, dass {{\u00a0appName }}:<br><br>&bullet; In der erlaubten Liste vorhanden ist<br>&bullet; Und dass es markiert ist",
   "accessibilityPermissionsDialogCancel": "Abbrechen",
-  "accessibilityPermissionsDialogHelp": "Hilfe",
+  "accessibilityPermissionsDialogHelp": "Anweisungen anzeigen",
   "accessibilityPermissionsDialogSystemPreferences": "Systemeinstellungen öffnen",
   "versionMismatchDialogTitle": "Server/App-Version nicht kompatibel",
   "versionMismatchDialogMessage": "Bitte aktualisieren Sie sowohl die App als auch den Server, da sie sonst möglicherweise nicht richtig funktionieren.<br><br>Der Server kann von {{ websiteName }} heruntergeladen werden",

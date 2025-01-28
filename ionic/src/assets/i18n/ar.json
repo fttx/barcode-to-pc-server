@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "صلاحيات الوصول",
   "accessibilityPermissionsDialogMessage": "لتمكين ميزة \"محاكاة الوحة المفاتيح\"، يجب عليك إعطاء {{ appName }} صلاحيات الوصول. <br/><br/>يرجى التأكد من أن {{ appName }}:<br><br>• موجود في قائمة الأذونات المسموح بها<br>• وأنه محدد",
   "accessibilityPermissionsDialogCancel": "إلغاء",
-  "accessibilityPermissionsDialogHelp": "المساعدة",
+  "accessibilityPermissionsDialogHelp": "عرض التعليمات",
   "accessibilityPermissionsDialogSystemPreferences": "افتح تفضيلات النظام",
   "versionMismatchDialogTitle": "عدم تطابق إصدار الخادم/التطبيق",
   "versionMismatchDialogMessage": "يرجى تحديث كل من التطبيق والخادم، وإلا قد لا يعملان بشكل صحيح. <br><br>يمكن تنزيل الخادم من {{ websiteName }}",

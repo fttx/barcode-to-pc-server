@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "Permisos de accesibilidad",
   "accessibilityPermissionsDialogMessage": "Para habilitar la característica \"Emulación de teclado\", debe conceder a {{ appName }} los permisos de accesibilidad. <br/><br/>Asegúrese de que {{ appName }}:<br><br>&bullet; Está presente en la lista de permitidos<br>&bullet; Y que está marcada",
   "accessibilityPermissionsDialogCancel": "Cancelar",
-  "accessibilityPermissionsDialogHelp": "Ayuda",
+  "accessibilityPermissionsDialogHelp": "Mostrar instrucciones",
   "accessibilityPermissionsDialogSystemPreferences": "Abrir preferencias del sistema",
   "versionMismatchDialogTitle": "No coinciden las versiones del servidor/aplicación",
   "versionMismatchDialogMessage": "Actualice tanto la aplicación como el servidor, de lo contrario es posible que no funcionen correctamente.<br><br>El servidor se puede descargar en {{ websiteName }}",

@@ -65,7 +65,7 @@
   "accessibilityPermissionsDialogTitle": "輔助功能權限",
   "accessibilityPermissionsDialogMessage": "要啟用\"鍵盤模擬\"功能，您必須授予 {{ appName }} 輔助功能權限。 <br/><br/>請確保 {{\u00a0appName }}:<br><br>&bullet; 在允許清單中<br>&bullet; 並且已被勾選",
   "accessibilityPermissionsDialogCancel": "取消",
-  "accessibilityPermissionsDialogHelp": "幫助",
+  "accessibilityPermissionsDialogHelp": "顯示說明",
   "accessibilityPermissionsDialogSystemPreferences": "打開系統偏好設定",
   "versionMismatchDialogTitle": "伺服器/應用程式版本不匹配",
   "versionMismatchDialogMessage": "請同時更新應用程式和伺服器，否則它們可能無法正常工作。<br><br>伺服器可以在 {{ websiteName }} 下載",

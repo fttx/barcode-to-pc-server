@@ -337,8 +337,12 @@ export class HomePage {
         }),
         buttons: [
           {
+            text: await this.utils.text('close'),
+            role: 'cancel',
+          },
+          {
             text: await this.utils.text('accessibilityPermissionsDialogCancel'),
-            role: 'dismiss'
+            role: 'cancel',
           },
           {
             text: await this.utils.text('accessibilityPermissionsDialogHelp'), handler: () => {
