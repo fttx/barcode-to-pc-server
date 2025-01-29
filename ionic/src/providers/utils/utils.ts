@@ -192,18 +192,9 @@ export class UtilsProvider {
         return;
       }
 
-      Promise.all([this.getDefaultLocalAddress(), this.getHostname(), this.getLocalAddresses()]).then((results: any[]) => {
-        let defaultLocalAddress = results[0];
-        let hostname = results[1];
-        let localAddresses = results[2];
-
-        let index = localAddresses.indexOf(defaultLocalAddress);
-        if (index > -1) { // removes the defaultLocalAddress from the localAddresses list
-          localAddresses.splice(index, 1);
-        }
-        if (defaultLocalAddress) { // Adds the defaultLocalAddress at very beginning of the list
-          localAddresses.unshift(defaultLocalAddress);
-        }
+      Promise.all([this.getHostname(), this.getLocalAddresses()]).then((results: any[]) => {
+        let hostname = results[0];
+        let localAddresses = results[1];
         resolve(Config.URL_PAIR + '/?h=' + encodeURIComponent(hostname) + '&a=' + encodeURIComponent(localAddresses.join('-')));
       });
     })
@@ -286,17 +277,6 @@ export class UtilsProvider {
       this.electronProvider.ipcRenderer.send('getLocalAddresses');
     })
   }
-
-
-  private getDefaultLocalAddress(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      this.electronProvider.ipcRenderer.on('defaultLocalAddress', (e, defaultLocalAddress) => {
-        resolve(defaultLocalAddress);
-      });
-      this.electronProvider.ipcRenderer.send('getDefaultLocalAddress');
-    })
-  }
-
 
   private getHostname(): Promise<string> {
     return new Promise((resolve, reject) => {
