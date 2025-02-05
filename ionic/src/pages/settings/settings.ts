@@ -18,6 +18,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
 import { OutputProfileExportedModel } from '../../models/output-profile-exported.model';
 import { ExportOutputTemplatePopoverPage } from '../export-output-template-popover/export-output-template-popover';
 import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
+import { TelemetryService } from '../../providers/telemetry/telemetry';
 
 /**
  * Generated class for the SettingsPage page.
@@ -105,6 +106,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     private ngZone: NgZone,
     private utils: UtilsProvider,
     public modalCtrl: ModalController,
+    private telemetryService: TelemetryService,
   ) {
     this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
@@ -204,6 +206,15 @@ export class SettingsPage implements OnInit, OnDestroy {
           });
         }
       }
+
+      this.telemetryService.sendEvent('settings_save', null, null);
+      this.telemetryService.sendEvent('max_templates_count', this.settings.outputProfiles.length, null);
+      const maxComponents = this.settings.outputProfiles.reduce((max, profile) => Math.max(max, profile.outputBlocks.length), 0);
+      this.telemetryService.sendEvent('max_components_count', maxComponents, null);
+      this.telemetryService.sendEvent('keyboard_emulation', this.settings.enableRealtimeStrokes ? 1 : 0, null);
+      this.telemetryService.sendEvent('csv_output', this.settings.appendCSVEnabled ? 1 : 0, null);
+      this.telemetryService.sendEvent('excel_output', this.settings.outputToExcelEnabled ? 1 : 0, null);
+
       this.lastSavedSettings = JSON.stringify(this.settings);
       if (ElectronProvider.isElectron()) {
         this.electronProvider.ipcRenderer.send('settings');

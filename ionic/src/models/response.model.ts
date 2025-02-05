@@ -21,6 +21,7 @@ export abstract class responseModel {
     public static readonly ACTION_REMOTE_COMPONENT_RESPONSE = 'remoteComponentResponse';
     public static readonly EVENT_ON_SMARTPHONE_CHARGE = 'on_smartphone_charge';
     public static readonly ACTION_SHOW_EMAIL_INCENTIVE_ALERT = 'action_show_email_incentive_alert';
+    public static readonly ACTION_UNKICK = 'unkick';
 }
 
 /**
@@ -43,6 +44,7 @@ export class responseModelHelo extends responseModel {
     events: string[];
     serverUUID: string;
     savedGeoLocations: { name: string, latitude: number, longitude: number }[];
+    kicked: boolean;
 
     /**
      * @deprecated Use OutputProfiles instead
@@ -162,6 +164,14 @@ export class responseModelRemoteComponentResponse extends responseModel {
         this.id = obj.id;
         this.errorMessage = obj.errorMessage;
         this.outputBlock = obj.outputBlock;
+        return this;
+    }
+}
+
+export class responseModelUnkick {
+    public action = responseModel.ACTION_UNKICK;
+
+    fromObject(): this {
         return this;
     }
 }

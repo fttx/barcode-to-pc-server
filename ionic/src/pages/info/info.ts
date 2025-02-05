@@ -6,6 +6,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { HttpClient } from '@angular/common/http';
+import { TelemetryService } from '../../providers/telemetry/telemetry';
 
 /**
  * Generated class for the InfoPage page.
@@ -34,7 +35,8 @@ export class InfoPage {
     public utils: UtilsProvider,
     private translateService: TranslateService,
     private http: HttpClient,
-    private alertController: AlertController
+    private alertController: AlertController,
+    private telemetryProvider: TelemetryService
   ) {
   }
 
@@ -54,6 +56,7 @@ export class InfoPage {
     // Now i tell the main process to call it once again to check
     // to perform an update check when the Info page is opened.
     this.electronProvider.ipcRenderer.send('checkForUpdates');
+    this.telemetryProvider.sendEvent('page_info', null, null);
   }
 
   // ion-toggle event

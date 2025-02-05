@@ -4,8 +4,9 @@ import { ReplaySubject } from 'rxjs';
 import { DeviceModel } from '../../models/device.model';
 import { requestModel, requestModelHelo } from '../../models/request.model';
 import { ElectronProvider } from '../electron/electron';
-import { responseModelKick } from '../../models/response.model';
+import { responseModel, responseModelKick, responseModelUnkick } from '../../models/response.model';
 import { SemVer } from 'semver';
+import { TelemetryService } from '../telemetry/telemetry';
 
 @Injectable()
 export class DevicesProvider {
@@ -22,6 +23,7 @@ export class DevicesProvider {
 
   constructor(
     private ngZone: NgZone,
+    private telemetryProvider: TelemetryService,
     private electronProvider: ElectronProvider,
   ) {
     if (ElectronProvider.isElectron()) {
@@ -47,22 +49,35 @@ export class DevicesProvider {
 
   kickDevice(device: DeviceModel, message = '') {
     device.kicked = true;
-    let data = {
-      deviceId: device.deviceId,
+    this.electronProvider.ipcRenderer.send(responseModel.ACTION_KICK, {
+      device,
       response: new responseModelKick().fromObject({
         message: message
       })
-    }
-    this.electronProvider.ipcRenderer.send('kick', data);
+    });
   }
 
   kickAllDevices(message = '') {
     this.devices.forEach(device => this.kickDevice(device, message));
   }
 
+  unkickDevice(device: DeviceModel, message = '') {
+    device.kicked = false;
+    this.electronProvider.ipcRenderer.send(responseModel.ACTION_UNKICK, {
+      device,
+      response: new responseModelUnkick().fromObject()
+    });
+  }
+
+  unkickAllDevices(message = '') {
+    this.devices.forEach(device => this.unkickDevice(device, message));
+  }
+
   private addDevice(device: DeviceModel) {
     if (this.devices.findIndex(x => x.equals(device)) == -1) {
       this.devices.push(device);
+      this.telemetryProvider.sendEvent('device_connect', 1, device.name);
+      this.telemetryProvider.sendEvent('max_devices_count', this.devices.length, null);
       this._onDeviceConnect.next(device);
     }
     this._onConnectedDevicesListChange.next(this.devices);
@@ -71,6 +86,7 @@ export class DevicesProvider {
   private removeDevice(deviceId: string) {
     let index = this.devices.findIndex(x => x.deviceId == deviceId);
     if (index != -1) {
+      this.telemetryProvider.sendEvent('device_disconnect', 1, this.devices[index].name);
       this._onDeviceDisconnect.next(this.devices[index]);
       this.devices.splice(index, 1);
     }

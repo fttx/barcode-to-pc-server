@@ -58,6 +58,7 @@ import { ImageViewerPage } from '../pages/image-viewer/image-viewer';
 import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template-popover/export-output-template-popover';
 import { ComponentEditorGeolocationPage } from '../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
+import { TelemetryService } from '../providers/telemetry/telemetry';
 
 @NgModule({
   declarations: [
@@ -177,6 +178,7 @@ import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-
     DevicesProvider,
     LicenseProvider,
     BtpAlertController,
+    TelemetryService,
   ]
 })
 export class AppModule { }

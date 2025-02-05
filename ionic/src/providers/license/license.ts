@@ -10,6 +10,7 @@ import { DevicesProvider } from '../devices/devices';
 import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
 import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
+import { TelemetryService } from '../telemetry/telemetry';
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -58,6 +59,7 @@ export class LicenseProvider {
     private utilsProvider: UtilsProvider,
     private devicesProvider: DevicesProvider,
     public events: Events,
+    private telemetryProvider: TelemetryService
   ) {
     this.init();
   }
@@ -186,8 +188,10 @@ export class LicenseProvider {
               this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
             }
             this.electronProvider.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
+            this.devicesProvider.unkickAllDevices();
             this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
             window.confetti.start(3000);
+            this.telemetryProvider.sendEvent('license_activate', null, this.activeLicense);
             this.events.publish('license:activate');
           }
 
@@ -251,6 +255,7 @@ export class LicenseProvider {
         }
       }
       this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
+      this.telemetryProvider.sendEvent('license_deactivate', null, this.activeLicense);
       this.events.publish('license:deactivate');
     }
 
@@ -309,15 +314,17 @@ export class LicenseProvider {
     }
 
     // Put everything together and open the url in the system browser
+    const params = {
+      currentPlan: this.activeLicense,
+      customOutputField: customOutputField,
+      scanLimitReached: scanLimitReached,
+      periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
+      refer: refer,
+    };
     this.electronProvider.shell.openExternal(
-      this.utilsProvider.appendParametersToURL(Config.URL_PRICING, {
-        currentPlan: this.activeLicense,
-        customOutputField: customOutputField,
-        scanLimitReached: scanLimitReached,
-        periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
-        refer: refer,
-      })
+      this.utilsProvider.appendParametersToURL(Config.URL_PRICING, params)
     );
+    this.telemetryProvider.sendEvent('upgrade_click', null, JSON.stringify(params));
   }
 
   /**
@@ -510,6 +517,7 @@ export class LicenseProvider {
         }
       }]
     });
+    this.telemetryProvider.sendEvent('limit_reached', null, refer);
     this.upgradeDialog.onDidDismiss(() => this.upgradeDialog = null)
     this.upgradeDialog.present();
   }

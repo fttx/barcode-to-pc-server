@@ -192,8 +192,9 @@ export class MyApp {
         checkDeepLink(url);
       });
 
-      this.electronProvider.ipcRenderer.on('email', (event, email) => {
-        localStorage.setItem('email', email);
+      this.electronProvider.ipcRenderer.on('incentive_email', (event, argv) => {
+        localStorage.setItem('email', argv.email);
+        localStorage.setItem('name', argv.name);
         window.confetti_v2(`Free Unlocked!`);
       });
     }); // app.ready

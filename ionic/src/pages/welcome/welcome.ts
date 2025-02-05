@@ -9,6 +9,7 @@ import { LastToastProvider } from '../../providers/last-toast/last-toast';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { HomePage } from '../home/home';
 import { WelcomeHelpPage } from '../welcome-help/welcome-help';
+import { TelemetryService } from '../../providers/telemetry/telemetry';
 
 /**
  * Generated class for the WelcomePage page.
@@ -32,6 +33,7 @@ export class WelcomePage {
     private utilsService: UtilsProvider,
     public ngZone: NgZone,
     public modalCtrl: ModalController,
+    private telemetryProvider: TelemetryService
   ) {
     if (ElectronProvider.isElectron()) {
       this.electronProvider.ipcRenderer.on(requestModel.ACTION_HELO, (e, request: requestModelHelo) => {
@@ -48,21 +50,26 @@ export class WelcomePage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad WelcomePage');
+    this.telemetryProvider.sendEvent('page_welcome', null, null);
   }
 
   onSkipClick() {
     this.navCtrl.setRoot(HomePage);
+    this.telemetryProvider.sendEvent('page_welcome_skip', null, null);
   }
 
   onHelpClick() {
     this.modalCtrl.create(WelcomeHelpPage).present();
+    this.telemetryProvider.sendEvent('page_welcome_help', null, null);
   }
 
   onPlayStoreClick() {
     this.electronProvider.shell.openExternal(Config.URL_PLAYSTORE);
+    this.telemetryProvider.sendEvent('page_welcome_playstore', null, null);
   }
 
   onAppStoreClick() {
     this.electronProvider.shell.openExternal(Config.URL_APPSTORE);
+    this.telemetryProvider.sendEvent('page_welcome_appstore', null, null);
   }
 }

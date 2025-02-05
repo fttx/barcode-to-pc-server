@@ -18,6 +18,7 @@ import { throttle } from 'helpful-decorators';
 import { Config } from '../../config';
 import { ImageViewerPage } from '../image-viewer/image-viewer';
 import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
+import { TelemetryService } from '../../providers/telemetry/telemetry';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -612,6 +613,7 @@ export class MainMenuPopover {
   constructor(
     public viewCtrl: ViewController,
     public modalCtrl: ModalController,
+    private telemetryService: TelemetryService,
   ) { }
 
   close() {
@@ -619,11 +621,13 @@ export class MainMenuPopover {
   }
 
   onShowPairQrCodeClick() {
+    this.telemetryService.sendEvent('home_pair', null, null);
     this.close();
     this.modalCtrl.create(QrCodePairingModal).present();
   }
 
   onInfoClick() {
+    this.telemetryService.sendEvent('home_info', null, null);
     this.close()
     this.modalCtrl.create(InfoPage).present();
   }

@@ -13,6 +13,7 @@ export class Config {
   public static URL_APPSTORE = 'https://itunes.apple.com/app/id1180168368';
 
   public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com/v5';
+  public static URL_TELEMETRY = Config.URL_LICENSE_SERVER + '/telemetry';
   public static URL_ORDER_CHECK = Config.URL_LICENSE_SERVER + '/order/check';
   public static URL_ORDER_DEACTIVATE = Config.URL_LICENSE_SERVER + '/order/remove';
 
@@ -47,7 +48,7 @@ export class Config {
 
   public static EMAIL_SUPPORT = 'support@barcodetopc.com';
 
-  public static INCENTIVE_EMAIL_SHOW_THRESHOLD = 10;
+  public static INCENTIVE_EMAIL_SHOW_THRESHOLD = 5;
 
 
   // Constants

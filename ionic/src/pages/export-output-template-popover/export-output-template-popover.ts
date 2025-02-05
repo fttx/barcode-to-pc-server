@@ -4,6 +4,7 @@ import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileExportedModel } from '../../models/output-profile-exported.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
+import { TelemetryService } from '../../providers/telemetry/telemetry';
 
 /**
  * Generated class for the ExportOutputTemplatePopoverPage page.
@@ -30,6 +31,7 @@ export class ExportOutputTemplatePopoverPage {
     public navParams: NavParams,
     private electronProvider: ElectronProvider,
     private viewCtrl: ViewController,
+    private telemetryService: TelemetryService
   ) {
     this.selectedOutputProfile = this.navParams.get('outputProfile');
     this.settings = JSON.parse(this.navParams.get('settings'));
@@ -83,6 +85,7 @@ export class ExportOutputTemplatePopoverPage {
       basePath: this.replaceComponentsBasePath ? this.basePath : null,
     };
     this.viewCtrl.dismiss(this.selectedOutputProfile);
+    this.telemetryService.sendEvent('settings_export_template', null, null);
   }
 
   hasComponentsWithPaths() {

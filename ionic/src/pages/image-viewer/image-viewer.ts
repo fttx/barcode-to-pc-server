@@ -5,6 +5,7 @@ import { fromEvent } from 'rxjs/observable/fromEvent';
 import { tap } from 'rxjs/operators';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { TelemetryService } from '../../providers/telemetry/telemetry';
 
 /**
  * Generated class for the ImageViewerPage page.
@@ -27,6 +28,7 @@ export class ImageViewerPage {
     public navParams: NavParams,
     public electronProvider: ElectronProvider,
     public utils: UtilsProvider,
+    private telemetryProvider: TelemetryService
   ) {
     this.imageBase64 = this.navParams.get('image');
     this.title = this.navParams.get('title');
@@ -34,6 +36,7 @@ export class ImageViewerPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ImageViewerPage');
+    this.telemetryProvider.sendEvent('page_image_viewer', null, null);
   }
 
   private domEvents: Subscription;
