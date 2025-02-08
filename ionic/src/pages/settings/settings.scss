@@ -37,7 +37,7 @@ page-settings {
     }
 
     .excel-option {
-      margin-left: 6px;
+        margin-left: 6px;
     }
 
     .csv-delimiter {
@@ -76,16 +76,7 @@ page-settings {
             margin-top: -5px;
             height: 21px;
             text-transform: none;
-        }
-
-        .btn-new-output-template {
-            height: 20px;
-            margin: 0;
-            margin-left: 10px
-        }
-
-        .btn-output-template-action {
-            margin: -10px -5px 0 -5px
+            margin-top: -11px;
         }
 
         .item-inner {
@@ -93,14 +84,34 @@ page-settings {
         }
     }
 
-    .output-template-title>span {
+
+    .btn-new-output-template {
+        height: 20px;
+        margin: 0;
+        margin-left: 10px;
+        font-size: 1.2rem;
+    }
+
+    .btn-output-template-action {
+        margin: -10px -5px 0 -5px
+    }
+
+    .output-template-title>span,
+    .output-template-header .title {
         font-size: 1.6rem;
         font-weight: 500;
         color: color($colors, dark)
     }
 
-    .output-template-title button {
+    .output-template-title button,
+    .output-template-header .help-button {
         margin: -4px 0 0 4px
+    }
+
+    .output-template-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
     }
 
     info-box {
@@ -131,6 +142,6 @@ page-settings {
     }
 
     .checkbox-md {
-      margin-right: 18px !important;
+        margin-right: 18px !important;
     }
 }

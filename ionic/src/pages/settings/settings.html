@@ -138,11 +138,24 @@
       <video src="assets/video/demo_output_template.mp4" id="demoVideo" #demoVideo [hidden]="hideDemo"></video> -->
 
       <ion-item no-lines text-wrap>
-        <div class="output-template-title">
-          <span>{{ 'outputTemplate' | translate }}</span>
-          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/how-it-works/')" class="help-button">
-            ?
-          </button>
+        <div class="output-template-header">
+          <div>
+            <span class="title">{{ 'outputTemplate' | translate }}</span>
+            <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/how-it-works/')" class="help-button">
+              ?
+            </button>
+          </div>
+          <div>
+            <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
+              <ion-icon name="add"></ion-icon>
+              {{ 'outputTemplateNew' | translate }}
+            </button>
+
+            <button ion-button small icon-start color="light" float-right class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
+              <ion-icon name="ios-download"></ion-icon>
+              {{ 'outputTemplateImport' | translate }}
+            </button>
+          </div>
         </div>
 
         <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
@@ -167,24 +180,12 @@
             <ion-icon name="trash"></ion-icon>
             {{ 'outputTemplateDelete' | translate }}
           </button>
-
-          <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
-            <ion-icon name="add"></ion-icon>
-            {{ 'outputTemplateNew' | translate }}
-          </button>
-
-          <button ion-button small icon-start color="light" float-right class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
-            <ion-icon name="ios-download"></ion-icon>
-            {{ 'outputTemplateImport' | translate }}
-          </button>
-
         </ion-item>
 
         <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container">
           <output-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-component>
         </div>
       </ion-item>
-
 
       <ion-item-divider>
         {{ 'excelSettingsDivider' | translate }}
