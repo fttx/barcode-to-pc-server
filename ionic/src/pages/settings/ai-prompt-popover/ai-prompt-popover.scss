@@ -183,6 +183,27 @@ ion-label {
   }
 }
 
+.thinking-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+
+  ion-spinner {
+    width: 20px;
+    height: 20px;
+    * {
+      stroke: #90949c;
+    }
+  }
+
+  .thinking-text {
+    color: #90949c;
+    font-size: 14px;
+    animation: fadeIn 0.3s ease-out;
+  }
+}
+
 @keyframes bounce {
   0%, 60%, 100% { transform: translateY(0); }
   30% { transform: translateY(-4px); }

@@ -16,6 +16,12 @@ interface ChatMessage {
   outputBlocks?: OutputBlockModel[];
   isTyping?: boolean;  // Add this
   isPending?: boolean; // Add this to distinguish between typing animation and fetch pending state
+  thinkingStep?: number; // Add this
+}
+
+interface ThinkingStep {
+  text: string;
+  delay: number;
 }
 
 @Component({
@@ -32,6 +38,13 @@ export class AiPromptPopoverPage {
   private aiDraftSequence: string = `[
   { "name": "BARCODE" },
 ]`;
+  private thinkingSteps: ThinkingStep[] = [
+    { text: "Analyzing the problem...", delay: 1500 },
+    { text: "Combining requirements....", delay: 3000 },
+    { text: "Crafting Output Template...", delay: 2000 },
+    { text: "Optimizing Output Template...", delay: 800 },
+    { text: "Adding final comments and tips...", delay: 500 }
+  ];
 
   constructor(
     private viewCtrl: ViewController,
@@ -141,6 +154,14 @@ export class AiPromptPopoverPage {
     });
   }
 
+  private async simulateThinking(message: ChatMessage, prompt: string) {
+    const baseDelay = 800;
+    for (let i = 0; i < this.thinkingSteps.length; i++) {
+      message.thinkingStep = i;
+      await new Promise(resolve => setTimeout(resolve, this.thinkingSteps[i].delay));
+    }
+  }
+
   async onCancelClick() {
     this.viewCtrl.dismiss();
   }
@@ -158,6 +179,7 @@ export class AiPromptPopoverPage {
 
     // Add a pending message that will be updated later
     const pendingMessage = await this.addSystemMessage('', null, true);
+    this.simulateThinking(pendingMessage, this.prompt); // Pass the prompt
 
     try {
       const options = {

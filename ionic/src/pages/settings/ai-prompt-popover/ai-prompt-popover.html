@@ -10,17 +10,16 @@
 <ion-content>
   <div class="chat-container">
     <div class="hint-message" *ngIf="messages.length <= 1">
-      Example prompt: Save barcodes to a file, and for each scan save the date and time of the acquisition, and also ask the user a quantity value and save it as well. I want my files to be organized by employee name.
+      Example: I want to collect barcodes and quantities and store the date and time of each scan. Additionally, I want to organize the scans into multiple files by employee name
     </div>
 
     <div class="messages-container">
       <div class="message" *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser}">
         <span [innerHTML]="message.text"></span>
 
-        <div class="typing-indicator" *ngIf="!message.isUser && message.isPending">
-          <span></span>
-          <span></span>
-          <span></span>
+        <div class="thinking-indicator" *ngIf="!message.isUser && message.isPending">
+          <ion-spinner name="crescent"></ion-spinner>
+          <span class="thinking-text">{{ thinkingSteps[message.thinkingStep]?.text }}</span>
         </div>
 
         <div *ngIf="message.outputBlocks?.length > 0" class="message-blocks-container">
