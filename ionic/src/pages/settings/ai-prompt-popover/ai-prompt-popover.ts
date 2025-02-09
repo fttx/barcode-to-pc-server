@@ -17,11 +17,26 @@ interface ChatMessage {
   isTyping?: boolean;  // Add this
   isPending?: boolean; // Add this to distinguish between typing animation and fetch pending state
   thinkingStep?: number; // Add this
+  isError?: boolean;
+  errorLink?: string;
+  errorCta?: {
+    text: string;
+    link: string;
+  };
 }
 
 interface ThinkingStep {
   text: string;
   delay: number;
+}
+
+interface ApiError {
+  status: 'error';
+  message: string;
+  cta?: {
+    text: string;
+    link: string;
+  }
 }
 
 @Component({
@@ -88,7 +103,7 @@ export class AiPromptPopoverPage {
   }
 
   private async typeWriter(text: string): Promise<string> {
-    return new Promise((resolve) => {
+    return new Promise<string>((resolve) => {
       let displayText = '';
       const words = text.split(' ');
       let wordIndex = 0;
@@ -104,7 +119,7 @@ export class AiPromptPopoverPage {
         } else {
           clearInterval(interval);
           this.scrollToBottom(100); // Final scroll after typing
-          resolve(displayText);
+          resolve(displayText.trim());
         }
       }, 50); // Adjust speed as needed
     });
@@ -162,6 +177,23 @@ export class AiPromptPopoverPage {
     }
   }
 
+  private async addErrorMessage(error: ApiError) {
+    const message = await this.addSystemMessage(error.message);
+    message.text = error.message; // Ensure the error message is set directly
+    this.telemetryService.sendEvent('ai_template_generate_error', null, error.message);
+    message.isError = true;
+    if (error.cta) {
+      message.errorCta = error.cta;
+    }
+    return message;
+  }
+
+  onOpenErrorLink(cta: { text: string, link: string }) {
+    if (cta && cta.link) {
+      this.electronProvider.shell.openExternal(cta.link);
+    }
+  }
+
   async onCancelClick() {
     this.viewCtrl.dismiss();
   }
@@ -199,7 +231,15 @@ export class AiPromptPopoverPage {
 
       const response = await fetch(Config.URL_LICENSE_SERVER_BASE + '/generate-template', options);
       const data = await response.json();
+
+      // Remove the pending message first
       this.messages = this.messages.filter(m => m !== pendingMessage);
+
+      if (data.status === 'error') {
+        await this.addErrorMessage(data);
+        return;
+      }
+
       this.aiDraftSequence = data.template;
       const processedBlocks = this.processOutputBlocks(data.template);
       this.title = data.title;

@@ -15,7 +15,8 @@ export class ActivatePage {
   public serial = '';
   public numberComponent = 'No';
   public appendToCSV = 'No';
-
+  public isRefreshing = false;
+  public aiTokens = '';
 
   constructor(
     private electronProvider: ElectronProvider,
@@ -47,6 +48,18 @@ export class ActivatePage {
     this.appendToCSV = await this.licenseProvider.canUseCSVAppend() ?
       await this.utils.text('featureAvailableYes') :
       await this.utils.text('featureAvailableNo');
+    this.aiTokens = (LicenseProvider.GetPlanData().ai_tokens_consumed || 0) + "/" + LicenseProvider.GetPlanData().ai_tokens;
+  }
+
+  async refreshLicenseInfo() {
+    if (this.isRefreshing) return;
+    this.isRefreshing = true;
+    try {
+      await this.licenseProvider.init();
+      await this.refresh();
+    } finally {
+      this.isRefreshing = false;
+    }
   }
 
   close() {
@@ -105,6 +118,10 @@ export class ActivatePage {
 
   isUnlimited() {
     return this.licenseProvider.activeLicense == LicenseProvider.LICENSE_UNLIMITED;
+  }
+
+  getAITokens() {
+    return this.aiTokens;
   }
 
   getLicense() {

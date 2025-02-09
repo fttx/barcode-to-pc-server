@@ -562,7 +562,7 @@ export class LicenseProvider {
     return new Date().getTime() + 1000 * 60 * 60 * 24 * 31; // NOW() + 1 month
   }
 
-  private static GetPlanData() {
+  public static GetPlanData() {
     const license = JSON.parse(localStorage.getItem('license'));
     return license['plan_data'];
   }

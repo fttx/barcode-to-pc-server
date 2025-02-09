@@ -55,7 +55,12 @@
       <img class="badge" [hidden]="!licenseProvider.isSubscribed()" src="assets/activate/badge.png" alt="">
       <ion-grid [class.license-plate]="licenseProvider.isSubscribed()">
         <ion-row>
-          <ion-col><b>Barcode to PC {{ licenseProvider.getLicenseName() }}</b></ion-col>
+          <ion-col>
+            <b>Barcode to PC {{ licenseProvider.getLicenseName() }}</b>
+            <button ion-button icon-only clear small (click)="refreshLicenseInfo()" [disabled]="isRefreshing" style="margin: -12px 0 0 0;padding: 0;">
+              <ion-icon [name]="isRefreshing ? 'refresh-circle' : 'refresh'"></ion-icon>
+            </button>
+          </ion-col>
         </ion-row>
         <!-- <ion-row [hidden]="isUnlimited()">
           <ion-col>{{ 'nextResetDate' | translate }}</ion-col>
@@ -76,6 +81,10 @@
         <ion-row>
           <ion-col>{{ 'Output Components' | translate }}</ion-col>
           <ion-col>{{ toReadable(licenseProvider.getNOMaxComponents()) }}</ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>{{ 'AI Tokens' | translate }}</ion-col>
+          <ion-col>{{ getAITokens() }}</ion-col>
         </ion-row>
         <ion-row>
           <ion-col>{{ 'NUMBER Component' | translate }}</ion-col>

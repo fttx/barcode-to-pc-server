@@ -76,6 +76,8 @@ ion-label {
     border-radius: 8px;
     font-size: 14px;
     color: #666;
+    user-select: text;  // Make hint text selectable
+    cursor: text;       // Show text cursor on hover
   }
 }
 
@@ -135,6 +137,32 @@ ion-label {
 
     span {
       user-select: text;  // Ensure inner text is also selectable
+    }
+
+    &.user-message {
+      margin-left: 20%;
+      background: #f5f5f5;
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    button[color="primary"] {
+      margin: 8px 0 0 0;
+      padding: 0;
+      height: auto;
+      font-size: 14px;
+    }
+
+    &.error-message {
+      color: #d32f2f;
+      background: #ffebee;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+
+      button {
+        margin-top: 8px !important;
+      }
     }
   }
 

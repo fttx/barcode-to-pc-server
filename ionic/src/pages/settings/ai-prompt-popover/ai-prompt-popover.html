@@ -2,7 +2,7 @@
   <ion-navbar color="dark">
     <ion-title>{{ this.title || 'Generate Template with AI' }}</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="onCancelClick()">Cancel</button>
+      <button ion-button (click)="onCancelClick()">{{ "Cancel" | translate }}</button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
@@ -10,12 +10,16 @@
 <ion-content>
   <div class="chat-container">
     <div class="hint-message" *ngIf="messages.length <= 1">
-      Example: I want to collect barcodes and quantities and store the date and time of each scan. Additionally, I want to organize the scans into multiple files by employee name
+      {{ "Example: I want to collect barcodes and quantities and store the date and time of each scan. Additionally, I want to organize the scans into multiple files by employee name" | translate}}
     </div>
 
     <div class="messages-container">
-      <div class="message" *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser}">
-        <span [innerHTML]="message.text"></span>
+      <div class="message" *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'error-message': message.isError}">
+        <div [innerHTML]="message.text"></div>
+
+        <button *ngIf="message.errorCta" ion-button color="error" small (click)="onOpenErrorLink(message.errorCta)">
+          {{ message.errorCta.text }}
+        </button>
 
         <div class="thinking-indicator" *ngIf="!message.isUser && message.isPending">
           <ion-spinner name="crescent"></ion-spinner>
@@ -28,7 +32,7 @@
             </output-component>
           </div>
           <button ion-button small clear icon-end color="dark" (click)="onUseTemplate(message.outputBlocks)">
-            Use this template
+            {{ 'Use this template' | translate }}
             <ion-icon name="arrow-forward"></ion-icon>
           </button>
         </div>
