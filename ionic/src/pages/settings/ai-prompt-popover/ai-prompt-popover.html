@@ -9,10 +9,6 @@
 
 <ion-content>
   <div class="chat-container">
-    <div class="hint-message" *ngIf="messages.length <= 1">
-      {{ "Example: I want to collect barcodes and quantities and store the date and time of each scan. Additionally, I want to organize the scans into multiple files by employee name" | translate}}
-    </div>
-
     <div class="messages-container">
       <div class="message" *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'error-message': message.isError}">
         <div [innerHTML]="message.text"></div>
@@ -37,6 +33,13 @@
           </button>
         </div>
       </div>
+    </div>
+
+    <div class="hint-message" *ngIf="messages.length <= 1 && showHints" [class.show]="showHints">
+      {{ "Example: I want to collect barcodes and quantities and store the date and time of each scan. Additionally, I want to organize the scans into multiple files by employee name" | translate}}
+    </div>
+    <div class="hint-message" *ngIf="messages.length <= 1 && showHints" [class.show]="showHints" style="margin-top: 20px">
+      {{ "Example: Create a template to collect the quantity and color of my plastic product and then show a confirmation message with the collected data." | translate }}
     </div>
   </div>
 </ion-content>

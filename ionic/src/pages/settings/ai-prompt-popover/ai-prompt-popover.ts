@@ -50,6 +50,7 @@ export class AiPromptPopoverPage {
   public messages: ChatMessage[] = [];
   public isLoading = false;
   public title: string;
+  public showHints = false;
   private aiDraftSequence: string = `[
   { "name": "BARCODE" },
 ]`;
@@ -75,6 +76,12 @@ export class AiPromptPopoverPage {
     render.link = function (href, title, text) { return text };
 
     this.addSystemMessage("How can I help you create a template today?");
+  }
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.showHints = true;
+    }, 500);
   }
 
   private focusTextarea() {
