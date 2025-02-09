@@ -7,6 +7,7 @@ import { ElectronProvider } from '../../../providers/electron/electron';
 import { MarkdownService } from 'ngx-markdown';
 import { OutputBlockModel } from '../../../models/output-block.model';
 import { SettingsPage } from '../settings';
+import { TelemetryService } from '../../../providers/telemetry/telemetry';
 
 interface ChatMessage {
   text: string;
@@ -39,6 +40,7 @@ export class AiPromptPopoverPage {
     private licenseProvider: LicenseProvider,
     private electronProvider: ElectronProvider,
     private markdownService: MarkdownService,
+    private telemetryService: TelemetryService,
   ) {
     // Remove URLs from markdown rendering
     let render = this.markdownService.renderer;
@@ -148,6 +150,7 @@ export class AiPromptPopoverPage {
       return;
     }
 
+    this.telemetryService.sendEvent('ai_template_generate', null, this.prompt);
     this.addUserMessage(this.prompt);
     const userPrompt = this.prompt;
     this.prompt = '';

@@ -23,7 +23,7 @@
           <span></span>
         </div>
 
-        <div *ngIf="message.outputBlocks" class="message-blocks-container">
+        <div *ngIf="message.outputBlocks?.length > 0" class="message-blocks-container">
           <div class="output-blocks-container">
             <output-component *ngFor="let outputBlock of message.outputBlocks" [outputBlock]="outputBlock">
             </output-component>
