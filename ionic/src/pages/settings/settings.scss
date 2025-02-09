@@ -88,8 +88,10 @@ page-settings {
     .btn-new-output-template {
         height: 20px;
         margin: 0;
-        margin-left: 10px;
+        margin-left: 3px;
         font-size: 1.2rem;
+        background-color: #f7f7f7;
+        border: 1px dashed #929292;
     }
 
     .btn-output-template-action {

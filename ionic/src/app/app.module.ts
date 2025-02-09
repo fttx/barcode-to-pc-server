@@ -59,6 +59,7 @@ import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template
 import { ComponentEditorGeolocationPage } from '../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
 import { TelemetryService } from '../providers/telemetry/telemetry';
+import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prompt-popover';
 
 @NgModule({
   declarations: [
@@ -93,6 +94,7 @@ import { TelemetryService } from '../providers/telemetry/telemetry';
     QrCodePairingModal,
     MainMenuPopover,
     ExportOutputTemplatePopoverPage,
+    AiPromptPopoverPage,
     SettingsPage,
     ImageViewerPage,
   ],
@@ -165,6 +167,7 @@ import { TelemetryService } from '../providers/telemetry/telemetry';
     QrCodePairingModal,
     MainMenuPopover,
     ExportOutputTemplatePopoverPage,
+    AiPromptPopoverPage,
     SettingsPage,
     ImageViewerPage,
   ],

@@ -13,6 +13,7 @@ export class Config {
   public static URL_APPSTORE = 'https://itunes.apple.com/app/id1180168368';
 
   public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com/v5';
+  public static URL_LICENSE_SERVER_BASE = 'https://license.barcodetopc.com';
   public static URL_TELEMETRY = Config.URL_LICENSE_SERVER + '/telemetry';
   public static URL_ORDER_CHECK = Config.URL_LICENSE_SERVER + '/order/check';
   public static URL_ORDER_DEACTIVATE = Config.URL_LICENSE_SERVER + '/order/remove';

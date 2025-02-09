@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar color="dark">
+    <ion-title>{{ this.title || 'Generate Template with AI' }}</ion-title>
+    <ion-buttons end>
+      <button ion-button (click)="onCancelClick()">Cancel</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div class="chat-container">
+    <div class="hint-message" *ngIf="messages.length <= 1">
+      Example prompt: Save barcodes to a file, and for each scan save the date and time of the acquisition, and also ask the user a quantity value and save it as well. I want my files to be organized by employee name.
+    </div>
+
+    <div class="messages-container">
+      <div class="message" *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser}">
+        <span [innerHTML]="message.text"></span>
+
+        <div class="typing-indicator" *ngIf="!message.isUser && message.isPending">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <div *ngIf="message.outputBlocks" class="message-blocks-container">
+          <div class="output-blocks-container">
+            <output-component *ngFor="let outputBlock of message.outputBlocks" [outputBlock]="outputBlock">
+            </output-component>
+          </div>
+          <button ion-button small clear icon-end color="dark" (click)="onUseTemplate(message.outputBlocks)">
+            Use this template
+            <ion-icon name="arrow-forward"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<div class="chat-input-container">
+  <textarea #promptInput [(ngModel)]="prompt" [disabled]="isLoading" placeholder="Type your request here..." (keydown)="onKeyDown($event)"></textarea>
+  <button ion-button icon-only class="send-button" [disabled]="isLoading" color="dark" (click)="onGenerateClick()">
+    <ion-icon name="send"></ion-icon>
+  </button>
+</div>

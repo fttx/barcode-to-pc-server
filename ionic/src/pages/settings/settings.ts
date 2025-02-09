@@ -18,6 +18,7 @@ import { ExportOutputTemplatePopoverPage } from '../export-output-template-popov
 import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
 import { TelemetryService } from '../../providers/telemetry/telemetry';
 import { data_collection, flow_control, keyboard_actions, functions } from './components';
+import { AiPromptPopoverPage } from './ai-prompt-popover/ai-prompt-popover';
 
 /**
  * Generated class for the SettingsPage page.
@@ -35,16 +36,16 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   public unsavedSettingsAlert: Alert = null;
   public settings: SettingsModel = new SettingsModel(UtilsProvider.GetOS());
-  public availableOutputBlocks: OutputBlockModel[] = this.getAvailableOutputBlocks();
+  public availableOutputBlocks: OutputBlockModel[] = SettingsPage.GetAvailableOutputBlocks();
 
   private lastSavedSettings: string;
 
   public selectedOutputProfile = 0;
   static MAX_SCAN_SESSION_NUMBER_UNLIMITED = 2000; // Update also SettingsModel.maxScanSessionsNumber
   private exportModal: Modal;
+  private aiPromptModal: Modal;
 
-
-  private getAvailableOutputBlocks(): OutputBlockModel[] {
+  public static GetAvailableOutputBlocks(): OutputBlockModel[] {
     return [...keyboard_actions, ...data_collection, ...flow_control, ...functions] as OutputBlockModel[];
   }
 
@@ -111,6 +112,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   ionViewDidLeave() {
     if (this.exportModal != null) this.exportModal.dismiss();
+    if (this.aiPromptModal != null) this.aiPromptModal.dismiss();
     this.events.publish('settings:goBack');
   }
   // willExit -> apply
@@ -287,7 +289,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
-  async onNewOutputTemplateClick() {
+  async onNewOutputTemplateClick(useAi = false) {
     if (this.settings.outputProfiles.length >= this.licenseProvider.getNOMaxTemplates()) {
       await this.alertCtrl.create({
         title: await this.utils.text('outputTemplateLimitReachedDialogTitle'),
@@ -300,9 +302,36 @@ export class SettingsPage implements OnInit, OnDestroy {
       return;
     }
 
-    let newTemplateName = await this.utils.text('newOutputTemplateName', {
+    let newTemplateName = null;
+    if (useAi) {
+      return new Promise(async (resolve) => {
+        if (this.aiPromptModal != null) this.aiPromptModal.dismiss();
+        this.aiPromptModal = this.modalCtrl.create(AiPromptPopoverPage, {}, {
+          cssClass: 'btp-big-modal',
+          enableBackdropDismiss: false,
+          showBackdrop: true
+        });
+
+        this.aiPromptModal.onDidDismiss((result) => {
+          if (result && result.template) {
+            console.log(result);
+            let outputTemplate: OutputProfileModel = {
+              name: result.name,
+              version: null,
+              outputBlocks: result.template,
+            };
+            this.addOutputTemplate(outputTemplate)
+          }
+        });
+        this.aiPromptModal.present();
+      });
+    }
+
+    newTemplateName = await this.utils.text('newOutputTemplateName', {
       "number": (this.settings.outputProfiles.length + 1)
     });
+
+    if (!newTemplateName) return;
     this.alertCtrl.create({
       title: await this.utils.text('newOutputTemplateDialogTitle'),
       message: await this.utils.text('newOutputTemplateDialogMessage'),

@@ -146,14 +146,19 @@
             </button>
           </div>
           <div>
-            <button ion-button small icon-start color="add-button" float-right class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
-              <ion-icon name="add"></ion-icon>
-              {{ 'outputTemplateNew' | translate }}
-            </button>
-
-            <button ion-button small icon-start color="light" float-right class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
+            <button ion-button clear small icon-start color="dark" class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
               <ion-icon name="ios-download"></ion-icon>
               {{ 'outputTemplateImport' | translate }}
+            </button>
+
+            <button ion-button clear small class="btn-new-output-template" (click)="onNewOutputTemplateClick(true)" color="dark">
+              <img src="assets/settings/ai-light.png" alt="ai" style="max-height: 75%; margin-right: 5px;">
+              {{ 'Generate New Template' | translate }}
+            </button>
+
+            <button ion-button clear small icon-start color="dark" class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
+              <ion-icon name="add"></ion-icon>
+              {{ 'New Blank Template' | translate }}
             </button>
           </div>
         </div>
