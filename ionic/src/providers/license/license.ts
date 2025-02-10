@@ -563,6 +563,8 @@ export class LicenseProvider {
   }
 
   public static GetPlanData() {
+    const license = LicenseProvider.GetLicense();
+    if (!license) { return null; }
     return LicenseProvider.GetLicense()['plan_data'];
   }
 

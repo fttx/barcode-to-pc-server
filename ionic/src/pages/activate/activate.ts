@@ -48,7 +48,13 @@ export class ActivatePage {
     this.appendToCSV = await this.licenseProvider.canUseCSVAppend() ?
       await this.utils.text('featureAvailableYes') :
       await this.utils.text('featureAvailableNo');
-    this.aiTokens = (LicenseProvider.GetLicense().ai_tokens_consumed || 0) + "/" + LicenseProvider.GetPlanData().ai_tokens;
+
+    let consumed = 0, tokens = 0;
+    const license = LicenseProvider.GetLicense();
+    if (license && license.ai_tokens_consumed) { consumed = license.ai_tokens_consumed; }
+    const plan = LicenseProvider.GetPlanData();
+    if (plan && plan.ai_tokens) { tokens = plan.ai_tokens; }
+    this.aiTokens = consumed + "/" + tokens;
   }
 
   async refreshLicenseInfo() {
