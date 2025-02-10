@@ -563,7 +563,10 @@ export class LicenseProvider {
   }
 
   public static GetPlanData() {
-    const license = JSON.parse(localStorage.getItem('license'));
-    return license['plan_data'];
+    return LicenseProvider.GetLicense()['plan_data'];
+  }
+
+  public static GetLicense() {
+    return JSON.parse(localStorage.getItem('license'));
   }
 }

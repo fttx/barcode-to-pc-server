@@ -36,6 +36,7 @@ interface ApiError {
   cta?: {
     text: string;
     link: string;
+    action: string;
   }
 }
 
@@ -187,7 +188,7 @@ export class AiPromptPopoverPage {
   private async addErrorMessage(error: ApiError) {
     const message = await this.addSystemMessage(error.message);
     message.text = error.message; // Ensure the error message is set directly
-    this.telemetryService.sendEvent('ai_template_generate_error', null, error.message);
+    this.telemetryService.sendEvent('ai_prompt_model_error', null, error.message);
     message.isError = true;
     if (error.cta) {
       message.errorCta = error.cta;
@@ -195,9 +196,13 @@ export class AiPromptPopoverPage {
     return message;
   }
 
-  onOpenErrorLink(cta: { text: string, link: string }) {
+  onOpenErrorLink(cta: ApiError['cta']) {
     if (cta && cta.link) {
-      this.electronProvider.shell.openExternal(cta.link);
+      if (cta.action === 'upgrade') {
+        this.licenseProvider.showPricingPage('ai_prompt_tokens');
+      } else {
+        this.electronProvider.shell.openExternal(cta.link);
+      }
     }
   }
 
@@ -210,7 +215,7 @@ export class AiPromptPopoverPage {
       return;
     }
 
-    this.telemetryService.sendEvent('ai_template_generate', null, this.prompt);
+    this.telemetryService.sendEvent('ai_prompt', null, this.prompt);
     this.addUserMessage(this.prompt);
     const userPrompt = this.prompt;
     this.prompt = '';
@@ -232,7 +237,7 @@ export class AiPromptPopoverPage {
           "serial": this.licenseProvider.serial,
           "prompt": userPrompt,
           "history": this.messages.filter(m => m.isUser).map(m => m.text),
-          "dratSequence": this.aiDraftSequence,
+          "draftSequence": this.aiDraftSequence,
         })
       };
 
