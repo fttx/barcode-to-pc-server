@@ -11,6 +11,7 @@ import { UtilsProvider } from '../../providers/utils/utils';
   templateUrl: 'activate.html',
 })
 export class ActivatePage {
+  private static cachedScans: string | null = null;
   public uuid = '';
   public serial = '';
   public numberComponent = 'No';
@@ -55,6 +56,18 @@ export class ActivatePage {
     const plan = LicenseProvider.GetPlanData();
     if (plan && plan.ai_tokens) { tokens = plan.ai_tokens; }
     this.aiTokens = consumed + "/" + tokens;
+
+    // Update scans cache
+    this.updateScansCache();
+  }
+
+  private updateScansCache() {
+    if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
+      ActivatePage.cachedScans = this.translateService.instant('featureUnlimited');
+    } else {
+      ActivatePage.cachedScans = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) + '/' +
+        this.licenseProvider.getNOMaxAllowedScansPerMonth();
+    }
   }
 
   async refreshLicenseInfo() {
@@ -88,10 +101,10 @@ export class ActivatePage {
   }
 
   getScans() {
-    if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
-      return this.translateService.instant('featureUnlimited');
+    if (!ActivatePage.cachedScans) {
+      this.updateScansCache();
     }
-    return this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) + '/' + this.licenseProvider.getNOMaxAllowedScansPerMonth();
+    return ActivatePage.cachedScans;
   }
 
   getNextChargeDate() {
