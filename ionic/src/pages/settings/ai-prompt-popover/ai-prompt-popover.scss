@@ -26,7 +26,7 @@
   cursor: pointer;
 }
 
-popper-content>div {
+popper-content > div {
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) !important;
   // left: 10%;
   width: 75%;
@@ -44,7 +44,7 @@ popper-content>div {
   box-shadow: none;
 }
 
-label>h2 {
+label > h2 {
   display: inline-block;
 }
 
@@ -76,8 +76,8 @@ ion-label {
     border-radius: 8px;
     font-size: 14px;
     color: #666;
-    user-select: text;  // Make hint text selectable
-    cursor: text;       // Show text cursor on hover
+    user-select: text; // Make hint text selectable
+    cursor: text; // Show text cursor on hover
     opacity: 0;
     transform: translateY(20px);
 
@@ -150,11 +150,11 @@ ion-label {
     opacity: 0;
     animation: fadeIn 0.3s ease-out forwards;
     transition: all 0.3s ease-out;
-    user-select: text;  // Make text selectable
-    cursor: text;       // Show text cursor
+    user-select: text; // Make text selectable
+    cursor: text; // Show text cursor
 
     span {
-      user-select: text;  // Ensure inner text is also selectable
+      user-select: text; // Ensure inner text is also selectable
     }
 
     &.user-message {
@@ -224,8 +224,12 @@ ion-label {
     border-radius: 50%;
     animation: bounce 1.3s linear infinite;
 
-    &:nth-child(2) { animation-delay: 0.15s; }
-    &:nth-child(3) { animation-delay: 0.3s; }
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
   }
 }
 
@@ -251,13 +255,25 @@ ion-label {
 }
 
 @keyframes bounce {
-  0%, 60%, 100% { transform: translateY(0); }
-  30% { transform: translateY(-4px); }
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideUpFade {

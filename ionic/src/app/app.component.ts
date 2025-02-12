@@ -115,7 +115,6 @@ export class MyApp {
                 } else {
                   // push isn't working, so we're using the spread operator (duplicated issue on the settings.ts file)
                   settings.outputProfiles = [...settings.outputProfiles, outputTemplate];
-                  settings.enableAdvancedSettings = true;
                 }
 
                 // Override the extra settings if are present in the template

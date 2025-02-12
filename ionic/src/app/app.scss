@@ -13,23 +13,23 @@
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
 .with-status-bar {
-    height: calc(100% - 22px);
+  height: calc(100% - 22px);
 }
 
 .popper-tooltip {
-    background-color: white;
-    z-index: 1000;
+  background-color: white;
+  z-index: 1000;
 }
 
 .example-variable {
-    border: none;
-    margin-left: 12px;
-    font-size: .9em;
-    color: #3c3c3c;
+  border: none;
+  margin-left: 12px;
+  font-size: 0.9em;
+  color: #3c3c3c;
 }
 
 .changelog .alert-message * {
-  font-size: .95em !important;
+  font-size: 0.95em !important;
   text-align: left !important;
 }
 
@@ -40,8 +40,16 @@
 .btp-big-modal .modal-wrapper {
   min-width: 80%;
   left: 10vw;
+
+  @media only screen and (min-height: 650px) and (min-width: 768px) {
+    top: calc(50% - (650px / 2)) !important;
+    height: 650px !important;
+  }
 }
 
+.modal-wrapper {
+  border-radius: 20px !important;
+}
 
 .clickable {
   cursor: pointer;

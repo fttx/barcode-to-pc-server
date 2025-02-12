@@ -24,22 +24,21 @@ $label-md-text-color: #000;
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-
 // [class.btn-primary]="customVariable.type == 'key'"
 // [class.btn-success]="customVariable.type == 'variable'"
 // [class.btn-warning]="customVariable.type == 'text'"
 // [class.btn-info]="customVariable.type == 'barcode' || customVariable.type == 'function'"
 $colors: (
-  primary: #F44336,
-  secondary: #B71C1C,
+  primary: #f44336,
+  secondary: #b71c1c,
   danger: #f53d3d,
   light: #f4f4f4,
   dark: #222,
-  favorite: #69BB7B,
+  favorite: #69bb7b,
   add-button: rgb(39, 190, 72),
   status-bar: rgb(231, 231, 231),
   notification-bg: #f4f4f4,
-  output-block-component-key: #B71C1C,
+  output-block-component-key: #b71c1c,
   output-block-component-variable: #0c7a3a,
   output-block-component-text: rgb(207, 152, 0),
   // output-block-component-barcode:   rgb(128, 128, 128),
@@ -68,22 +67,13 @@ $colors: (
 // --------------------------------------------------
 // iOS only Sass variables can go here
 
-
-
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
 
 // App Theme
 // --------------------------------------------------
@@ -94,14 +84,12 @@ $colors: (
 
 @import "ionic.theme.default";
 
-
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/v2/ionicons/
 
 @import "ionic.ionicons";
-
 
 // Fonts
 // --------------------------------------------------
@@ -110,7 +98,7 @@ $colors: (
 @import "noto-sans";
 
 html {
-  font-family: Roboto
+  font-family: Roboto;
 }
 
 ion-header ion-icon.back-button-icon.icon {
@@ -137,8 +125,8 @@ popper-content a {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 4px;
-  background-color: rgba(0, 0, 0, .5);
-  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  background-color: rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
 }
 
 blockquote {
@@ -190,7 +178,7 @@ blockquote {
 
 .swiper-pagination-bullet-active {
   background: map-get($colors, primary) !important;
-  opacity: .8 !important;
+  opacity: 0.8 !important;
 }
 
 .text-muted,
@@ -201,11 +189,10 @@ popper-content {
 // Pop-over custom height
 @media only screen and (min-height: 600px) and (min-width: 768px) {
   .modal-wrapper {
-    top: calc(50% - (600px/2)) !important;
+    top: calc(50% - (600px / 2)) !important;
     height: 600px !important;
   }
 }
-
 
 .alert-gsheet-sheets-list {
   .alert-wrapper {

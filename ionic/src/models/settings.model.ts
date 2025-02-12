@@ -46,7 +46,6 @@ export class SettingsModel {
   outputToExcelMode: 'update' | 'add' = 'add';
   updateHeaderKey: string = '';
   typeMethod: 'keyboard' | 'clipboard' = 'keyboard';
-  enableAdvancedSettings: boolean = false;
   autoUpdate: boolean = true;
   onSmartphoneChargeCommand: string = '';
   maxScanSessionsNumber: number = 2000; // Update also SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED

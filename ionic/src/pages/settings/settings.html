@@ -27,19 +27,19 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid fixed>
+  <ion-grid fixed style="margin-top: 10px">
     <ion-list>
       <ion-item-divider style="margin-top: 0">
         {{ 'generalDivider' | translate }}
       </ion-item-divider>
 
-      <ion-item no-lines>
+      <ion-item no-lines style="margin-top: -10px">
         <ion-grid no-padding>
           <ion-row>
-            <ion-col [innerHtml]="('openAutomatically' | translate:{'appName': getAppName()}) + '&nbsp;'">
+            <ion-col [innerHtml]="('openAutomatically' | translate:{'appName': getAppName()}) + '&nbsp;'" class="setting-item" style="margin-top: 2px; margin-right: 8px">
             </ion-col>
             <ion-col>
-              <select [(ngModel)]="settings && settings.openAutomatically" (change)="onOpenAutomaticallyChange()">
+              <select [(ngModel)]="settings && settings.openAutomatically" (change)="onOpenAutomaticallyChange()" class="settings-item-select">
                 <option value="no">{{ 'openAutomaticallyNo' | translate }}</option>
                 <option selected value="yes">{{ 'openAutomaticallyYes' | translate }}</option>
                 <option value="minimized">{{ 'openAutomaticallyMinimized' | translate }}</option>
@@ -50,17 +50,17 @@
       </ion-item>
 
       <ion-item no-lines>
-        <ion-label>{{ 'enableTrayIcon' | translate }}</ion-label>
+        <ion-label class="setting-item">{{ 'enableTrayIcon' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableTray"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines>
-        <ion-label>{{ 'automaticallyOpenUrLsInBrowser' | translate }}</ion-label>
+        <ion-label class="setting-item">{{ 'automaticallyOpenUrLsInBrowser' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableOpenInBrowser"></ion-checkbox>
       </ion-item>
 
       <ion-item no-lines>
-        <ion-label>
+        <ion-label class="setting-item">
           {{ 'enableKeyboardEmulation' | translate }}
           <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/keyboard-emulation/')" class="help-button">
             ?
@@ -69,10 +69,10 @@
         <ion-checkbox [(ngModel)]="settings && settings.enableRealtimeStrokes"></ion-checkbox>
       </ion-item>
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <ion-grid no-padding>
           <ion-row>
-            <ion-col col-sm-2 class="btp-settings-select-label">
+            <ion-col col-sm-2 class="btp-settings-select-label setting-item">
               {{ 'typeMethod' | translate }}&nbsp;
             </ion-col>
             <ion-col>
@@ -86,10 +86,10 @@
         </ion-grid>
       </ion-item>
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <ion-grid no-padding>
           <ion-row>
-            <ion-col col-sm-2 class="btp-settings-select-label">
+            <ion-col col-sm-2 class="btp-settings-select-label setting-item">
               {{ 'keyboardDelay' | translate }}&nbsp;
             </ion-col>
             <ion-col>
@@ -110,88 +110,91 @@
           </ion-row>
         </ion-grid>
       </ion-item>
+    </ion-list>
 
-      <ion-item-divider>
-        {{ 'outputSettingsDivider' | translate }}
+    <ion-list style="position: relative;">
+      <ion-item-divider class="output-template-divider">
+        <div>
+          <span class="title">{{ 'outputTemplate' | translate }}</span>
+          <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/how-it-works/')" class="help-button">
+            ?
+          </button>
+        </div>
       </ion-item-divider>
 
-      <ion-item no-lines text-wrap>
+      <div style="position: absolute; right: 25px; top: 16px">
+        <button ion-button clear small icon-start color="dark" class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
+          <ion-icon name="ios-download"></ion-icon>
+          {{ 'outputTemplateImport' | translate }}
+        </button>
+
+        <button ion-button clear small class="btn-new-output-template" (click)="onNewOutputTemplateClick(true)" color="dark">
+          <img src="assets/settings/ai-light.png" alt="ai" style="max-height: 75%; margin-right: 5px;">
+          {{ 'Generate New Template' | translate }}
+        </button>
+
+        <button ion-button clear small icon-start color="dark" class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
+          <ion-icon name="add"></ion-icon>
+          {{ 'New Blank Template' | translate }}
+        </button>
+      </div>
+
+      <ion-item no-lines class="container-select-output-template">
+        {{ 'selectedOutputTemplate' | translate }}:
+
+        <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
+          <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">
+            {{ outputProfile.name }}</option>
+        </select>
+
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onEditOutputProfileNameClick()">
+          <ion-icon name="create"></ion-icon>
+          {{ 'outputTemplateRename' | translate }}
+        </button>
+
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onExportOutputTemplateClick()">
+          <ion-icon name="ios-share"></ion-icon>
+          {{ 'outputTemplateExport' | translate }}
+        </button>
+
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()">
+          <ion-icon name="trash"></ion-icon>
+          {{ 'outputTemplateDelete' | translate }}
+        </button>
+      </ion-item>
+
+      <ion-item no-lines text-wrap style="position: relative;">
         <div class="output-template-title">
-          <span>{{ 'availableComponents' | translate }}</span>
+          <span>{{ 'Components library' | translate }}</span>
         </div>
-        <div [hidden]="canAddMoreComponents()" class="output-blocks-container-disabled" text-center>
-          <h2 padding-vertical>
+        <div class="output-blocks-container-disabled" text-center>
+          <h2 style="margin: 0 0 10px;font-size: 1.6rem;font-weight: 500;">
             {{ 'limitReacheadHeader' | translate }}
           </h2>
-          <p>{{ 'limitReachead1' | translate }}</p>
-          <div>{{ 'limitReachead2' | translate }}</div>
-          <button ion-button color="secondary" (click)="onSubscribeClick()">{{ 'limitReacheadUpgradeButton' | translate }}</button>
+          <p style="max-width: 80%; margin: 0 auto;">{{ 'limitReachead1' | translate }}
+            {{ 'limitReachead2' | translate }}
+            <a color="secondary" (click)="onSubscribeClick()" style="cursor: pointer;" class="link">{{ 'limitReacheadUpgradeButton' | translate }}
+              <ion-icon name="arrow-forward" style="font-size: 12px;"></ion-icon>
+            </a>.
+          </p>
         </div>
-        <div [hidden]="!canAddMoreComponents()" id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
+        <div id="left" dragula="dragula-group" [(dragulaModel)]='availableOutputBlocks' class="output-blocks-container">
           <output-component *ngFor="let outputBlock of availableOutputBlocks" [outputBlock]="outputBlock">
           </output-component>
         </div>
       </ion-item>
 
-      <!-- <h1 id="demoExampleH1">Example</h1>
-      <div id="demoOverlay"></div>
-      <video src="assets/video/demo_output_template.mp4" id="demoVideo" #demoVideo [hidden]="hideDemo"></video> -->
-
       <ion-item no-lines text-wrap>
-        <div class="output-template-header">
-          <div>
-            <span class="title">{{ 'outputTemplate' | translate }}</span>
-            <button ion-button small color="light" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/how-it-works/')" class="help-button">
-              ?
-            </button>
-          </div>
-          <div>
-            <button ion-button clear small icon-start color="dark" class="btn-new-output-template" (click)="onImportOutputTemplateClick()">
-              <ion-icon name="ios-download"></ion-icon>
-              {{ 'outputTemplateImport' | translate }}
-            </button>
-
-            <button ion-button clear small class="btn-new-output-template" (click)="onNewOutputTemplateClick(true)" color="dark">
-              <img src="assets/settings/ai-light.png" alt="ai" style="max-height: 75%; margin-right: 5px;">
-              {{ 'Generate New Template' | translate }}
-            </button>
-
-            <button ion-button clear small icon-start color="dark" class="btn-new-output-template" (click)="onNewOutputTemplateClick()">
-              <ion-icon name="add"></ion-icon>
-              {{ 'New Blank Template' | translate }}
-            </button>
-          </div>
+        <div class="output-template-title" style="margin-top: 10px">
+          <span>{{ 'outputTemplate' | translate }}</span>
         </div>
-
-        <ion-item no-lines no-padding class="container-select-output-template" [hidden]="!(settings && settings.enableAdvancedSettings)">
-          {{ 'selectedOutputTemplate' | translate }}:
-
-          <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
-            <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">
-              {{ outputProfile.name }}</option>
-          </select>
-
-          <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onEditOutputProfileNameClick()">
-            <ion-icon name="create"></ion-icon>
-            {{ 'outputTemplateRename' | translate }}
-          </button>
-
-          <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onExportOutputTemplateClick()">
-            <ion-icon name="ios-share"></ion-icon>
-            {{ 'outputTemplateExport' | translate }}
-          </button>
-
-          <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()">
-            <ion-icon name="trash"></ion-icon>
-            {{ 'outputTemplateDelete' | translate }}
-          </button>
-        </ion-item>
-
-        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container">
+        <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container otcp">
           <output-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-component>
         </div>
       </ion-item>
 
+    </ion-list>
+    <ion-list>
       <ion-item-divider>
         {{ 'excelSettingsDivider' | translate }}
       </ion-item-divider>
@@ -265,8 +268,9 @@
           </ion-grid>
         </ion-item>
       </div>
+    </ion-list>
 
-
+    <ion-list>
       <ion-item-divider>
         {{ 'csvSettingsDivider' | translate }}
       </ion-item-divider>
@@ -309,17 +313,17 @@
 
       </ion-item>
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <ion-label>{{ 'enableQuotes' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableQuotes"></ion-checkbox>
       </ion-item>
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <ion-label>{{ 'enableHeaders' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableHeaders"></ion-checkbox>
       </ion-item>
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <label for="csvDelimiter">{{ 'separatorCharacter' | translate }}</label>
         <input [(ngModel)]="settings && settings.csvDelimiter" class="output-blocks-container csv-delimiter" id="csvDelimiter" type="text" placeholder="Eg. ," />
       </ion-item>
@@ -332,7 +336,7 @@
         </ion-select>
       </ion-item> -->
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <ion-grid no-padding>
           <ion-row>
             <ion-col col-md-2 class="btp-settings-select-label">
@@ -349,34 +353,37 @@
         </ion-grid>
       </ion-item>
 
-      <ion-item-divider [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <!-- <ion-item-divider>
         {{ 'eventsDivider' | translate }}
       </ion-item-divider>
 
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <label for="_onSmartphoneChargeCommand">{{ 'executeCommandLabel' | translate }}</label>
         <input [(ngModel)]="settings && settings.onSmartphoneChargeCommand" id="_onSmartphoneChargeCommand" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
-      </ion-item>
+      </ion-item> -->
 
+    </ion-list>
+
+    <ion-list>
       <ion-item-divider>
         {{ 'otherDivider' | translate }}
       </ion-item-divider>
 
 
       <!-- maxScanSessionsNumber START -->
-      <ion-item no-lines [hidden]="!(settings && settings.enableAdvancedSettings)">
+      <ion-item no-lines>
         <ion-label text-wrap>
           {{ 'maximumNumberOfScanSessions' | translate }}
           <p [innerHtml]="'maximumNumberOfScanSessionsDescription' | translate"></p><br>
           <p>{{ 'currentValue' | translate }}: {{ getMaxScanSessionNumberReadable() }}</p>
         </ion-label>
       </ion-item>
-      <ion-item [hidden]="!(settings && settings.enableAdvancedSettings)" class="slider-max-scans">
+      <ion-item class="slider-max-scans">
         <ion-range min="0" [max]="getMaxScanSessionNumber()" step="100" snaps="true" color="secondary" [(ngModel)]="settings.maxScanSessionsNumber" (ionChange)="onMaxScanSessionNumberChange($event)"></ion-range>
       </ion-item>
       <!-- maxScanSessionsNumber END -->
 
-      <ion-item no-lines>
+      <ion-item no-lines *ngIf="settings && !settings.enableAdvancedSettings">
         <ion-label>{{ 'showAdvancedSettings' | translate }}</ion-label>
         <ion-checkbox [(ngModel)]="settings && settings.enableAdvancedSettings"></ion-checkbox>
       </ion-item>

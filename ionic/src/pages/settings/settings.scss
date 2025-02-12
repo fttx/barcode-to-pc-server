@@ -1,149 +1,207 @@
 page-settings {
-    .output-blocks-container {
-        border: 1px solid darkgrey;
-        line-height: 26px;
-        min-height: 26px;
+  select {
+    border-radius: 5px;
+  }
+
+  .output-blocks-container {
+    border: 1px solid darkgrey;
+    line-height: 26px;
+    min-height: 26px;
+    border-radius: 10px;
+    padding: 8px;
+  }
+
+  .output-blocks-container-disabled {
+    position: absolute;
+    z-index: 999;
+    width: calc(100% - 32px);
+    opacity: 94%;
+    // cursor: not-allowed;
+    background: #fff;
+    border-radius: 9px;
+    height: calc(100% - 24px);
+    border: 1px solid #b5b5b5;
+    position: absolute;
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    position: absolute;
+    z-index: 999;
+  }
+
+  .otcp {
+    background-color: #fff;
+  }
+
+  ion-item-divider {
+    font-weight: bold !important;
+    font-size: 1.4em !important;
+    color: black !important;
+    border: none !important;
+    position: relative;
+    top: -8px;
+    margin: 0;
+  }
+
+  .csv-path {
+    width: 100%;
+    margin-top: 4px;
+    padding-left: 5px;
+  }
+
+  .csv-select-path-form input,
+  .csv-select-path-form ion-grid,
+  .csv-select-path-form ion-col,
+  .csv-select-path-form ion-label,
+  .csv-select-path-form button,
+  .csv-select-path-form ion-row {
+    padding-top: 0;
+    margin-top: 0;
+  }
+
+  .excel-option {
+    margin-left: 6px;
+  }
+
+  .csv-delimiter {
+    margin-top: 4px;
+    padding-left: 5px;
+    width: 60px;
+  }
+
+  .help-button {
+    margin: 0;
+    vertical-align: middle;
+    height: 15px;
+    width: 20px;
+    font-size: 0.7em;
+  }
+
+  .select-output-template {
+    display: inline-block;
+    margin: 0 0 0 0.8rem;
+  }
+
+  .container-select-output-template {
+    line-height: 35px;
+    height: 35px;
+    vertical-align: middle;
+
+    label,
+    ion-label {
+      padding: 0;
+      margin: 0;
     }
 
-    .output-blocks-container-disabled {
-        cursor: not-allowed;
-        height: 142px;
-        background-color: #fdfdfd;
-        color: black;
-        border: 1px solid darkgrey;
+    button {
+      margin-top: -5px;
+      height: 21px;
+      text-transform: none;
+      margin-top: -11px;
     }
 
-    ion-item-divider {
-        font-weight: bold !important;
-        font-size: 1.4em !important;
-        color: black !important;
-        margin-top: 36px;
+    .item-inner {
+      padding: 0 !important;
     }
+  }
 
-    .csv-path {
-        width: 100%;
-        margin-top: 4px;
-        padding-left: 5px;
-    }
+  .btn-new-output-template {
+    height: 20px;
+    margin: 0;
+    margin-left: 3px;
+    font-size: 1.2rem;
+    background-color: #f7f7f7;
+    border: 1px dashed #929292;
+  }
 
-    .csv-select-path-form input,
-    .csv-select-path-form ion-grid,
-    .csv-select-path-form ion-col,
-    .csv-select-path-form ion-label,
-    .csv-select-path-form button,
-    .csv-select-path-form ion-row {
-        padding-top: 0;
-        margin-top: 0;
-    }
+  .btn-output-template-action {
+    margin: -10px -5px 0 -5px;
+  }
 
-    .excel-option {
-        margin-left: 6px;
-    }
+  .output-template-title > span,
+  .output-template-header .title {
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: color($colors, dark);
+  }
 
-    .csv-delimiter {
-        margin-top: 4px;
-        padding-left: 5px;
-        width: 60px;
-    }
+  .output-template-title button,
+  .output-template-header .help-button {
+    margin: -4px 0 0 4px;
+  }
 
-    .help-button {
-        margin: 0;
-        vertical-align: middle;
-        height: 15px;
-        width: 20px;
-        font-size: .7em;
-    }
+  .output-template-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-    .select-output-template {
-        display: inline-block;
-        margin: 0 0 0 .8rem;
-    }
+  info-box {
+    margin: 0 0 0 9px;
+    display: block;
+  }
 
-    .container-select-output-template {
-        padding: 0;
-        margin: 0;
-        line-height: 35px;
-        height: 35px;
-        vertical-align: middle;
+  variables-list br {
+    display: none;
+  }
 
-        label,
-        ion-label {
-            padding: 0;
-            margin: 0;
-        }
+  .inline-input {
+    display: block;
+    width: 100%;
+    line-height: 28px;
+    height: 28px;
+    margin-top: 15px;
+    border: 1px solid #b5b5b5;
+  }
 
-        button {
-            margin-top: -5px;
-            height: 21px;
-            text-transform: none;
-            margin-top: -11px;
-        }
+  .slider-max-scans {
+    margin: -17px 0 0 0;
+    padding-bottom: 28px;
+  }
 
-        .item-inner {
-            padding: 0 !important;
-        }
-    }
+  .btp-settings-select-label {
+    margin-top: 3px;
+  }
 
+  .checkbox-md {
+    margin-right: 18px !important;
+  }
 
-    .btn-new-output-template {
-        height: 20px;
-        margin: 0;
-        margin-left: 3px;
-        font-size: 1.2rem;
-        background-color: #f7f7f7;
-        border: 1px dashed #929292;
-    }
+  ion-item.item ion-label {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
 
-    .btn-output-template-action {
-        margin: -10px -5px 0 -5px
-    }
+  .setting-item {
+    color: #3e3e3e !important;
+  }
 
-    .output-template-title>span,
-    .output-template-header .title {
-        font-size: 1.6rem;
-        font-weight: 500;
-        color: color($colors, dark)
-    }
+  select {
+    border: 1px solid #b5b5b5;
+    color: #3e3e3e;
+  }
 
-    .output-template-title button,
-    .output-template-header .help-button {
-        margin: -4px 0 0 4px
-    }
+  ion-item,
+  ion-item-divider {
+    background-color: transparent !important;
+  }
 
-    .output-template-header {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  ion-list {
+    background-color: rgb(243, 243, 243);
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    border: 1px solid #ebebeb;
+    padding: 15px 5px 20px 5px;
+  }
 
-    info-box {
-        margin: 0 0 0 9px;
-        display: block;
-    }
+  .output-template-divider,
+  .output-template-divider ion-label {
+    max-width: 200px;
+  }
 
-    variables-list br {
-        display: none;
-    }
-
-    .inline-input {
-        display: block;
-        width: 100%;
-        line-height: 28px;
-        height: 28px;
-        margin-top: 15px;
-        border: 1px solid #b5b5b5;
-    }
-
-    .slider-max-scans {
-        margin: -17px 0 0 0;
-        padding-bottom: 28px;
-    }
-
-    .btp-settings-select-label {
-        margin-top: 3px;
-    }
-
-    .checkbox-md {
-        margin-right: 18px !important;
-    }
+  input.output-blocks-container {
+    padding: 2px 10px;
+  }
 }
