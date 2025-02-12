@@ -289,10 +289,10 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
-  private async showAiPrompt(template?: OutputProfileModel): Promise<{ template: OutputBlockModel[], name: string } | null> {
+  private async showAiPrompt(template?: OutputProfileModel): Promise<{ template: OutputBlockModel[]; name: string; } | null> {
     if (this.aiPromptModal != null) this.aiPromptModal.dismiss();
 
-    return new Promise(async (resolve) => {
+    return new Promise<{ template: OutputBlockModel[]; name: string; } | null>(async (resolve) => {
       // from the setings remove the outputprofiles property and pass it as json
       const settings = JSON.parse(JSON.stringify(this.settings));
       delete settings.outputProfiles;
@@ -305,7 +305,7 @@ export class SettingsPage implements OnInit, OnDestroy {
         showBackdrop: true
       });
 
-      this.aiPromptModal.onDidDismiss((result) => {
+      this.aiPromptModal.onDidDismiss((result: { template: OutputBlockModel[]; name: string; } | null) => {
         resolve(result);
       });
       this.aiPromptModal.present();
