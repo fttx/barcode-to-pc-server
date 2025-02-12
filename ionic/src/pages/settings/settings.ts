@@ -289,6 +289,41 @@ export class SettingsPage implements OnInit, OnDestroy {
     }
   }
 
+  private async showAiPrompt(template?: OutputProfileModel): Promise<{ template: OutputBlockModel[], name: string } | null> {
+    if (this.aiPromptModal != null) this.aiPromptModal.dismiss();
+
+    return new Promise(async (resolve) => {
+      // from the setings remove the outputprofiles property and pass it as json
+      const settings = JSON.parse(JSON.stringify(this.settings));
+      delete settings.outputProfiles;
+      this.aiPromptModal = this.modalCtrl.create(AiPromptPopoverPage, {
+        settings: settings,
+        template: template
+      }, {
+        cssClass: 'btp-big-modal',
+        enableBackdropDismiss: false,
+        showBackdrop: true
+      });
+
+      this.aiPromptModal.onDidDismiss((result) => {
+        resolve(result);
+      });
+      this.aiPromptModal.present();
+    });
+  }
+
+  async onRefineOutputTemplateClick() {
+    const currentTemplate = this.settings.outputProfiles[this.selectedOutputProfile];
+    const result = await this.showAiPrompt(currentTemplate);
+
+    if (result && result.template) {
+      this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = result.template;
+      if (result.name) {
+        this.settings.outputProfiles[this.selectedOutputProfile].name = result.name;
+      }
+    }
+  }
+
   async onNewOutputTemplateClick(useAi = false) {
     if (this.settings.outputProfiles.length >= this.licenseProvider.getNOMaxTemplates()) {
       await this.alertCtrl.create({
@@ -304,27 +339,16 @@ export class SettingsPage implements OnInit, OnDestroy {
 
     let newTemplateName = null;
     if (useAi) {
-      return new Promise(async (resolve) => {
-        if (this.aiPromptModal != null) this.aiPromptModal.dismiss();
-        this.aiPromptModal = this.modalCtrl.create(AiPromptPopoverPage, {}, {
-          cssClass: 'btp-big-modal',
-          enableBackdropDismiss: false,
-          showBackdrop: true
-        });
-
-        this.aiPromptModal.onDidDismiss((result) => {
-          if (result && result.template) {
-            console.log(result);
-            let outputTemplate: OutputProfileModel = {
-              name: result.name,
-              version: null,
-              outputBlocks: result.template,
-            };
-            this.addOutputTemplate(outputTemplate)
-          }
-        });
-        this.aiPromptModal.present();
-      });
+      const result = await this.showAiPrompt();
+      if (result && result.template) {
+        let outputTemplate: OutputProfileModel = {
+          name: result.name,
+          version: null,
+          outputBlocks: result.template,
+        };
+        this.addOutputTemplate(outputTemplate);
+      }
+      return;
     }
 
     newTemplateName = await this.utils.text('newOutputTemplateName', {

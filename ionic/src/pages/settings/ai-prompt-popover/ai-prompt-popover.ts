@@ -52,9 +52,9 @@ export class AiPromptPopoverPage {
   public isLoading = false;
   public title: string;
   public showHints = false;
-  private aiDraftSequence: string = `[
-  { "name": "BARCODE" },
-]`;
+  private currentSettings: any;
+  private currentTemplate: any;
+  private aiDraftSequence: string;
   private thinkingSteps: ThinkingStep[] = [
     { text: "Analyzing the problem...", delay: 1500 },
     { text: "Combining requirements....", delay: 3000 },
@@ -76,7 +76,17 @@ export class AiPromptPopoverPage {
     let render = this.markdownService.renderer;
     render.link = function (href, title, text) { return text };
 
-    this.addSystemMessage("How can I help you create a template today?");
+    this.currentSettings = this.navParams.get('settings');
+    this.currentTemplate = this.navParams.get('template');
+    this.aiDraftSequence = this.currentTemplate ?
+      JSON.stringify(this.currentTemplate.outputBlocks) :
+      `[{ "name": "BARCODE" }]`;
+
+    const initialMessage = this.currentTemplate ?
+      `I'm looking at the "${this.currentTemplate.name}" template. How would you like to improve it?` :
+      "How can I help you create a template today?";
+
+    this.addSystemMessage(initialMessage);
   }
 
   ngOnInit() {
@@ -238,6 +248,7 @@ export class AiPromptPopoverPage {
           "prompt": userPrompt,
           "history": this.messages.filter(m => m.isUser).map(m => m.text),
           "draftSequence": this.aiDraftSequence,
+          "settings": this.currentSettings,
         })
       };
 

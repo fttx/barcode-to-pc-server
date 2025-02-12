@@ -129,7 +129,7 @@
         </button>
 
         <button ion-button clear small class="btn-new-output-template" (click)="onNewOutputTemplateClick(true)" color="dark">
-          <img src="assets/settings/ai-light.png" alt="ai" style="max-height: 75%; margin-right: 5px;">
+          <img src="assets/settings/ai-light.png?v=2" alt="ai" style="max-height: 75%; margin-right: 5px;">
           {{ 'Generate New Template' | translate }}
         </button>
 
@@ -147,19 +147,20 @@
             {{ outputProfile.name }}</option>
         </select>
 
-        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onEditOutputProfileNameClick()">
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onRefineOutputTemplateClick()" title="{{ 'Refine' | translate }}">
+          <img src="assets/settings/ai-light.png?v=2" alt="ai" style="max-height: 75%">
+        </button>
+
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onEditOutputProfileNameClick()" title="{{ 'outputTemplateRename' | translate }}">
           <ion-icon name="create"></ion-icon>
-          {{ 'outputTemplateRename' | translate }}
         </button>
 
-        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onExportOutputTemplateClick()">
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onExportOutputTemplateClick()" title="{{ 'outputTemplateExport' | translate }}">
           <ion-icon name="ios-share"></ion-icon>
-          {{ 'outputTemplateExport' | translate }}
         </button>
 
-        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()">
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()" title="{{ 'outputTemplateDelete' | translate }}">
           <ion-icon name="trash"></ion-icon>
-          {{ 'outputTemplateDelete' | translate }}
         </button>
       </ion-item>
 
