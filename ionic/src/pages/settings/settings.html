@@ -167,7 +167,7 @@
         <div class="output-template-title">
           <span>{{ 'Components library' | translate }}</span>
         </div>
-        <div class="output-blocks-container-disabled" text-center>
+        <div class="output-blocks-container-disabled" text-center [hidden]="canAddMoreComponents()">
           <h2 style="margin: 0 0 10px;font-size: 1.6rem;font-weight: 500;">
             {{ 'limitReacheadHeader' | translate }}
           </h2>
