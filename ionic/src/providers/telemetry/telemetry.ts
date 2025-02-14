@@ -2,13 +2,24 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Config } from '../../config';
+import { ElectronProvider } from '../electron/electron';
+
+interface TelemetryEvent {
+  eventType: string;
+  eventValueInt: number;
+  eventValueText: string;
+  created_at: number; // Unix timestamp in milliseconds
+}
 
 @Injectable()
 export class TelemetryService {
-  private eventQueue: any[] = [];
+  private eventQueue: TelemetryEvent[] = [];
   private timer: any;
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private electronProvider: ElectronProvider
+  ) {
     this.startTimer();
     this.loadQueueFromStorage();
   }
@@ -37,16 +48,29 @@ export class TelemetryService {
     const email = localStorage.getItem('email');
     const name = localStorage.getItem('name');
     if (!email) return;
-    this.http.post(Config.URL_TELEMETRY, { events: this.eventQueue, email, name })
-      .subscribe(() => {
+
+    this.http.post(Config.URL_TELEMETRY, {
+      events: this.eventQueue,
+      email,
+      name,
+      uuid: this.electronProvider.uuid
+    }).subscribe({
+      next: () => {
         this.eventQueue = [];
         this.saveQueueToStorage();
         console.log('[telemetry] Events sent successfully as ', email);
-      });
+      },
+      error: (err) => { }
+    });
   }
 
   sendEvent(eventType: string, eventValueInt: number, eventValueText: string): void {
-    const event = { eventType, eventValueInt, eventValueText };
+    const event: TelemetryEvent = {
+      eventType,
+      eventValueInt,
+      eventValueText,
+      created_at: Date.now()
+    };
     this.eventQueue.push(event);
     this.saveQueueToStorage();
     console.log('[telemetry] Event queued:', event);

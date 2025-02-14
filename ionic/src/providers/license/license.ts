@@ -517,7 +517,7 @@ export class LicenseProvider {
         }
       }]
     });
-    this.telemetryProvider.sendEvent('limit_reached', null, refer);
+    this.telemetryProvider.sendEvent('show_upgrade_dialog', null, refer);
     this.upgradeDialog.onDidDismiss(() => this.upgradeDialog = null)
     this.upgradeDialog.present();
   }
