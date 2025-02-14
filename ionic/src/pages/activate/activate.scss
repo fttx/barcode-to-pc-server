@@ -27,6 +27,10 @@ page-activate {
     margin-bottom: 33px;
     border: 1px solid #e4e4e4;
     font-size: 1.4rem;
+
+    .row {
+      height: 20px;
+    }
   }
 
   .badge {
@@ -51,13 +55,17 @@ page-activate {
     padding: 15px 20px;
   }
 
+  .activation-controls {
+    position: relative;
+    margin-top: -15px;
+    background-color: transparent;
+  }
   .activation-controls ion-label {
-    margin-top: -15px !important;
     margin-bottom: 20px !important;
   }
 
   .pulsing {
-    margin: -15px 0 20px 0;
+    margin: -15px 0 15px 0;
   }
 
   .upgrade-button {

@@ -48,7 +48,7 @@
 }
 
 .modal-wrapper {
-  border-radius: 20px !important;
+  border-radius: 15px !important;
 }
 
 .clickable {
@@ -61,4 +61,14 @@
 
 ion-navbar {
   direction: ltr !important;
+}
+
+.alert-button,
+alert-button-group button {
+  padding: 7px 0 !important;
+  border-radius: 5px !important;
+}
+
+.bar-buttons {
+  padding-right: 9px;
 }

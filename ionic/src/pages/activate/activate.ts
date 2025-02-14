@@ -18,6 +18,7 @@ export class ActivatePage {
   public appendToCSV = 'No';
   public isRefreshing = false;
   public aiTokens = '';
+  public nextChargeDate = '';
 
   constructor(
     private electronProvider: ElectronProvider,
@@ -56,6 +57,7 @@ export class ActivatePage {
     const plan = LicenseProvider.GetPlanData();
     if (plan && plan.ai_tokens) { tokens = plan.ai_tokens; }
     this.aiTokens = consumed + "/" + tokens;
+    this.nextChargeDate = new Date(this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE, 0)).toLocaleDateString();
 
     // Update scans cache
     this.updateScansCache();
@@ -107,10 +109,6 @@ export class ActivatePage {
     return ActivatePage.cachedScans;
   }
 
-  getNextChargeDate() {
-    return new Date(this.electronProvider.store.get(Config.STORAGE_NEXT_CHARGE_DATE, 0)).toLocaleDateString();
-  }
-
   contactSupportClick() {
     this.electronProvider.shell.openExternal('mailto:' + Config.EMAIL_SUPPORT);
   }
@@ -145,5 +143,9 @@ export class ActivatePage {
 
   getLicense() {
     return JSON.parse(localStorage.getItem('license'));
+  }
+
+  getEmail() {
+    return localStorage.getItem('email') || 'N/A';
   }
 }

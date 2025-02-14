@@ -67,6 +67,10 @@
           <ion-col>{{ getNextChargeDate() }}</ion-col>
         </ion-row> -->
         <ion-row>
+          <ion-col>{{ 'Licensed to' | translate }}</ion-col>
+          <ion-col>{{ getEmail() }}</ion-col>
+        </ion-row>
+        <ion-row>
           <ion-col>{{ 'Scans' | translate }}</ion-col>
           <ion-col>{{ getScans() }}</ion-col>
         </ion-row>
@@ -98,6 +102,10 @@
           <ion-col>{{ 'Real-time Excel Output' | translate }}</ion-col>
           <ion-col>{{ appendToCSV }}</ion-col>
         </ion-row>
+        <ion-row>
+          <ion-col>{{ 'Next billing cycle' | translate }}</ion-col>
+          <ion-col>{{ nextChargeDate }}</ion-col>
+        </ion-row>
       </ion-grid>
     </ion-item>
 
@@ -110,7 +118,7 @@
 
     <ion-item *ngIf="electronProvider.isDev()" text-wrap no-padding>
       <b>Debug</b> - License = {{ getLicense() | json }}<br><br>
-    </ion-item>
+    </ion-item> -->
 
     <ion-item no-lines no-padding style="margin-top: -20px">
       {{ 'contactSupport1' | translate }} <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a><br>

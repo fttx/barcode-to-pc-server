@@ -22,13 +22,13 @@ component-editor {
     text-align: center;
     font-weight: 900;
     line-height: 19px;
-    font-family: 'Roboto';
+    font-family: "Roboto";
     color: white;
     cursor: pointer;
   }
 
-  popper-content>div {
-    box-shadow: 0 0 15px rgba(0, 0, 0, .5) !important;
+  popper-content > div {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5) !important;
     // left: 10%;
     width: 75%;
   }
@@ -38,14 +38,14 @@ component-editor {
     vertical-align: middle;
     height: 19px;
     width: 14px;
-    font-size: .7em;
+    font-size: 0.7em;
     border-radius: 116px;
     border: 1px solid #a2a2a2;
     color: #737373;
     box-shadow: none;
   }
 
-  label>h2 {
+  label > h2 {
     display: inline-block;
   }
 
