@@ -20,8 +20,10 @@
 
 ### Changed
 
+- Improved pairing
+- IMAGE component user interface
 - Reduce executable size (remove bonjour service)
-- Revampet server settings UI
+- Revamped server settings UI
 
 ## [v4.7.5] - 2024-09-19
 
