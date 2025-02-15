@@ -100,10 +100,26 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   ionViewDidLoad() {
     this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
+
+    // Get the last selected profile index from localStorage, default to last profile if not found
+    const lastSelectedIndex = localStorage.getItem('lastSelectedOutputProfile');
+    if (lastSelectedIndex !== null) {
+      const index = parseInt(lastSelectedIndex);
+      // Ensure the index is valid
+      this.selectedOutputProfile = index < this.settings.outputProfiles.length ? index : this.settings.outputProfiles.length - 1;
+    } else {
+      // If no stored index, select the last profile
+      this.selectedOutputProfile = this.settings.outputProfiles.length - 1;
+    }
+
     this.lastSavedSettings = JSON.stringify(this.settings);
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.goBack();
     }
+  }
+
+  onOutputProfileChange() {
+    localStorage.setItem('lastSelectedOutputProfile', this.selectedOutputProfile.toString());
   }
 
   ionViewDidEnter() {

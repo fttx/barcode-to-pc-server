@@ -142,7 +142,7 @@
       <ion-item no-lines class="container-select-output-template">
         {{ 'selectedOutputTemplate' | translate }}:
 
-        <select [(ngModel)]="selectedOutputProfile" class="select-output-template">
+        <select [(ngModel)]="selectedOutputProfile" class="select-output-template" (change)="onOutputProfileChange()">
           <option *ngFor="let outputProfile of settings.outputProfiles; let i = index;" [value]="i">
             {{ outputProfile.name }}</option>
         </select>
