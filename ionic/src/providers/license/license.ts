@@ -357,6 +357,7 @@ export class LicenseProvider {
     let count = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
     count += noNewScans;
     this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
+    this.telemetryProvider.sendEvent('scan', noNewScans, null);
 
     if (this.activeLicense == LicenseProvider.LICENSE_UNLIMITED) {
       return count;
