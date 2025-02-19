@@ -225,7 +225,8 @@ export class AiPromptPopoverPage {
       return;
     }
 
-    this.telemetryService.sendEvent('ai_prompt', null, this.prompt);
+    this.telemetryService.sendEvent('ai_prompt_text', null, this.prompt);
+    this.telemetryService.sendEvent('ai_prompt', 1, null);
     this.addUserMessage(this.prompt);
     const userPrompt = this.prompt;
     this.prompt = '';

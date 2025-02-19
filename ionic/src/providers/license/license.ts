@@ -190,9 +190,15 @@ export class LicenseProvider {
             this.electronProvider.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
             this.devicesProvider.unkickAllDevices();
             this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
-            this.telemetryProvider.sendEvent('license_activate', null, this.activeLicense);
+            const incentiveEmail = localStorage.getItem('email');
+            this.telemetryProvider.sendEvent('license_activate', null, JSON.stringify({
+              license: this.activeLicense,
+              incentiveEmail: incentiveEmail,
+              orderEmail: value['email'],
+            }));
             this.events.publish('license:activate');
-            if (!localStorage.getItem('email')) {
+            if (!incentiveEmail) {
+              // override the email
               localStorage.setItem('email', value['email']);
             }
             window.confetti.start(3000);
