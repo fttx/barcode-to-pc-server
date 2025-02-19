@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v4.8.2] - 2025-02-19
+
+### Changed
+
+- Minor fixes
+
 ## [v4.8.1] - 2025-02-16
 
 ### Changed
