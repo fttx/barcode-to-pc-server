@@ -152,7 +152,7 @@ export class ComponentEditorKeyPage implements OnInit {
     { name: 'Fn', id: NutjsKey.Fn },
   ];
 
-  public keyId: string = ComponentEditorKeyPage.KEYS[0].id;
+  public keyId: number = ComponentEditorKeyPage.KEYS[0].id;
 
   constructor(
     public navParams: NavParams,
