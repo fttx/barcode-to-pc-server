@@ -7,7 +7,7 @@ import { AlertController, App, Events, Platform } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { eq, gt, SemVer } from 'semver';
 import { Config } from '../config';
-import { NutjsKey } from '../models/nutjs-key.model';
+import { NutjsKey, NutjsKeyV482 } from '../models/nutjs-key.model';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
 import { SettingsPage } from '../pages/settings/settings';
@@ -509,6 +509,37 @@ export class MyApp {
 
         if (typeof settings.maxScanSessionsNumber == 'undefined') {
           settings.maxScanSessionsNumber = SettingsPage.MAX_SCAN_SESSION_NUMBER_UNLIMITED;
+        }
+
+        // v4.8.3
+        if (settings.outputProfiles) {
+          settings.outputProfiles.forEach(outputProfile => {
+            outputProfile.outputBlocks.forEach(outputBlock => {
+              // Update the nutjs key identifiers
+              if (outputBlock.name === 'ENTER') outputBlock.keyId = NutjsKey.Enter;
+              if (outputBlock.name === 'TAB') outputBlock.keyId = NutjsKey.Tab;
+              if (outputBlock.name === 'PRESS KEY') {
+                const oldId = outputBlock.keyId;
+                const keyMappings = {
+                  [NutjsKeyV482.Enter]: NutjsKey.Enter,
+                  [NutjsKeyV482.Tab]: NutjsKey.Tab,
+                  [NutjsKeyV482.Space]: NutjsKey.Space,
+                  [NutjsKeyV482.Backspace]: NutjsKey.Backspace,
+                  [NutjsKeyV482.Delete]: NutjsKey.Delete,
+                  [NutjsKeyV482.Escape]: NutjsKey.Escape,
+                  [NutjsKeyV482.Up]: NutjsKey.Up,
+                  [NutjsKeyV482.Down]: NutjsKey.Down,
+                  [NutjsKeyV482.Left]: NutjsKey.Left,
+                  [NutjsKeyV482.Right]: NutjsKey.Right,
+                  [NutjsKeyV482.Home]: NutjsKey.Home,
+                  [NutjsKeyV482.End]: NutjsKey.End,
+                  [NutjsKeyV482.PageUp]: NutjsKey.PageUp,
+                  [NutjsKeyV482.PageDown]: NutjsKey.PageDown,
+                };
+                outputBlock.keyId = keyMappings[oldId] || oldId;
+              }
+            });
+          })
         }
 
         // Upgrade output profiles
