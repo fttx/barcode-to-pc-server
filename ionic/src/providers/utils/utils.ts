@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AlertController } from 'ionic-angular';
 import { lt } from 'semver';
 import { Config } from '../../config';
-import { NutjsKey } from '../../models/nutjs-key.model';
+import { NutjsKey, NutjsKeyV482 } from '../../models/nutjs-key.model';
 import { OutputBlockModel } from '../../models/output-block.model';
 import { OutputProfileModel } from '../../models/output-profile.model';
 import { ScanModel } from '../../models/scan.model';
@@ -526,4 +526,32 @@ export class UtilsProvider {
     }
     return NutjsKey.Space;
   }
+
+
+  mapNutjsKeyToNutjsKeyV482(outputBlock: OutputBlockModel) {
+    // Update the nutjs key identifiers
+    if (outputBlock.name === 'ENTER') outputBlock.keyId = NutjsKey.Enter;
+    if (outputBlock.name === 'TAB') outputBlock.keyId = NutjsKey.Tab;
+    if (outputBlock.name === 'PRESS KEY') {
+      const oldId = outputBlock.keyId;
+      const keyMappings = {
+        [NutjsKeyV482.Enter]: NutjsKey.Enter,
+        [NutjsKeyV482.Tab]: NutjsKey.Tab,
+        [NutjsKeyV482.Space]: NutjsKey.Space,
+        [NutjsKeyV482.Backspace]: NutjsKey.Backspace,
+        [NutjsKeyV482.Delete]: NutjsKey.Delete,
+        [NutjsKeyV482.Escape]: NutjsKey.Escape,
+        [NutjsKeyV482.Up]: NutjsKey.Up,
+        [NutjsKeyV482.Down]: NutjsKey.Down,
+        [NutjsKeyV482.Left]: NutjsKey.Left,
+        [NutjsKeyV482.Right]: NutjsKey.Right,
+        [NutjsKeyV482.Home]: NutjsKey.Home,
+        [NutjsKeyV482.End]: NutjsKey.End,
+        [NutjsKeyV482.PageUp]: NutjsKey.PageUp,
+        [NutjsKeyV482.PageDown]: NutjsKey.PageDown,
+      }
+      outputBlock.keyId = keyMappings[oldId] || oldId;
+    }
+  }
+
 }

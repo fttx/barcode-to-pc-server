@@ -17,6 +17,7 @@ import { ElectronProvider } from '../providers/electron/electron';
 import { UtilsProvider } from '../providers/utils/utils';
 import { OutputProfileExportedModel } from '../models/output-profile-exported.model';
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
+import { OutputBlockModel } from '../models/output-block.model';
 
 @Component({
   templateUrl: 'app.html'
@@ -515,32 +516,10 @@ export class MyApp {
         if (settings.outputProfiles && this.electronProvider.appGetVersion() === '4.8.3') {
           settings.outputProfiles.forEach(outputProfile => {
             // if version is older than v4.8.2
-            if (outputProfile.version && new SemVer(outputProfile.version).compare('4.8.3') == -1) {
-              outputProfile.outputBlocks.forEach(outputBlock => {
-                // Update the nutjs key identifiers
-                if (outputBlock.name === 'ENTER') outputBlock.keyId = NutjsKey.Enter;
-                if (outputBlock.name === 'TAB') outputBlock.keyId = NutjsKey.Tab;
-                if (outputBlock.name === 'PRESS KEY') {
-                  const oldId = outputBlock.keyId;
-                  const keyMappings = {
-                    [NutjsKeyV482.Enter]: NutjsKey.Enter,
-                    [NutjsKeyV482.Tab]: NutjsKey.Tab,
-                    [NutjsKeyV482.Space]: NutjsKey.Space,
-                    [NutjsKeyV482.Backspace]: NutjsKey.Backspace,
-                    [NutjsKeyV482.Delete]: NutjsKey.Delete,
-                    [NutjsKeyV482.Escape]: NutjsKey.Escape,
-                    [NutjsKeyV482.Up]: NutjsKey.Up,
-                    [NutjsKeyV482.Down]: NutjsKey.Down,
-                    [NutjsKeyV482.Left]: NutjsKey.Left,
-                    [NutjsKeyV482.Right]: NutjsKey.Right,
-                    [NutjsKeyV482.Home]: NutjsKey.Home,
-                    [NutjsKeyV482.End]: NutjsKey.End,
-                    [NutjsKeyV482.PageUp]: NutjsKey.PageUp,
-                    [NutjsKeyV482.PageDown]: NutjsKey.PageDown,
-                  };
-                  outputBlock.keyId = keyMappings[oldId] || oldId;
-                }
-              });
+            if (outputProfile.version == null || (outputProfile.version && new SemVer(outputProfile.version).compare('4.8.3') == -1)) {
+              for (let outputBlock of outputProfile.outputBlocks) {
+                this.utils.mapNutjsKeyToNutjsKeyV482(outputBlock);
+              }
               outputProfile.version = this.electronProvider.appGetVersion();
             }
           });
