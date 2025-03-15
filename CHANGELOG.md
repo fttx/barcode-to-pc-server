@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v4.8.3] - 2025-03-15
+
+### Fixed
+
+- Issues with Keyboard Emulation
+
 ## [v4.8.2] - 2025-02-19
 
 ### Changed
@@ -760,6 +766,8 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.2...v4.8.3
+[v4.8.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.1...v4.8.2
 [v4.8.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.0...v4.8.1
 [v4.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.5...v4.8.0
 [v4.7.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.5...v4.7.5
