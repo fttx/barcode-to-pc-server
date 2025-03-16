@@ -178,6 +178,13 @@ export class HomePage {
         if (request.version && (request.version.startsWith('3') || request.version.startsWith('v3'))) {
           this.utils.showV3DowngradeDialog();
         }
+
+        // force output templates download when upgrade has been detected.
+        const deviceId = request.deviceId;
+        if (localStorage.getItem('_upgraaded_nutjs_482') === 'true' && !localStorage.getItem('_upgraaded_nutjs_482_' + deviceId)) {
+          this.electronProvider.ipcRenderer.send('settings');
+          localStorage.setItem('_upgraaded_nutjs_482_' + deviceId, 'true');
+        }
       });
 
       // older versions of the app didn't send the version number

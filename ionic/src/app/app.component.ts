@@ -515,7 +515,7 @@ export class MyApp {
         // v4.8.3
         if (settings.outputProfiles && this.electronProvider.appGetVersion() === '4.8.3') {
           settings.outputProfiles.forEach(outputProfile => {
-            // if version is older than v4.8.2
+            // if version was older than v4.8.2
             if (outputProfile.version == null || (outputProfile.version && new SemVer(outputProfile.version).compare('4.8.3') == -1)) {
               for (let outputBlock of outputProfile.outputBlocks) {
                 this.utils.mapNutjsKeyToNutjsKeyV482(outputBlock);
@@ -523,6 +523,7 @@ export class MyApp {
               outputProfile.version = this.electronProvider.appGetVersion();
             }
           });
+          localStorage.setItem('_upgraaded_nutjs_482', 'true');
         }
 
         // Upgrade output profiles
