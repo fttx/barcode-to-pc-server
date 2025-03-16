@@ -49,7 +49,7 @@ export class Config {
 
   public static EMAIL_SUPPORT = 'support@barcodetopc.com';
 
-  public static INCENTIVE_EMAIL_SHOW_THRESHOLD = 5;
+  public static INCENTIVE_EMAIL_SHOW_THRESHOLD = 10;
 
 
   // Constants
