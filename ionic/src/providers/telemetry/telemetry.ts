@@ -30,7 +30,7 @@ export class TelemetryService {
       if (this.eventQueue.length > 0) {
         this.sendEvents();
       }
-    }, 60000); // 1 minute
+    }, this.electronProvider.isDev() ? 10000 : 60000); // 1 minute
   }
 
   private loadQueueFromStorage() {
