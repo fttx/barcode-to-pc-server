@@ -1,38 +1,42 @@
 output-component {
-    input {
-        color: black ;
-        margin: 3.65px 0;
-        height: 20px;
-        font-weight: normal
-    }
+  input {
+    color: black;
+    margin: 3.65px 0;
+    height: 20px;
+    font-weight: normal;
+  }
 
-    .main-button {
-        height: 26px !important;
-        font-size: 13px !important;
-    }
+  .main-button {
+    height: 26px !important;
+    font-size: 13px !important;
+  }
 
-    .custom-text-editor button {
-        margin-top: 5px;
-        height: 19px;
-        vertical-align: top;
-    }
+  .custom-text-editor button {
+    margin-top: 5px;
+    height: 19px;
+    vertical-align: top;
+  }
 
-    .custom-text-editor {
-        font-size: 12px;
-        padding: 0;
-        margin: 0;
-        height: 27.3px;
-        line-height: 27.3px;
-    }
+  .custom-text-editor {
+    font-size: 12px;
+    padding: 0;
+    margin: 0;
+    height: 27.3px;
+    line-height: 27.3px;
+  }
 
-    .custom-text-editor input[type=checkbox]{
-        float: left;
-    }
+  .custom-text-editor input[type="checkbox"] {
+    float: left;
+  }
 
-    .skip-output {
-        width: 88px;
-        display: inline-block;
-        text-align: left;
-        margin: 7px 0 0 5px;
-    }
+  .skip-output {
+    width: 88px;
+    display: inline-block;
+    text-align: left;
+    margin: 7px 0 0 5px;
+  }
+
+  .component-icon {
+    margin-right: 5px;
+  }
 }

@@ -1,9 +1,6 @@
-<button
-    ion-button small
-    class="main-button"
-    [color]="getVariableColor()"
-    (click)="onClick($event)">
+<button ion-button small class="main-button" [color]="getVariableColor()" (click)="onClick($event)">
 
-    <span [innerHTML]="displayedName()"></span>
+  <div *ngIf="iconSVG" [innerHTML]="iconSVG" class="component-icon"></div>
+  <span [innerHTML]="displayedName()"></span>
 
 </button>

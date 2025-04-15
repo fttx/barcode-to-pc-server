@@ -22,7 +22,8 @@ import { ComponentEditorWooCommercePage } from '../../pages/component-editor/com
 import { UtilsProvider } from '../../providers/utils/utils';
 import { ComponentEditorImagePage } from '../../pages/component-editor/component-editor-image/component-editor-image';
 import { ComponentEditorGeolocationPage } from '../../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
-
+import { DomSanitizer } from '@angular/platform-browser';
+import * as oc from '@primer/octicons';
 
 @Component({
   selector: 'output-component',
@@ -31,6 +32,9 @@ import { ComponentEditorGeolocationPage } from '../../pages/component-editor/com
 export class OutputComponentComponent {
   @Input() outputBlock: OutputBlockModel;
 
+  octicons = oc;
+  iconSVG = null;
+
   static lastModal: Modal;
   static goBackSubscriptionDone = false;
 
@@ -38,8 +42,12 @@ export class OutputComponentComponent {
     public modalCtrl: ModalController,
     public events: Events,
     public viewCtrl: ViewController,
+    public sanitizer: DomSanitizer
   ) {
+  }
 
+  ngOnInit() {
+    if (this.outputBlock.icon) this.iconSVG = this.sanitizer.bypassSecurityTrustHtml(oc[this.outputBlock.icon].toSVG());
   }
 
   onClick(event) {

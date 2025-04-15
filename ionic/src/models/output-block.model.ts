@@ -8,6 +8,7 @@ export class OutputBlockModel {
      * Name of the block shown in the UI
      */
     name: string;
+    icon?: string;
     /**
      * The run-time value of the block.
      * Its meaning changes based on the @type attribute
