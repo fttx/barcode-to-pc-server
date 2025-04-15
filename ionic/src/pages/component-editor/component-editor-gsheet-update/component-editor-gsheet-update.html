@@ -1,9 +1,11 @@
 <component-editor [outputBlock]="outputBlock" [locked]="!isLoggedIn()" [validated]="isValid()">
 
   <div class="google-login" [hidden]="isLoggedIn()">
-    <div style="margin: 189px auto 30px auto; font-size: 18px; color: #525252;">{{ 'gsheetSelectSheet' | translate }}</div>
-    <div (click)="refreshData()">
-      <img src="assets/btn_google_signin_dark_normal_web@2x.png" style="max-height: 50px; cursor: pointer;" alt="Login With Google">
+    <div style="margin-top: 20px">This feature is available for Beta Testers only.</div>
+
+    <div style="margin: 189px auto 30px auto; font-size: 18px; color: #525252; opacity: .5;">{{ 'gsheetSelectSheet' | translate }}</div>
+    <div (click)="refreshData()" style="opacity: .5">
+      <img src="assets/btn_google_signin_dark_normal_web@2x.png" style="max-height: 50px; cursor: not-allowed;" alt="Login With Google">
     </div>
 
     <input type="url" class="redirect-token" placeholder="Paste the authentication code here" [(ngModel)]="redirectToken" (change)="onRedirectTokenChange($event)" (keyup)="onRedirectTokenChange($event)" [hidden]="hideTokenInput" />
