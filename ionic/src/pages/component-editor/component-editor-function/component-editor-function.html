@@ -4,7 +4,9 @@
     <!-- <ion-input [(ngModel)]="outputBlock.value" class="javascript"></ion-input> -->
     <label for="_valuejs">JavaScript</label>
 
-    <input id="_valuejs" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="barcode.replace('a','b')" />
+    <textarea id="_valuejs" [(ngModel)]="outputBlock.value" type="text" placeholder="(function(barcode) {
+  return barcode.replace('a', 'b');
+})(barcode);" class="inline-input" style="min-height: 100px; line-height: 19px; padding: 6px 7px;max-width: 100%;min-width: 100%;"></textarea>
 
     <br>
     <p>

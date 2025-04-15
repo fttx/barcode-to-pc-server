@@ -33,7 +33,7 @@ export const keyboard_actions: OutputBlockModel[] = [
 
 // Functions executed remotely
 export const functions: OutputBlockModel[] = [
-  { name: 'JAVASCRIPT_FUNCTION', icon: 'file-code',       value: '',                  type: 'function',      allowOOBExecution: false, skipOutput: false, label: null },
+  { name: 'JAVASCRIPT_FUNCTION', icon: 'file-code',       value: "(function(barcode) {\n\treturn barcode;\n})(barcode);",                  type: 'function',      allowOOBExecution: false, skipOutput: false, label: null },
   { name: 'HTTP_REQUEST',        icon: 'globe',           value: '',                  type: 'http',          allowOOBExecution: true,  skipOutput: false, label: null, httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, httpOAuthMethod: 'disabled', httpOAuthConsumerKey: null, httpOAuthConsumerSecret: null, timeout: 10000 },
   { name: 'RUN',                 icon: 'play',            value: '',                  type: 'run',           allowOOBExecution: true,  skipOutput: false, label: null, timeout: 10000 },
   { name: 'CSV_LOOKUP',          icon: 'file-moved',      value: '{{ barcode }}',     type: 'csv_lookup',    allowOOBExecution: true,  skipOutput: false, label: null, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
