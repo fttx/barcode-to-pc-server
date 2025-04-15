@@ -1,6 +1,9 @@
 <ion-header>
   <ion-navbar [color]="color">
-    <ion-title>{{ outputBlock.name }}</ion-title>
+    <ion-title>
+      <div *ngIf="iconSVG" [innerHTML]="iconSVG" class="component-icon"></div>
+      {{ outputBlock.name }}
+    </ion-title>
     <ion-buttons end>
       <button ion-button icon-end solid [color]="color" (click)="onHelpClick(outputBlock)" class="btn-help">
         {{ 'helpButton' | translate }}

@@ -5,6 +5,8 @@ import { OutputBlockModel } from '../../models/output-block.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
+import * as oc from '@primer/octicons';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'component-editor',
@@ -17,12 +19,16 @@ export class ComponentEditorComponent implements OnInit {
   @Input() validated = true;
   public color: string;
 
+  octicons = oc;
+  iconSVG = null;
+
   constructor(
     public viewCtrl: ViewController,
     public electronProvider: ElectronProvider,
     private events: Events,
     public alertCtrl: BtpAlertController,
     public utils: UtilsProvider,
+    public sanitizer: DomSanitizer
   ) {
     this.events.subscribe('componentEditor:scrollToTop', () => {
       this.content.scrollToTop();
@@ -39,7 +45,9 @@ export class ComponentEditorComponent implements OnInit {
 
   ngOnInit(): void {
     this.color = UtilsProvider.GetComponentColor(this.outputBlock);
+    if (this.outputBlock.icon) this.iconSVG = this.sanitizer.bypassSecurityTrustHtml(oc[this.outputBlock.icon].toSVG());
   }
+
 
   public async onCloseClick() {
     if (!this.validated) {

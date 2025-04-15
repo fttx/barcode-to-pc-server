@@ -66,4 +66,17 @@ component-editor {
   .locked .fixed-content {
     overflow: hidden !important;
   }
+
+  .toolbar-title {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    justify-content: flex-start;
+    align-items: center;
+
+    .component-icon svg {
+      margin-right: 8px;
+      height: 30px;
+    }
+  }
 }
