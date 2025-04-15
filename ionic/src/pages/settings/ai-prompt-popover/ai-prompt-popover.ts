@@ -253,7 +253,7 @@ export class AiPromptPopoverPage {
         })
       };
 
-      const response = await fetch(Config.URL_LICENSE_SERVER_BASE + '/generate-template', options);
+      const response = await fetch(Config.URL_LICENSE_SERVER_BASE + '/ai/generate-template', options);
       const data = await response.json();
 
       // Remove the pending message first
