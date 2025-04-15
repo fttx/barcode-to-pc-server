@@ -13,7 +13,9 @@
         <br><br>
         {{ 'urlDescription4' | translate }}
         <br>
-        <code ngNonBindable>https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;</code><br><br>
+        <code ngNonBindable>
+          <input type="text" value="https:&#47;&#47;www.example.com&#47;&#63;item=&#123;&#123; barcode &#125;&#125;" disabled class="example-input" />
+        </code><br><br>
       </p>
 
       <variables-list></variables-list>
@@ -45,7 +47,9 @@
         <br>
         {{ 'dataDescription2' | translate }}
         <br>
-        <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
+        <code ngNonBindable>
+          <input type="text" value="&#123; &quot;product&quot;: &quot;&#123;&#123; barcode &#125;&#125;&quot;, &quot;quantity&quot;: &#123;&#123; number &#125;&#125; &#125;" disabled class="example-input" />
+        </code><br><br>
       </p>
     </ion-item>
 
@@ -59,7 +63,9 @@
         <br>
         {{ 'paramsDescription2' | translate }}
         <br>
-        <code ngNonBindable>&#123; "product": "&#123;&#123; barcode &#125;&#125;", "quantity": &#123;&#123; number &#125;&#125; &#125;</code><br><br>
+        <code ngNonBindable>
+          <input type="text" value="&#123; &quot;product&quot;: &quot;&#123;&#123; barcode &#125;&#125;&quot;, &quot;quantity&quot;: &#123;&#123; number &#125;&#125; &#125;" disabled class="example-input" />
+        </code><br><br>
       </p>
     </ion-item>
 
@@ -72,7 +78,9 @@
         <br>
         <br>
         {{ 'headersDescription2' | translate }}
-        <code>&#123; "Content-Type": "application/json" &#125;</code>
+        <code ngNonBindable>
+          <input type="text" value="&#123; &quot;Content-Type&quot;: &quot;application/json&quot; &#125;" disabled class="example-input" />
+        </code><br><br>
       </p>
     </ion-item>
 

@@ -34,7 +34,7 @@ export const keyboard_actions: OutputBlockModel[] = [
 // Functions executed remotely
 export const functions: OutputBlockModel[] = [
   { name: 'JAVASCRIPT_FUNCTION', value: '',                  type: 'function',      allowOOBExecution: false, skipOutput: false, label: null },
-  { name: 'HTTP',                value: '',                  type: 'http',          allowOOBExecution: true,  skipOutput: false, label: null, httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, httpOAuthMethod: 'disabled', httpOAuthConsumerKey: null, httpOAuthConsumerSecret: null, timeout: 10000 },
+  { name: 'HTTP_REQUEST',        value: '',                  type: 'http',          allowOOBExecution: true,  skipOutput: false, label: null, httpMethod: 'get', httpData: null, httpParams: null, httpHeaders: null, httpOAuthMethod: 'disabled', httpOAuthConsumerKey: null, httpOAuthConsumerSecret: null, timeout: 10000 },
   { name: 'RUN',                 value: '',                  type: 'run',           allowOOBExecution: true,  skipOutput: false, label: null, timeout: 10000 },
   { name: 'CSV_LOOKUP',          value: '{{ barcode }}',     type: 'csv_lookup',    allowOOBExecution: true,  skipOutput: false, label: null, csvFile: '', searchColumn: 1, resultColumn: 2, notFoundValue: '', delimiter: ',' },
   { name: 'CSV_UPDATE',          value: '{{ barcode }}',     type: 'csv_update',    allowOOBExecution: true,  skipOutput: true,  label: null, csvFile: '', searchColumn: 1, columnToUpdate: 2, rowToUpdate: 'first', newValue: '', notFoundValue: '', delimiter: ',' },
