@@ -263,6 +263,13 @@ export class HomePage {
       // let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
       // this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
       const currentCount = await this.licenseProvider.limitMonthlyScans(1);
+      console.log('@@@ currentCount', request.scanSessions);
+      if (request.scanSessions && request.scanSessions[0] && request.scanSessions[0].scannings && request.scanSessions[0].scannings[0]) {
+        const barcodeComponent = request.scanSessions[0].scannings[0].outputBlocks.find(x => x.name === 'BARCODE');
+        if (barcodeComponent) {
+          this.events.publish('new:scan', barcodeComponent.value);
+        }
+      }
 
       if (!localStorage.getItem('email') && currentCount > Config.INCENTIVE_EMAIL_SHOW_THRESHOLD && this.licenseProvider.activeLicense === LicenseProvider.LICENSE_FREE) {
         this.electronProvider.ipcRenderer.send('ipc_show_incentive_email_alert', currentCount);

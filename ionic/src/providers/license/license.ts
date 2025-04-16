@@ -11,6 +11,7 @@ import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
 import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
 import { TelemetryService } from '../telemetry/telemetry';
+import { ContentType } from '@angular/http/src/enums';
 
 /**
  * LicenseProvider comunicates with the subscription-server to see if there is
@@ -59,9 +60,43 @@ export class LicenseProvider {
     private utilsProvider: UtilsProvider,
     private devicesProvider: DevicesProvider,
     public events: Events,
-    private telemetryProvider: TelemetryService
+    private telemetryProvider: TelemetryService,
   ) {
     this.init();
+
+
+    // Check for bonus codes beign scanned
+    this.events.subscribe('new:scan', async (barcodeText) => {
+      console.log('Barcode scanned', barcodeText);
+      if (!barcodeText && !barcodeText.length) return;
+
+      const isBonusCode = (barcodeText) => {
+        try {
+          const result = JSON.parse(barcodeText);
+          if (result && result.btp === true) { return result }
+          return false;
+        } catch { return false; }
+      }
+      const bonusObj = isBonusCode(barcodeText);
+      if (bonusObj !== false) {
+        // Try to fetch the bonus data from the back-end server
+        const response: any = await this.http.post(Config.URL_LICENSE_SERVER + '/bonus/verify', { code: bonusObj.code, }).toPromise();
+        console.log('Bonus code payload', response);
+        if (response && response.data) {
+          localStorage.setItem('email', response.email);
+          localStorage.setItem('name', response.name);
+
+          // Save bonuses to the localStorage array
+          let bonusScansStr = localStorage.getItem('bonuses');
+          let bonusScans = []
+          if (bonusScansStr) { bonusScans = JSON.parse(bonusScansStr); }
+          bonusScans.push(response.data);
+          localStorage.setItem('bonuses', JSON.stringify(bonusScans));
+
+          window.confetti_v2(`+${response.data.scans} Scans Unlocked!`);
+        }
+      }
+    });
   }
 
   async init(): Promise<void> {
@@ -482,17 +517,26 @@ export class LicenseProvider {
 
   getNOMaxAllowedScansPerMonth() {
     switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 300 + this.getScanOffset();
+      case LicenseProvider.LICENSE_FREE: return 60 + this.getScanOffset();
       case LicenseProvider.LICENSE_BASIC: return 1000 + this.getScanOffset();
       case LicenseProvider.LICENSE_PRO: return 10000 + this.getScanOffset();
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
-      default: { return LicenseProvider.GetPlanData().scans; }
+      default: { return LicenseProvider.GetPlanData().scans + this.getScanOffset(); }
     }
   }
 
   getScanOffset() {
     let offset = 0;
-    // offset += localStorage.getItem('email') ? Config.SCAN_OFFSET_EMAIL_INCENTIVE : 0;
+    const bonusScans = localStorage.getItem('bonuses');
+    if (bonusScans) {
+      const bonusScansArray = JSON.parse(bonusScans);
+      for (let i = 0; i < bonusScansArray.length; i++) {
+        const bonusScan = bonusScansArray[i];
+        if (bonusScan && bonusScan.scans && bonusScan.valid_until && new Date(bonusScan.valid_until).getTime() > new Date().getTime()) {
+          offset += bonusScan.scans;
+        }
+      }
+    }
     return offset;
   }
 

@@ -13,7 +13,8 @@ export class Config {
   public static URL_APPSTORE = 'https://itunes.apple.com/app/id1180168368';
 
   public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com/v5';
-  public static URL_LICENSE_SERVER_BASE = 'https://license.barcodetopc.com';
+  public static URL_AI_ENDPOINT = 'https://license.barcodetopc.com';
+
   public static URL_TELEMETRY = Config.URL_LICENSE_SERVER + '/telemetry';
   public static URL_ORDER_CHECK = Config.URL_LICENSE_SERVER + '/order/check';
   public static URL_ORDER_DEACTIVATE = Config.URL_LICENSE_SERVER + '/order/remove';
@@ -40,7 +41,7 @@ export class Config {
   public static URL_TUTORIAL_CSV_UPDATE = 'https://docs.barcodetopc.com/output-template/components/csv_update/';
   public static URL_TUTORIAL_CREATE_OUTPUT_TEMPLATE = 'https://docs.barcodetopc.com/output-template/how-it-works/';
   public static URL_TUTORIAL_MACOS_ACCESSIBILITY = 'https://docs.barcodetopc.com/keyboard-emulation/#nothing-gets-type-macos-only';
-  public static URL_TUTORIAL_HTTP = 'https://docs.barcodetopc.com/output-template/components/http/';
+  public static URL_TUTORIAL_HTTP = 'https://docs.barcodetopc.com/output-template/components/http_request/';
   public static URL_TUTORIAL_WOOCOMMERCE = 'https://docs.barcodetopc.com/output-template/components/woocommerce/';
   public static URL_TUTORIAL_IMAGE = 'https://docs.barcodetopc.com/output-template/components/image/';
   public static URL_DOWNGRADE_V3 = Config.URL_WEBSITE + '/downgrade-app-from-v4-to-v3/';
