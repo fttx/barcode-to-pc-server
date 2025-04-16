@@ -86,14 +86,23 @@ export class LicenseProvider {
           localStorage.setItem('email', response.email);
           localStorage.setItem('name', response.name);
 
-          // Save bonuses to the localStorage array
-          let bonusScansStr = localStorage.getItem('bonuses');
-          let bonusScans = []
-          if (bonusScansStr) { bonusScans = JSON.parse(bonusScansStr); }
-          bonusScans.push(response.data);
-          localStorage.setItem('bonuses', JSON.stringify(bonusScans));
+          let bonusStr = localStorage.getItem('bonuses');
+          let bonusArray = []
+          if (bonusStr) { bonusArray = JSON.parse(bonusStr); }
 
-          window.confetti_v2(`+${response.data.scans} Scans Unlocked!`);
+          // Prevent welcome discounts to be added multiple times
+          if (response.data && response.data.is_welcome && bonusArray.findIndex(x => x.is_welcome) !== -1) {
+            this.utilsProvider.showErrorNativeDialog('Welcome bonus already redeemed');
+            return;
+          }
+
+          // Save bonuses to the localStorage array
+          bonusArray.push(response.data);
+          localStorage.setItem('bonuses', JSON.stringify(bonusArray));
+
+          if (response.data.scans) {
+            window.confetti_v2(`+${response.data.scans} Scans Unlocked!`);
+          }
         }
       }
     });
