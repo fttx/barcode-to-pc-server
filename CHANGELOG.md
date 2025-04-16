@@ -16,6 +16,13 @@
 ### Security
 -->
 
+## [v4.8.4] - 2024-04-16
+
+### Changed
+
+- Improve JAVASCRIPT_FUNCTION UI
+- Many other UI/UX improvements
+
 ## [v4.8.3] - 2025-03-16
 
 ### Fixed
@@ -766,6 +773,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.3...v4.8.4
 [v4.8.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.2...v4.8.3
 [v4.8.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.1...v4.8.2
 [v4.8.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.0...v4.8.1
