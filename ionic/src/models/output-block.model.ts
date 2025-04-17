@@ -69,6 +69,8 @@ export class OutputBlockModel {
      */
     allowOOBExecution?: boolean;
 
+    executeOnSmartphone?: boolean;
+
     /**
      * NutjsKey identifier (See utils.ts)
      */

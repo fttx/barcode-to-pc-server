@@ -319,6 +319,8 @@
   "nativeSuccessDialogTitle": "Licensa attivata con successo",
   "nativeSuccessDialogCloseButton": "Chiudi",
   "================================EDIT_OUTPUT_BLOCK_POPOVER====================": "",
+  "executeOnSmartphone": "Esegui sullo smartphone",
+  "executeOnSmartphoneDescription": "Quando abilitato, la richiesta verrà eseguita dallo smartphone.",
   "helpButton": "Aiuto",
   "saveButton": "Salva",
   "skipOutputToggle": "Ignora l'output",

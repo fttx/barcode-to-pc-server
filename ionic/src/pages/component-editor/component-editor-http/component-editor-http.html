@@ -1,5 +1,6 @@
 <component-editor [outputBlock]="outputBlock">
   <div [hidden]="outputBlock.type != 'http'">
+
     <ion-item>
       <label for="_valueUrl">{{ 'url' | translate }}</label>
       <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="https://www.example.com/" />
@@ -109,5 +110,17 @@
       <br>
       <p [innerHtml]="'httpTimeoutDescription' | translate"></p>
     </ion-item>
+
+
+    <ion-item no-lines>
+      <ion-label>{{ 'executeOnSmartphone' | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="outputBlock.executeOnSmartphone" item-end> </ion-checkbox>
+    </ion-item>
+    <ion-item text-wrap>
+      <p>
+        {{ 'executeOnSmartphoneDescription' | translate }}
+      </p>
+    </ion-item>
+
   </div>
 </component-editor>

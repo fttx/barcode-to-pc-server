@@ -314,6 +314,8 @@
   "nativeSuccessDialogTitle": "成功",
   "nativeSuccessDialogCloseButton": "關閉",
   "================================EDIT_OUTPUT_BLOCK_POPOVER====================": "",
+  "executeOnSmartphone": "在智能手機上執行",
+  "executeOnSmartphoneDescription": "啟用後，請求將由智能手機執行。",
   "helpButton": "說明",
   "saveButton": "保存",
   "skipOutputToggle": "跳過輸出",

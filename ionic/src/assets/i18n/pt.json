@@ -314,6 +314,8 @@
   "nativeSuccessDialogTitle": "Sucesso",
   "nativeSuccessDialogCloseButton": "Fechar",
   "================================EDIT_OUTPUT_BLOCK_POPOVER====================": "",
+  "executeOnSmartphone": "Executar no smartphone",
+  "executeOnSmartphoneDescription": "Quando ativado, a solicitação será realizada pelo smartphone.",
   "helpButton": "Instruções",
   "saveButton": "Salvar",
   "skipOutputToggle": "Pular saída",

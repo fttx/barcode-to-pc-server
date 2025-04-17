@@ -314,6 +314,8 @@
   "nativeSuccessDialogTitle": "Başarılı",
   "nativeSuccessDialogCloseButton": "Kapat",
   "================================EDIT_OUTPUT_BLOCK_POPOVER====================": "",
+  "executeOnSmartphone": "Akıllı telefonda çalıştır",
+  "executeOnSmartphoneDescription": "Etkinleştirildiğinde, istek akıllı telefon tarafından gerçekleştirilecektir.",
   "helpButton": "Talimatlar",
   "saveButton": "Kaydet",
   "skipOutputToggle": "Çıkışı atla",

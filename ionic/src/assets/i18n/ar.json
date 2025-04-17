@@ -314,6 +314,8 @@
   "nativeSuccessDialogTitle": "نجاح",
   "nativeSuccessDialogCloseButton": "إغلاق",
   "================================EDIT_OUTPUT_BLOCK_POPOVER====================": "",
+  "executeOnSmartphone": "تنفيذ على الهاتف الذكي",
+  "executeOnSmartphoneDescription": "عند التفعيل، سيتم تنفيذ الطلب بواسطة الهاتف الذكي.",
   "helpButton": "تعليمات",
   "saveButton": "حفظ",
   "skipOutputToggle": "تخطي الإخراج",
