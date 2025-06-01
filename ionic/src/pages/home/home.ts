@@ -262,20 +262,22 @@ export class HomePage {
       // Uncomment this section when there will be support for multiple scanSessions per event
       // let finalNoScans = this.scanSessions.map(scanSession => scanSession.scannings.length).reduce((a, b) => a + b, 0);
       // this.licenseProvider.limitMonthlyScans(finalNoScans - initialNoScans);
-      const currentCount = await this.licenseProvider.limitMonthlyScans(1);
-      console.log('@@@ currentCount', request.scanSessions);
+      let scanNonce: string = null;
       if (request.scanSessions && request.scanSessions[0] && request.scanSessions[0].scannings && request.scanSessions[0].scannings[0]) {
+        scanNonce = request.scanSessions[0].scannings[0].id + '';
+        const currentCount = await this.licenseProvider.limitMonthlyScans(1, scanNonce);
+        console.log('@@@ currentCount', request.scanSessions);
+
         const barcodeComponent = request.scanSessions[0].scannings[0].outputBlocks.find(x => x.name === 'BARCODE');
         if (barcodeComponent) {
           this.events.publish('new:scan', barcodeComponent.value);
         }
-      }
 
-      if (!localStorage.getItem('email') && currentCount > Config.INCENTIVE_EMAIL_SHOW_THRESHOLD && this.licenseProvider.activeLicense === LicenseProvider.LICENSE_FREE) {
-        this.electronProvider.ipcRenderer.send('ipc_show_incentive_email_alert', currentCount);
+        if (!localStorage.getItem('email') && currentCount > Config.INCENTIVE_EMAIL_SHOW_THRESHOLD && this.licenseProvider.activeLicense === LicenseProvider.LICENSE_FREE) {
+          this.electronProvider.ipcRenderer.send('ipc_show_incentive_email_alert', currentCount);
+        }
+        this.save();
       }
-
-      this.save();
 
       // if (request.scan.repeated) {
       //   let scanIndex = this.scanSessions[scanSessionIndex].scannings.findIndex(x => x.id == request.scan.id);
@@ -335,7 +337,7 @@ export class HomePage {
     });
 
     this.electronProvider.ipcRenderer.on(requestModel.ACTION_UNDO_INFINITE_LOOP, (e, request: requestModelUndoInfiniteLoop) => {
-      this.licenseProvider.limitMonthlyScans(-request.count);
+      this.licenseProvider.limitMonthlyScans(-request.count, null);
     });
   }
 

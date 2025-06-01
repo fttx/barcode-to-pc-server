@@ -140,6 +140,13 @@ export class LicenseProvider {
       this.electronProvider.store.set(Config.STORAGE_NEXT_CHARGE_DATE, new Date().getTime() + 1000 * 60 * 60 * 24 * 31); // NOW() + 1 month
       this.electronProvider.store.set(Config.STORAGE_LAST_SCAN_COUNT_RESET_DATE, 0); // 0 = past moment
     }
+
+    setInterval(() => {
+      // Clear the last nonces every 5 minutes, but always keep the last 10
+      if (this.lastNonces.length > 10) {
+        this.lastNonces = this.lastNonces.slice(this.lastNonces.length - 10);
+      }
+    }, 1000 * 60 * 5);
   }
 
   /**
@@ -403,8 +410,16 @@ export class LicenseProvider {
    *
    * @returns the current scan count
    */
-  async limitMonthlyScans(noNewScans = 1) {
+  private lastNonces: string[] = [];
+  async limitMonthlyScans(noNewScans = 1, scanNonce: string) {
     let count = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+
+    // Prevent double counting of the same scan
+    if (scanNonce !== null && noNewScans > 0 && this.lastNonces.indexOf(scanNonce) != -1) {
+      return count;
+    }
+    this.lastNonces.push(scanNonce);
+
     count += noNewScans;
     this.electronProvider.store.set(Config.STORAGE_MONTHLY_SCAN_COUNT, count);
     this.telemetryProvider.sendEvent('scan', noNewScans, null);
