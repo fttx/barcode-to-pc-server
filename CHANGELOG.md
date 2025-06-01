@@ -16,6 +16,12 @@
 ### Security
 -->
 
+## [v4.8.5] - 2024-06-01
+
+### Added
+
+- HTTP requests can be now executed on the smartphone side
+
 ## [v4.8.4] - 2024-04-16
 
 ### Changed
@@ -773,6 +779,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.4...v4.8.5
 [v4.8.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.3...v4.8.4
 [v4.8.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.2...v4.8.3
 [v4.8.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.1...v4.8.2
