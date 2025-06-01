@@ -111,7 +111,6 @@
       <p [innerHtml]="'httpTimeoutDescription' | translate"></p>
     </ion-item>
 
-
     <ion-item no-lines>
       <ion-label>{{ 'executeOnSmartphone' | translate }}</ion-label>
       <ion-checkbox [(ngModel)]="outputBlock.executeOnSmartphone" item-end> </ion-checkbox>
@@ -119,6 +118,16 @@
     <ion-item text-wrap>
       <p>
         {{ 'executeOnSmartphoneDescription' | translate }}
+      </p>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>{{ 'httpUseResultAsACK' | translate }}</ion-label>
+      <ion-checkbox [(ngModel)]="outputBlock.httpUseResultAsACK" item-end> </ion-checkbox>
+    </ion-item>
+    <ion-item text-wrap>
+      <p>
+        {{ 'httpUseResultAsACKDescription' | translate }}
       </p>
     </ion-item>
 

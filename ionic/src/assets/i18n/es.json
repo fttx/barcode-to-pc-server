@@ -369,6 +369,8 @@
   "wooCommerceFieldsDocs2": "REST API Docs",
   "httpTimeout": "Tiempo de espera",
   "httpTimeoutDescription": "El tiempo de espera de la solicitud en milisegundos",
+  "httpUseResultAsACK": "Marcar siempre el escaneo como exitoso",
+  "httpUseResultAsACKDescription": "Al ejecutar la solicitud HTTP en el smartphone, independientemente del estado de sincronización con el Servidor Barcode to PC, el escaneo se marcará como exitoso si la solicitud HTTP devuelve un código de estado 2xx.",
   "command": "Comando",
   "commandDescription1": "El directorio de trabajo se establece en el directorio de inicio del usuario.",
   "commandDescription2": "Utilice la sintaxis de llaves dobles para inyectar variables.",

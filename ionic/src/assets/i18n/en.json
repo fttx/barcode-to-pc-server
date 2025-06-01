@@ -369,6 +369,8 @@
   "wooCommerceFieldsDocs2": "REST API Docs",
   "httpTimeout": "Timeout",
   "httpTimeoutDescription": "The request timeout in milliseconds",
+  "httpUseResultAsACK": "Always mark the scan as successful",
+  "httpUseResultAsACKDescription": "When the smartphone sends the HTTP request, the scan will be marked as successful as long as the server responds with a 2xx status code, even if it's not currently synchronized with the Barcode to PC Server. This allows local success tracking independently of sync status.",
   "command": "Command",
   "commandDescription1": "The working directory is set to the user home directory.",
   "commandDescription2": "Use the double curly braces syntax to inject variables.",

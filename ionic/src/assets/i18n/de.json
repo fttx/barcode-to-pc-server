@@ -369,6 +369,8 @@
   "wooCommerceFieldsDocs2": "REST API-Dokumenten kopieren",
   "httpTimeout": "Zeitüberschreitung",
   "httpTimeoutDescription": "Die Anforderungszeitüberschreitung in Millisekunden",
+  "httpUseResultAsACK": "Scan immer als erfolgreich markieren",
+  "httpUseResultAsACKDescription": "Bei der Ausführung der HTTP-Anfrage auf dem Smartphone wird der Scan unabhängig vom Synchronisierungsstatus mit dem Barcode to PC-Server als erfolgreich markiert, wenn die HTTP-Anfrage einen 2xx-Statuscode zurückgibt.",
   "command": "Befehl",
   "commandDescription1": "Das Arbeitsverzeichnis ist auf das Benutzer-Home-Verzeichnis gesetzt.",
   "commandDescription2": "Verwenden Sie die doppelte geschweifte Klammer-Syntax, um Variablen einzufügen.",

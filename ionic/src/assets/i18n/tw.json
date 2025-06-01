@@ -369,6 +369,8 @@
   "wooCommerceFieldsDocs2": "REST API 文件中複製欄位名稱",
   "httpTimeout": "超時",
   "httpTimeoutDescription": "請求超時時間（毫秒）",
+  "httpUseResultAsACK": "始終將掃描標記為成功",
+  "httpUseResultAsACKDescription": "在智能手機上執行HTTP請求時，無論與Barcode to PC服務器的同步狀態如何，如果HTTP請求返回2xx狀態碼，掃描將被標記為成功。",
   "command": "命令",
   "commandDescription1": "工作目錄設置為用戶主目錄。",
   "commandDescription2": "使用雙大括號語法插入變數。",

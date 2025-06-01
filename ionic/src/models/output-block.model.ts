@@ -117,6 +117,7 @@ export class OutputBlockModel {
     httpOAuthMethod?: 'HMAC-SHA1' | 'HMAC-SHA256' | 'disabled';
     httpOAuthConsumerKey?: string;
     httpOAuthConsumerSecret?: string;
+    httpUseResultAsACK?: boolean;
     /**
      * @deprecated use httpMethod instead
      */
@@ -218,6 +219,13 @@ export class OutputBlockModel {
      */
     outputMode?: 'coordinates' | 'savedLocation';
     maxDistanceFromSavedLocation?: number; // meters
+
+
+    /**
+     * Parameter used in serverless mode.
+     * When set to true the scan is marked as successful (As if the ACK was received)
+     */
+    markAsACKValue?: boolean;
 
     static FindEndIfIndex(outputBlocks: OutputBlockModel[], startFrom = 0): number {
         let skip = 0;

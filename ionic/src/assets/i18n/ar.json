@@ -369,6 +369,8 @@
   "wooCommerceFieldsDocs2": "وثائق واجهة برمجة التطبيقات REST",
   "httpTimeout": "مهلة الانتهاء",
   "httpTimeoutDescription": "مهلة الانتهاء للطلب بالمللي ثانية",
+  "httpUseResultAsACK": "وضع علامة على المسح كناجح دائمًا",
+  "httpUseResultAsACKDescription": "عند تنفيذ طلب HTTP على الهاتف الذكي، بغض النظر عن حالة المزامنة مع خادم Barcode to PC، سيتم وضع علامة على المسح كناجح إذا أعاد طلب HTTP رمز حالة 2xx.",
   "command": "الأمر",
   "commandDescription1": "تم تعيين دليل العمل إلى دليل المستخدم الرئيسي.",
   "commandDescription2": "استخدم صيغة القوسين المزدوجين لحقن المتغيرات.",

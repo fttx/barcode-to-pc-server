@@ -374,6 +374,8 @@
   "wooCommerceFieldsDocs2": "REST API Docs",
   "httpTimeout": "Timeout",
   "httpTimeoutDescription": "Il timeout della richiesta in millisecondi",
+  "httpUseResultAsACK": "Marca sempre la scansione come riuscita",
+  "httpUseResultAsACKDescription": "Durante l'esecuzione della richiesta HTTP sullo smartphone, indipendentemente dallo stato di sincronizzazione con Barcode to PC Server, la scansione sarà contrassegnata come riuscita se la richiesta HTTP restituisce un codice di stato 2xx.",
   "command": "Comando",
   "commandDescription1": "La directory di lavoro è impostata sulla directory home utente.",
   "commandDescription2": "Utilizzare la sintassi delle doppie parentesi graffe per iniettare una variabile.",
