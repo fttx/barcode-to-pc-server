@@ -541,7 +541,7 @@ export class LicenseProvider {
 
   getNOMaxAllowedScansPerMonth() {
     switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 60 + this.getScanOffset();
+      case LicenseProvider.LICENSE_FREE: return 300 + this.getScanOffset();
       case LicenseProvider.LICENSE_BASIC: return 1000 + this.getScanOffset();
       case LicenseProvider.LICENSE_PRO: return 10000 + this.getScanOffset();
       case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
@@ -583,9 +583,7 @@ export class LicenseProvider {
   }
 
   private async showUpgradeDialog(refer, title, message) {
-    if (this.upgradeDialog != null) {
-      return;
-    }
+    await this.hideUpgradeDialog();
     this.upgradeDialog = this.alertCtrl.create({
       title: title, message: message, buttons: [{
         text: await this.utilsProvider.text('upgradeDialogDismissButton'), role: 'cancel'
@@ -596,14 +594,14 @@ export class LicenseProvider {
       }]
     });
     this.telemetryProvider.sendEvent('show_upgrade_dialog', null, refer);
-    this.upgradeDialog.onDidDismiss(() => this.upgradeDialog = null)
-    this.upgradeDialog.present();
+    await this.upgradeDialog.present();
   }
 
-  private hideUpgradeDialog() {
+  private async hideUpgradeDialog() {
     if (this.upgradeDialog != null) {
-      this.upgradeDialog.dismiss();
+      try { await this.upgradeDialog.dismiss(); } catch (error) { }
     }
+    return 0;
   }
 
   private async showV4UpgradeDialog() {
