@@ -165,6 +165,35 @@ export class MyApp {
           const token = new URL(url).searchParams.get('code');
           this.electronProvider.ipcRenderer.send('oauth_token', token);
         }
+
+        // Handle btplink://success URLs with base64 data parameter
+        if (url.indexOf('btplink://success') !== -1) {
+          try {
+            const urlObj = new URL(url);
+            const base64Data = urlObj.searchParams.get('data');
+            if (base64Data) {
+              // Decode base64 data
+              const decodedData = atob(base64Data);
+              const userData = JSON.parse(decodedData);
+
+              // Store user data for telemetry
+              if (userData.email) {
+                localStorage.setItem('email', userData.email);
+              }
+              if (userData.name) {
+                localStorage.setItem('name', userData.name);
+              }
+
+              // Show success feedback
+              if (userData.email && userData.name) {
+                window.confetti_v2(`Welcome ${userData.name}!`);
+                console.log('[btplink] User data stored:', { email: userData.email, name: userData.name });
+              }
+            }
+          } catch (error) {
+            console.error('[btplink] Error processing success URL:', error);
+          }
+        }
       };
 
       // Used to open files (double click)
@@ -180,6 +209,12 @@ export class MyApp {
           const oauthUrl = argv.find(x => x.indexOf('oauth') != -1);
           if (oauthUrl) {
             checkDeepLink(oauthUrl);
+          }
+
+          // Handle btplink:// URLs from command line
+          const btplinkUrl = argv.find(x => x.indexOf('btplink://') != -1);
+          if (btplinkUrl) {
+            checkDeepLink(btplinkUrl);
           }
         }
       };
