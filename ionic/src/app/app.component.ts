@@ -18,6 +18,7 @@ import { UtilsProvider } from '../providers/utils/utils';
 import { OutputProfileExportedModel } from '../models/output-profile-exported.model';
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
 import { OutputBlockModel } from '../models/output-block.model';
+import { TelemetryService } from '../providers/telemetry/telemetry';
 
 @Component({
   templateUrl: 'app.html'
@@ -39,6 +40,7 @@ export class MyApp {
     public utils: UtilsProvider,
     public app: App,
     private translate: TranslateService,
+    private telemetryService: TelemetryService,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -188,6 +190,9 @@ export class MyApp {
               if (userData.email && userData.name) {
                 window.confetti_v2(`Welcome ${userData.name}!`);
                 console.log('[btplink] User data stored:', { email: userData.email, name: userData.name });
+
+                // Close login modal if it's open
+                this.telemetryService.closeLoginModalIfOpen();
               }
             }
           } catch (error) {

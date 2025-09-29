@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-navbar color="secondary">
+    <ion-title>
+      {{ getAppName() }}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding style="    margin-top: 30px;">
+  <div class="login-container">
+    <div class="login-header">
+      <ion-icon name="person" class="login-icon"></ion-icon>
+      <h1>Sign up to continue</h1>
+      <p>Please sign up to use {{ getAppName() }} and enable all the features.</p>
+    </div>
+
+    <div class="login-actions">
+      <button ion-button default color="secondary" (click)="onSignUpClick()" [disabled]="isProcessing">
+        <ion-icon name="log-in" start></ion-icon>
+        &nbsp;
+        Sign up
+      </button>
+
+      <div class="fallback-section" *ngIf="showFallbackInput">
+
+        <ion-item>
+          <ion-label stacked>Authentication Code</ion-label>
+          <ion-input type="text" [(ngModel)]="fallbackData" placeholder="If it doesn't work automatically, paste the code here" [disabled]="isProcessing">
+          </ion-input>
+        </ion-item>
+
+        <button ion-button default color="secondary" (click)="onUseFallbackClick()" [disabled]="!fallbackData || !fallbackData.trim() || isProcessing">
+          <ion-icon name="key" start></ion-icon>
+          &nbsp;
+          <span *ngIf="!isProcessing">Use Fallback Data</span>
+          <span *ngIf="isProcessing">Processing...</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="login-info">
+    <small>After signing up, you'll be redirected back to the application automatically.
+      <a (click)="showHelp($event)" style="text-decoration: underline; cursor: pointer;">Help?</a>
+    </small>
+  </div>
+</ion-content>

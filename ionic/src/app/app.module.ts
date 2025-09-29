@@ -44,6 +44,8 @@ import {
   ScanSessionContextMenuPopover
 } from '../pages/home/home';
 import { InfoPage } from '../pages/info/info';
+import { LoginPage } from '../pages/login/login';
+import { LoginHelpPopover } from '../pages/login/login-help-popover';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomeHelpPage } from '../pages/welcome-help/welcome-help';
 import { WelcomePage } from '../pages/welcome/welcome';
@@ -96,6 +98,8 @@ import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prom
     ExportOutputTemplatePopoverPage,
     AiPromptPopoverPage,
     SettingsPage,
+    LoginPage,
+    LoginHelpPopover,
     ImageViewerPage,
   ],
   imports: [
@@ -169,6 +173,8 @@ import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prom
     ExportOutputTemplatePopoverPage,
     AiPromptPopoverPage,
     SettingsPage,
+    LoginPage,
+    LoginHelpPopover,
     ImageViewerPage,
   ],
   providers: [
