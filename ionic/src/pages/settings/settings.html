@@ -188,7 +188,7 @@
         <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container otcp">
           <output-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-component>
 
-          <button ion-button small clear icon-start color="dark" id="refine" (click)="onRefineOutputTemplateClick()" title="{{ 'Refine' | translate }}" style="float: right;">
+          <button ion-button small clear icon-start color="dark" id="refine" (click)="onRefineOutputTemplateClick()" title="{{ 'Refine' | translate }}" class="pulsing pulsable">
             <img src="assets/settings/ai-light.png?v=2" alt="ai" style="max-height: 75%">
           </button>
         </div>
