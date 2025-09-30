@@ -562,8 +562,9 @@ export class UtilsProvider {
    */
   public processUserAuthentication(base64Data: string, source: string): { email: string, name: string, serial?: string } | null {
     try {
-      // Decode base64 data
-      const decodedData = atob(base64Data.trim());
+      // Decode URL-encoded base64 data
+      const unescapedBase64 = decodeURIComponent(base64Data.trim());
+      const decodedData = atob(unescapedBase64);
       const userData = JSON.parse(decodedData);
 
       // Validate required fields
