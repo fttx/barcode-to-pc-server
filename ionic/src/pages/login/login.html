@@ -21,6 +21,13 @@
         Sign up
       </button>
 
+      <!-- Offline button that appears after connectivity check fails -->
+      <button ion-button default color="light" (click)="onOfflineClick()" *ngIf="showOfflineButton">
+        <ion-icon name="cloud-offline" start></ion-icon>
+        &nbsp;
+        Continue Offline
+      </button>
+
       <div class="fallback-section" *ngIf="showFallbackInput">
 
         <ion-item>

@@ -662,6 +662,10 @@ export class MyApp {
         console.log('[app] User authenticated successfully');
       } else if (data && data.skipped) {
         console.log('[app] User skipped authentication');
+      } else if (data && data.dismissedDueToConnectivity) {
+        console.log('[app] Login dismissed due to no internet connectivity');
+      } else if (data && data.offlineMode) {
+        console.log('[app] User chose to continue in offline mode');
       }
     });
 

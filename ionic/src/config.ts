@@ -12,6 +12,7 @@ export class Config {
   public static URL_PLAYSTORE = 'https://play.google.com/store/apps/details?id=com.barcodetopc';
   public static URL_APPSTORE = 'https://itunes.apple.com/app/id1180168368';
 
+  public static URL_LICENSE_SERVER_CHECK = 'https://license.barcodetopc.com/';
   public static URL_LICENSE_SERVER = 'https://license.barcodetopc.com/v5';
   public static URL_AI_ENDPOINT = 'https://license.barcodetopc.com';
 

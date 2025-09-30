@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { NavController, NavParams, ViewController, PopoverController } from 'ionic-angular';
 import { Config } from '../../config';
 import { ElectronProvider } from '../../providers/electron/electron';
@@ -14,6 +15,9 @@ export class LoginPage {
   public showFallbackInput: boolean = false;
   public fallbackData: string = '';
   public isProcessing: boolean = false;
+  public showOfflineButton: boolean = false;
+  private connectivityTimeoutId: any;
+  private hasBeenSkipped: boolean = false;
 
   constructor(
     public navCtrl: NavController,
@@ -23,18 +27,67 @@ export class LoginPage {
     public popoverCtrl: PopoverController,
     public utils: UtilsProvider,
     public telemetryService: TelemetryService,
+    private http: HttpClient,
   ) {
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LoginPage');
+    this.checkConnectivityAndSetTimeout();
+  }
+
+  ionViewWillLeave() {
+    // Clear any pending connectivity timeout
+    if (this.connectivityTimeoutId) {
+      clearTimeout(this.connectivityTimeoutId);
+      this.connectivityTimeoutId = null;
+    }
+  }
+
+  private checkConnectivityAndSetTimeout() {
+    // First check if browser reports being online
+    if (!navigator.onLine) {
+      console.log('[login] Browser reports offline, showing offline button');
+      this.showOfflineButton = true;
+      return;
+    }
+
+    // Set a 5-second timeout to show offline button if no response
+    this.connectivityTimeoutId = setTimeout(() => {
+      console.log('[login] Connectivity check timeout, showing offline button');
+      this.showOfflineButton = true;
+      this.telemetryService.sendEvent('login_offline_button_shown_timeout', null, null);
+    }, 5000);
+
+    // Check internet connectivity using the same domain as license.ts to avoid CORS
+    // Try to make a simple HEAD request to the license server
+    this.http.head(Config.URL_LICENSE_SERVER_CHECK).subscribe(
+      (response) => {
+        // Clear timeout if we get a successful response
+        if (this.connectivityTimeoutId) {
+          clearTimeout(this.connectivityTimeoutId);
+          this.connectivityTimeoutId = null;
+        }
+        console.log('[login] Internet connectivity confirmed');
+        // Hide offline button if it was shown
+        this.showOfflineButton = false;
+      },
+      (error: HttpErrorResponse) => {
+        // Clear timeout and show offline button on error
+        if (this.connectivityTimeoutId) {
+          clearTimeout(this.connectivityTimeoutId);
+          this.connectivityTimeoutId = null;
+        }
+        console.log('[login] No internet connectivity detected, showing offline button');
+        this.showOfflineButton = true;
+      }
+    );
   }
 
   ionViewCanLeave(): boolean {
-    // Allow leaving if user is authenticated OR has explicitly skipped
+    // Allow leaving if user is authenticated OR has been skipped in current session
     const email = localStorage.getItem('email');
-    const authSkipped = localStorage.getItem('authSkipped');
-    if (authSkipped === 'true' || email) {
+    if (this.hasBeenSkipped || email) {
       return true;
     }
     return false;
@@ -88,7 +141,7 @@ export class LoginPage {
     popover.onDidDismiss((data) => {
       if (data && data.action === 'skip') {
         console.log('[login] User chose to skip authentication');
-        localStorage.setItem('authSkipped', 'true');
+        this.hasBeenSkipped = true;
         this.telemetryService.sendEvent('login_skip', null, null);
         this.viewCtrl.dismiss({
           skipped: true
@@ -100,5 +153,19 @@ export class LoginPage {
 
   getAppName() {
     return Config.APP_NAME;
+  }
+
+  onOfflineClick() {
+    console.log('[login] User chose to continue in offline mode');
+    this.telemetryService.sendEvent('login_offline_click', null, null);
+
+    // Set temporary skip flag for current session
+    this.hasBeenSkipped = true;
+
+    // Dismiss the login page with skipped and offline flags
+    this.viewCtrl.dismiss({
+      skipped: true,
+      offlineMode: true
+    });
   }
 }
