@@ -147,10 +147,6 @@
             {{ outputProfile.name }}</option>
         </select>
 
-        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onRefineOutputTemplateClick()" title="{{ 'Refine' | translate }}">
-          <img src="assets/settings/ai-light.png?v=2" alt="ai" style="max-height: 75%">
-        </button>
-
         <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onEditOutputProfileNameClick()" title="{{ 'outputTemplateRename' | translate }}">
           <ion-icon name="create"></ion-icon>
         </button>
@@ -191,6 +187,10 @@
         </div>
         <div id="right" dragula="dragula-group" [(dragulaModel)]='settings.outputProfiles[selectedOutputProfile].outputBlocks' class="output-blocks-container otcp">
           <output-component *ngFor="let outputBlock of settings.outputProfiles[selectedOutputProfile].outputBlocks" [outputBlock]="outputBlock"></output-component>
+
+          <button ion-button small clear icon-start color="dark" id="refine" (click)="onRefineOutputTemplateClick()" title="{{ 'Refine' | translate }}" style="float: right;">
+            <img src="assets/settings/ai-light.png?v=2" alt="ai" style="max-height: 75%">
+          </button>
         </div>
       </ion-item>
 

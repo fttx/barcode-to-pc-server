@@ -69,10 +69,23 @@ export class SettingsPage implements OnInit, OnDestroy {
       },
       accepts: (el, target, source, sibling) => {
         // To avoid dragging from right to left container
-        return target.id !== 'left';
+        if (target.id === 'left') {
+          return false;
+        }
+
+        // Prevent dropping on or near the refine button
+        if (sibling && (sibling.id === 'refine' || sibling.closest('#refine'))) {
+          return false;
+        }
+
+        return true;
       },
       copyItem: (item: OutputBlockModel) => {
         return JSON.parse(JSON.stringify(item));
+      },
+      invalid: (el, handle) => {
+        // Only exclude the refine button and its children, nothing else
+        return el.id === 'refine';
       },
       removeOnSpill: true
     });
