@@ -14,6 +14,8 @@
   "changelogDialogMessage": "Lütfen telefonunuzdaki uygulamayı da güncellediğinizden emin olun.",
   "changelogDialogTitle": "Sunucu güncellendi",
   "changelogDialogOkButton": "Tamam",
+  "freeExpiredDialogTitle": "Ücretsiz süre doldu",
+  "freeExpiredDialogMessage": "Ücretsiz deneme süreniz sona erdi, yazılımı kullanmaya devam etmek için lisans satın alın.",
   "Refine": "AI İyileştir",
   "welcomeConfetti": "Hoş geldin {{ name }}!",
   "================================WELCOME_PAGE=================================": "",

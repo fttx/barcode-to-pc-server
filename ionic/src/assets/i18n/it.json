@@ -14,6 +14,8 @@
   "changelogDialogMessage": "Assicurati che anche la app nello smartphone sia aggiornata.",
   "changelogDialogTitle": "Il server è stato aggiornato",
   "changelogDialogOkButton": "Ok",
+  "freeExpiredDialogTitle": "Periodo gratuito scaduto",
+  "freeExpiredDialogMessage": "Il tuo periodo di prova gratuito è scaduto, acquista una licenza per continuare a utilizzare il software.",
   "Refine": "AI Migliora",
   "welcomeConfetti": "Benvenuto {{ name }}!",
   "================================WELCOME_PAGE=================================": "",

@@ -14,6 +14,8 @@
   "changelogDialogMessage": "يرجى التأكد من تحديث التطبيق على هاتفك أيضًا.",
   "changelogDialogTitle": "تم تحديث الخادم",
   "changelogDialogOkButton": "موافق",
+  "freeExpiredDialogTitle": "انتهت الفترة المجانية",
+  "freeExpiredDialogMessage": "انتهت فترة التجربة المجانية، اشتر رخصة لمواصلة استخدام البرنامج.",
   "Refine": "AI تحسين",
   "welcomeConfetti": "أهلاً وسهلاً {{ name }}!",
   "================================WELCOME_PAGE=================================": "",

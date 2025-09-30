@@ -14,6 +14,8 @@
   "changelogDialogMessage": "Bitte stellen Sie sicher, dass auch die App auf Ihrem Smartphone aktualisiert wird.",
   "changelogDialogTitle": "Der Server wurde aktualisiert",
   "changelogDialogOkButton": "Ok",
+  "freeExpiredDialogTitle": "Kostenlos abgelaufen",
+  "freeExpiredDialogMessage": "Ihre kostenlose Testphase ist vorbei. Erwerben Sie eine Lizenz, um die Software weiterhin zu verwenden.",
   "Refine": "AI Verbessern",
   "welcomeConfetti": "Willkommen {{ name }}!",
   "================================WELCOME_PAGE=================================": "",

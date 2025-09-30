@@ -27,12 +27,14 @@
 
       <ion-item no-lines text-wrap no-padding class="serial-item">
         <b>{{ 'serial' | translate }}</b>
-        <input [(ngModel)]="serial" type="text" class="serial-container" />
+        <div class="serial-input-container">
+          <input [(ngModel)]="serial" type="text" class="serial-container" />
+          <ion-icon name="close" class="serial-clear-icon" (click)="onClearSerialClick()" [style.display]="!serial || serial == '' ? 'none' : 'block'"></ion-icon>
+        </div>
       </ion-item>
 
       <ion-item no-lines no-padding class="activation-controls">
         <button ion-button color="secondary" default float-right (click)="onActivationClick()">{{ 'activateButton' | translate }}</button>
-        <button ion-button color="secondary" default float-right (click)="onClearSerialClick()" [disabled]="!serial || serial == '' ">{{ 'clearButton' | translate }}</button>
       </ion-item>
     </div>
 
@@ -44,7 +46,10 @@
 
       <ion-item no-lines text-wrap no-padding class="serial-item">
         <b>{{ 'serial' | translate }}</b>
-        <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
+        <div class="serial-input-container">
+          <input [(ngModel)]="serial" type="text" disabled class="serial-container serial-container-active" />
+          <ion-icon name="close" class="serial-clear-icon" (click)="onDeactivateClick()" style="display: none;"></ion-icon>
+        </div>
       </ion-item>
       <ion-item no-lines no-padding class="activation-controls">
         <button ion-button color="secondary" default float-right (click)="onDeactivateClick()">{{ 'deactivate' | translate }}</button>

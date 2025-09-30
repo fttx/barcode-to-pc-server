@@ -14,6 +14,8 @@
   "changelogDialogMessage": "請確保您也更新了智慧型手機上的應用程式。",
   "changelogDialogTitle": "伺服器已更新",
   "changelogDialogOkButton": "確定",
+  "freeExpiredDialogTitle": "免費期已過期",
+  "freeExpiredDialogMessage": "您的免費試用期已結束，請購買許可證以繼續使用軟體。",
   "Refine": "AI 優化",
   "welcomeConfetti": "歡迎 {{ name }}！",
   "================================WELCOME_PAGE=================================": "",

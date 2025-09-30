@@ -10,6 +10,27 @@ page-activate {
     min-height: 26px;
     width: 100%;
     padding: 3px 10px;
+    padding-right: 35px; // Make room for the clear icon
+  }
+
+  .serial-input-container {
+    position: relative;
+    width: 100%;
+  }
+
+  .serial-clear-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #999;
+    cursor: pointer;
+    z-index: 10;
+
+    &:hover {
+      color: #666;
+    }
   }
   .serial-container-active {
     background-color: #cdffbe;
