@@ -164,8 +164,11 @@ export class LicenseProvider {
    * perform the checks
    *
    * If the serial is passed it'll prompt the user with dialogs
+   *
+   * @param serial The license serial number to activate
+   * @param showSuccessDialog Whether to show the success dialog (default: true)
    */
-  updateSubscriptionStatus(serial: string = ''): Promise<void> {
+  updateSubscriptionStatus(serial: string = '', showSuccessDialog: boolean = true): Promise<void> {
     return new Promise(async (resolve, reject) => {
       this.activeLicense = this.electronProvider.store.get(Config.STORAGE_SUBSCRIPTION, LicenseProvider.LICENSE_FREE);
 
@@ -240,7 +243,8 @@ export class LicenseProvider {
             }
             this.electronProvider.store.set(Config.STORAGE_LICENSE_EVER_ACTIVATED, true);
             this.devicesProvider.unkickAllDevices();
-            this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
+
+
             const incentiveEmail = localStorage.getItem('email');
             this.telemetryProvider.sendEvent('license_activate', null, JSON.stringify({
               license: this.activeLicense,
@@ -252,7 +256,11 @@ export class LicenseProvider {
               // override the email
               localStorage.setItem('email', value['email']);
             }
-            window.confetti.start(3000);
+
+            if (showSuccessDialog) {
+              this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
+              window.confetti.start(3000);
+            }
           }
 
           if (value['version'] === 'v3') {

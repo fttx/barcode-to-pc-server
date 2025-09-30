@@ -189,7 +189,7 @@ export class MyApp {
                 // Check if serial is provided and activate license
                 if (userData.serial) {
                   console.log('[btplink] Serial found, activating license:', userData.serial);
-                  this.licenseProvider.updateSubscriptionStatus(userData.serial).then(() => {
+                  this.licenseProvider.updateSubscriptionStatus(userData.serial, true).then(() => {
                     console.log('[btplink] License activation completed');
                   }).catch((error) => {
                     console.error('[btplink] License activation failed:', error);
