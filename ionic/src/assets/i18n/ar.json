@@ -15,6 +15,7 @@
   "changelogDialogTitle": "تم تحديث الخادم",
   "changelogDialogOkButton": "موافق",
   "Refine": "تحسين",
+  "welcomeConfetti": "أهلاً وسهلاً {{ name }}!",
   "================================WELCOME_PAGE=================================": "",
   "welcome": "مرحبًا بك في",
   "welcomeStep1": "1) قم بتثبيت التطبيق على هاتفك الذكي",

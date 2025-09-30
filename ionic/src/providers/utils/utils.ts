@@ -592,9 +592,10 @@ export class UtilsProvider {
    * Show success feedback for user authentication
    * @param userData User data object with name
    */
-  public showAuthSuccessFeedback(userData: { name: string }): void {
+  public async showAuthSuccessFeedback(userData: { name: string }): Promise<void> {
     if (window.confetti_v2) {
-      window.confetti_v2(`Welcome ${userData.name}!`);
+      const welcomeMessage = await this.text('welcomeConfetti', { name: userData.name });
+      window.confetti_v2(welcomeMessage);
     }
   }
 

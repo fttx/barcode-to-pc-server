@@ -15,6 +15,7 @@
   "changelogDialogTitle": "Sunucu güncellendi",
   "changelogDialogOkButton": "Tamam",
   "Refine": "İyileştir",
+  "welcomeConfetti": "Hoş geldin {{ name }}!",
   "================================WELCOME_PAGE=================================": "",
   "welcome": "Hoş geldiniz",
   "welcomeStep1": "1) Uygulamayı telefonunuza yükleyin",

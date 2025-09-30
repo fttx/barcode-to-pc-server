@@ -15,6 +15,7 @@
   "changelogDialogTitle": "The server has been updated",
   "changelogDialogOkButton": "Ok",
   "Refine": "Refine",
+  "welcomeConfetti": "Welcome {{ name }}!",
   "================================WELCOME_PAGE=================================": "",
   "welcome": "Welcome to",
   "welcomeStep1": "1) Install the app on your smartphone",

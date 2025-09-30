@@ -15,6 +15,7 @@
   "changelogDialogTitle": "伺服器已更新",
   "changelogDialogOkButton": "確定",
   "Refine": "優化",
+  "welcomeConfetti": "歡迎 {{ name }}！",
   "================================WELCOME_PAGE=================================": "",
   "welcome": "歡迎使用",
   "welcomeStep1": "1) 在您的智慧型手機上安裝應用程式",
