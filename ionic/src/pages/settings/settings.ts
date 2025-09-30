@@ -97,10 +97,30 @@ export class SettingsPage implements OnInit, OnDestroy {
         }
       }
     });
+
+    // Play whoosh sound when element is removed (dragged out)
+    this.dragulaService.removeModel('dragula-group').subscribe(({ name, el, source, item, sourceModel }) => {
+      this.playWhooshSound();
+    });
   }
 
   public getAppName() {
     return Config.APP_NAME;
+  }
+
+  private playWhooshSound() {
+    // Play whoosh sound when element is dragged out (similar to testAudio pattern)
+    try {
+      let audio = new Audio();
+      audio.src = 'assets/audio/whoosh.mp3';
+      audio.load();
+      audio.play().catch(err => {
+        // Silently handle audio play errors (e.g., user hasn't interacted with page yet)
+        console.debug('Could not play whoosh sound:', err);
+      });
+    } catch (err) {
+      console.debug('Error creating whoosh audio:', err);
+    }
   }
 
   public canAddMoreComponents() {
