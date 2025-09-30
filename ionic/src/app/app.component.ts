@@ -3,13 +3,14 @@ import { Http } from '@angular/http';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
-import { AlertController, App, Events, Platform } from 'ionic-angular';
+import { AlertController, App, Events, Platform, ModalController } from 'ionic-angular';
 import { MarkdownService } from 'ngx-markdown';
 import { eq, gt, SemVer } from 'semver';
 import { Config } from '../config';
 import { NutjsKey, NutjsKeyV482 } from '../models/nutjs-key.model';
 import { SettingsModel } from '../models/settings.model';
 import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 import { SettingsPage } from '../pages/settings/settings';
 import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
@@ -26,6 +27,7 @@ import { TelemetryService } from '../providers/telemetry/telemetry';
 export class MyApp {
   // rootPage: any = SettingsPage;
   rootPage: any = null;
+  private loginModal: any = null;
 
   constructor(
     platform: Platform,
@@ -41,6 +43,7 @@ export class MyApp {
     public app: App,
     private translate: TranslateService,
     private telemetryService: TelemetryService,
+    private modalCtrl: ModalController,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -174,25 +177,13 @@ export class MyApp {
             const urlObj = new URL(url);
             const base64Data = urlObj.searchParams.get('data');
             if (base64Data) {
-              // Decode base64 data
-              const decodedData = atob(base64Data);
-              const userData = JSON.parse(decodedData);
+              const userData = this.utils.processUserAuthentication(base64Data, 'deeplink');
 
-              // Store user data for telemetry
-              if (userData.email) {
-                localStorage.setItem('email', userData.email);
-              }
-              if (userData.name) {
-                localStorage.setItem('name', userData.name);
-              }
-
-              // Show success feedback
-              if (userData.email && userData.name) {
-                window.confetti_v2(`Welcome ${userData.name}!`);
-                console.log('[btplink] User data stored:', { email: userData.email, name: userData.name });
-
-                // Close login modal if it's open
-                this.telemetryService.closeLoginModalIfOpen();
+              if (userData) {
+                this.utils.showAuthSuccessFeedback(userData);
+                console.log('[btplink] User data stored:', userData);
+                this.telemetryService.sendEvent('login', null, 'deeplink');
+                this.closeLoginModalIfOpen();
               }
             }
           } catch (error) {
@@ -236,6 +227,7 @@ export class MyApp {
         localStorage.setItem('email', argv.email);
         localStorage.setItem('name', argv.name);
         window.confetti_v2(`Free Unlocked!`);
+        this.closeLoginModalIfOpen();
       });
     }); // app.ready
 
@@ -245,6 +237,9 @@ export class MyApp {
       } else {
         this.rootPage = HomePage;
       }
+
+      // Check if user authentication is required
+      this.checkAuthenticationStatus();
     })
 
     this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
@@ -631,5 +626,53 @@ export class MyApp {
       }
       resolve(outputProfile);
     });
+  }
+
+  private checkAuthenticationStatus() {
+    // Check if user is authenticated
+    const email = localStorage.getItem('email');
+    const authSkipped = localStorage.getItem('authSkipped');
+
+    // If user has no email and hasn't skipped authentication, show login page
+    if (!email && authSkipped !== 'true') {
+      console.log('[app] User not authenticated, showing login page');
+      setTimeout(() => {
+        this.showLoginPage();
+      }, 1000); // Small delay to ensure app is fully loaded
+    }
+  }
+
+  private showLoginPage() {
+    // Prevent opening multiple login modals
+    if (this.loginModal) {
+      console.log('[app] Login modal already open, skipping');
+      return;
+    }
+
+    this.loginModal = this.modalCtrl.create(LoginPage, {}, {
+      enableBackdropDismiss: false,
+      showBackdrop: true
+    });
+
+    this.loginModal.onDidDismiss((data) => {
+      // Clear the modal reference
+      this.loginModal = null;
+
+      if (data && data.authenticated) {
+        console.log('[app] User authenticated successfully');
+      } else if (data && data.skipped) {
+        console.log('[app] User skipped authentication');
+      }
+    });
+
+    this.loginModal.present();
+  }
+
+  private closeLoginModalIfOpen() {
+    if (this.loginModal) {
+      console.log('[app] Closing login modal due to external authentication');
+      this.loginModal.dismiss();
+      this.loginModal = null;
+    }
   }
 }

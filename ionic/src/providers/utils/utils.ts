@@ -554,4 +554,48 @@ export class UtilsProvider {
     }
   }
 
+  /**
+   * Process user authentication from base64 data and store user info
+   * @param base64Data Base64 encoded user data
+   * @param source Source of authentication ('deeplink' or 'fallback')
+   * @returns {email: string, name: string} if successful, null if failed
+   */
+  public processUserAuthentication(base64Data: string, source: string): { email: string, name: string } | null {
+    try {
+      // Decode base64 data
+      const decodedData = atob(base64Data.trim());
+      const userData = JSON.parse(decodedData);
+
+      // Validate required fields
+      if (!userData.email || !userData.name) {
+        console.error('[auth] Invalid user data - missing email or name');
+        return null;
+      }
+
+      // Store user data for telemetry
+      localStorage.setItem('email', userData.email);
+      localStorage.setItem('name', userData.name);
+
+      console.log(`[auth] User authenticated via ${source}:`, { email: userData.email, name: userData.name });
+
+      return {
+        email: userData.email,
+        name: userData.name
+      };
+    } catch (error) {
+      console.error('[auth] Error processing user authentication:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Show success feedback for user authentication
+   * @param userData User data object with name
+   */
+  public showAuthSuccessFeedback(userData: { name: string }): void {
+    if (window.confetti_v2) {
+      window.confetti_v2(`Welcome ${userData.name}!`);
+    }
+  }
+
 }

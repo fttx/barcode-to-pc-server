@@ -32,7 +32,7 @@
         <button ion-button default color="secondary" (click)="onUseFallbackClick()" [disabled]="!fallbackData || !fallbackData.trim() || isProcessing">
           <ion-icon name="key" start></ion-icon>
           &nbsp;
-          <span *ngIf="!isProcessing">Use Fallback Data</span>
+          <span *ngIf="!isProcessing">Sign up using code</span>
           <span *ngIf="isProcessing">Processing...</span>
         </button>
       </div>
