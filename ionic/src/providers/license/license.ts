@@ -373,12 +373,18 @@ export class LicenseProvider {
       periodOfUseSinceFirstConnection = 'years';
     }
 
+    // scans clustering
+    let currentScanCount = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0);
+    let scansCluster = [5, 10, 50, 100, 200, 300, 400, 500, 1000, 2000, 5000, 10000, 100000, 100000000]
+      .find(cluster => currentScanCount <= cluster) || 100000000;
+
     // Put everything together and open the url in the system browser
     const params = {
       currentPlan: this.activeLicense,
       customOutputField: customOutputField,
       scanLimitReached: scanLimitReached,
       periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
+      scans: scansCluster,
       refer: refer,
     };
     this.electronProvider.shell.openExternal(
