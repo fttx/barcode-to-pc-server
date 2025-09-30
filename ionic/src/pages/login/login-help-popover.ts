@@ -6,10 +6,10 @@ import { NavController, NavParams, ViewController } from 'ionic-angular';
   template: `
     <ion-list>
       <ion-list-header>
-        Help?
+        {{ 'helpText' | translate }}
       </ion-list-header>
       <button ion-item (click)="onSkipClick()">
-        Skip
+        {{ 'skipButton' | translate }}
       </button>
     </ion-list>
   `
