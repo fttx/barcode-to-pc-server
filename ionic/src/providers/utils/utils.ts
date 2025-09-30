@@ -558,9 +558,9 @@ export class UtilsProvider {
    * Process user authentication from base64 data and store user info
    * @param base64Data Base64 encoded user data
    * @param source Source of authentication ('deeplink' or 'fallback')
-   * @returns {email: string, name: string} if successful, null if failed
+   * @returns {email: string, name: string, serial?: string} if successful, null if failed
    */
-  public processUserAuthentication(base64Data: string, source: string): { email: string, name: string } | null {
+  public processUserAuthentication(base64Data: string, source: string): { email: string, name: string, serial?: string } | null {
     try {
       // Decode base64 data
       const decodedData = atob(base64Data.trim());
@@ -576,12 +576,19 @@ export class UtilsProvider {
       localStorage.setItem('email', userData.email);
       localStorage.setItem('name', userData.name);
 
-      console.log(`[auth] User authenticated via ${source}:`, { email: userData.email, name: userData.name });
+      console.log(`[auth] User authenticated via ${source}:`, { email: userData.email, name: userData.name, serial: userData.serial || 'none' });
 
-      return {
+      const result: { email: string, name: string, serial?: string } = {
         email: userData.email,
         name: userData.name
       };
+
+      // Include serial if present
+      if (userData.serial) {
+        result.serial = userData.serial;
+      }
+
+      return result;
     } catch (error) {
       console.error('[auth] Error processing user authentication:', error);
       return null;

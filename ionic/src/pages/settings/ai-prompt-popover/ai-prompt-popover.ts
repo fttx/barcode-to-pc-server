@@ -245,6 +245,7 @@ export class AiPromptPopoverPage {
         },
         body: JSON.stringify({
           "email": localStorage.getItem('email'),
+          "uuid": this.electronProvider.uuid,
           "serial": this.licenseProvider.serial,
           "prompt": userPrompt,
           "history": this.messages.filter(m => m.isUser).map(m => m.text),

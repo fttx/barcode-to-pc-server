@@ -20,6 +20,7 @@ import { OutputProfileExportedModel } from '../models/output-profile-exported.mo
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
 import { OutputBlockModel } from '../models/output-block.model';
 import { TelemetryService } from '../providers/telemetry/telemetry';
+import { LicenseProvider } from '../providers/license/license';
 
 @Component({
   templateUrl: 'app.html'
@@ -44,6 +45,7 @@ export class MyApp {
     private translate: TranslateService,
     private telemetryService: TelemetryService,
     private modalCtrl: ModalController,
+    private licenseProvider: LicenseProvider,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -183,6 +185,17 @@ export class MyApp {
                 this.utils.showAuthSuccessFeedback(userData);
                 console.log('[btplink] User data stored:', userData);
                 this.telemetryService.sendEvent('login', null, 'deeplink');
+
+                // Check if serial is provided and activate license
+                if (userData.serial) {
+                  console.log('[btplink] Serial found, activating license:', userData.serial);
+                  this.licenseProvider.updateSubscriptionStatus(userData.serial).then(() => {
+                    console.log('[btplink] License activation completed');
+                  }).catch((error) => {
+                    console.error('[btplink] License activation failed:', error);
+                  });
+                }
+
                 this.closeLoginModalIfOpen();
               }
             }

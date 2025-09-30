@@ -95,7 +95,7 @@ export class LoginPage {
 
   onSignUpClick() {
     // Open the authentication URL
-    this.electronProvider.shell.openExternal('https://auth.barcodetopc.com/login');
+    this.electronProvider.shell.openExternal(Config.URL_LOGIN);
     this.showFallbackInput = true;
     this.telemetryService.sendEvent('signup_click', null, null);
   }

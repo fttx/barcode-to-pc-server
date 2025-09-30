@@ -314,6 +314,10 @@ export class LicenseProvider {
           settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'number');
         }
       }
+      // Get license from localstorage parse and disable active field
+      const license = JSON.parse(localStorage.getItem('license') || '{}');
+      license['active'] = false;
+      localStorage.setItem('license', JSON.stringify(license));
       this.electronProvider.store.set(Config.STORAGE_SETTINGS, settings);
       this.telemetryProvider.sendEvent('license_deactivate', null, this.activeLicense);
       this.events.publish('license:deactivate');
@@ -571,7 +575,9 @@ export class LicenseProvider {
   }
 
   isSubscribed() {
-    return this.activeLicense != LicenseProvider.LICENSE_FREE;
+    // get license and check if active = 1
+    const license = LicenseProvider.GetLicense();
+    return license && license['active'];
   }
 
   getLicenseName() {
