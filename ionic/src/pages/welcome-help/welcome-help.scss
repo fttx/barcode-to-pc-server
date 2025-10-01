@@ -5,7 +5,8 @@ page-welcome-help {
     }
   }
 
-  .slide-zoom, ion-scroll {
+  .slide-zoom,
+  ion-scroll {
     height: 100%;
   }
 
@@ -24,5 +25,9 @@ page-welcome-help {
 
   a {
     cursor: pointer;
+  }
+
+  .swiper-container {
+    min-height: 425px !important;
   }
 }
