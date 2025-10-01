@@ -16,6 +16,18 @@
 ### Security
 -->
 
+## [v4.8.7] - 2025-10-01
+
+### Added
+
+- New login flow
+
+### Changed
+
+- Improve first connection experience for new users
+- Better user interface with sound effects and animations
+- Improve settings page layout and usability
+
 ## [v4.8.6] - 2024-07-01
 
 ### Fixed
@@ -785,6 +797,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.7]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.6...v4.8.7
 [v4.8.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.5...v4.8.6
 [v4.8.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.4...v4.8.5
 [v4.8.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.3...v4.8.4
