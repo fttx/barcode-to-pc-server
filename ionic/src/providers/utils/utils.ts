@@ -605,7 +605,7 @@ export class UtilsProvider {
   public async showAuthSuccessFeedback(userData: { name: string }): Promise<void> {
     // Play success sound
     this.audioProvider.playSound('first_connection.mp3');
-    
+
     // Show success alert using standard Ionic components with proper translations
     this.alertCtrl.create({
       title: await this.text('loginSuccessTitle'),
@@ -615,4 +615,5 @@ export class UtilsProvider {
         role: 'cancel'
       }]
     }).present();
-  }}
+  }
+}

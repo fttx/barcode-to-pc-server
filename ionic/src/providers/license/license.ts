@@ -11,6 +11,7 @@ import { ElectronProvider } from '../electron/electron';
 import { UtilsProvider } from '../utils/utils';
 import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
 import { TelemetryService } from '../telemetry/telemetry';
+import { AudioProvider } from '../audio/audio';
 import { ContentType } from '@angular/http/src/enums';
 
 /**
@@ -61,6 +62,7 @@ export class LicenseProvider {
     private devicesProvider: DevicesProvider,
     public events: Events,
     private telemetryProvider: TelemetryService,
+    private audioProvider: AudioProvider,
   ) {
     this.init();
 
@@ -259,6 +261,7 @@ export class LicenseProvider {
 
             if (showSuccessDialog) {
               this.utilsProvider.showSuccessNativeDialog(await this.utilsProvider.text('licenseActivatedDialogMessage'));
+              this.audioProvider.playSound('confetti_v2_free.ogg');
               window.confetti.start(3000);
             }
           }
