@@ -581,7 +581,7 @@ export class MyApp {
           localStorage.setItem('_upgraaded_nutjs_482', 'true');
         }
 
-        // v4.8.4
+        // v4.8.7
         // Migrate first connection date from electron store to localStorage for existing users
         if (!localStorage.getItem('firstConnectionDate')) {
           const existingDate = this.electronProvider.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0);
