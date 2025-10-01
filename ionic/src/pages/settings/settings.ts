@@ -75,11 +75,9 @@ export class SettingsPage implements OnInit, OnDestroy {
           return false;
         }
 
-        // Prevent dropping on or near the refine button
-        if (sibling && (sibling.id === 'refine' || sibling.closest('#refine'))) {
-          return false;
-        }
-
+        // Allow dropping before the refine button, but prevent dropping on the refine button itself
+        // When sibling is the refine button, it means we're dropping before it, which is allowed
+        // We only prevent if we're trying to drop ON the refine button (handled by invalid function)
         return true;
       },
       copyItem: (item: OutputBlockModel) => {
