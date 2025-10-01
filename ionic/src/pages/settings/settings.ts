@@ -175,6 +175,25 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   async apply() {
     return new Promise(async (resolve) => {
+      // Check if output template has at least one required component
+      const currentProfile = this.settings.outputProfiles[this.selectedOutputProfile];
+      const hasRequiredComponent = currentProfile.outputBlocks.some(block => {
+        return block.type === 'barcode' ||
+          block.type === 'image' ||
+          block.type === 'select_option' ||
+          (block.type === 'variable' && (block.value === 'number' || block.value === 'text'));
+      });
+
+      if (!hasRequiredComponent) {
+        let buttons: AlertButton[] = [{ text: await this.utils.text('applyDialogOKButton'), role: 'cancel', },];
+        this.alertCtrl.create({
+          title: await this.utils.text('outputTemplateValidationDialogTitle'),
+          message: await this.utils.text('outputTemplateValidationDialogMessage'),
+          buttons: buttons
+        }).present();
+        return resolve(false);
+      }
+
       let noIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'if').length;
       let noEndIfs = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type == 'endif').length;
       if (noIfs != noEndIfs) {

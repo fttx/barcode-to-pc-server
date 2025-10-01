@@ -251,6 +251,8 @@
   "applyDialogOKButton": "確定",
   "syntaxErrorDialogTitle": "語法錯誤",
   "syntaxErrorDialogMessage": "IF 輸出組件的數量應與 ENDIF 的數量相同",
+  "outputTemplateValidationDialogTitle": "無效的輸出範本",
+  "outputTemplateValidationDialogMessage": "輸出範本必須包含以下組件中的至少一個：BARCODE、IMAGE、NUMBER、TEXT 或 SELECT OPTION",
   "applyDialogDiscardButton": "放棄",
   "outputTemplateNameDialogTitle": "輸出範本名稱",
   "outputTemplateNameDialogCancelButton": "取消",

@@ -251,6 +251,8 @@
   "applyDialogOKButton": "Tamam",
   "syntaxErrorDialogTitle": "Sözdizimi hatası",
   "syntaxErrorDialogMessage": "IF çıkış bileşenlerinin sayısı ENDIF'lerle aynı olmalıdır",
+  "outputTemplateValidationDialogTitle": "Geçersiz çıkış şablonu",
+  "outputTemplateValidationDialogMessage": "Çıkış şablonu aşağıdaki bileşenlerden en az birini içermelidir: BARCODE, IMAGE, NUMBER, TEXT veya SELECT OPTION",
   "applyDialogDiscardButton": "Vazgeç",
   "outputTemplateNameDialogTitle": "Çıkış şablonu adı",
   "outputTemplateNameDialogCancelButton": "İptal",

@@ -251,6 +251,8 @@
   "applyDialogOKButton": "موافق",
   "syntaxErrorDialogTitle": "خطأ في الصيغة",
   "syntaxErrorDialogMessage": "يجب أن يكون عدد مكونات الإخراج IF متساويًا لعدد ENDIFs",
+  "outputTemplateValidationDialogTitle": "قالب إخراج غير صالح",
+  "outputTemplateValidationDialogMessage": "يجب أن يحتوي قالب الإخراج على واحد على الأقل من المكونات التالية: BARCODE أو IMAGE أو NUMBER أو TEXT أو SELECT OPTION",
   "applyDialogDiscardButton": "تجاهل",
   "outputTemplateNameDialogTitle": "اسم قالب الإخراج",
   "outputTemplateNameDialogCancelButton": "إلغاء",

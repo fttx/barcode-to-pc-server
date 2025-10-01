@@ -251,6 +251,8 @@
   "applyDialogOKButton": "OK",
   "syntaxErrorDialogTitle": "Syntaxfehler",
   "syntaxErrorDialogMessage": "Die Anzahl der IF-Ausgabekomponenten sollte der der ENDIFs entsprechen",
+  "outputTemplateValidationDialogTitle": "Ungültige Ausgabevorlage",
+  "outputTemplateValidationDialogMessage": "Die Ausgabevorlage muss mindestens eine der folgenden Komponenten enthalten: BARCODE, IMAGE, NUMBER, TEXT oder SELECT OPTION",
   "applyDialogDiscardButton": "Verwerfen",
   "outputTemplateNameDialogTitle": "Name der Ausgabevorlage",
   "outputTemplateNameDialogCancelButton": "Abbrechen",

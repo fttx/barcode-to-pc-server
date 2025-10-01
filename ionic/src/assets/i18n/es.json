@@ -251,6 +251,8 @@
   "applyDialogOKButton": "OK",
   "syntaxErrorDialogTitle": "Error de sintaxis",
   "syntaxErrorDialogMessage": "El número de componentes de salida IF debe ser el mismo de los ENDIFs",
+  "outputTemplateValidationDialogTitle": "Plantilla de salida inválida",
+  "outputTemplateValidationDialogMessage": "La plantilla de salida debe contener al menos uno de los siguientes componentes: BARCODE, IMAGE, NUMBER, TEXT o SELECT OPTION",
   "applyDialogDiscardButton": "Descartar",
   "outputTemplateNameDialogTitle": "Nombre de la plantilla de salida",
   "outputTemplateNameDialogCancelButton": "Cancelar",

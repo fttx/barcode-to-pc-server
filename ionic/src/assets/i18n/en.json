@@ -251,6 +251,8 @@
   "applyDialogOKButton": "OK",
   "syntaxErrorDialogTitle": "Syntax error",
   "syntaxErrorDialogMessage": "The number of IF output components should be the same of the ENDIFs",
+  "outputTemplateValidationDialogTitle": "Invalid output template",
+  "outputTemplateValidationDialogMessage": "The output template must contain at least one of the following components: BARCODE, IMAGE, NUMBER, TEXT, or SELECT OPTION",
   "applyDialogDiscardButton": "Discard",
   "outputTemplateNameDialogTitle": "Output template name",
   "outputTemplateNameDialogCancelButton": "Cancel",
