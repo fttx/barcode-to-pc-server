@@ -105,25 +105,25 @@ page-home {
     }
   }
 
-@keyframes notificationPulse {
-  0% {
-    transform: scale(0.95);
-    background-color: #ff4444;
-    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
-  }
+  @keyframes notificationPulse {
+    0% {
+      transform: scale(0.95);
+      background-color: #ff4444;
+      box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
+    }
 
-  70% {
-    transform: scale(1.05);
-    background-color: #ff7777; /* Lighter background color when pulsing */
-    box-shadow: 0 0 0 8px rgba(255, 68, 68, 0);
-  }
+    70% {
+      transform: scale(1.05);
+      background-color: #ff7777; /* Lighter background color when pulsing */
+      box-shadow: 0 0 0 8px rgba(255, 68, 68, 0);
+    }
 
-  100% {
-    transform: scale(0.95);
-    background-color: #ff4444;
-    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+    100% {
+      transform: scale(0.95);
+      background-color: #ff4444;
+      box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+    }
   }
-}
 }
 
 .alert-accessibility .alert-wrapper {

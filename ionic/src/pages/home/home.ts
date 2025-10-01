@@ -153,7 +153,7 @@ export class HomePage {
   ionViewDidEnter() {
     // Always refresh settings
     this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
-    
+
     // Re-check notification dot status when returning to home page
     this.checkSettingsNotificationDot();
   }
@@ -397,7 +397,7 @@ export class HomePage {
     // 2. Settings page has never been opened (settingsPageOpened is not set)
     const hasConnectedDevice = localStorage.getItem('firstConnectionDate');
     const hasOpenedSettings = localStorage.getItem('settingsPageOpened');
-    
+
     this.showSettingsNotificationDot = hasConnectedDevice && !hasOpenedSettings;
   }
 
