@@ -119,6 +119,9 @@ export class SettingsPage implements OnInit, OnDestroy {
   ionViewDidLoad() {
     this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
 
+    // Mark that settings page has been opened (for notification dot)
+    localStorage.setItem('settingsPageOpened', 'true');
+
     // Get the last selected profile index from localStorage, default to last profile if not found
     const lastSelectedIndex = localStorage.getItem('lastSelectedOutputProfile');
     if (lastSelectedIndex !== null) {

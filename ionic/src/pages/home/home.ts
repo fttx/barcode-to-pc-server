@@ -30,6 +30,7 @@ export class HomePage {
   public connectedDevices: DeviceModel[] = [];
   public hideSearchBar = true;
   public searchTerms = ''
+  public showSettingsNotificationDot = false;
 
   @ViewChild('scanSessionsContainer') scanSessionsContainer: Content;
   @ViewChild('searchbar') searchbar: Searchbar;
@@ -152,6 +153,9 @@ export class HomePage {
   ionViewDidEnter() {
     // Always refresh settings
     this.settings = this.electronProvider.store.get(Config.STORAGE_SETTINGS, new SettingsModel(UtilsProvider.GetOS()));
+    
+    // Re-check notification dot status when returning to home page
+    this.checkSettingsNotificationDot();
   }
 
   ionViewDidLoad() {
@@ -159,6 +163,9 @@ export class HomePage {
 
     this.title.setTitle(Config.APP_NAME);
     this.scanSessions = JSON.parse(JSON.stringify(this.electronProvider.store.get(Config.STORAGE_SCAN_SESSIONS, [])));
+
+    // Check if we should show the settings notification dot
+    this.checkSettingsNotificationDot();
 
     // If the app isn't package inside electron it will never
     // receive these events, so i won't subscribe to them
@@ -378,7 +385,20 @@ export class HomePage {
   }
 
   onSettingsClick() {
+    // Hide the notification dot and mark settings as accessed
+    this.showSettingsNotificationDot = false;
+    localStorage.setItem('settingsPageOpened', 'true');
     this.navCtrl.push(SettingsPage)
+  }
+
+  private checkSettingsNotificationDot() {
+    // Show notification dot if:
+    // 1. User has connected mobile app at least once (firstConnectionDate exists)
+    // 2. Settings page has never been opened (settingsPageOpened is not set)
+    const hasConnectedDevice = localStorage.getItem('firstConnectionDate');
+    const hasOpenedSettings = localStorage.getItem('settingsPageOpened');
+    
+    this.showSettingsNotificationDot = hasConnectedDevice && !hasOpenedSettings;
   }
 
   onMainMenuPopoverClick() {

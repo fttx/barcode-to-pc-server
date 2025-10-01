@@ -1,91 +1,129 @@
 page-home {
-    .main-container>div {
-        overflow: hidden !important;
-    }
-    .child-container>div {
-        overflow-y: auto !important;
-    }
-    .desaturate-img {
-        filter: none;
-        -webkit-filter: grayscale(100%);
-        -moz-filter: grayscale(100%);
-        -ms-filter: grayscale(100%);
-        opacity: .3;
-        max-height: 45%;
-        max-width: 55%;
-        margin: 150px 0 40px 0;
-    }
+  .main-container > div {
+    overflow: hidden !important;
+  }
+  .child-container > div {
+    overflow-y: auto !important;
+  }
+  .desaturate-img {
+    filter: none;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    -ms-filter: grayscale(100%);
+    opacity: 0.3;
+    max-height: 45%;
+    max-width: 55%;
+    margin: 150px 0 40px 0;
+  }
 
-    .empty-breadcrumb {
-      display: flex;
-      justify-content: center;
-      align-items: center;
+  .empty-breadcrumb {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .empty-text {
+    height: 1.5em;
+    line-height: 1.5em;
+    margin-top: 295px;
+    text-align: center;
+    background: rgba(map-get($colors, secondary), 0.35);
+    border-radius: 5px;
+    padding: 0 25px;
+    display: inline-block;
+  }
+  .scan-text-animate ion-item[aria-posinset="1"] {
+    animation: scanAnimation 1000ms linear 1;
+  }
+  @keyframes scanAnimation {
+    0% {
+      background: auto;
     }
-    .empty-text {
-        height: 1.5em;
-        line-height: 1.5em;
-        margin-top: 295px;
-        text-align: center;
-        background: rgba(map-get($colors, secondary), .35);
-        border-radius: 5px;
-        padding: 0 25px;
-        display: inline-block;
+    50% {
+      background: rgba(183, 28, 28, 0.4);
     }
-    .scan-text-animate ion-item[aria-posinset="1"] {
-        animation: scanAnimation 1000ms linear 1
+    100% {
+      background: auto;
     }
-    @keyframes scanAnimation {
-        0% {
-            background: auto;
-        }
-        50% {
-            background: rgba(183, 28, 28, 0.4)
-        }
-        100% {
-            background: auto;
-        }
-    }
-    .scan-sessions-list ion-col {
-        background: none;
-    }
-    .scan-sessions-list {
-        cursor: pointer;
-    }
-    .scan-sessions-list .label-md {
-        margin: 3px
-    }
-    .scan-sessions-list ion-item:hover {
-        background-color: #f9f9f9
-    }
-    .scans-list .label-md {
-        margin: 0
-    }
-    .scans-list input,
-    .scans-list input:focus {
-        border: none;
-        background: none;
-    }
-    .scans-list ion-col {
-        background: none;
-    }
-    .scan-text {
-        width: 100%;
-    }
-    .search-bar-container button {
-        position: absolute;
-        right: 0;
-        top: 0px;
-    }
-    ion-searchbar {
-        width: 400px;
-        position: absolute;
-        right: 49px;
-        top: -7px;
-    }
+  }
+  .scan-sessions-list ion-col {
+    background: none;
+  }
+  .scan-sessions-list {
+    cursor: pointer;
+  }
+  .scan-sessions-list .label-md {
+    margin: 3px;
+  }
+  .scan-sessions-list ion-item:hover {
+    background-color: #f9f9f9;
+  }
+  .scans-list .label-md {
+    margin: 0;
+  }
+  .scans-list input,
+  .scans-list input:focus {
+    border: none;
+    background: none;
+  }
+  .scans-list ion-col {
+    background: none;
+  }
+  .scan-text {
+    width: 100%;
+  }
+  .search-bar-container button {
+    position: absolute;
+    right: 0;
+    top: 0px;
+  }
+  ion-searchbar {
+    width: 400px;
+    position: absolute;
+    right: 49px;
+    top: -7px;
+  }
 
-    .btp-server-status-icon {
-      height: 32px;
+  .btp-server-status-icon {
+    height: 32px;
+  }
+
+  // Notification dot for settings button
+  .settings-button {
+    position: relative;
+    .notification-dot {
+      position: absolute;
+      width: 11px;
+      height: 11px;
+      bottom: 1px;
+      right: 1px;
+      background-color: #ff4444;
+      border-radius: 50%;
+      border: 2px solid #a90000;
+      z-index: 10;
+      pointer-events: none;
+      animation: notificationPulse 2s infinite;
     }
+  }
+
+@keyframes notificationPulse {
+  0% {
+    transform: scale(0.95);
+    background-color: #ff4444;
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
+  }
+
+  70% {
+    transform: scale(1.05);
+    background-color: #ff7777; /* Lighter background color when pulsing */
+    box-shadow: 0 0 0 8px rgba(255, 68, 68, 0);
+  }
+
+  100% {
+    transform: scale(0.95);
+    background-color: #ff4444;
+    box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+  }
+}
 }
 
 .alert-accessibility .alert-wrapper {
