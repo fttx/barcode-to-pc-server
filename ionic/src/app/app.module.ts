@@ -61,6 +61,7 @@ import { ExportOutputTemplatePopoverPage } from '../pages/export-output-template
 import { ComponentEditorGeolocationPage } from '../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
 import { TelemetryService } from '../providers/telemetry/telemetry';
+import { AudioProvider } from '../providers/audio/audio';
 import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prompt-popover';
 
 @NgModule({
@@ -188,6 +189,7 @@ import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prom
     LicenseProvider,
     BtpAlertController,
     TelemetryService,
+    AudioProvider,
   ]
 })
 export class AppModule { }

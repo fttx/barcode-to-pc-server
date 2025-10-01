@@ -13,6 +13,7 @@ import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../../providers/electron/electron';
 import { LicenseProvider } from '../../providers/license/license';
 import { UtilsProvider } from '../../providers/utils/utils';
+import { AudioProvider } from '../../providers/audio/audio';
 import { OutputProfileExportedModel } from '../../models/output-profile-exported.model';
 import { ExportOutputTemplatePopoverPage } from '../export-output-template-popover/export-output-template-popover';
 import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
@@ -61,6 +62,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     private utils: UtilsProvider,
     public modalCtrl: ModalController,
     private telemetryService: TelemetryService,
+    private audioProvider: AudioProvider,
   ) {
     this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
@@ -100,27 +102,12 @@ export class SettingsPage implements OnInit, OnDestroy {
 
     // Play whoosh sound when element is removed (dragged out)
     this.dragulaService.removeModel('dragula-group').subscribe(({ name, el, source, item, sourceModel }) => {
-      this.playWhooshSound();
+      this.audioProvider.playSound('whoosh.mp3');
     });
   }
 
   public getAppName() {
     return Config.APP_NAME;
-  }
-
-  private playWhooshSound() {
-    // Play whoosh sound when element is dragged out (similar to testAudio pattern)
-    try {
-      let audio = new Audio();
-      audio.src = 'assets/audio/whoosh.mp3';
-      audio.load();
-      audio.play().catch(err => {
-        // Silently handle audio play errors (e.g., user hasn't interacted with page yet)
-        console.debug('Could not play whoosh sound:', err);
-      });
-    } catch (err) {
-      console.debug('Error creating whoosh audio:', err);
-    }
   }
 
   public canAddMoreComponents() {
@@ -223,6 +210,10 @@ export class SettingsPage implements OnInit, OnDestroy {
       if (ElectronProvider.isElectron()) {
         this.electronProvider.ipcRenderer.send('settings');
       }
+
+      setTimeout(() => {
+        this.audioProvider.playSound('save.ogg');
+      }, 500);
       resolve(true);
     });
   }
@@ -260,6 +251,9 @@ export class SettingsPage implements OnInit, OnDestroy {
       buttons: [{
         text: await this.utils.text('deleteOutputTemplateDialogYesButton'),
         handler: () => {
+          // Play delete sound
+          this.audioProvider.playSound('delete.mp3');
+
           // change the selected OutputProfile
           let selectedIndex = this.selectedOutputProfile;
           this.selectedOutputProfile = selectedIndex == 0 ? selectedIndex : selectedIndex - 1;
@@ -362,6 +356,9 @@ export class SettingsPage implements OnInit, OnDestroy {
   }
 
   async onRefineOutputTemplateClick() {
+    // Play AI sound
+    this.audioProvider.playSound('ai.mp3');
+
     const currentTemplate = this.settings.outputProfiles[this.selectedOutputProfile];
     const result = await this.showAiPrompt(currentTemplate);
 
@@ -384,6 +381,11 @@ export class SettingsPage implements OnInit, OnDestroy {
         ]
       }).present();
       return;
+    }
+
+    // Play AI sound if using AI
+    if (useAi) {
+      this.audioProvider.playSound('ai.mp3');
     }
 
     let newTemplateName = null;

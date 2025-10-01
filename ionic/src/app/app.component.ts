@@ -16,6 +16,7 @@ import { WelcomePage } from '../pages/welcome/welcome';
 import { DevicesProvider } from '../providers/devices/devices';
 import { ElectronProvider } from '../providers/electron/electron';
 import { UtilsProvider } from '../providers/utils/utils';
+import { AudioProvider } from '../providers/audio/audio';
 import { OutputProfileExportedModel } from '../models/output-profile-exported.model';
 import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-controller';
 import { OutputBlockModel } from '../models/output-block.model';
@@ -31,21 +32,22 @@ export class MyApp {
   private loginModal: any = null;
 
   constructor(
-    platform: Platform,
-    statusBar: StatusBar,
-    splashScreen: SplashScreen,
-    public electronProvider: ElectronProvider,
-    public devicesProvider: DevicesProvider,
-    public http: Http,
-    public alertCtrl: BtpAlertController,
-    public markdownService: MarkdownService,
-    public events: Events,
-    public utils: UtilsProvider,
-    public app: App,
-    private translate: TranslateService,
-    private telemetryService: TelemetryService,
-    private modalCtrl: ModalController,
+    private platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
+    private electronProvider: ElectronProvider,
+    private devicesProvider: DevicesProvider,
     private licenseProvider: LicenseProvider,
+    private utils: UtilsProvider,
+    private translate: TranslateService,
+    private audioProvider: AudioProvider,
+    private events: Events,
+    private app: App,
+    private alertCtrl: BtpAlertController,
+    private http: Http,
+    private markdownService: MarkdownService,
+    private modalCtrl: ModalController,
+    private telemetryService: TelemetryService,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -245,7 +247,7 @@ export class MyApp {
     }); // app.ready
 
     this.upgrade().then(() => {
-      if (this.electronProvider.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0) == 0) {
+      if (!localStorage.getItem('firstConnectionDate')) {
         this.rootPage = WelcomePage;
       } else {
         this.rootPage = HomePage;
@@ -257,7 +259,12 @@ export class MyApp {
 
     this.devicesProvider.onConnectedDevicesListChange().subscribe(devicesList => {
       if (devicesList.length != 0) {
-        this.electronProvider.store.set(Config.STORAGE_FIRST_CONNECTION_DATE, new Date().getTime())
+        // Check if this is the first connection using localStorage
+        const firstConnectionDate = localStorage.getItem('firstConnectionDate');
+        if (!firstConnectionDate) {
+          this.audioProvider.playSound('first_connection.mp3');
+          localStorage.setItem('firstConnectionDate', new Date().getTime().toString());
+        }
       }
     });
 
@@ -572,6 +579,15 @@ export class MyApp {
             }
           });
           localStorage.setItem('_upgraaded_nutjs_482', 'true');
+        }
+
+        // v4.8.4
+        // Migrate first connection date from electron store to localStorage for existing users
+        if (!localStorage.getItem('firstConnectionDate')) {
+          const existingDate = this.electronProvider.store.get(Config.STORAGE_FIRST_CONNECTION_DATE, 0);
+          if (existingDate && existingDate !== 0) {
+            localStorage.setItem('firstConnectionDate', existingDate.toString());
+          }
         }
 
         // Upgrade output profiles
