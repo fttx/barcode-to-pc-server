@@ -11,6 +11,7 @@ import { ScanModel } from '../../models/scan.model';
 import { SettingsModel } from '../../models/settings.model';
 import { ElectronProvider } from '../electron/electron';
 import { BtpAlertController } from '../btp-alert-controller/btp-alert-controller';
+import { AudioProvider } from '../audio/audio';
 
 /*
   Generated class for the UtilsProvider provider.
@@ -177,6 +178,7 @@ export class UtilsProvider {
     private alertCtrl: BtpAlertController,
     public storage: Storage,
     private translateService: TranslateService,
+    private audioProvider: AudioProvider,
   ) {
     UtilsProvider.DecryptText = UtilsProvider.decrypt('barcodetopc');
     this.electronProvider.ipcRenderer.on('showErrorNativeDialog', async (event, translateStringId, interpolateParams) => {
@@ -601,10 +603,16 @@ export class UtilsProvider {
    * @param userData User data object with name
    */
   public async showAuthSuccessFeedback(userData: { name: string }): Promise<void> {
-    if (window.confetti_v2) {
-      const welcomeMessage = await this.text('welcomeConfetti', { name: userData.name });
-      window.confetti_v2(welcomeMessage);
-    }
-  }
-
-}
+    // Play success sound
+    this.audioProvider.playSound('first_connection.mp3');
+    
+    // Show success alert using standard Ionic components with proper translations
+    this.alertCtrl.create({
+      title: await this.text('loginSuccessTitle'),
+      message: await this.text('loginSuccessMessage', { name: userData.name }),
+      buttons: [{
+        text: await this.text('loginSuccessButton'),
+        role: 'cancel'
+      }]
+    }).present();
+  }}

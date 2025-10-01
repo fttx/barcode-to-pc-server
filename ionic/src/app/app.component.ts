@@ -241,7 +241,7 @@ export class MyApp {
       this.electronProvider.ipcRenderer.on('incentive_email', (event, argv) => {
         localStorage.setItem('email', argv.email);
         localStorage.setItem('name', argv.name);
-        window.confetti_v2(`Free Unlocked!`);
+        this.audioProvider.playSound('first_connection.mp3');
         this.closeLoginModalIfOpen();
       });
     }); // app.ready
