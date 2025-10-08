@@ -401,6 +401,7 @@ export class LicenseProvider {
       periodOfUseSinceFirstConnection: periodOfUseSinceFirstConnection,
       scans: scansCluster,
       refer: refer,
+      uuid: this.electronProvider.uuid,
     };
     this.electronProvider.shell.openExternal(
       this.utilsProvider.appendParametersToURL(Config.URL_PRICING, params)
