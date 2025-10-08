@@ -20,47 +20,60 @@ export class TelemetryService {
     private http: HttpClient,
     private electronProvider: ElectronProvider
   ) {
-    this.startTimer();
-    this.loadQueueFromStorage();
-  }
-
-  private startTimer() {
-    if (this.timer) clearInterval(this.timer);
+    // Start timer
     this.timer = setInterval(() => {
       if (this.eventQueue.length > 0) {
         this.sendEvents();
       }
     }, this.electronProvider.isDev() ? 10000 : 60000); // 1 minute
-  }
 
-  private loadQueueFromStorage() {
-    const savedQueue = localStorage.getItem('telemetryQueue');
-    if (savedQueue) {
-      this.eventQueue = JSON.parse(savedQueue);
+    // Load queue from storage
+    try {
+      const savedQueue = localStorage.getItem('telemetryQueue');
+      if (savedQueue) {
+        this.eventQueue = JSON.parse(savedQueue);
+      }
+    } catch (err) {
+      console.error('[telemetry] Failed to load queue from storage:', err);
+      this.eventQueue = [];
     }
   }
 
   private saveQueueToStorage() {
-    localStorage.setItem('telemetryQueue', JSON.stringify(this.eventQueue));
-  }
-
-  private isUserAuthenticated(): boolean {
-    const email = localStorage.getItem('email');
-    return !!email;
+    try {
+      localStorage.setItem('telemetryQueue', JSON.stringify(this.eventQueue));
+    } catch (err) {
+      console.error('[telemetry] Failed to save queue to storage:', err);
+    }
   }
 
   private async sendEvents() {
-    if (!this.isUserAuthenticated()) {
+    const email = localStorage.getItem('email');
+    if (!email) {
       console.log('[telemetry] User not authenticated, events will remain queued');
       return;
     }
 
-    const email = localStorage.getItem('email');
     const name = localStorage.getItem('name');
-    if (!email) return;
+
+    // Aggregate scan events by summing their eventValueInt
+    const scanEvents = this.eventQueue.filter(e => e.eventType === 'scan');
+    const nonScanEvents = this.eventQueue.filter(e => e.eventType !== 'scan');
+
+    let eventsToSend = this.eventQueue;
+    if (scanEvents.length > 0) {
+      const totalScanValue = scanEvents.reduce((sum, event) => sum + event.eventValueInt, 0);
+      const aggregatedScanEvent: TelemetryEvent = {
+        eventType: 'scan',
+        eventValueInt: totalScanValue,
+        eventValueText: null,
+        created_at: scanEvents[scanEvents.length - 1].created_at
+      };
+      eventsToSend = [...nonScanEvents, aggregatedScanEvent];
+    }
 
     this.http.post(Config.URL_TELEMETRY, {
-      events: this.eventQueue,
+      events: eventsToSend,
       email,
       name,
       uuid: this.electronProvider.uuid
@@ -70,7 +83,9 @@ export class TelemetryService {
         this.saveQueueToStorage();
         console.log('[telemetry] Events sent successfully as ', email);
       },
-      error: (err) => { }
+      error: (err) => {
+        console.error('[telemetry] Failed to send events, will retry later:', err);
+      }
     });
   }
 
@@ -90,6 +105,6 @@ export class TelemetryService {
    * Check if user is authenticated
    */
   isAuthenticated(): boolean {
-    return this.isUserAuthenticated();
+    return !!localStorage.getItem('email');
   }
 }
