@@ -64,7 +64,7 @@ export class ActivatePage {
   }
 
   private updateScansCache() {
-    if (this.licenseProvider.getNOMaxAllowedScansPerMonth() == Number.MAX_SAFE_INTEGER) {
+    if (this.licenseProvider.getNOMaxAllowedScansPerMonth() > 1000000) {
       ActivatePage.cachedScans = this.translateService.instant('featureUnlimited');
     } else {
       ActivatePage.cachedScans = this.electronProvider.store.get(Config.STORAGE_MONTHLY_SCAN_COUNT, 0) + '/' +
@@ -127,7 +127,7 @@ export class ActivatePage {
   }
 
   toReadable(number: number) {
-    if (number == Number.MAX_SAFE_INTEGER) {
+    if (number >= 1000000) {
       return this.translateService.instant('featureUnlimited');
     }
     return number + '';

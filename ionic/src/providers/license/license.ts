@@ -462,19 +462,7 @@ export class LicenseProvider {
   }
 
   getNOMaxTemplates(): number {
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: { return 1; }
-
-      case LicenseProvider.LICENSE_BASIC:
-      case LicenseProvider.LICENSE_PRO:
-      case LicenseProvider.LICENSE_UNLIMITED: { return Number.MAX_SAFE_INTEGER; }
-
-      case LicenseProvider.LICENSE_PRO_MONTHLY:
-      case LicenseProvider.LICENSE_PRO_YEARLY:
-      case LicenseProvider.LICENSE_STARTER_MONTHLY:
-      case LicenseProvider.LICENSE_STARTER_YEARLY:
-      default: { return LicenseProvider.GetPlanData().templates; }
-    }
+    return LicenseProvider.GetPlanData().templates;
   }
 
   /**
@@ -539,35 +527,15 @@ export class LicenseProvider {
   }
 
   getNOMaxComponents(): number {
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 4;
-      case LicenseProvider.LICENSE_BASIC: return 5;
-      case LicenseProvider.LICENSE_PRO: return 10;
-      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
-
-      default: { return LicenseProvider.GetPlanData().components; }
-    }
+    return LicenseProvider.GetPlanData().components;
   }
 
   getNOMaxAllowedConnectedDevices(): number {
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 1;
-      case LicenseProvider.LICENSE_BASIC: return 1;
-      case LicenseProvider.LICENSE_PRO: return 3;
-      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
-
-      default: { return LicenseProvider.GetPlanData().devices; }
-    }
+    return LicenseProvider.GetPlanData().devices;
   }
 
   getNOMaxAllowedScansPerMonth() {
-    switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 300 + this.getScanOffset();
-      case LicenseProvider.LICENSE_BASIC: return 1000 + this.getScanOffset();
-      case LicenseProvider.LICENSE_PRO: return 10000 + this.getScanOffset();
-      case LicenseProvider.LICENSE_UNLIMITED: return Number.MAX_SAFE_INTEGER;
-      default: { return LicenseProvider.GetPlanData().scans + this.getScanOffset(); }
-    }
+    return LicenseProvider.GetPlanData().scans + this.getScanOffset();
   }
 
   getScanOffset() {
@@ -606,7 +574,11 @@ export class LicenseProvider {
   }
 
   private async showUpgradeDialog(refer, title, message) {
-    await this.hideUpgradeDialog();
+    // Prevent showing dialog if one is already open
+    if (this.upgradeDialog != null) {
+      return;
+    }
+
     this.upgradeDialog = this.alertCtrl.create({
       title: title, message: message, buttons: [{
         text: await this.utilsProvider.text('upgradeDialogDismissButton'), role: 'cancel'
@@ -616,13 +588,20 @@ export class LicenseProvider {
         }
       }]
     });
+
+    // Reset the dialog reference when it's dismissed
+    this.upgradeDialog.onDidDismiss(() => this.upgradeDialog = null);
+
     this.telemetryProvider.sendEvent('show_upgrade_dialog', null, refer);
     await this.upgradeDialog.present();
   }
 
   private async hideUpgradeDialog() {
     if (this.upgradeDialog != null) {
-      try { await this.upgradeDialog.dismiss(); } catch (error) { }
+      try {
+        await this.upgradeDialog.dismiss();
+      } catch (error) { }
+      this.upgradeDialog = null;
     }
     return 0;
   }
@@ -663,7 +642,15 @@ export class LicenseProvider {
 
   public static GetPlanData() {
     const license = LicenseProvider.GetLicense();
-    if (!license) { return null; }
+    if (!license || !license.active) {
+      return {
+        "scans": 0,
+        "devices": 1,
+        "templates": 1,
+        "components": 2,
+        "ai_tokens": 2,
+      };
+    }
     return LicenseProvider.GetLicense()['plan_data'];
   }
 
