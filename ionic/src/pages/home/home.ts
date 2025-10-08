@@ -19,6 +19,7 @@ import { Config } from '../../config';
 import { ImageViewerPage } from '../image-viewer/image-viewer';
 import { BtpAlertController } from '../../providers/btp-alert-controller/btp-alert-controller';
 import { TelemetryService } from '../../providers/telemetry/telemetry';
+import { NotificationService } from '../../providers/notification-service/notification-service';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -55,6 +56,7 @@ export class HomePage {
     public licenseProvider: LicenseProvider,
     public utils: UtilsProvider,
     public modalCtrl: ModalController,
+    private notificationService: NotificationService,
   ) {
     // debug
     // this.scanSessions.push({id: 1,name: 'Scan session 1',date: new Date(),scannings: [  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),  this.randomScan(),],selected: false,    }, {  id: 2,  name: 'Scan session 2',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 3,  name: 'Scan session 3',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,}, {  id: 4,  name: 'Scan session 4',  date: new Date(),  scannings: [    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),    this.randomScan(),  ],  selected: false,})
@@ -166,6 +168,9 @@ export class HomePage {
 
     // Check if we should show the settings notification dot
     this.checkSettingsNotificationDot();
+
+    // Show keyboard emulation warning notification
+    this.showKeyboardEmulationWarning();
 
     // If the app isn't package inside electron it will never
     // receive these events, so i won't subscribe to them
@@ -427,6 +432,27 @@ export class HomePage {
 
   getUrlKeyboardEmulationTutorial() {
     return Config.URL_TUTORIAL_KEYBOARD_EMULATION;
+  }
+
+  showKeyboardEmulationWarning() {
+    this.utils.text('keyboardEmualtionWarning1').then(warning1 => {
+      this.utils.text('keyboardEmualtionWarning2').then(warning2 => {
+        this.utils.text('keyboardEmualtionWarningCTAText').then(ctaText => {
+          this.notificationService.show({
+            id: 'keyboard-emulation',
+            message: warning1 + ' ' + warning2,
+            type: 'warning',
+            showNeverAgain: true,
+            dismissable: true,
+            duration: 120000, // 2 minutes
+            actionText: ctaText,
+            actionCallback: () => {
+              this.electronProvider.shell.openExternal(Config.URL_TUTORIAL_KEYBOARD_EMULATION);
+            }
+          });
+        });
+      });
+    });
   }
 
   public viewImage(scan: ScanModel) {

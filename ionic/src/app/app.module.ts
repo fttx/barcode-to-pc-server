@@ -63,6 +63,7 @@ import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-
 import { TelemetryService } from '../providers/telemetry/telemetry';
 import { AudioProvider } from '../providers/audio/audio';
 import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prompt-popover';
+import { NotificationService } from '../providers/notification-service/notification-service';
 
 @NgModule({
   declarations: [
@@ -190,6 +191,7 @@ import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prom
     BtpAlertController,
     TelemetryService,
     AudioProvider,
+    NotificationService,
   ]
 })
 export class AppModule { }

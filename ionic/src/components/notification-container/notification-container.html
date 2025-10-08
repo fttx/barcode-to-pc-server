@@ -1,0 +1,30 @@
+<div class="notification-container">
+  <div *ngFor="let notification of notifications" class="notification notification-{{ notification.type }}">
+
+    <div class="notification-content">
+      <div class="notification-icon">
+        <ion-icon [name]="getNotificationIcon(notification.type)"></ion-icon>
+      </div>
+
+      <div class="notification-message">
+        {{ notification.message }}
+      </div>
+
+      <div class="notification-actions">
+        <button *ngIf="notification.actionText" ion-button clear small class="notification-action-btn" (click)="onAction(notification)">
+          {{ notification.actionText }}
+        </button>
+
+        <button *ngIf="notification.dismissable" ion-button clear icon-only class="notification-close-btn" (click)="onDismiss(notification)">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="notification.showNeverAgain" class="notification-footer">
+      <button ion-button clear small class="notification-never-btn" (click)="onDismissPermanently(notification)">
+        Don't show this again
+      </button>
+    </div>
+  </div>
+</div>

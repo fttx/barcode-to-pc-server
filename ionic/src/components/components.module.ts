@@ -8,6 +8,7 @@ import { CircleTextComponent } from './circle-text/circle-text';
 import { ComponentEditorComponent } from './component-editor/component-editor';
 import { InfoBoxComponent } from './info-box/info-box';
 import { NotificationComponent } from './notification/notification';
+import { NotificationContainerComponent } from './notification-container/notification-container';
 import { OutputComponentComponent } from './output-component-component/output-component-component';
 import { StatusBarComponent } from './status-bar/status-bar';
 import { VariablesListComponent } from './variables-list/variables-list';
@@ -21,6 +22,7 @@ import { VariablesListComponent } from './variables-list/variables-list';
     StatusBarComponent,
     InfoBoxComponent,
     NotificationComponent,
+    NotificationContainerComponent,
     ComponentEditorComponent,
     VariablesListComponent],
   imports: [
@@ -48,6 +50,7 @@ import { VariablesListComponent } from './variables-list/variables-list';
     StatusBarComponent,
     InfoBoxComponent,
     NotificationComponent,
+    NotificationContainerComponent,
     ComponentEditorComponent,
     VariablesListComponent]
 })
