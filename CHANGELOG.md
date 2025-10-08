@@ -16,6 +16,17 @@
 ### Security
 -->
 
+## [v4.8.8] - 2025-10-08
+
+### Added
+
+- New update notification system to keep you informed when new versions are available
+- Scan aggregation feature for better data organization
+
+### Changed
+
+- Improved notification system
+
 ## [v4.8.7] - 2025-10-01
 
 ### Added
@@ -797,6 +808,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.8]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.7...v4.8.8
 [v4.8.7]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.6...v4.8.7
 [v4.8.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.5...v4.8.6
 [v4.8.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.4...v4.8.5
