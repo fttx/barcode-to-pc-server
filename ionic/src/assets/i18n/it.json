@@ -166,6 +166,8 @@
   "rebuildButton": "Ricostruisci",
   "website": "Sito web",
   "supportEMail": "E-mail supporto",
+  "updateAvailableNotification": "Una nuova versione ({{ version }}) è disponibile!",
+  "download": "Scarica",
   "checkingForUpdates": "Verifica aggiornamenti...",
   "outOfDate": "{{ appName }} deve essere aggiornato",
   "upToDate": "{{ appName }} è aggiornato",

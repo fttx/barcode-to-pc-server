@@ -166,6 +166,8 @@
   "readyForUpdate": "{{ appName }} 準備更新",
   "update": "更新",
   "relaunch": "重新啟動",
+  "updateAvailableNotification": "新版本 ({{ version }}) 可用！",
+  "download": "下載",
   "================================SETTINGS_PAGE================================": "",
   "settingsTitle": "設置",
   "restoreDefaultSettingsButton": "恢復默認設置",

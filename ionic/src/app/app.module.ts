@@ -64,6 +64,7 @@ import { TelemetryService } from '../providers/telemetry/telemetry';
 import { AudioProvider } from '../providers/audio/audio';
 import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prompt-popover';
 import { NotificationService } from '../providers/notification-service/notification-service';
+import { UpdateCheckerService } from '../providers/update-checker/update-checker';
 
 @NgModule({
   declarations: [
@@ -192,6 +193,7 @@ import { NotificationService } from '../providers/notification-service/notificat
     TelemetryService,
     AudioProvider,
     NotificationService,
+    UpdateCheckerService,
   ]
 })
 export class AppModule { }

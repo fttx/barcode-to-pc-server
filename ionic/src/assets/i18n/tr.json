@@ -166,6 +166,8 @@
   "readyForUpdate": "{{ appName }} güncellemeye hazır",
   "update": "Güncelle",
   "relaunch": "Yeniden başlat",
+  "updateAvailableNotification": "Yeni bir sürüm ({{ version }}) mevcut!",
+  "download": "İndir",
   "================================SETTINGS_PAGE================================": "",
   "settingsTitle": "Ayarlar",
   "restoreDefaultSettingsButton": "Varsayılan ayarları geri yükle",

@@ -166,6 +166,8 @@
   "readyForUpdate": "{{appName}} جاهز للتحديث",
   "update": "تحديث",
   "relaunch": "إعادة التشغيل",
+  "updateAvailableNotification": "إصدار جديد ({{ version }}) متاح!",
+  "download": "تحميل",
   "================================SETTINGS_PAGE================================": "",
   "settingsTitle": "الإعدادات",
   "restoreDefaultSettingsButton": "استعادة الإعدادات الافتراضية",

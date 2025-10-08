@@ -7,6 +7,7 @@ import { ElectronProvider } from '../../providers/electron/electron';
 import { UtilsProvider } from '../../providers/utils/utils';
 import { HttpClient } from '@angular/common/http';
 import { TelemetryService } from '../../providers/telemetry/telemetry';
+import { UpdateCheckerService } from '../../providers/update-checker/update-checker';
 
 /**
  * Generated class for the InfoPage page.
@@ -36,7 +37,8 @@ export class InfoPage {
     private translateService: TranslateService,
     private http: HttpClient,
     private alertController: AlertController,
-    private telemetryProvider: TelemetryService
+    private telemetryProvider: TelemetryService,
+    private updateCheckerService: UpdateCheckerService
   ) {
   }
 
@@ -133,44 +135,48 @@ export class InfoPage {
   }
 
   getLastUpdateCheck() {
-    return localStorage.getItem('lastUpdateCheck') || 'Never';
+    return this.updateCheckerService.getLastUpdateCheck();
   }
 
-  checkForUpdates() {
-    const repoOwner = 'fttx';
-    const repoName = 'barcode-to-pc-server';
-    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/releases/latest`;
+  async checkForUpdates() {
+    const currentVersion = this.getVersion();
 
-    localStorage.setItem('lastUpdateCheck', new Date().toLocaleString());
     this.updateStatus = 'checkingForUpdate';
-    this.http.get(url).subscribe(
-      async (data: any) => {
-        this.newVersion = data.tag_name;
-        if (this.newVersion !== this.getVersion()) {
-          this.updateStatus = 'updateAvailable';
-          // this.electronProvider.ipcRenderer.send('downloadUpdate');
-          this.alertController.create({
-            title: this.translateService.instant('update'),
-            message: this.translateService.instant('updateAvailable'),
-            buttons: [{
-              text: this.translateService.instant('cancel'), role: 'cancel'
-            }, {
-              text: this.translateService.instant('download'), handler: () => {
-                this.electronProvider.shell.openExternal(Config.URL_DOWNLOAD_SERVER);
-              }
-            }]
-          }).present();
 
-        } else {
-          this.updateStatus = 'updateNotAvailable';
-          this.alertController.create({ title: 'No Updates', message: this.translateService.instant('youAreUsingLatestVersion'), buttons: [await this.utils.text('ok')] }).present();
-        }
-      },
-      async (error) => {
-        this.updateStatus = 'updateError';
-        this.alertController.create({ title: 'Error', message: this.translateService.instant('couldNotCheckForUpdates'), buttons: [await this.utils.text('ok')] }).present();
+    try {
+      const result = await this.updateCheckerService.checkForUpdates(currentVersion, false);
+
+      if (result.hasUpdate) {
+        this.newVersion = result.latestVersion;
+        this.updateStatus = 'updateAvailable';
+
+        this.alertController.create({
+          title: this.translateService.instant('update'),
+          message: this.translateService.instant('updateAvailable'),
+          buttons: [{
+            text: this.translateService.instant('cancel'), role: 'cancel'
+          }, {
+            text: this.translateService.instant('download'), handler: () => {
+              this.electronProvider.shell.openExternal(Config.URL_DOWNLOAD_SERVER);
+            }
+          }]
+        }).present();
+      } else {
+        this.updateStatus = 'updateNotAvailable';
+        this.alertController.create({
+          title: 'No Updates',
+          message: this.translateService.instant('youAreUsingLatestVersion'),
+          buttons: [await this.utils.text('ok')]
+        }).present();
       }
-    );
+    } catch (error) {
+      this.updateStatus = 'updateError';
+      this.alertController.create({
+        title: 'Error',
+        message: this.translateService.instant('couldNotCheckForUpdates'),
+        buttons: [await this.utils.text('ok')]
+      }).present();
+    }
   }
 
   getUpdateButtonText() {

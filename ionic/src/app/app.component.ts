@@ -22,6 +22,7 @@ import { BtpAlertController } from '../providers/btp-alert-controller/btp-alert-
 import { OutputBlockModel } from '../models/output-block.model';
 import { TelemetryService } from '../providers/telemetry/telemetry';
 import { LicenseProvider } from '../providers/license/license';
+import { UpdateCheckerService } from '../providers/update-checker/update-checker';
 
 @Component({
   templateUrl: 'app.html'
@@ -48,6 +49,7 @@ export class MyApp {
     private markdownService: MarkdownService,
     private modalCtrl: ModalController,
     private telemetryService: TelemetryService,
+    private updateCheckerService: UpdateCheckerService,
   ) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -251,6 +253,12 @@ export class MyApp {
         this.rootPage = WelcomePage;
       } else {
         this.rootPage = HomePage;
+      }
+
+      // Check for updates on app startup
+      if (ElectronProvider.isElectron() && !this.electronProvider.isDev()) {
+        const currentVersion = this.electronProvider.appGetVersion();
+        this.updateCheckerService.checkForUpdates(currentVersion);
       }
 
       // Check if user authentication is required
