@@ -74,6 +74,7 @@ export class InfoPage {
     this.viewCtrl.dismiss();
   }
 
+  // Duplicated in telemetry.ts
   getVersion() {
     if (this.electronProvider.isDev()) {
       return '(DEV MODE)'

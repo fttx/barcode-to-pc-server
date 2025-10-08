@@ -8,6 +8,7 @@ interface TelemetryEvent {
   eventType: string;
   eventValueInt: number;
   eventValueText: string;
+  serverVersion?: string;
   created_at: number; // Unix timestamp in milliseconds
 }
 
@@ -90,10 +91,21 @@ export class TelemetryService {
   }
 
   sendEvent(eventType: string, eventValueInt: number, eventValueText: string): void {
+    // Determine server version the same way as info.ts getVersion()
+    let serverVersion: string;
+    if (this.electronProvider.isDev()) {
+      serverVersion = '(DEV MODE)';
+    } else if (ElectronProvider.isElectron()) {
+      serverVersion = this.electronProvider.appGetVersion();
+    } else {
+      serverVersion = '(BROWSER MODE)';
+    }
+
     const event: TelemetryEvent = {
       eventType,
       eventValueInt,
       eventValueText,
+      serverVersion: serverVersion,
       created_at: Date.now()
     };
     this.eventQueue.push(event);
