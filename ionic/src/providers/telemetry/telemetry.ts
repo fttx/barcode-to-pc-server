@@ -68,6 +68,7 @@ export class TelemetryService {
         eventType: 'scan',
         eventValueInt: totalScanValue,
         eventValueText: null,
+        serverVersion: scanEvents[scanEvents.length - 1].serverVersion,
         created_at: scanEvents[scanEvents.length - 1].created_at
       };
       eventsToSend = [...nonScanEvents, aggregatedScanEvent];
