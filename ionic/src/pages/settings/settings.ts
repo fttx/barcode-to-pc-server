@@ -308,7 +308,7 @@ export class SettingsPage implements OnInit, OnDestroy {
 
   async onLockOutputTemplate() {
     let currentProfile = this.settings.outputProfiles[this.selectedOutputProfile];
-    const currentDeviceNames = (currentProfile.allowedOnDeviceNames || []).join(',');
+    const currentDeviceNames = currentProfile.allowedOnDeviceNames || '';
 
     this.alertCtrl.create({
       title: await this.utils.text('outputTemplateLockDialogTitle'),
@@ -327,14 +327,10 @@ export class SettingsPage implements OnInit, OnDestroy {
       }, {
         text: await this.utils.text('outputTemplateLockDialogOkButton'),
         handler: data => {
-          if (data.deviceNames && data.deviceNames.trim() !== "") {
-            // Split by comma and trim each device name
-            this.settings.outputProfiles[this.selectedOutputProfile].allowedOnDeviceNames =
-              data.deviceNames.split(',').map(name => name.trim()).filter(name => name !== "");
-          } else {
-            // Empty input means no restriction
-            this.settings.outputProfiles[this.selectedOutputProfile].allowedOnDeviceNames = [];
-          }
+          // Store the device names as a string (comma-separated)
+          const deviceNames = data.deviceNames || '';
+          this.settings.outputProfiles[this.selectedOutputProfile].allowedOnDeviceNames =
+            typeof deviceNames === 'string' ? deviceNames.trim() : '';
         }
       }]
     }).present();
