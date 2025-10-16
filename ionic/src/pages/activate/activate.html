@@ -107,8 +107,8 @@
           <ion-col>{{ 'Real-time Excel Output' | translate }}</ion-col>
           <ion-col>{{ appendToCSV }}</ion-col>
         </ion-row>
-        <ion-row>
-          <ion-col>{{ 'Next billing cycle' | translate }}</ion-col>
+        <ion-row [hidden]="isUnlimited()">
+          <ion-col>{{ 'Next reset' | translate }}</ion-col>
           <ion-col>{{ nextChargeDate }}</ion-col>
         </ion-row>
       </ion-grid>
@@ -123,7 +123,7 @@
 
     <ion-item *ngIf="electronProvider.isDev()" text-wrap no-padding>
       <b>Debug</b> - License = {{ getLicense() | json }}<br><br>
-    </ion-item> -->
+    </ion-item>
 
     <ion-item no-lines no-padding style="margin-top: -20px">
       {{ 'contactSupport1' | translate }} <a (click)="contactSupportClick()">{{ getSupportEmail() }}</a><br>
