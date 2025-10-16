@@ -10,6 +10,7 @@ export class OutputProfileModel {
      * porting Output Templates)
      */
     public version: string;
+    public allowedOnDeviceNames?: string[] = [];
     public outputBlocks: OutputBlockModel[] = [];
 
     /**

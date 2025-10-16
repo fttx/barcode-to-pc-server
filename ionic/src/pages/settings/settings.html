@@ -155,6 +155,10 @@
           <ion-icon name="ios-share"></ion-icon>
         </button>
 
+        <button ion-button small clear icon-start color="dark" class="btn-output-template-action" (click)="onLockOutputTemplate()" title="{{ 'outputTemplateLock' | translate }}">
+          <ion-icon name="lock"></ion-icon>
+        </button>
+
         <button ion-button small clear icon-start color="dark" class="btn-output-template-action" [disabled]="this.settings.outputProfiles.length <= 1" (click)="onDeleteOutputTemplateClick()" title="{{ 'outputTemplateDelete' | translate }}">
           <ion-icon name="trash"></ion-icon>
         </button>

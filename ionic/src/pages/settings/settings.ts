@@ -306,6 +306,40 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.electronProvider.fsWriteFileSync(filePath, JSON.stringify(outputProfile), 'utf-8');
   }
 
+  async onLockOutputTemplate() {
+    let currentProfile = this.settings.outputProfiles[this.selectedOutputProfile];
+    const currentDeviceNames = (currentProfile.allowedOnDeviceNames || []).join(',');
+
+    this.alertCtrl.create({
+      title: await this.utils.text('outputTemplateLockDialogTitle'),
+      message: await this.utils.text('outputTemplateLockDialogMessage'),
+      enableBackdropDismiss: false,
+      inputs: [{
+        name: 'deviceNames',
+        type: 'text',
+        placeholder: await this.utils.text('outputTemplateLockDialogPlaceholder'),
+        value: currentDeviceNames
+      }],
+      buttons: [{
+        role: 'cancel',
+        text: await this.utils.text('outputTemplateLockDialogCancelButton'),
+        handler: () => { }
+      }, {
+        text: await this.utils.text('outputTemplateLockDialogOkButton'),
+        handler: data => {
+          if (data.deviceNames && data.deviceNames.trim() !== "") {
+            // Split by comma and trim each device name
+            this.settings.outputProfiles[this.selectedOutputProfile].allowedOnDeviceNames =
+              data.deviceNames.split(',').map(name => name.trim()).filter(name => name !== "");
+          } else {
+            // Empty input means no restriction
+            this.settings.outputProfiles[this.selectedOutputProfile].allowedOnDeviceNames = [];
+          }
+        }
+      }]
+    }).present();
+  }
+
   showOutputTemplateExportDialog(): Promise<OutputProfileExportedModel> {
     const selectedOutputProfile: OutputProfileExportedModel = this.settings.outputProfiles[this.selectedOutputProfile];
     return new Promise(async (resolve, reject) => {
