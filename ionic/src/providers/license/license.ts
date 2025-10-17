@@ -562,7 +562,6 @@ export class LicenseProvider {
 
   getLicenseName() {
     switch (this.activeLicense) {
-      case LicenseProvider.LICENSE_FREE: return 'Free';
       case LicenseProvider.LICENSE_BASIC: return 'Basic';
       case LicenseProvider.LICENSE_PRO: return 'Pro';
       case LicenseProvider.LICENSE_UNLIMITED: return 'Unlimited';
@@ -572,6 +571,7 @@ export class LicenseProvider {
       case LicenseProvider.LICENSE_STARTER_MONTHLY: return 'Starter';
       case LicenseProvider.LICENSE_STARTER_YEARLY: return 'Starter';
     }
+    return LicenseProvider.GetPlanData().display_name;
   }
 
   private async showUpgradeDialog(refer, title, message) {
@@ -650,6 +650,7 @@ export class LicenseProvider {
         "templates": 1,
         "components": 2,
         "ai_tokens": 2,
+        "display_name": "Expired"
       };
     }
     return LicenseProvider.GetLicense()['plan_data'];
