@@ -16,6 +16,18 @@
 ### Security
 -->
 
+## [v4.8.9] - 2025-10-17
+
+### Added
+
+- Output template locking feature: restrict templates to specific devices using device name patterns
+- Enhanced translations across all supported languages
+
+### Fixed
+
+- Update checker now properly detects new versions on first install
+- Template validation improvements
+
 ## [v4.8.8] - 2025-10-08
 
 ### Added
@@ -808,6 +820,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.9]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.8...v4.8.9
 [v4.8.8]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.7...v4.8.8
 [v4.8.7]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.6...v4.8.7
 [v4.8.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.5...v4.8.6
