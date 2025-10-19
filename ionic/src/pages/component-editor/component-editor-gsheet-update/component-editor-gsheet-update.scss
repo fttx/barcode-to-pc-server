@@ -28,4 +28,9 @@ page-component-editor-gsheet-update {
   .inline-input {
     width: 100%;
   }
+
+  .inline-input:disabled {
+    color: #999;
+    opacity: 0.7;
+  }
 }

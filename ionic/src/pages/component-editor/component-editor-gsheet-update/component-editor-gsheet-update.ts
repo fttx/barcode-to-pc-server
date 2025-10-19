@@ -10,6 +10,8 @@ import { ElectronProvider } from '../../../providers/electron/electron';
 export class ComponentEditorGSheetUpdatePage {
   @ViewChild('sheetId') sheetId: Select;
 
+  public curlyOpen = '{{';
+  public curlyClose = '}}';
   public outputBlock: OutputBlockModel;
   private previousValues: { column: string, value: string }[] = [];
 
