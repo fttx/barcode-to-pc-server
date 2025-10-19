@@ -91,6 +91,6 @@ export class ComponentEditorComponent implements OnInit {
   }
 
   getJavascriptFunctionVariablesInjectionTutorialUrl() {
-    return Config.URL_TUTORIAL_JAVASCRIPT_FUNCTION;
+    return Config.URL_TUTORIAL_INJECTION;
   }
 }

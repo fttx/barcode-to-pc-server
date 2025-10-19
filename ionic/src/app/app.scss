@@ -129,3 +129,14 @@ alert-button-group button {
     background: transparent !important;
   }
 }
+
+// Common select styling for component editors
+.component-editor-select {
+  width: 100%;
+  margin: 15px 0;
+  border: 1px solid #b5b5b5;
+  border-radius: 5px;
+  height: 36px;
+  line-height: 36px;
+  padding: 0 20px 0 8px;
+}

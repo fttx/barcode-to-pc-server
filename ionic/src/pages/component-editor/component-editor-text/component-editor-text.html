@@ -3,11 +3,7 @@
     <label for="_valueText">
       <h2 color="dark">{{ 'text' | translate }}</h2>
     </label>
-    <input id="_valueText" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Lorem ipsum" />
-  </ion-item>
-
-  <ion-item>
-    <variables-list></variables-list>
+    <input id="_valueText" variableInjector [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Lorem ipsum" />
   </ion-item>
 
 </component-editor>

@@ -7,19 +7,13 @@
 
     <ion-item>
       <label for="_searchValue">{{ 'searchValue' | translate }}</label>
-      <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. Field1" />
+      <input id="_searchValue" variableInjector [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. Field1" />
     </ion-item>
     <ion-item text-wrap>
       <p>
         {{ 'searchValueDescription1' | translate }}
         <br>
-        <br>
-        {{ 'searchValueDescription2' | translate }}
-        <br>
-        <code ngNonBindable>{{ barcode }}</code><br><br>
       </p>
-
-      <variables-list></variables-list>
     </ion-item>
 
     <ion-item text-wrap>

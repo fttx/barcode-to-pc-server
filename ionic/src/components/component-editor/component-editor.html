@@ -40,7 +40,7 @@
           <h2 color="dark">{{ 'label' | translate }}</h2>
           <button ion-button small color="light" [popper]="labelHelp" [popperPlacement]="'bottom'" class="help-button">?</button>
         </label>
-        <input id="_labelValue" [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
+        <input id="_labelValue" variableInjector [(ngModel)]="outputBlock.label" class="inline-input" type="text" placeholder="(optional)" />
       </ion-item>
 
       <popper-content #labelHelp text-wrap>
@@ -56,7 +56,7 @@
         <label for="_defaultValue">
           <h2 color="dark">{{ 'defaultValue' | translate }}</h2>
         </label>
-        <input id="_defaultValue" [(ngModel)]="outputBlock.defaultValue" class="inline-input" type="text" placeholder="(optional)" />
+        <input id="_defaultValue" [(ngModel)]="outputBlock.defaultValue" class="inline-input" type="text" placeholder="(optional)" variableInjector />
       </ion-item>
 
       <ion-item text-wrap>

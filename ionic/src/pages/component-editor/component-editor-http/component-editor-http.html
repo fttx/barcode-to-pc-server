@@ -3,7 +3,7 @@
 
     <ion-item>
       <label for="_valueUrl">{{ 'url' | translate }}</label>
-      <input id="_valueUrl" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="https://www.example.com/" />
+      <input id="_valueUrl" variableInjector [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="https://www.example.com/" />
       <br>
       <p>
         {{ 'urlDescription1' | translate }}
@@ -22,12 +22,9 @@
       <variables-list></variables-list>
     </ion-item>
 
-    <ion-item>
-      <label for="_valueMethod" color="dark">
-        <h2 color="dark">{{ 'method' | translate }}</h2>
-      </label>
-      <br>
-      <select id="_valueMethod" [(ngModel)]="outputBlock.httpMethod">
+    <ion-item text-wrap>
+      <label for="_valueMethod">{{ 'method' | translate }}</label>
+      <select id="_valueMethod" [(ngModel)]="outputBlock.httpMethod" class="component-editor-select">
         <option value="get">GET</option>
         <option value="delete">DELETE</option>
         <option value="head">HEAD</option>
@@ -40,7 +37,7 @@
 
     <ion-item text-wrap>
       <label for="_httpData">{{ 'data' | translate }}</label>
-      <input id="_httpData" [(ngModel)]="outputBlock.httpData" class="inline-input" type="text" placeholder="(optional)" />
+      <textarea id="_httpData" variableInjector [(ngModel)]="outputBlock.httpData" type="text" placeholder="(optional)" class="inline-input" style="min-height: 80px; line-height: 19px; padding: 6px 7px; max-width: 100%; min-width: 100%;"></textarea>
       <br>
       <p>
         {{ 'dataDescription1' | translate }}
@@ -49,14 +46,14 @@
         {{ 'dataDescription2' | translate }}
         <br>
         <code ngNonBindable>
-          <input type="text" value="&#123; &quot;product&quot;: &quot;&#123;&#123; barcode &#125;&#125;&quot;, &quot;quantity&quot;: &#123;&#123; number &#125;&#125; &#125;" disabled class="example-input" />
+          <input type="text" value="&#123; &quot;product&quot;: &quot;&#123;&#123; barcode &#125;&#125;&quot;, &quot;quantity&quot;: &#123;&#123; number &#125;&#125; &#125;" disabled class="example-input"/>
         </code><br><br>
       </p>
     </ion-item>
 
     <ion-item text-wrap>
       <label for="_httpParams">{{ 'params' | translate }}</label>
-      <input id="_httpParams" [(ngModel)]="outputBlock.httpParams" class="inline-input" type="text" placeholder="(optional)" />
+      <textarea id="_httpParams" variableInjector [(ngModel)]="outputBlock.httpParams" type="text" placeholder="(optional)" class="inline-input" style="min-height: 80px; line-height: 19px; padding: 6px 7px; max-width: 100%; min-width: 100%;"></textarea>
       <br>
       <p>
         {{ 'paramsDescription1' | translate }}
@@ -85,12 +82,9 @@
       </p>
     </ion-item>
 
-    <ion-item no-lines>
-      <label for="_oauth" color="dark">
-        <h2 color="dark">{{ 'oauth' | translate }}</h2>
-      </label>
-      <br>
-      <select id="_oauth" [(ngModel)]="outputBlock.httpOAuthMethod">
+    <ion-item text-wrap>
+      <label for="_oauth">{{ 'oauth' | translate }}</label>
+      <select id="_oauth" [(ngModel)]="outputBlock.httpOAuthMethod" class="component-editor-select">
         <option value="disabled">Disabled</option>
         <option value="HMAC-SHA1">HMAC-SHA1</option>
         <option value="HMAC-SHA256">HMAC-SHA256</option>

@@ -12,6 +12,7 @@ import { NotificationContainerComponent } from './notification-container/notific
 import { OutputComponentComponent } from './output-component-component/output-component-component';
 import { StatusBarComponent } from './status-bar/status-bar';
 import { VariablesListComponent } from './variables-list/variables-list';
+import { DirectivesModule } from '../directives/directives.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import { VariablesListComponent } from './variables-list/variables-list';
     VariablesListComponent],
   imports: [
     IonicModule,
+    DirectivesModule,
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
@@ -52,6 +54,7 @@ import { VariablesListComponent } from './variables-list/variables-list';
     NotificationComponent,
     NotificationContainerComponent,
     ComponentEditorComponent,
-    VariablesListComponent]
+    VariablesListComponent,
+    DirectivesModule]
 })
 export class ComponentsModule { }

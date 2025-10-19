@@ -2,7 +2,7 @@
   <div [hidden]="outputBlock.type != 'run'">
     <ion-item>
       <label for="_valueRun">{{ 'command' | translate }}</label>
-      <input id="_valueRun" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
+      <input id="_valueRun" variableInjector [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="C:&#92;program.exe" />
       <br>
       <p>
         {{ 'commandDescription1' | translate }}

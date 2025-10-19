@@ -2,17 +2,17 @@
   <div [hidden]="outputBlock.type != 'select_option'">
     <ion-item>
       <label for="_soTitle">{{ 'title' | translate }}</label>
-      <input id="_soTitle" [(ngModel)]="outputBlock.title" class="inline-input" type="text" placeholder="(optional)" />
+      <input id="_soTitle" variableInjector [(ngModel)]="outputBlock.title" class="inline-input" type="text" placeholder="(optional)" />
     </ion-item>
 
     <ion-item>
       <label for="_soMessage">{{ 'message' | translate }}</label>
-      <input id="_soMessage" [(ngModel)]="outputBlock.message" class="inline-input" type="text" placeholder="(optional)" />
+      <input id="_soMessage" variableInjector [(ngModel)]="outputBlock.message" class="inline-input" type="text" placeholder="(optional)" />
     </ion-item>
 
     <ion-item>
       <label for="_valueSelectOption">{{ 'optionsList' | translate }}</label>
-      <input id="_valueSelectOption" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
+      <input id="_valueSelectOption" variableInjector [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Option 1,Option 2,Option 3" />
       <br>
       <p [innerHtml]="'optionsListDescription' | translate"></p>
       <p>
@@ -20,8 +20,6 @@
         {{ 'optionsListExample' | translate }} 2: <code ngNonBindable>created,processing,completed</code><br><br>
         {{ 'optionsListExample' | translate }} 3: <code ngNonBindable>{{ device_name }},office_smartphone,desk_smartphone</code><br><br>
       </p>
-
-      <variables-list></variables-list>
     </ion-item>
   </div>
 </component-editor>

@@ -40,6 +40,7 @@ export class Config {
 
   public static URL_TUTORIAL_KEYBOARD_EMULATION = 'https://docs.barcodetopc.com/keyboard-emulation/';
   public static URL_TUTORIAL_JAVASCRIPT_FUNCTION = 'https://docs.barcodetopc.com/output-template/components/javascript_function/';
+  public static URL_TUTORIAL_INJECTION = 'https://docs.barcodetopc.com/output-template/inject-variables/';
   public static URL_TUTORIAL_IF = 'https://docs.barcodetopc.com/output-template/components/if/';
   public static URL_TUTORIAL_RUN = 'https://docs.barcodetopc.com/output-template/components/run/';
   public static URL_TUTORIAL_CSV_LOOKUP = 'https://docs.barcodetopc.com/output-template/components/csv_lookup/';

@@ -8,6 +8,8 @@ import { OutputBlockModel } from '../../../models/output-block.model';
 })
 export class ComponentEditorIfPage {
 
+  public curlyOpen = '{{';
+  public curlyClose = '}}';
   public outputBlock: OutputBlockModel;
   constructor(
     public navParams: NavParams,
