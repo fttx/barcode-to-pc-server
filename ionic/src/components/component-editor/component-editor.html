@@ -65,7 +65,7 @@
     </div>
 
     <div [hidden]="outputBlock.filter === undefined">
-      <ion-item>
+      <ion-item no-lines>
         <label for="_filterValue">
           <h2 color="dark">{{ 'filter' | translate }}</h2>
         </label>
@@ -78,7 +78,7 @@
     </div>
 
     <div [hidden]="outputBlock.errorMessage === undefined">
-      <ion-item>
+      <ion-item no-lines>
         <label for="_errorMessage">
           <h2 color="dark">{{ 'errorMessage' | translate }}</h2>
         </label>

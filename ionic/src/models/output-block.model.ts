@@ -165,16 +165,13 @@ export class OutputBlockModel {
     newValue?: string;
 
     /**
-     * Parameters for the GSHEET component (Extends CSV_UPDATE)
+     * Parameters for the GOOGLE_SHEETS component
      */
-    sheetId?: string;
-    workSheetIndex?: number;
-    searchColumnA1?: string;
-    columnToUpdateA1?: string;
-    columnToReadA1?: string;
-    columnsToAppend?: string[];
-    action?: 'get' | 'update' | 'append';
-    appendIfNotFound?: boolean;
+    googleSheetsUrl?: string;
+    googleSheetsAction?: 'append' | 'update' | 'delete' | 'get';
+    googleSheetsSearchValue?: string;
+    googleSheetsValues?: { column: string, value: string }[];
+    googleSheetsSendAllVariables?: boolean;
 
     /**
      * Parameters for the ALERT component

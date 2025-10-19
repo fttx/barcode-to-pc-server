@@ -11,12 +11,7 @@ export class ComponentEditorGSheetUpdatePage {
   @ViewChild('sheetId') sheetId: Select;
 
   public outputBlock: OutputBlockModel;
-  public availableSheets = [];
-  public isLoading = false;
-  public savedTokens: any = null;
-  public hideTokenInput = true;
-  public redirectToken = '';
-  public validated = false;
+  private previousValues: { column: string, value: string }[] = [];
 
   constructor(
     public navParams: NavParams,
@@ -26,101 +21,106 @@ export class ComponentEditorGSheetUpdatePage {
     public events: Events,
   ) {
     this.outputBlock = this.navParams.get('outputBlock');
-    this.loadLocalStorage();
-  }
 
-  loadLocalStorage() {
-    this.savedTokens = JSON.parse(localStorage.getItem('gsheet_saved_tokens'));
-    this.availableSheets = JSON.parse(localStorage.getItem('gsheet_available_sheets'));
-  }
+    // Initialize googleSheetsValues if not present
+    if (!this.outputBlock.googleSheetsValues) {
+      this.outputBlock.googleSheetsValues = [];
+    }
 
-  ionViewDidEnter() {
-    this.sheetId.selectOptions = { cssClass: 'alert-gsheet-sheets-list' };
-    this.loadLocalStorage();
+    // Initialize googleSheetsAction if not present
+    if (!this.outputBlock.googleSheetsAction) {
+      this.outputBlock.googleSheetsAction = 'append';
+    }
 
+    // Initialize googleSheetsSearchValue if not present
+    if (!this.outputBlock.googleSheetsSearchValue) {
+      this.outputBlock.googleSheetsSearchValue = '{{ barcode }}';
+    }
 
-    // There is another listener on the app.component.ts to refresh & save the token from time to time
-    this.electronProvider.ipcRenderer.on('gsheet_refresh_tokens', this.refreshTokens);
+    // Initialize googleSheetsSendAllVariables if not present
+    if (this.outputBlock.googleSheetsSendAllVariables === undefined) {
+      this.outputBlock.googleSheetsSendAllVariables = false;
+    }
 
-    // Here is used the same topic to send and receive messages
-    this.electronProvider.ipcRenderer.on('gsheet_refresh_data', (event, data: { tokens: any, spreadSheets: ({ id: string, name: string }[]) }) => {
-      this.ngZone.run(() => {
-        if (data.tokens) {
-          this.savedTokens = data.tokens;
-          localStorage.setItem('gsheet_saved_tokens', JSON.stringify(this.savedTokens));
-        }
-        this.availableSheets = data.spreadSheets;
-        localStorage.setItem('gsheet_available_sheets', JSON.stringify(this.availableSheets));
-        setTimeout(() => {
-          this.sheetId.open();
-          this.isLoading = false;
-        }, 500);
-      });
-    });
-
-    console.log('ionViewDidEnter ComponentEditorGSheetUpdatePage');
-  }
-
-  ionViewDidLeave() {
-    this.electronProvider.ipcRenderer.removeListener('gsheet_refresh_tokens', this.refreshTokens); // there is another listener always registered that periodically refreshes the token on the app.component.ts
-    this.electronProvider.ipcRenderer.removeAllListeners('gsheet_refresh_data');
-  }
-
-  logout() {
-    this.savedTokens = null;
-    this.availableSheets = [];
-    this.outputBlock.sheetId = '';
-    localStorage.removeItem('gsheet_saved_tokens');
-    localStorage.removeItem('gsheet_available_sheets');
-    setTimeout(() => {
-      this.hideTokenInput = true;
-      this.redirectToken = '';
-      this.events.publish('componentEditor:scrollToTop');
-    }, 1400);
-  }
-
-  refreshData() {
-    this.isLoading = true;
-    this.hideTokenInput = false;
-    setTimeout(() => { this.isLoading = false; }, 30000);
-    // Here is used the same topic to send and receive messages
-    this.electronProvider.ipcRenderer.send('gsheet_refresh_data', { tokens: this.savedTokens, spreadSheets: null });
-  }
-
-  refreshTokens(event, tokens: any) {
-    this.ngZone.run(() => { this.savedTokens = tokens; });
-  }
-
-  isLoggedIn() {
-    return this.savedTokens && this.savedTokens.expiry_date && this.savedTokens.expiry_date != null;
-  }
-
-  onActionChange(event) {
-    if (this.outputBlock.action === 'get' && this.outputBlock.rowToUpdate === 'all') {
-      this.outputBlock.rowToUpdate = 'first';
+    // Ensure at least one column is present for append action
+    if (this.outputBlock.googleSheetsAction === 'append' && this.outputBlock.googleSheetsValues.length === 0) {
+      this.outputBlock.googleSheetsValues = [{ column: '', value: '' }];
     }
   }
 
-  addColumn() {
-    this.outputBlock.columnsToAppend = [...this.outputBlock.columnsToAppend, ''];
-    this.events.publish('componentEditor:scrollToBottom');
+  loadLocalStorage() {
   }
 
-  removeColumn(removeIndex: number) {
-    this.outputBlock.columnsToAppend = this.outputBlock.columnsToAppend.filter((x, index) => index != removeIndex);
-    this.events.publish('componentEditor:scrollToBottom');
+  ionViewDidEnter() {
   }
 
-  // When the token is pasted in the UI
-  onRedirectTokenChange(event) {
-    this.electronProvider.ipcRenderer.send('oauth_token', this.redirectToken);
+  ionViewDidLeave() {
   }
 
-  isValid() {
-    return this.outputBlock.sheetId && this.outputBlock.sheetId.length;
+  isValid(): boolean {
+    // Validate that Google Sheets URL is provided
+    if (!this.outputBlock.googleSheetsUrl || this.outputBlock.googleSheetsUrl.trim() === '') {
+      return false;
+    }
+
+    // For append action, validate that either sendAllVariables is true or values are provided
+    if (this.outputBlock.googleSheetsAction === 'append') {
+      if (!this.outputBlock.googleSheetsSendAllVariables) {
+        if (!this.outputBlock.googleSheetsValues || this.outputBlock.googleSheetsValues.length === 0) {
+          return false;
+        }
+
+        // Validate each value has both column and value filled
+        for (const item of this.outputBlock.googleSheetsValues) {
+          if (!item.column || item.column.trim() === '' || !item.value || item.value.trim() === '') {
+            return false;
+          }
+        }
+      }
+    }
+
+    return true;
   }
 
-  trackColumnsIndex(index, item) {
-    return index;
+  addValue() {
+    if (!this.outputBlock.googleSheetsValues) {
+      this.outputBlock.googleSheetsValues = [];
+    }
+    // Use array assignment instead of push (push doesn't trigger change detection properly)
+    this.outputBlock.googleSheetsValues = [...this.outputBlock.googleSheetsValues, { column: '', value: '' }];
+  }
+
+  removeValue(index: number) {
+    if (this.outputBlock.googleSheetsValues) {
+      this.outputBlock.googleSheetsValues = this.outputBlock.googleSheetsValues.filter((x, i) => i !== index);
+    }
+  }
+
+  onSendAllVariablesChange() {
+    console.log('onSendAllVariablesChange called');
+    console.log('googleSheetsSendAllVariables:', this.outputBlock.googleSheetsSendAllVariables);
+    console.log('Current googleSheetsValues:', JSON.stringify(this.outputBlock.googleSheetsValues));
+
+    if (this.outputBlock.googleSheetsSendAllVariables) {
+      // Save current values before replacing
+      this.previousValues = [...this.outputBlock.googleSheetsValues];
+      console.log('Saved previousValues:', JSON.stringify(this.previousValues));
+
+      // Set single value to {{ $ }} when sending all variables
+      this.outputBlock.googleSheetsValues = [{ column: '', value: '{{ $ }}' }];
+      console.log('Set new googleSheetsValues:', JSON.stringify(this.outputBlock.googleSheetsValues));
+    } else {
+      console.log('Restoring previousValues:', JSON.stringify(this.previousValues));
+
+      // Restore previous values when unchecking
+      if (this.previousValues.length > 0) {
+        this.outputBlock.googleSheetsValues = [...this.previousValues];
+        console.log('Restored googleSheetsValues:', JSON.stringify(this.outputBlock.googleSheetsValues));
+      } else {
+        // If no previous values, initialize with one empty column
+        this.outputBlock.googleSheetsValues = [{ column: '', value: '' }];
+        console.log('Initialized with one empty column');
+      }
+    }
   }
 }

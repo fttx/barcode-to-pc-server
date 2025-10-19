@@ -1,159 +1,103 @@
-<component-editor [outputBlock]="outputBlock" [locked]="!isLoggedIn()" [validated]="isValid()">
+<component-editor [outputBlock]="outputBlock" [validated]="isValid()">
+  <div [hidden]="outputBlock.type != 'google_sheets'">
 
-  <div class="google-login" [hidden]="isLoggedIn()">
-    <div style="margin-top: 20px">This feature is available for Beta Testers only.</div>
-
-    <div style="margin: 189px auto 30px auto; font-size: 18px; color: #525252; opacity: .5;">{{ 'gsheetSelectSheet' | translate }}</div>
-    <div (click)="refreshData()" style="opacity: .5">
-      <img src="assets/btn_google_signin_dark_normal_web@2x.png" style="max-height: 50px; cursor: not-allowed;" alt="Login With Google">
-    </div>
-
-    <input type="url" class="redirect-token" placeholder="Paste the authentication code here" [(ngModel)]="redirectToken" (change)="onRedirectTokenChange($event)" (keyup)="onRedirectTokenChange($event)" [hidden]="hideTokenInput" />
-  </div>
-
-  <ion-item no-lines text-wrap>
-    <p [innerHtml]="'gsheetUpdateDescription' | translate"></p>
-  </ion-item>
-
-  <ion-item no-lines text-wrap>
-    <ion-label>
-      {{ 'gsheetAction' | translate }}
-    </ion-label>
-    <ion-select [(ngModel)]="outputBlock.action" (ionChange)="onActionChange($event)">
-      <ion-option value="get">{{ 'gshetActionGet' | translate }}</ion-option>
-      <ion-option value="update">{{ 'gshetActionUpdate' | translate }}</ion-option>
-      <ion-option value="append">{{ 'gshetActionAppend' | translate }}</ion-option>
-    </ion-select>
-  </ion-item>
-  <ion-item text-wrap>
-    <p [innerHtml]="'gsheetActionDescription' | translate"></p>
-  </ion-item>
-
-  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
-    <label for="_searchValue">{{ 'csvUpdateSearchValue' | translate }}</label>
-    <input id="_searchValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Eg. 0" />
-
-    <p>
-      <br>
-      {{ 'gsheetUpdateSearchDescription' | translate }}
-    </p>
-  </ion-item>
-
-  <div [hidden]="outputBlock.action !== 'update'">
-    <ion-item no-lines text-wrap>
-      <label for="_newValue">{{ 'newValue' | translate }}</label>
-      <input id="_newValue" [(ngModel)]="outputBlock.newValue" class="inline-input" type="text" placeholder="Eg. 1" />
-
-      <p [innerHtml]="'gsheetNewValueDescription' | translate"></p>
+    <ion-item text-wrap>
+      <label for="_googleSheetsUrl">Google Sheets URL</label>
+      <input id="_googleSheetsUrl" [(ngModel)]="outputBlock.googleSheetsUrl" class="inline-input" type="url" placeholder="Example: https://docs.google.com/spreadsheets/d/4281a3386e77d42a9089da5769fb7b22" />
     </ion-item>
 
     <ion-item text-wrap>
+      <label for="_googleSheetsAction">Action</label>
+      <select id="_googleSheetsAction" [(ngModel)]="outputBlock.googleSheetsAction" class="action-select">
+        <option value="append">Append or Update Row</option>
+        <option value="get">Get Row</option>
+        <option value="delete">Delete Row</option>
+      </select>
+      <br>
       <p>
-        <br>
-        <i>{{ 'newValue' | translate }}</i> {{ 'newValueExample' | translate }}<br>
-        <code ngNonBindable>{{ number }}</code><br><br>
+        Choose the action to perform on the Google Sheet.
       </p>
-
-      <variables-list></variables-list>
     </ion-item>
-  </div>
 
-  <ion-item text-wrap no-lines [ngClass]="{'field-error': !isValid()}">
-    <ion-label>
-      {{ 'gsheetSelectedSheet' | translate }}
-    </ion-label>
-    <ion-select [(ngModel)]="outputBlock.sheetId" #sheetId [hidden]="!availableSheets || availableSheets.length === 0">
-      <ion-option *ngFor="let sheet of availableSheets" [value]="sheet.id">{{ sheet.name }}</ion-option>
-    </ion-select>
-    <!-- <p>The matched row to update that you want to update</p> -->
-  </ion-item>
-
-  <ion-item no-lines>
-    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="logout()" color="output-block-component-google_sheets">
-      <ion-icon name="exit"></ion-icon>
-      {{ 'gsheetLogout' | translate }}
-    </button>
-    <button [disabled]="isLoading" [hidden]="!isLoggedIn()" ion-button small icon-start (click)="refreshData()" color="output-block-component-google_sheets">
-      <ion-icon name="refresh"></ion-icon>
-      {{ 'gsheetRefreshSheets' | translate }}
-    </button>
-  </ion-item>
-
-  <ion-item text-wrap>
-    <label for="_workSheetIndex">{{ 'workSheetIndex' | translate }}</label>
-    <input id="_workSheetIndex" [(ngModel)]="outputBlock.workSheetIndex" class="inline-input" type="number" placeholder="0" />
-    <br>
-    <p>{{ 'workSheetIndexDescription' | translate }}</p>
-  </ion-item>
-
-  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
-    <label for="_searchColumnIndex">{{ 'searchColumnA1' | translate }}</label>
-    <input id="_searchColumnIndex" [(ngModel)]="outputBlock.searchColumnA1" class="inline-input" type="text" placeholder="A" />
-    <br>
-    <p>{{ 'searchColumnA1Description' | translate }}</p>
-  </ion-item>
-
-  <ion-item text-wrap [hidden]="outputBlock.action !== 'update' || outputBlock.action === 'append'">
-    <label for="_columnToUpdateIndex">{{ 'columnToUpdateA1' | translate }}</label>
-    <input id="_columnToUpdateIndex" [(ngModel)]="outputBlock.columnToUpdateA1" class="inline-input" type="text" placeholder="B" />
-    <br>
-    <p>{{ 'columnToUpdateA1Description' | translate }}</p>
-  </ion-item>
-
-  <ion-item text-wrap [hidden]="outputBlock.action !== 'get' || outputBlock.action === 'append'">
-    <label for="_columnToReadIndex">{{ 'columnToReadA1' | translate }}</label>
-    <input id="_columnToReadIndex" [(ngModel)]="outputBlock.columnToReadA1" class="inline-input" type="text" placeholder="B" />
-    <br>
-    <p>{{ 'columnToUpdateA1Description' | translate }}</p>
-  </ion-item>
-
-  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
-    <ion-label>
-      <div [hidden]="outputBlock.action !== 'update'">
-        {{ 'rowToEdit' | translate }}
+    <ion-item text-wrap>
+      <label for="_keyColumn">Key column</label>
+      <div style="position: relative; width: 100%;">
+        <ion-icon name="key" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999;"></ion-icon>
+        <input id="_keyColumn" value="barcode" class="inline-input" type="text" disabled style="padding-left: 35px;" />
       </div>
-      <div [hidden]="outputBlock.action !== 'get'">
-        {{ 'rowToRead' | translate }}
-      </div>
-    </ion-label>
-    <ion-select [(ngModel)]="outputBlock.rowToUpdate">
-      <ion-option value="all" *ngIf="outputBlock.action !== 'get'">{{ 'all' | translate }}</ion-option>
-      <ion-option value="first">{{ 'firstMatch' | translate }}</ion-option>
-      <ion-option value="last">{{ 'lastMatch' | translate }}</ion-option>
-    </ion-select>
-    <!-- <p>The matched row to update that you want to update</p> -->
-  </ion-item>
-
-  <ion-item text-wrap [hidden]="outputBlock.action === 'append'">
-    <label for="_notFoundValue">{{ 'notFoundValue' | translate }}</label>
-    <input id="_notFoundValue" [(ngModel)]="outputBlock.notFoundValue" class="inline-input" type="text" placeholder="" />
-    <br>
-    <p>{{ 'csvUpdateNotFoundValueDescription' | translate }}</p>
-  </ion-item>
-
-  <div [hidden]="outputBlock.action !== 'append'">
-    <ion-item no-lines>
-      <ion-label no-lines>{{ 'gsheetsColumns' | translate }}</ion-label>
+      <br>
+      <p>
+        The column that will be used to search for rows. This cannot be changed.
+      </p>
     </ion-item>
-    <ion-grid class="fields" [hidden]="!outputBlock.columnsToAppend || !outputBlock.columnsToAppend.length">
-      <ion-item no-lines *ngFor="let column of outputBlock.columnsToAppend; let i = index; trackBy: trackColumnsIndex">
-        <ion-row no-padding>
-          <ion-col>
-            <input [(ngModel)]="outputBlock.columnsToAppend[i]" class="inline-input" type="text" [placeholder]="'Column ' + (i+1)" />
-          </ion-col>
-          <ion-col col-1>
-            <button ion-button small center clear icon-only color="output-block-component-google_sheets" class="btn-output-template-action" (click)="removeColumn(i)">
-              <ion-icon name="trash"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
+
+    <!-- Columns Section for Append Action -->
+    <div *ngIf="outputBlock.googleSheetsAction === 'append'">
+
+      <ion-item text-wrap no-lines>
+        <ion-label>
+          <h2>Columns</h2>
+        </ion-label>
       </ion-item>
-    </ion-grid>
-    <ion-item text-right padding-top no-lines>
-      <button ion-button small icon-start (click)="addColumn()" float-right color="output-block-component-google_sheets">
-        <ion-icon name="add"></ion-icon>
-        {{ 'addField' | translate }}
-      </button>
-    </ion-item>
+      <div class="component-editor-card ">
+        <ion-item text-wrap no-lines style="background: transparent;">
+          <p>
+            Configure which columns will be sent to your Google Sheet. You can use variable injection.
+          </p>
+        </ion-item>
+        <ion-item no-lines style="background: transparent; color: #595959">
+          <ion-label>Send all the available variables as columns</ion-label>
+          <ion-checkbox [(ngModel)]="outputBlock.googleSheetsSendAllVariables" (ionChange)="onSendAllVariablesChange()" style="margin-right: 9px; margin-top: 7px"></ion-checkbox>
+        </ion-item>
+
+        <!-- Column Values List -->
+        <ion-grid class="values-grid">
+          <ion-item no-lines *ngFor="let value of outputBlock.googleSheetsValues; let i = index" style="background: transparent; padding-left: 11px;">
+            <ion-row no-padding>
+              <ion-col col-11>
+                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" class="inline-input" type="text" placeholder="e.g., &#123;&#123; number &#125;&#125;" [disabled]="outputBlock.googleSheetsSendAllVariables" />
+              </ion-col>
+              <ion-col col-1>
+                <button ion-button small center clear icon-only color="danger" (click)="removeValue(i)" [disabled]="outputBlock.googleSheetsSendAllVariables || outputBlock.googleSheetsValues.length === 1">
+                  <ion-icon name="trash"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-grid>
+
+        <ion-item no-lines>
+          <div style="padding: 0; margin: 0">
+            <button ion-button small icon-start (click)="addValue()" [disabled]="outputBlock.googleSheetsSendAllVariables">
+              <ion-icon name="add"></ion-icon>
+              Add Column
+            </button>
+          </div>
+        </ion-item>
+      </div>
+
+
+
+      <ion-item text-wrap no-lines>
+        <ion-label>
+          <h3>Available Variables</h3>
+        </ion-label>
+      </ion-item>
+
+      <ion-item text-wrap no-lines>
+        <variables-list></variables-list>
+      </ion-item>
+
+
+
+      <!-- Info for Get/Delete Actions -->
+      <ion-item text-wrap *ngIf="outputBlock.googleSheetsAction === 'get' || outputBlock.googleSheetsAction === 'delete'">
+        <p>
+          The {{ outputBlock.googleSheetsAction === 'get' ? 'Get Row' : 'Delete Row' }} action will search for the row using the barcode value in the key column.
+        </p>
+      </ion-item>
+
+    </div>
+
   </div>
 </component-editor>
