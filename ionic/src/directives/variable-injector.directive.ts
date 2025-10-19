@@ -1,5 +1,6 @@
-import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 import { PopoverController } from 'ionic-angular';
+import { OutputTemplateState } from '../providers/output-template-state/output-template-state';
 
 @Directive({
   selector: '[variableInjector]'
@@ -33,7 +34,8 @@ export class VariableInjectorDirective {
   constructor(
     private el: ElementRef,
     private renderer: Renderer2,
-    private popoverCtrl: PopoverController
+    private popoverCtrl: PopoverController,
+    private outputTemplateState: OutputTemplateState
   ) { }
 
   ngAfterViewInit() {
@@ -105,6 +107,18 @@ export class VariableInjectorDirective {
   }
 
   private showVariablesPopover(event: Event) {
+    console.log('[VariableInjector] Opening variable popover...');
+
+    // Get available variables based on current template (uses stored editing block)
+    const availableVariables = this.outputTemplateState.getAvailableVariables();
+    const variablesToShow = this.variables.filter(v => availableVariables.indexOf(v) !== -1);
+
+    // If no variables available, show a message
+    if (variablesToShow.length === 0) {
+      console.warn('[VariableInjector] No variables available to show!');
+      return;
+    }
+
     // Create a simple popover component inline
     const popoverElement = this.renderer.createElement('div');
     this.renderer.setStyle(popoverElement, 'background', 'white');
@@ -119,7 +133,7 @@ export class VariableInjectorDirective {
 
     // Create list
     const list = this.renderer.createElement('div');
-    this.variables.forEach(variable => {
+    variablesToShow.forEach(variable => {
       const item = this.renderer.createElement('div');
       this.renderer.setStyle(item, 'padding', '8px 12px');
       this.renderer.setStyle(item, 'cursor', 'pointer');

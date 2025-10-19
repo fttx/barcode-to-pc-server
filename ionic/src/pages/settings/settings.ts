@@ -20,6 +20,7 @@ import { BtpAlertController } from '../../providers/btp-alert-controller/btp-ale
 import { TelemetryService } from '../../providers/telemetry/telemetry';
 import { data_collection, flow_control, keyboard_actions, functions } from './components';
 import { AiPromptPopoverPage } from './ai-prompt-popover/ai-prompt-popover';
+import { OutputTemplateState } from '../../providers/output-template-state/output-template-state';
 
 /**
  * Generated class for the SettingsPage page.
@@ -63,6 +64,7 @@ export class SettingsPage implements OnInit, OnDestroy {
     public modalCtrl: ModalController,
     private telemetryService: TelemetryService,
     private audioProvider: AudioProvider,
+    private outputTemplateState: OutputTemplateState,
   ) {
     this.dragulaService.destroy('dragula-group')
     this.dragulaService.createGroup('dragula-group', {
@@ -96,11 +98,21 @@ export class SettingsPage implements OnInit, OnDestroy {
           setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.value != 'number'), 1000)
         }
       }
+      // Update output template state when components are dragged
+      // Use setTimeout to ensure the model is updated before we read it
+      setTimeout(() => {
+        this.updateOutputTemplateState();
+      }, 0);
     });
 
     // Play whoosh sound when element is removed (dragged out)
     this.dragulaService.removeModel('dragula-group').subscribe(({ name, el, source, item, sourceModel }) => {
       this.audioProvider.playSound('whoosh.mp3');
+      // Update output template state when components are removed
+      // Use setTimeout to ensure the model is updated before we read it
+      setTimeout(() => {
+        this.updateOutputTemplateState();
+      }, 0);
     });
   }
 
@@ -137,10 +149,24 @@ export class SettingsPage implements OnInit, OnDestroy {
     this.navBar.backButtonClick = (e: UIEvent) => {
       this.goBack();
     }
+
+    // Initialize the output template state
+    this.updateOutputTemplateState();
   }
 
   onOutputProfileChange() {
     localStorage.setItem('lastSelectedOutputProfile', this.selectedOutputProfile.toString());
+    // Update the output template state for variable injector
+    this.updateOutputTemplateState();
+  }
+
+  /**
+   * Update the output template state whenever the template changes
+   */
+  private updateOutputTemplateState() {
+    if (this.settings && this.settings.outputProfiles && this.settings.outputProfiles[this.selectedOutputProfile]) {
+      this.outputTemplateState.setCurrentTemplate(this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks);
+    }
   }
 
   ionViewDidEnter() {

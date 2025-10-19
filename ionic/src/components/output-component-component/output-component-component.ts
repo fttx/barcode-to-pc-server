@@ -24,6 +24,7 @@ import { ComponentEditorImagePage } from '../../pages/component-editor/component
 import { ComponentEditorGeolocationPage } from '../../pages/component-editor/component-editor-geolocation/component-editor-geolocation';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as oc from '@primer/octicons';
+import { OutputTemplateState } from '../../providers/output-template-state/output-template-state';
 
 @Component({
   selector: 'output-component',
@@ -42,7 +43,8 @@ export class OutputComponentComponent {
     public modalCtrl: ModalController,
     public events: Events,
     public viewCtrl: ViewController,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
+    public outputTemplateState: OutputTemplateState
   ) {
   }
 
@@ -75,6 +77,10 @@ export class OutputComponentComponent {
       case 'image': editor = ComponentEditorImagePage; break;
       case 'geolocation': editor = ComponentEditorGeolocationPage; break;
     }
+
+    // Set the current editing block so variables can be filtered
+    this.outputTemplateState.setCurrentEditingBlock(this.outputBlock);
+
     let modal = this.modalCtrl
       .create(editor, { outputBlock: this.outputBlock }, { enableBackdropDismiss: false, showBackdrop: true });
     this.events.subscribe('settings:goBack', () => {
@@ -82,6 +88,8 @@ export class OutputComponentComponent {
     });
     modal.onDidDismiss(() => {
       this.events.unsubscribe('settings:goBack');
+      // Clear the current editing block when modal closes
+      this.outputTemplateState.clearCurrentEditingBlock();
     });
     modal.present();
   }

@@ -65,6 +65,7 @@ import { AudioProvider } from '../providers/audio/audio';
 import { AiPromptPopoverPage } from '../pages/settings/ai-prompt-popover/ai-prompt-popover';
 import { NotificationService } from '../providers/notification-service/notification-service';
 import { UpdateCheckerService } from '../providers/update-checker/update-checker';
+import { OutputTemplateState } from '../providers/output-template-state/output-template-state';
 
 @NgModule({
   declarations: [
@@ -194,6 +195,7 @@ import { UpdateCheckerService } from '../providers/update-checker/update-checker
     AudioProvider,
     NotificationService,
     UpdateCheckerService,
+    OutputTemplateState,
   ]
 })
 export class AppModule { }
