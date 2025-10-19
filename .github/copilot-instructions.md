@@ -180,3 +180,32 @@ All URLs centralized in `Config` class (shared between modules):
 - Documentation: `docs.barcodetopc.com`
 
 Never hardcode URLs - always use `Config.URL_*` constants.
+
+## Internationalization & Translations
+
+The UI supports multiple languages via JSON translation files in `ionic/src/assets/i18n/`.
+
+**Critical Translation Rules:**
+
+1. **Always translate to ALL languages** when adding or modifying UI text. Never translate just one language.
+
+2. **Supported languages:**
+
+   - `ar.json` - Arabic
+   - `de.json` - German
+   - `en.json` - English
+   - `es.json` - Spanish
+   - `it.json` - Italian
+   - `pt.json` - Portuguese
+   - `tr.json` - Turkish
+   - `tw.json` - Traditional Chinese
+
+3. **Maintain consistent key placement:** When adding new translation keys, insert them in the **exact same position** within each language file to keep files synchronized and easier to maintain.
+
+4. **Workflow for UI translations:**
+   - Identify the translation key needed (e.g., `"NEW_FEATURE_TITLE"`)
+   - Add the key-value pair in English first (`en.json`)
+   - Translate and add the same key in the exact same file position in all other 7 language files
+   - Verify the JSON syntax is valid in all files
+
+**Example:** If adding a new button label after line 42 in `en.json`, add the corresponding translations after line 42 in all other language files.
