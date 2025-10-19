@@ -10,6 +10,7 @@ export class VariableInjectorDirective {
   private wrapper: HTMLElement;
   private button: HTMLElement;
   private popover: any;
+  private observer: MutationObserver;
 
   // List of all available variables
   private variables = [
@@ -42,6 +43,7 @@ export class VariableInjectorDirective {
 
   ngAfterViewInit() {
     this.wrapInputWithButton();
+    this.observeInputDisabledState();
   }
 
   private wrapInputWithButton() {
@@ -106,6 +108,47 @@ export class VariableInjectorDirective {
       this.renderer.setStyle(this.button, 'transform', 'none');
     }
     this.renderer.setStyle(input, 'padding-right', '40px');
+
+    // Initialize button state based on input disabled state
+    this.updateButtonState();
+  }
+
+  private observeInputDisabledState() {
+    const input = this.el.nativeElement;
+
+    // Create a MutationObserver to watch for disabled attribute changes
+    this.observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'disabled') {
+          this.updateButtonState();
+        }
+      });
+    });
+
+    // Start observing
+    this.observer.observe(input, {
+      attributes: true,
+      attributeFilter: ['disabled']
+    });
+  }
+
+  private updateButtonState() {
+    const input = this.el.nativeElement;
+    const isDisabled = input.disabled;
+
+    if (isDisabled) {
+      // Disable button
+      this.renderer.setAttribute(this.button, 'disabled', 'true');
+      this.renderer.setStyle(this.button, 'opacity', '0.5');
+      this.renderer.setStyle(this.button, 'cursor', 'not-allowed');
+      this.renderer.setStyle(this.button, 'pointer-events', 'none');
+    } else {
+      // Enable button
+      this.renderer.removeAttribute(this.button, 'disabled');
+      this.renderer.setStyle(this.button, 'opacity', '1');
+      this.renderer.setStyle(this.button, 'cursor', 'pointer');
+      this.renderer.setStyle(this.button, 'pointer-events', 'auto');
+    }
   }
 
   private showVariablesPopover(event: Event) {
@@ -281,6 +324,9 @@ export class VariableInjectorDirective {
   ngOnDestroy() {
     if (this.popover) {
       this.closePopover(this.popover);
+    }
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 }
