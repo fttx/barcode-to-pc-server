@@ -77,7 +77,7 @@ export class ComponentEditorComponent implements OnInit {
       case 'endif': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/endif/'); break;
       case 'function': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/javascript_function/'); break;
       case 'select_option': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/select_option/'); break;
-      case 'http': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/http/'); break;
+      case 'http': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/http_request/'); break;
       case 'run': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/run/'); break;
       case 'csv_lookup': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/csv_lookup/'); break;
       case 'csv_update': this.electronProvider.shell.openExternal('https://docs.barcodetopc.com/output-template/components/csv_update/'); break;
