@@ -230,6 +230,8 @@
   "select": "選擇",
   "selectFilePathPlaceholder": "選擇文件路徑",
   "appendToCSVVariablesDescription": "您可以在文件名或路徑中使用以下變量（小寫）",
+  "dynamicFileNamesInfo": "您可以通過插入變量使用動態文件名將輸出重定向到不同的文件。",
+  "learnMore": "了解更多",
   "note1Header": "注意 1",
   "note1": "某些變量僅在您將對應的組件放入輸出範本時可用。",
   "note2Header": "注意 2",

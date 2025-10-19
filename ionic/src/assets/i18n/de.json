@@ -230,6 +230,8 @@
   "select": "Auswählen",
   "selectFilePathPlaceholder": "Dateipfad auswählen",
   "appendToCSVVariablesDescription": "Sie können die folgenden Variablen in Ihrem Dateinamen oder Pfad verwenden (Kleinschreibung)",
+  "dynamicFileNamesInfo": "Sie können die Ausgabe mithilfe dynamischer Dateinamen durch Einfügen von Variablen in verschiedene Dateien umleiten.",
+  "learnMore": "Mehr erfahren",
   "note1Header": "Hinweis 1",
   "note1": "Einige Variablen sind möglicherweise nur verfügbar, wenn Sie die entsprechende Komponente in die Ausgabevorlage einfügen.",
   "note2Header": "Hinweis 2",

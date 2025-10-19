@@ -230,6 +230,8 @@
   "select": "Seleccionar",
   "selectFilePathPlaceholder": "Seleccione la ruta del archivo",
   "appendToCSVVariablesDescription": "Puede utilizar las siguientes variables en su nombre de archivo o ruta (en minúsculas)",
+  "dynamicFileNamesInfo": "Puede redirigir la salida a diferentes archivos utilizando nombres de archivo dinámicos mediante la inyección de variables.",
+  "learnMore": "Aprende más",
   "note1Header": "Nota 1",
   "note1": "Algunas variables pueden estar disponibles solo si coloca el componente correspondiente en la plantilla de salida.",
   "note2Header": "Nota 2",

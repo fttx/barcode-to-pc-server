@@ -3,48 +3,54 @@
     <p [innerHtml]="'geoLocationDescription' | translate"></p>
   </ion-item>
 
-  <ion-item no-lines>
-    <ion-label no-lines>{{ 'geoLocationSavedLocations' | translate }}</ion-label>
+  <ion-item text-wrap no-lines>
+    <ion-label>
+      <h2>{{ 'geoLocationSavedLocations' | translate }}</h2>
+    </ion-label>
   </ion-item>
-  <ion-item no-lines text-wrap>
-    <p>{{ 'geoLocationAssignNames' | translate }}</p>
-    <p>
-      <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.loom.com/share/07153366b44c40d9b778396671cada98?sid=c9cd4e33-6653-4541-a42b-566889806cb6')">
-        {{ 'geoLocationCoordinatesTutorial' | translate }}
-      </a>
-    </p>
-  </ion-item>
-  <ion-grid class="fields" [hidden]="!savedGeoLocations || !savedGeoLocations.length">
-    <ion-item no-lines *ngFor="let field of savedGeoLocations; let i = index;">
-      <ion-row no-padding>
-        <ion-col>
-          <input [(ngModel)]="savedGeoLocations[i].name" class="inline-input" type="text" placeholder="Location name" />
-        </ion-col>
-        <ion-col col-3>
-          <input (keyup)="onLatitudeChange(i)" (change)="onLatitudeChange(i)" [(ngModel)]="savedGeoLocations[i].latitude" class="inline-input" type="text" placeholder="0.000000" />
-        </ion-col>
-        <ion-col col-3>
-          <input [(ngModel)]="savedGeoLocations[i].longitude" class="inline-input" type="text" placeholder="0.000000" />
-        </ion-col>
-        <ion-col col-1>
-          <button ion-button small center clear icon-only color="output-block-component-geolocation" class="btn-output-template-action" (click)="deleteSavedLocation(i)">
-            <ion-icon name="trash"></ion-icon>
-          </button>
-        </ion-col>
-      </ion-row>
+  <div class="component-editor-card">
+    <ion-item text-wrap no-lines style="background: transparent;">
+      <p>{{ 'geoLocationAssignNames' | translate }}</p>
+      <p>
+        <a class="clickable" (click)="electronProvider.shell.openExternal('https://www.loom.com/share/07153366b44c40d9b778396671cada98?sid=c9cd4e33-6653-4541-a42b-566889806cb6')">
+          {{ 'geoLocationCoordinatesTutorial' | translate }}
+        </a>
+      </p>
     </ion-item>
-  </ion-grid>
 
-  <p [hidden]="!(!savedGeoLocations || !savedGeoLocations.length)" text-center>
-    {{ 'geoLocationNotfound' | translate }}
-  </p>
+    <!-- Saved Locations List -->
+    <ion-grid class="values-grid">
+      <ion-item no-lines *ngFor="let field of savedGeoLocations; let i = index;" style="background: transparent; padding-left: 11px;">
+        <ion-row no-padding>
+          <ion-col>
+            <input [(ngModel)]="savedGeoLocations[i].name" class="inline-input" type="text" placeholder="Location name" />
+          </ion-col>
+          <ion-col col-3>
+            <input (keyup)="onLatitudeChange(i)" (change)="onLatitudeChange(i)" [(ngModel)]="savedGeoLocations[i].latitude" class="inline-input" type="text" placeholder="0.000000" />
+          </ion-col>
+          <ion-col col-3>
+            <input [(ngModel)]="savedGeoLocations[i].longitude" class="inline-input" type="text" placeholder="0.000000" />
+          </ion-col>
+          <ion-col col-1>
+            <button ion-button small center clear icon-only color="danger" (click)="deleteSavedLocation(i)">
+              <ion-icon name="trash"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-grid>
 
-  <ion-item text-center padding-top no-lines>
-    <button ion-button small icon-start (click)="addSavedLocation()"  color="output-block-component-geolocation">
-      <ion-icon name="add"></ion-icon>
-      {{ 'geoLocationAddLocation' | translate }}
-    </button>
-  </ion-item>
+    <ion-item no-lines>
+      <div style="padding: 0; margin: 0">
+        <button ion-button small icon-start (click)="addSavedLocation()" color="output-block-component-geolocation">
+          <ion-icon name="add"></ion-icon>
+          {{ 'geoLocationAddLocation' | translate }}
+        </button>
+      </div>
+    </ion-item>
+  </div>
+
+  <ion-item></ion-item>
 
   <ion-item text-wrap [hidden]="!savedGeoLocations || !savedGeoLocations.length">
     <label for="_maxDistanceFromSavedLocation">{{ 'geoLocationMaxDistanceFromSavedLocation' | translate }}</label>

@@ -234,6 +234,8 @@
   "select": "Seleziona",
   "selectFilePathPlaceholder": "Seleziona il percorso del file",
   "appendToCSVVariablesDescription": "Puoi utilizzare le seguenti variabli nel nome del file o nel percorso  (tutto minuscolo)",
+  "dynamicFileNamesInfo": "Puoi reindirizzare l'output su file diversi utilizzando nomi di file dinamici tramite l'inserimento di variabili.",
+  "learnMore": "Per saperne di più",
   "note1Header": "Nota 1",
   "note1": "Per alcune variabili è necessario inserire il corrispondente componente di output nel campo Template di output (sopra)",
   "note2Header": "Nota 2",

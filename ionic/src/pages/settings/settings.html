@@ -221,13 +221,22 @@
           <ion-grid>
             <ion-row>
               <ion-col>
-                <input [(ngModel)]="settings && settings.xlsxPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" />
+                <input [(ngModel)]="settings && settings.xlsxPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" variableInjector />
               </ion-col>
               <ion-col>
                 <button ion-button small color="light" (click)="onSelectExcelPathClick()">{{ 'select' | translate }}</button>
               </ion-col>
             </ion-row>
           </ion-grid>
+
+          <info-box title="Info" style="    line-height: 26px;">
+            {{ 'dynamicFileNamesInfo' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/excel/write-to-excel-files#dynamic-file-names')">{{ 'learnMore' | translate }}</a>.<br>
+            {{ 'note1Header' | translate }}: {{ 'note1' | translate }}<br>
+            {{ 'note2Header' | translate }}: <span [innerHtml]="'note2' | translate"></span><br>
+            {{ 'example' | translate }}: <code ngNonBindable style="display: inline-block;width: calc(100% - 150px);">
+              <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.xlsx" disabled />
+            </code><br>
+          </info-box>
         </ion-item>
 
         <ion-item no-lines>
@@ -293,7 +302,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" />
+              <input [(ngModel)]="settings && settings.csvPath" class="output-blocks-container csv-path" type="text" [placeholder]="'selectFilePathPlaceholder' | translate" variableInjector />
             </ion-col>
             <ion-col>
               <button ion-button small color="light" (click)="onSelectCSVPathClick()">{{ 'select' | translate }}</button>
@@ -301,17 +310,11 @@
           </ion-row>
         </ion-grid>
 
-        <info-box title="Info">
-          <variables-list [description]="'appendToCSVVariablesDescription' | translate"></variables-list>
-          <br>
-          {{ 'note1Header' | translate }}:
-          <p style="margin-left: 13px">
-            {{ 'note1' | translate }}
-          </p><br>
-          {{ 'note2Header' | translate }}:
-          <p style="margin-left: 13px" [innerHtml]="'note2' | translate"></p><br>
-          {{ 'example' | translate }}:<br>
-          <code ngNonBindable>
+        <info-box title="Info" style="    line-height: 26px;">
+          {{ 'dynamicFileNamesInfo' | translate }} <a class="clickable" (click)="electronProvider.shell.openExternal('https://docs.barcodetopc.com/csv-files/method1/#dynamic-file-names')">{{ 'learnMore' | translate }}</a>.<br>
+          {{ 'note1Header' | translate }}: {{ 'note1' | translate }}<br>
+          {{ 'note2Header' | translate }}: <span [innerHtml]="'note2' | translate"></span><br>
+          {{ 'example' | translate }}: <code ngNonBindable style="display: inline-block;width: calc(100% - 150px);">
             <input type="text" value="C:&#92;Users&#92;admin&#92;Desktop&#92;&#123;&#123; date &#125;&#125;.csv" disabled />
           </code><br>
         </info-box>

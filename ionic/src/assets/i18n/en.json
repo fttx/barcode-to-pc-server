@@ -230,6 +230,8 @@
   "select": "Select",
   "selectFilePathPlaceholder": "Select the file path",
   "appendToCSVVariablesDescription": "You can use the following variables in your file name or path (lowercase)",
+  "dynamicFileNamesInfo": "You can redirect the output to different files using dynamic file names by injecting variables.",
+  "learnMore": "Learn more",
   "note1Header": "Note 1",
   "note1": "Some variables may be available only if you put the corresponding Component in the Output template.",
   "note2Header": "Note 2",

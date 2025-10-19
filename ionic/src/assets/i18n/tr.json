@@ -230,6 +230,8 @@
   "select": "Seç",
   "selectFilePathPlaceholder": "Dosya yolunu seçin",
   "appendToCSVVariablesDescription": "Dosya adınızda veya yolunuzda şu değişkenleri kullanabilirsiniz (küçük harf)",
+  "dynamicFileNamesInfo": "Değişkenler ekleyerek dinamik dosya adları kullanarak çıktıyı farklı dosyalara yönlendirebilirsiniz.",
+  "learnMore": "Daha fazla bilgi edinin",
   "note1Header": "Not 1",
   "note1": "Bazı değişkenler yalnızca ilgili Bileşeni Çıkış şablonuna koyarsanız kullanılabilir olabilir.",
   "note2Header": "Not 2",

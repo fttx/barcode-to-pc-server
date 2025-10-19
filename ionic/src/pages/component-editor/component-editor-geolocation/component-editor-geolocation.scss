@@ -3,11 +3,15 @@ page-component-editor-geolocation {
     padding: 0 10px 0 0 !important;
 
     input {
-      margin-top: 1px !important
+      margin-top: 1px !important;
     }
   }
 
-  .fields ion-label {
+  .values-grid ion-label {
     margin: 0;
+  }
+
+  .inline-input {
+    width: 100%;
   }
 }

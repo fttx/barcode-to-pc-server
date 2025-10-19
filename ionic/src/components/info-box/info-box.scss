@@ -1,44 +1,44 @@
 info-box {
+  display: block;
+
+  div {
+    background-color: #e2f1f8;
+    border: 1px solid #bdd6e0;
+    border-radius: 5px;
+    padding: 2rem;
+    width: none;
+    color: #31383b !important;
+    word-wrap: break-word;
+    white-space: normal;
+  }
+
+  h5 {
+    text-transform: uppercase;
+    font-weight: 700 !important;
+    padding-bottom: 1rem;
+  }
+
+  h5 > span {
+    position: relative;
+    top: -1px;
+    left: 2px;
+  }
+
+  code {
+    margin: 0;
+    min-height: 1.6rem;
+    font-size: 1.6rem;
+    line-height: 1.6rem;
+  }
+
+  code input {
+    background-color: transparent;
+    border: none;
+    margin-left: 12px;
+    color: #31383b;
     display: block;
-
-    div {
-        background-color: #e2f1f8;
-        border: 1px solid #bdd6e0;
-        border-radius: 5px;
-        padding: 2rem;
-        width: none;
-        color: #31383b !important;
-        word-wrap: break-word;
-        white-space: normal;
-    }
-
-    h5 {
-        text-transform: uppercase;
-        font-weight: 700 !important;
-        padding-bottom: 2rem;
-    }
-
-    h5 > span {
-        position: relative;
-        top: -1px;
-        left: 2px;
-    }
-
-    code {
-        margin: 0;
-        min-height: 1.6rem;
-        font-size: 1.6rem;
-        line-height: 1.6rem;
-    }
-
-    code input {
-        background-color: transparent;
-        border: none;
-        margin-left: 12px;
-        color: #31383b;
-        display: block;
-        width: 100%;
-        margin-top: .5rem;
-        cursor: text !important;
-    }
+    width: 100%;
+    margin-top: 0.5rem;
+    cursor: text !important;
+  }
 }
