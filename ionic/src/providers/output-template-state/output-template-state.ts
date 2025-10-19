@@ -20,7 +20,6 @@ export class OutputTemplateState {
    * @param block The output block being edited
    */
   setCurrentEditingBlock(block: any) {
-    console.log('[OutputTemplateState] Setting current editing block:', block);
     this.currentEditingBlock = block;
   }
 
@@ -28,7 +27,6 @@ export class OutputTemplateState {
    * Clear the current editing block (when modal closes)
    */
   clearCurrentEditingBlock() {
-    console.log('[OutputTemplateState] Clearing current editing block');
     this.currentEditingBlock = null;
   }
 
@@ -44,7 +42,6 @@ export class OutputTemplateState {
    * @param outputBlocks Array of output blocks in the current template
    */
   setCurrentTemplate(outputBlocks: any[]) {
-    console.log('[OutputTemplateState] Setting current template with', outputBlocks ? outputBlocks.length : 0, 'blocks');
     this.currentTemplateSubject.next(outputBlocks || []);
   }
 
@@ -67,10 +64,6 @@ export class OutputTemplateState {
     // Use the stored editing block if no ID provided
     const blockToFind = currentBlockId !== undefined ? currentBlockId : this.currentEditingBlock;
 
-    // console.log('[OutputTemplateState] Getting available variables...');
-    // console.log('[OutputTemplateState] Block to find:', blockToFind);
-    // console.log('[OutputTemplateState] Total output blocks:', outputBlocks.length);
-    // console.log('[OutputTemplateState] Output blocks:', outputBlocks);
 
     // Always available system variables
     availableVars.add('timestamp');
@@ -84,12 +77,10 @@ export class OutputTemplateState {
         // Match by reference (object identity) first, then by ID or index
         return block === blockToFind || block.id === blockToFind || index.toString() === blockToFind;
       });
-      console.log('[OutputTemplateState] Current block index:', currentIndex);
       if (currentIndex !== -1) {
         stopIndex = currentIndex;
       }
     }
-    console.log('[OutputTemplateState] Stop index (analyzing blocks 0 to ' + (stopIndex - 1) + '):', stopIndex);
 
     // Check if there are multiple barcode components (enables 'barcodes' variable)
     let barcodeCount = 0;
@@ -100,7 +91,6 @@ export class OutputTemplateState {
       if (!block || !block.name) continue;
 
       const blockName = block.name.toLowerCase();
-      console.log('[OutputTemplateState] Block ' + i + ':', blockName, block);
 
       // Map component names to variable names
       // Using name instead of type for more reliable detection
@@ -163,7 +153,6 @@ export class OutputTemplateState {
     }
 
     const result = Array.from(availableVars).sort();
-    console.log('[OutputTemplateState] Available variables:', result);
     return result;
   }
 }
