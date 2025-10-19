@@ -171,7 +171,6 @@ export class OutputBlockModel {
     googleSheetsAction?: 'append' | 'update' | 'delete' | 'get';
     googleSheetKeyColumn?: string;
     googleSheetsValues?: { column: string, value: string }[];
-    googleSheetsSendAllVariables?: boolean;
 
     /**
      * Parameters for the ALERT component

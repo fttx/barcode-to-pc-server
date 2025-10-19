@@ -13,7 +13,6 @@ export class ComponentEditorGSheetUpdatePage {
   public curlyOpen = '{{';
   public curlyClose = '}}';
   public outputBlock: OutputBlockModel;
-  private previousValues: { column: string, value: string }[] = [];
   public validationAttempted = false;
 
   constructor(
@@ -34,18 +33,22 @@ export class ComponentEditorGSheetUpdatePage {
     if (!this.outputBlock.googleSheetsAction) {
       this.outputBlock.googleSheetsAction = 'append';
     }
-    // Initialize googleSheetsSendAllVariables if not present
-    if (this.outputBlock.googleSheetsSendAllVariables === undefined) {
-      this.outputBlock.googleSheetsSendAllVariables = false;
-    }
     // Initialize googleSheetKeyColumn if not present (default to 'barcode')
     if (!this.outputBlock.googleSheetKeyColumn) {
       this.outputBlock.googleSheetKeyColumn = 'barcode';
     }
 
-    // Ensure at least one column is present for append action
-    if (this.outputBlock.googleSheetsAction === 'append' && this.outputBlock.googleSheetsValues.length === 0) {
-      this.outputBlock.googleSheetsValues = [{ column: '', value: '' }];
+    // Ensure the first column is always barcode with {{ barcode }} value
+    if (this.outputBlock.googleSheetsValues.length === 0) {
+      this.outputBlock.googleSheetsValues = [{ column: 'barcode', value: '{{ barcode }}' }];
+    } else {
+      // Update existing first item to ensure it has the correct values
+      this.outputBlock.googleSheetsValues[0] = { column: 'barcode', value: '{{ barcode }}' };
+    }
+
+    // Ensure at least one additional column is present for append action
+    if (this.outputBlock.googleSheetsAction === 'append' && this.outputBlock.googleSheetsValues.length === 1) {
+      this.outputBlock.googleSheetsValues = [...this.outputBlock.googleSheetsValues, { column: '', value: '' }];
     }
   }
 
@@ -71,15 +74,21 @@ export class ComponentEditorGSheetUpdatePage {
       return false;
     }
 
-    // If "send all variables" is checked, just verify that value is set (column name can be empty/*)
-    if (this.outputBlock.googleSheetsSendAllVariables) {
-      return this.outputBlock.googleSheetsValues.some(item =>
-        item.value && item.value.trim() !== ''
-      );
+    // For 'get' and 'delete' actions, only the barcode column is required
+    if (this.outputBlock.googleSheetsAction === 'get' || this.outputBlock.googleSheetsAction === 'delete') {
+      // Only need the first column (barcode), which is always valid
+      return true;
     }
 
-    // Check that at least one column has both column name and value filled
-    const hasValidColumn = this.outputBlock.googleSheetsValues.some(item =>
+    // For 'append' and 'update' actions, need at least one additional column
+    // If only barcode column exists, add an empty column and let validation fail
+    if (this.outputBlock.googleSheetsValues.length === 1) {
+      this.outputBlock.googleSheetsValues = [...this.outputBlock.googleSheetsValues, { column: '', value: '' }];
+    }
+
+    // Check that at least one column (beyond the first mandatory barcode column) has both column name and value filled
+    // Skip index 0 since it's always valid (barcode column)
+    const hasValidColumn = this.outputBlock.googleSheetsValues.slice(1).some(item =>
       item.column && item.column.trim() !== '' &&
       item.value && item.value.trim() !== ''
     );
@@ -92,16 +101,22 @@ export class ComponentEditorGSheetUpdatePage {
   }
 
   isColumnNameInvalid(index: number): boolean {
+    // First column (barcode) is always valid, never show as invalid
+    if (index === 0) return false;
+
     if (!this.validationAttempted) return false;
+
+    // For 'get' and 'delete' actions, additional columns are not required
+    if (this.outputBlock.googleSheetsAction === 'get' || this.outputBlock.googleSheetsAction === 'delete') {
+      return false;
+    }
+
     const item = this.outputBlock.googleSheetsValues[index];
     if (!item) return false;
 
-    // If "send all variables" is checked, the column name can be empty (it will be "*")
-    if (this.outputBlock.googleSheetsSendAllVariables) return false;
-
-    // Check if this is the only column or if at least one other column is valid
+    // Check if there's at least one other column (excluding first and current) that is valid
     const hasOtherValidColumn = this.outputBlock.googleSheetsValues.some((otherItem, i) =>
-      i !== index &&
+      i !== index && i !== 0 && // Skip the first column and current column
       otherItem.column && otherItem.column.trim() !== '' &&
       otherItem.value && otherItem.value.trim() !== ''
     );
@@ -109,23 +124,27 @@ export class ComponentEditorGSheetUpdatePage {
     // If there's another valid column, this field is optional
     if (hasOtherValidColumn) return false;
 
-    // Otherwise, this column must be filled
+    // Otherwise, this column must be filled (for append/update actions)
     return !item.column || item.column.trim() === '';
   }
 
   isColumnValueInvalid(index: number): boolean {
+    // First column (barcode) is always valid, never show as invalid
+    if (index === 0) return false;
+
     if (!this.validationAttempted) return false;
+
+    // For 'get' and 'delete' actions, additional columns are not required
+    if (this.outputBlock.googleSheetsAction === 'get' || this.outputBlock.googleSheetsAction === 'delete') {
+      return false;
+    }
+
     const item = this.outputBlock.googleSheetsValues[index];
     if (!item) return false;
 
-    // If "send all variables" is checked, value should be set to "{{ $ }}"
-    if (this.outputBlock.googleSheetsSendAllVariables) {
-      return !item.value || item.value.trim() === '';
-    }
-
-    // Check if this is the only column or if at least one other column is valid
+    // Check if there's at least one other column (excluding first and current) that is valid
     const hasOtherValidColumn = this.outputBlock.googleSheetsValues.some((otherItem, i) =>
-      i !== index &&
+      i !== index && i !== 0 && // Skip the first column and current column
       otherItem.column && otherItem.column.trim() !== '' &&
       otherItem.value && otherItem.value.trim() !== ''
     );
@@ -133,7 +152,7 @@ export class ComponentEditorGSheetUpdatePage {
     // If there's another valid column, this field is optional
     if (hasOtherValidColumn) return false;
 
-    // Otherwise, this column must be filled
+    // Otherwise, this column must be filled (for append/update actions)
     return !item.value || item.value.trim() === '';
   }
 
@@ -146,27 +165,11 @@ export class ComponentEditorGSheetUpdatePage {
   }
 
   removeValue(index: number) {
+    // Never remove the first item (barcode column)
+    if (index === 0) return;
+
     if (this.outputBlock.googleSheetsValues) {
       this.outputBlock.googleSheetsValues = this.outputBlock.googleSheetsValues.filter((x, i) => i !== index);
-    }
-  }
-
-  onSendAllVariablesChange() {
-    if (this.outputBlock.googleSheetsSendAllVariables) {
-      // Save current values before replacing
-      this.previousValues = [...this.outputBlock.googleSheetsValues];
-
-      // Set single value to {{ $ }} when sending all variables
-      this.outputBlock.googleSheetsValues = [{ column: '*', value: '{{ $ }}' }];
-    } else {
-
-      // Restore previous values when unchecking
-      if (this.previousValues.length > 0) {
-        this.outputBlock.googleSheetsValues = [...this.previousValues];
-      } else {
-        // If no previous values, initialize with one empty column
-        this.outputBlock.googleSheetsValues = [{ column: '', value: '' }];
-      }
     }
   }
 }
