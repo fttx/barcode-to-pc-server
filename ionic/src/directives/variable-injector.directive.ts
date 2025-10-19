@@ -1,5 +1,6 @@
 import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
 import { PopoverController } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 import { OutputTemplateState } from '../providers/output-template-state/output-template-state';
 
 @Directive({
@@ -35,7 +36,8 @@ export class VariableInjectorDirective {
     private el: ElementRef,
     private renderer: Renderer2,
     private popoverCtrl: PopoverController,
-    private outputTemplateState: OutputTemplateState
+    private outputTemplateState: OutputTemplateState,
+    private translateService: TranslateService
   ) { }
 
   ngAfterViewInit() {
@@ -70,7 +72,7 @@ export class VariableInjectorDirective {
     this.renderer.setStyle(this.button, 'z-index', '10');
     this.renderer.setStyle(this.button, 'line-height', '1');
     this.renderer.setAttribute(this.button, 'type', 'button');
-    this.renderer.setAttribute(this.button, 'title', 'Insert variable');
+    this.renderer.setAttribute(this.button, 'title', this.translateService.instant('insertVariable'));
 
     // Add hover effect
     this.renderer.listen(this.button, 'mouseenter', () => {
@@ -151,7 +153,7 @@ export class VariableInjectorDirective {
       this.renderer.setStyle(componentHeader, 'border-bottom', '1px solid #f0f0f0');
       this.renderer.setStyle(componentHeader, 'text-transform', 'uppercase');
       this.renderer.setStyle(componentHeader, 'letter-spacing', '0.5px');
-      componentHeader.textContent = 'Component variables';
+      componentHeader.textContent = this.translateService.instant('componentVariables');
       this.renderer.appendChild(list, componentHeader);
 
       componentVariables.forEach(variable => {
@@ -173,7 +175,7 @@ export class VariableInjectorDirective {
       this.renderer.setStyle(header, 'border-bottom', '1px solid #f0f0f0');
       this.renderer.setStyle(header, 'text-transform', 'uppercase');
       this.renderer.setStyle(header, 'letter-spacing', '0.5px');
-      header.textContent = 'System variables';
+      header.textContent = this.translateService.instant('systemVariables');
       this.renderer.appendChild(list, header);
 
       systemVarsToShow.forEach(variable => {
