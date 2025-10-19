@@ -2,32 +2,32 @@
   <div [hidden]="outputBlock.type != 'google_sheets'">
 
     <ion-item text-wrap>
-      <label for="_googleSheetsUrl">Google Sheets URL</label>
+      <label for="_googleSheetsUrl">{{ 'googleSheetsUrl' | translate }}</label>
       <input id="_googleSheetsUrl" [(ngModel)]="outputBlock.googleSheetsUrl" class="inline-input" type="url" placeholder="Example: https://docs.google.com/spreadsheets/d/4281a3386e77d42a9089da5769fb7b22" />
     </ion-item>
 
     <ion-item text-wrap>
-      <label for="_googleSheetsAction">Action</label>
+      <label for="_googleSheetsAction">{{ 'googleSheetsAction' | translate }}</label>
       <select id="_googleSheetsAction" [(ngModel)]="outputBlock.googleSheetsAction" class="component-editor-select">
-        <option value="append">Append or Update Row</option>
-        <option value="get">Get Row</option>
-        <option value="delete">Delete Row</option>
+        <option value="append">{{ 'googleSheetsActionAppend' | translate }}</option>
+        <option value="get">{{ 'googleSheetsActionGet' | translate }}</option>
+        <option value="delete">{{ 'googleSheetsActionDelete' | translate }}</option>
       </select>
       <br>
       <p>
-        Choose the action to perform on the Google Sheet.
+        {{ 'googleSheetsActionDescription' | translate }}
       </p>
     </ion-item>
 
     <ion-item text-wrap>
-      <label for="_keyColumn">Key column</label>
+      <label for="_keyColumn">{{ 'googleSheetsKeyColumn' | translate }}</label>
       <div style="position: relative; width: 100%;">
         <ion-icon name="key" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999;"></ion-icon>
         <input id="_keyColumn" value="barcode" class="inline-input" type="text" disabled style="padding-left: 35px;" />
       </div>
       <br>
       <p>
-        The column that will be used to search for rows. This cannot be changed.
+        {{ 'googleSheetsKeyColumnDescription' | translate }}
       </p>
     </ion-item>
 
@@ -36,17 +36,17 @@
 
       <ion-item text-wrap no-lines>
         <ion-label>
-          <h2>Columns</h2>
+          <h2>{{ 'googleSheetsColumns' | translate }}</h2>
         </ion-label>
       </ion-item>
       <div class="component-editor-card ">
         <ion-item text-wrap no-lines style="background: transparent;">
           <p>
-            Configure what to write in each column. You can use variable injection.
+            {{ 'googleSheetsColumnsDescription' | translate }}
           </p>
         </ion-item>
         <ion-item no-lines style="background: transparent; color: #595959">
-          <ion-label>Send all the available variables as columns</ion-label>
+          <ion-label>{{ 'googleSheetsSendAllVariables' | translate }}</ion-label>
           <ion-checkbox [(ngModel)]="outputBlock.googleSheetsSendAllVariables" (ionChange)="onSendAllVariablesChange()" style="margin-right: 9px; margin-top: 7px"></ion-checkbox>
         </ion-item>
 
@@ -55,7 +55,7 @@
           <ion-item no-lines *ngFor="let value of outputBlock.googleSheetsValues; let i = index" style="background: transparent; padding-left: 11px;">
             <ion-row no-padding>
               <ion-col col-11>
-                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" class="inline-input" type="text" placeholder="Example: {{ curlyOpen }} number {{ curlyClose }}" [disabled]="outputBlock.googleSheetsSendAllVariables" />
+                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" class="inline-input" type="text" placeholder="Example: {{ curlyOpen }} number {{ curlyClose }}" [disabled]="outputBlock.googleSheetsSendAllVariables" variableInjector />
               </ion-col>
               <ion-col col-1>
                 <button ion-button small center clear icon-only color="danger" (click)="removeValue(i)" [disabled]="outputBlock.googleSheetsSendAllVariables || outputBlock.googleSheetsValues.length === 1">
@@ -70,7 +70,7 @@
           <div style="padding: 0; margin: 0">
             <button ion-button small icon-start (click)="addValue()" [disabled]="outputBlock.googleSheetsSendAllVariables">
               <ion-icon name="add"></ion-icon>
-              Add Column
+              {{ 'googleSheetsAddColumn' | translate }}
             </button>
           </div>
         </ion-item>
@@ -79,9 +79,14 @@
       <ion-item></ion-item>
 
       <!-- Info for Get/Delete Actions -->
-      <ion-item text-wrap *ngIf="outputBlock.googleSheetsAction === 'get' || outputBlock.googleSheetsAction === 'delete'">
+      <ion-item text-wrap *ngIf="outputBlock.googleSheetsAction === 'get'">
         <p>
-          The {{ outputBlock.googleSheetsAction === 'get' ? 'Get Row' : 'Delete Row' }} action will search for the row using the barcode value in the key column.
+          {{ 'googleSheetsGetRowDescription' | translate }}
+        </p>
+      </ion-item>
+      <ion-item text-wrap *ngIf="outputBlock.googleSheetsAction === 'delete'">
+        <p>
+          {{ 'googleSheetsDeleteRowDescription' | translate }}
         </p>
       </ion-item>
 
