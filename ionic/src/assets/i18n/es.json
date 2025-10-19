@@ -542,7 +542,7 @@
   "fields": "Parámetros",
   "componentEditorValidationErrorTitle": "Error",
   "componentEditorValidationErrorMessage": "Olvidaste completar uno o más campos obligatorios. Revisa el componente nuevamente.",
-  "componentEditorValidationErrorButton": "Guardar",
+  "componentEditorValidationErrorButton": "Ok",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "Guardar"
 }

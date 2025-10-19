@@ -542,7 +542,7 @@
   "fields": "Fields",
   "componentEditorValidationErrorTitle": "Error",
   "componentEditorValidationErrorMessage": "You forgot to fill one or more required fields. Check the component again.",
-  "componentEditorValidationErrorButton": "Save",
+  "componentEditorValidationErrorButton": "Ok",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "Save"
 }

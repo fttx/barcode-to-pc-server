@@ -542,7 +542,7 @@
   "fields": "Campos",
   "componentEditorValidationErrorTitle": "Erro",
   "componentEditorValidationErrorMessage": "Você esqueceu de preencher um ou mais campos obrigatórios. Verifique o componente novamente.",
-  "componentEditorValidationErrorButton": "Salvar",
+  "componentEditorValidationErrorButton": "Ok",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "Salvar"
 }

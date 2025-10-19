@@ -542,7 +542,7 @@
   "fields": "Alanlar",
   "componentEditorValidationErrorTitle": "Hata",
   "componentEditorValidationErrorMessage": "Bir veya daha fazla gerekli alanı doldurmayı unuttunuz. Bileşeni tekrar kontrol edin.",
-  "componentEditorValidationErrorButton": "Kaydet",
+  "componentEditorValidationErrorButton": "Tamam",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "Kaydet"
 }

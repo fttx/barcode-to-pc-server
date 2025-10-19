@@ -544,7 +544,7 @@
   "fields": "Parametri",
   "componentEditorValidationErrorTitle": "Errore",
   "componentEditorValidationErrorMessage": "Uno o più campi obbligatori non sono stati validati. Ricontrolla il componente.",
-  "componentEditorValidationErrorButton": "Salva",
+  "componentEditorValidationErrorButton": "Ok",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "Salva"
 }

@@ -3,7 +3,7 @@
 
     <ion-item text-wrap>
       <label for="_googleSheetsUrl">{{ 'googleSheetsUrl' | translate }}</label>
-      <input id="_googleSheetsUrl" [(ngModel)]="outputBlock.googleSheetsUrl" class="inline-input" type="url" placeholder="Example: https://docs.google.com/spreadsheets/d/4281a3386e77d42a9089da5769fb7b22" />
+      <input id="_googleSheetsUrl" [(ngModel)]="outputBlock.googleSheetsUrl" class="inline-input" type="url" placeholder="Example: https://docs.google.com/spreadsheets/d/4281a3386e77d42a9089da5769fb7b22" [style.border]="isUrlInvalid() ? '1px solid #f53d3d' : ''" />
     </ion-item>
 
     <ion-item text-wrap>
@@ -23,7 +23,7 @@
       <label for="_keyColumn">{{ 'googleSheetsKeyColumn' | translate }}</label>
       <div style="position: relative; width: 100%;">
         <ion-icon name="key" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999;"></ion-icon>
-        <input id="_keyColumn" value="barcode" class="inline-input" type="text" disabled style="padding-left: 35px;" />
+        <input id="_keyColumn" [value]="'barcode'" class="inline-input" type="text" disabled style="padding-left: 35px;" />
       </div>
       <br>
       <p>
@@ -54,8 +54,11 @@
         <ion-grid class="values-grid">
           <ion-item no-lines *ngFor="let value of outputBlock.googleSheetsValues; let i = index" style="background: transparent; padding-left: 11px;">
             <ion-row no-padding>
-              <ion-col col-11>
-                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" class="inline-input" type="text" placeholder="Example: {{ curlyOpen }} number {{ curlyClose }}" [disabled]="outputBlock.googleSheetsSendAllVariables" variableInjector />
+              <ion-col col-5>
+                <input [(ngModel)]="outputBlock.googleSheetsValues[i].column" class="inline-input" type="text" [placeholder]="outputBlock.googleSheetsSendAllVariables ? '*' : 'Example: Quantity'" [disabled]="outputBlock.googleSheetsSendAllVariables" [style.border]="isColumnNameInvalid(i) ? '1px solid #f53d3d' : ''" />
+              </ion-col>
+              <ion-col col-6>
+                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" class="inline-input" type="text" placeholder="Example: {{ curlyOpen }} number {{ curlyClose }}" [disabled]="outputBlock.googleSheetsSendAllVariables" variableInjector [style.border]="isColumnValueInvalid(i) ? '1px solid #f53d3d' : ''" />
               </ion-col>
               <ion-col col-1>
                 <button ion-button small center clear icon-only color="danger" (click)="removeValue(i)" [disabled]="outputBlock.googleSheetsSendAllVariables || outputBlock.googleSheetsValues.length === 1">

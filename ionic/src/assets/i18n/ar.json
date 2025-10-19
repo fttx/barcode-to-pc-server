@@ -542,7 +542,7 @@
   "fields": "الحقول",
   "componentEditorValidationErrorTitle": "خطأ",
   "componentEditorValidationErrorMessage": "نسيت ملء أحد الحقول المطلوبة. تحقق من المكون مرة أخرى.",
-  "componentEditorValidationErrorButton": "حفظ",
+  "componentEditorValidationErrorButton": "حسناً",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "حفظ"
 }

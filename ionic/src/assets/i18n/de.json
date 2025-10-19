@@ -542,7 +542,7 @@
   "fields": "Felder",
   "componentEditorValidationErrorTitle": "Fehler",
   "componentEditorValidationErrorMessage": "Sie haben ein oder mehrere erforderliche Felder vergessen auszufüllen. Überprüfen Sie die Komponente erneut.",
-  "componentEditorValidationErrorButton": "Speichern",
+  "componentEditorValidationErrorButton": "Ok",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "Speichern"
 }

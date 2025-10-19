@@ -56,7 +56,9 @@ export class ComponentEditorComponent implements OnInit {
         message: await this.utils.text('componentEditorValidationErrorMessage'),
         buttons: [{
           text: await this.utils.text('componentEditorValidationErrorButton'),
-          handler: () => { this.viewCtrl.dismiss(); }
+          handler: () => {
+            // Do not dismiss - keep the editor open so user can fix validation errors
+          }
         }],
       }).present();
     } else {

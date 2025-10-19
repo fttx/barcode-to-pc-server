@@ -169,7 +169,7 @@ export class OutputBlockModel {
      */
     googleSheetsUrl?: string;
     googleSheetsAction?: 'append' | 'update' | 'delete' | 'get';
-    googleSheetsSearchValue?: string;
+    googleSheetKeyColumn?: string;
     googleSheetsValues?: { column: string, value: string }[];
     googleSheetsSendAllVariables?: boolean;
 

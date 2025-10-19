@@ -542,7 +542,7 @@
   "fields": "欄位",
   "componentEditorValidationErrorTitle": "錯誤",
   "componentEditorValidationErrorMessage": "您忘記填寫一個或多個必填字段。請再次檢查組件。",
-  "componentEditorValidationErrorButton": "保存",
+  "componentEditorValidationErrorButton": "確定",
   "================================IMAGE_VIEWER_PAGE======================================": "",
   "save": "保存"
 }
