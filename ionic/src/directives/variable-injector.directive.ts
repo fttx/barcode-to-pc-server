@@ -119,6 +119,11 @@ export class VariableInjectorDirective {
       return;
     }
 
+    // Separate system variables from component variables
+    const systemVariables = ['timestamp', 'scan_session_name', 'device_name'];
+    const componentVariables = variablesToShow.filter(v => systemVariables.indexOf(v) === -1);
+    const systemVarsToShow = variablesToShow.filter(v => systemVariables.indexOf(v) !== -1);
+
     // Create a simple popover component inline
     const popoverElement = this.renderer.createElement('div');
     this.renderer.setStyle(popoverElement, 'background', 'white');
@@ -131,34 +136,51 @@ export class VariableInjectorDirective {
     this.renderer.setStyle(popoverElement, 'position', 'absolute');
     this.renderer.setStyle(popoverElement, 'z-index', '9999');
 
-    // Create list
+    // Create list container
     const list = this.renderer.createElement('div');
-    variablesToShow.forEach(variable => {
-      const item = this.renderer.createElement('div');
-      this.renderer.setStyle(item, 'padding', '8px 12px');
-      this.renderer.setStyle(item, 'cursor', 'pointer');
-      this.renderer.setStyle(item, 'border-bottom', '1px solid #f0f0f0');
-      this.renderer.setStyle(item, 'font-family', 'monospace');
-      this.renderer.setStyle(item, 'font-size', '13px');
 
-      item.textContent = `{{ ${variable} }}`;
+    // Add component variables section
+    if (componentVariables.length > 0) {
+      // Add section header
+      const componentHeader = this.renderer.createElement('div');
+      this.renderer.setStyle(componentHeader, 'padding', '6px 12px');
+      this.renderer.setStyle(componentHeader, 'font-size', '11px');
+      this.renderer.setStyle(componentHeader, 'font-weight', '600');
+      this.renderer.setStyle(componentHeader, 'color', '#595959ff');
+      this.renderer.setStyle(componentHeader, 'background', 'rgba(0, 0, 0, 0.02)');
+      this.renderer.setStyle(componentHeader, 'border-bottom', '1px solid #f0f0f0');
+      this.renderer.setStyle(componentHeader, 'text-transform', 'uppercase');
+      this.renderer.setStyle(componentHeader, 'letter-spacing', '0.5px');
+      componentHeader.textContent = 'Component variables';
+      this.renderer.appendChild(list, componentHeader);
 
-      // Hover effect
-      this.renderer.listen(item, 'mouseenter', () => {
-        this.renderer.setStyle(item, 'background', '#f5f5f5');
+      componentVariables.forEach(variable => {
+        const item = this.createVariableItem(variable, popoverElement, false);
+        this.renderer.appendChild(list, item);
       });
-      this.renderer.listen(item, 'mouseleave', () => {
-        this.renderer.setStyle(item, 'background', 'transparent');
-      });
+    }
 
-      // Click handler
-      this.renderer.listen(item, 'click', () => {
-        this.insertVariable(variable);
-        this.closePopover(popoverElement);
-      });
+    // Add system variables section with dimmed background
+    if (systemVarsToShow.length > 0) {
+      // Add section header
+      const header = this.renderer.createElement('div');
+      this.renderer.setStyle(header, 'padding', '6px 12px');
+      this.renderer.setStyle(header, 'font-size', '11px');
+      this.renderer.setStyle(header, 'font-weight', '600');
+      this.renderer.setStyle(header, 'color', '#595959ff');
+      this.renderer.setStyle(header, 'background', 'rgba(0, 0, 0, 0.08)');
+      this.renderer.setStyle(header, 'border-top', '1px solid #e0e0e0');
+      this.renderer.setStyle(header, 'border-bottom', '1px solid #f0f0f0');
+      this.renderer.setStyle(header, 'text-transform', 'uppercase');
+      this.renderer.setStyle(header, 'letter-spacing', '0.5px');
+      header.textContent = 'System variables';
+      this.renderer.appendChild(list, header);
 
-      this.renderer.appendChild(list, item);
-    });
+      systemVarsToShow.forEach(variable => {
+        const item = this.createVariableItem(variable, popoverElement, true);
+        this.renderer.appendChild(list, item);
+      });
+    }
 
     this.renderer.appendChild(popoverElement, list);
 
@@ -184,6 +206,42 @@ export class VariableInjectorDirective {
 
     // Store reference
     this.popover = popoverElement;
+  }
+
+  private createVariableItem(variable: string, popoverElement: HTMLElement, isSystemVariable: boolean): HTMLElement {
+    const item = this.renderer.createElement('div');
+    this.renderer.setStyle(item, 'padding', '8px 12px');
+    this.renderer.setStyle(item, 'cursor', 'pointer');
+    this.renderer.setStyle(item, 'border-bottom', '1px solid #f0f0f0');
+    this.renderer.setStyle(item, 'font-family', 'monospace');
+    this.renderer.setStyle(item, 'font-size', '13px');
+
+    // Apply dimmed background for system variables
+    if (isSystemVariable) {
+      this.renderer.setStyle(item, 'background', 'rgba(0, 0, 0, 0.03)');
+    }
+
+    item.textContent = `{{ ${variable} }}`;
+
+    // Hover effect
+    this.renderer.listen(item, 'mouseenter', () => {
+      this.renderer.setStyle(item, 'background', '#f5f5f5');
+    });
+    this.renderer.listen(item, 'mouseleave', () => {
+      if (isSystemVariable) {
+        this.renderer.setStyle(item, 'background', 'rgba(0, 0, 0, 0.03)');
+      } else {
+        this.renderer.setStyle(item, 'background', 'transparent');
+      }
+    });
+
+    // Click handler
+    this.renderer.listen(item, 'click', () => {
+      this.insertVariable(variable);
+      this.closePopover(popoverElement);
+    });
+
+    return item;
   }
 
   private closePopover(popoverElement: HTMLElement) {
