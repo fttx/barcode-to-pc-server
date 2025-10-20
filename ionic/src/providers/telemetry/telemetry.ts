@@ -6,9 +6,9 @@ import { ElectronProvider } from '../electron/electron';
 
 interface TelemetryEvent {
   eventType: string;
-  eventValueInt: number;
-  eventValueText: string;
-  serverVersion?: string;
+  eventValueInt: number | null;
+  eventValueText: string | null;
+  serverVersion: string;
   created_at: number; // Unix timestamp in milliseconds
 }
 
@@ -68,7 +68,7 @@ export class TelemetryService {
         eventType: 'scan',
         eventValueInt: totalScanValue,
         eventValueText: null,
-        serverVersion: scanEvents[scanEvents.length - 1].serverVersion,
+        serverVersion: scanEvents[scanEvents.length - 1].serverVersion || this.getServerVersion(),
         created_at: scanEvents[scanEvents.length - 1].created_at
       };
       eventsToSend = [...nonScanEvents, aggregatedScanEvent];
@@ -91,22 +91,22 @@ export class TelemetryService {
     });
   }
 
-  sendEvent(eventType: string, eventValueInt: number, eventValueText: string): void {
-    // Determine server version the same way as info.ts getVersion()
-    let serverVersion: string;
+  private getServerVersion(): string {
     if (this.electronProvider.isDev()) {
-      serverVersion = '(DEV MODE)';
+      return '(DEV MODE)';
     } else if (ElectronProvider.isElectron()) {
-      serverVersion = this.electronProvider.appGetVersion();
+      return this.electronProvider.appGetVersion();
     } else {
-      serverVersion = '(BROWSER MODE)';
+      return '(BROWSER MODE)';
     }
+  }
 
+  sendEvent(eventType: string, eventValueInt: number | null, eventValueText: string | null): void {
     const event: TelemetryEvent = {
       eventType,
       eventValueInt,
       eventValueText,
-      serverVersion: serverVersion,
+      serverVersion: this.getServerVersion(),
       created_at: Date.now()
     };
     this.eventQueue.push(event);
