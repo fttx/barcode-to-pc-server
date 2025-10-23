@@ -325,6 +325,11 @@ export class LicenseProvider {
           settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.value != 'number');
         }
       }
+      if (!(await this.canUseGoogleSheets(false))) {
+        for (let i in settings.outputProfiles) {
+          settings.outputProfiles[i].outputBlocks = settings.outputProfiles[i].outputBlocks.filter(x => x.type != 'google_sheets');
+        }
+      }
       // Get license from localstorage parse and disable active field
       const license = JSON.parse(localStorage.getItem('license') || '{}');
       license['active'] = false;
@@ -521,6 +526,37 @@ export class LicenseProvider {
           'canUseCSVAppend',
           await this.utilsProvider.text('csvAppendNotAvailableDialogTitle'),
           await this.utilsProvider.text('csvAppendNotAvailableDialogMessage'),
+        );
+      }
+      resolve(available);
+    });
+  }
+
+  /**
+   * Should be called when the user tries to use the Google Sheets component
+   * @returns FALSE if the feature should be limited
+   */
+  canUseGoogleSheets(showUpgradeDialog = true): Promise<boolean> {
+    return new Promise<boolean>(async (resolve) => {
+      let available = false;
+      switch (this.activeLicense) {
+        case LicenseProvider.LICENSE_FREE: available = false; break;
+        case LicenseProvider.LICENSE_BASIC: available = true; break;
+        case LicenseProvider.LICENSE_PRO: available = true; break;
+        case LicenseProvider.LICENSE_UNLIMITED: available = true; break;
+
+        case LicenseProvider.LICENSE_PRO_MONTHLY:
+        case LicenseProvider.LICENSE_PRO_YEARLY:
+        case LicenseProvider.LICENSE_STARTER_MONTHLY:
+        case LicenseProvider.LICENSE_STARTER_YEARLY:
+        default: { available = true; }
+      }
+
+      if (!available && showUpgradeDialog) {
+        await this.showUpgradeDialog(
+          'canUseGoogleSheets',
+          await this.utilsProvider.text('googleSheetsComponentNotAvailableDialogTitle'),
+          await this.utilsProvider.text('googleSheetsComponentNotAvailableDialogMessage'),
         );
       }
       resolve(available);

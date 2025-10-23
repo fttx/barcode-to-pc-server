@@ -332,6 +332,8 @@
   "numberComponentNotAvailableDialogMessage": "NUMERO 元件在您目前的許可證下不可用。",
   "csvAppendNotAvailableDialogTitle": "升級",
   "csvAppendNotAvailableDialogMessage": "此功能在您目前的許可證下不可用。",
+  "googleSheetsComponentNotAvailableDialogTitle": "升級",
+  "googleSheetsComponentNotAvailableDialogMessage": "GOOGLE SHEETS 元件在您目前的許可證下不可用。",
   "upgradeDialogDismissButton": "關閉",
   "upgradeDialogUpgradeButton": "升級",
   "outputTemplateLimitReachedDialogTitle": "已達到輸出模板限制",

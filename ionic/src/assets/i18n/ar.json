@@ -332,6 +332,8 @@
   "numberComponentNotAvailableDialogMessage": "المكون NUMBER غير متوفر في رخصتك الحالية.",
   "csvAppendNotAvailableDialogTitle": "ترقية الرخصة",
   "csvAppendNotAvailableDialogMessage": "هذه الميزة غير متاحة في رخصتك الحالية.",
+  "googleSheetsComponentNotAvailableDialogTitle": "ترقية الرخصة",
+  "googleSheetsComponentNotAvailableDialogMessage": "المكون GOOGLE SHEETS غير متوفر في رخصتك الحالية.",
   "upgradeDialogDismissButton": "إغلاق",
   "upgradeDialogUpgradeButton": "ترقية",
   "outputTemplateLimitReachedDialogTitle": "تم الوصول إلى حد قوالب الإخراج",

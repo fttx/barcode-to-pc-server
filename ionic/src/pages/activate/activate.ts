@@ -15,6 +15,7 @@ export class ActivatePage {
   public uuid = '';
   public serial = '';
   public numberComponent = 'No';
+  public googleSheetsComponent = 'No';
   public appendToCSV = 'No';
   public isRefreshing = false;
   public aiTokens = '';
@@ -45,6 +46,10 @@ export class ActivatePage {
   async refresh() {
     this.numberComponent =
       await this.licenseProvider.canUseNumberParameter(false) ?
+        await this.utils.text('featureAvailableYes') :
+        await this.utils.text('featureAvailableNo');
+    this.googleSheetsComponent =
+      await this.licenseProvider.canUseGoogleSheets(false) ?
         await this.utils.text('featureAvailableYes') :
         await this.utils.text('featureAvailableNo');
     this.appendToCSV = await this.licenseProvider.canUseCSVAppend() ?

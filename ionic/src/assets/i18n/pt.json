@@ -332,6 +332,8 @@
   "numberComponentNotAvailableDialogMessage": "O componente NÚMERO não está disponível com sua licença atual.",
   "csvAppendNotAvailableDialogTitle": "Atualizar",
   "csvAppendNotAvailableDialogMessage": "Este recurso não está disponível com sua licença atual.",
+  "googleSheetsComponentNotAvailableDialogTitle": "Atualizar",
+  "googleSheetsComponentNotAvailableDialogMessage": "O componente GOOGLE SHEETS não está disponível com sua licença atual.",
   "upgradeDialogDismissButton": "Fechar",
   "upgradeDialogUpgradeButton": "Atualizar",
   "outputTemplateLimitReachedDialogTitle": "Limite de Modelos de Saída Atingido",

@@ -332,6 +332,8 @@
   "numberComponentNotAvailableDialogMessage": "NUMARA bileşeni mevcut lisansınızla kullanılamaz.",
   "csvAppendNotAvailableDialogTitle": "Yükselt",
   "csvAppendNotAvailableDialogMessage": "Bu özellik mevcut lisansınızla kullanılamaz.",
+  "googleSheetsComponentNotAvailableDialogTitle": "Yükselt",
+  "googleSheetsComponentNotAvailableDialogMessage": "GOOGLE SHEETS bileşeni mevcut lisansınızla kullanılamaz.",
   "upgradeDialogDismissButton": "Kapat",
   "upgradeDialogUpgradeButton": "Yükselt",
   "outputTemplateLimitReachedDialogTitle": "Çıktı Şablonu Sınırına Ulaşıldı",

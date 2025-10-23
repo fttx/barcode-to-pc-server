@@ -98,6 +98,11 @@ export class SettingsPage implements OnInit, OnDestroy {
           setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.value != 'number'), 1000)
         }
       }
+      if (item.type == 'google_sheets') {
+        if (!(await this.licenseProvider.canUseGoogleSheets(true))) {
+          setTimeout(() => this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks = this.settings.outputProfiles[this.selectedOutputProfile].outputBlocks.filter(x => x.type != 'google_sheets'), 1000)
+        }
+      }
       // Update output template state when components are dragged
       // Use setTimeout to ensure the model is updated before we read it
       setTimeout(() => {
