@@ -20,6 +20,7 @@ export class ComponentEditorGSheetUpdatePage {
   public permissionsCheckResult: 'success' | 'error' | 'denied' | null = null;
   public availableColumns: string[] = [];
   private readonly STORAGE_KEY_PREFIX = 'gsheet_columns_';
+  private formTouched = false;
 
   constructor(
     public navParams: NavParams,
@@ -176,6 +177,11 @@ export class ComponentEditorGSheetUpdatePage {
   isValid(): boolean {
     this.validationAttempted = true;
 
+    // Allow dismissal if the form hasn't been touched (empty URL means untouched)
+    if (!this.formTouched && (!this.outputBlock.googleSheetsUrl || this.outputBlock.googleSheetsUrl.trim() === '')) {
+      return true;
+    }
+
     // Ensure key column is in mapping before validation
     this.ensureKeyColumnInMapping();
 
@@ -277,6 +283,7 @@ export class ComponentEditorGSheetUpdatePage {
   }
 
   addValue() {
+    this.markFormAsTouched();
     if (!this.outputBlock.googleSheetsValues) {
       this.outputBlock.googleSheetsValues = [];
     }
@@ -299,6 +306,7 @@ export class ComponentEditorGSheetUpdatePage {
   }
 
   removeValue(index: number) {
+    this.markFormAsTouched();
     // Never remove the first item (barcode column)
     if (index === 0) return;
 
@@ -396,11 +404,20 @@ export class ComponentEditorGSheetUpdatePage {
   }
 
   onUrlPaste() {
+    this.markFormAsTouched();
     // Use setTimeout to allow the ngModel to update first
     setTimeout(() => {
       if (this.outputBlock.googleSheetsUrl && this.outputBlock.googleSheetsUrl.trim() !== '') {
         this.checkPermissions();
       }
     }, 100);
+  }
+
+  onUrlChange() {
+    this.markFormAsTouched();
+  }
+
+  markFormAsTouched() {
+    this.formTouched = true;
   }
 }

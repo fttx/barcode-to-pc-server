@@ -3,7 +3,7 @@
 
     <ion-item text-wrap no-lines>
       <label for="_googleSheetsUrl">{{ 'googleSheetsUrl' | translate }}</label>
-      <input id="_googleSheetsUrl" [(ngModel)]="outputBlock.googleSheetsUrl" (paste)="onUrlPaste()" class="inline-input" type="url" placeholder="Example: https://docs.google.com/spreadsheets/d/4281a3386e77d42a9089da5769fb7b22" [style.border]="isUrlInvalid() ? '1px solid #f53d3d' : (permissionsCheckResult === 'success' ? '1px solid #32db64' : '')" />
+      <input id="_googleSheetsUrl" [(ngModel)]="outputBlock.googleSheetsUrl" (ngModelChange)="onUrlChange()" (paste)="onUrlPaste()" class="inline-input" type="url" placeholder="Example: https://docs.google.com/spreadsheets/d/4281a3386e77d42a9089da5769fb7b22" [style.border]="isUrlInvalid() ? '1px solid #f53d3d' : (permissionsCheckResult === 'success' ? '1px solid #32db64' : '')" />
     </ion-item>
 
     <!-- Buttons row for Check Permissions and Tutorial -->
@@ -29,7 +29,7 @@
 
     <ion-item text-wrap>
       <label for="_googleSheetsAction">{{ 'googleSheetsAction' | translate }}</label>
-      <select id="_googleSheetsAction" [(ngModel)]="outputBlock.googleSheetsAction" class="component-editor-select">
+      <select id="_googleSheetsAction" [(ngModel)]="outputBlock.googleSheetsAction" (ngModelChange)="markFormAsTouched()" class="component-editor-select">
         <option value="append_or_update">{{ 'googleSheetsActionAppend' | translate }}</option>
         <option value="get">{{ 'googleSheetsActionGet' | translate }}</option>
         <option value="get_cell">{{ 'googleSheetsActionGetCell' | translate }}</option>
@@ -46,7 +46,7 @@
       <div style="display: flex; gap: 10px; align-items: stretch; width: 100%; align-items: center;">
         <div style="position: relative; width: 100%; flex: 1;">
           <ion-icon name="key" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999; z-index: 1;"></ion-icon>
-          <select id="_keyColumn" [(ngModel)]="outputBlock.googleSheetKeyColumn" class="component-editor-select" style="padding-left: 35px; width: 100%;">
+          <select id="_keyColumn" [(ngModel)]="outputBlock.googleSheetKeyColumn" (ngModelChange)="markFormAsTouched()" class="component-editor-select" style="padding-left: 35px; width: 100%;">
             <option *ngFor="let col of availableColumns" [value]="col">{{ col }}</option>
           </select>
         </div>
@@ -66,7 +66,7 @@
     <ion-item text-wrap no-lines *ngIf="outputBlock.googleSheetsAction === 'get_cell'">
       <label for="_cellColumn">{{ 'googleSheetsGetCellColumn' | translate }}</label>
       <div style="display: flex; gap: 10px; align-items: stretch; width: 100%;     align-items: center;">
-        <select id="_cellColumn" [(ngModel)]="outputBlock.googleSheetsCellColumn" class="component-editor-select" [style.border]="validationAttempted && (!outputBlock.googleSheetsCellColumn || outputBlock.googleSheetsCellColumn.trim() === '') ? '1px solid #f53d3d' : ''" style="flex: 1;">
+        <select id="_cellColumn" [(ngModel)]="outputBlock.googleSheetsCellColumn" (ngModelChange)="markFormAsTouched()" class="component-editor-select" [style.border]="validationAttempted && (!outputBlock.googleSheetsCellColumn || outputBlock.googleSheetsCellColumn.trim() === '') ? '1px solid #f53d3d' : ''" style="flex: 1;">
           <option *ngFor="let col of availableColumns" [value]="col">{{ col }}</option>
         </select>
         <button ion-button small icon-only [disabled]="!outputBlock.googleSheetsUrl || outputBlock.googleSheetsUrl.trim() === '' || checkingPermissions" (click)="checkPermissions()" [color]="permissionsCheckResult === 'success' ? 'secondary' : (permissionsCheckResult === 'denied' || permissionsCheckResult === 'error' ? 'danger' : 'primary')" style="width: 40px; min-width: 40px; height: 36px; margin: 0;">
@@ -103,13 +103,13 @@
               <ion-col col-5>
                 <div style="position: relative; width: 100%;">
                   <ion-icon *ngIf="outputBlock.googleSheetsValues[i].column === outputBlock.googleSheetKeyColumn" name="key" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #999; z-index: 1;"></ion-icon>
-                  <select [(ngModel)]="outputBlock.googleSheetsValues[i].column" class="component-editor-select" [style.border]="isColumnNameInvalid(i) ? '1px solid #f53d3d' : ''" [style.padding-left]="outputBlock.googleSheetsValues[i].column === outputBlock.googleSheetKeyColumn ? '35px' : ''" style="margin: 0;">
+                  <select [(ngModel)]="outputBlock.googleSheetsValues[i].column" (ngModelChange)="markFormAsTouched()" class="component-editor-select" [style.border]="isColumnNameInvalid(i) ? '1px solid #f53d3d' : ''" [style.padding-left]="outputBlock.googleSheetsValues[i].column === outputBlock.googleSheetKeyColumn ? '35px' : ''" style="margin: 0;">
                     <option *ngFor="let col of availableColumns" [value]="col">{{ col }}</option>
                   </select>
                 </div>
               </ion-col>
               <ion-col col-6>
-                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" class="inline-input" type="text" placeholder="Example: {{ curlyOpen }} number {{ curlyClose }}" variableInjector [style.border]="isColumnValueInvalid(i) ? '1px solid #f53d3d' : ''" />
+                <input [(ngModel)]="outputBlock.googleSheetsValues[i].value" (ngModelChange)="markFormAsTouched()" class="inline-input" type="text" placeholder="Example: {{ curlyOpen }} number {{ curlyClose }}" variableInjector [style.border]="isColumnValueInvalid(i) ? '1px solid #f53d3d' : ''" />
               </ion-col>
               <ion-col col-1>
                 <button ion-button small center clear icon-only color="danger" (click)="removeValue(i)" [disabled]="i === 0">
