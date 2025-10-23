@@ -209,3 +209,16 @@ The UI supports multiple languages via JSON translation files in `ionic/src/asse
    - Verify the JSON syntax is valid in all files
 
 **Example:** If adding a new button label after line 42 in `en.json`, add the corresponding translations after line 42 in all other language files.
+
+## Writing the CHANGELOG.md
+
+As main rule keep it simple and keep in mind it is for the final end-user, not for developers.
+
+- use the same style as odler changes
+- use the same verb tense as older changes
+- keep the messages short
+- group related changes together and don't repeat (eg. if is a change don't put in to the fix section)
+- don't ever mention iOS or Android
+- don't mention licensing stuff
+- don't leak any sensitive information or internal code changes that are related to commercial features
+- update talso the URL references in the md file

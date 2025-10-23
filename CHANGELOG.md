@@ -16,6 +16,24 @@
 ### Security
 -->
 
+## [v4.8.10] - 2025-10-23
+
+### Added
+
+- Google Sheets integration: new component to send scan data directly to Google Sheets
+- Variable injector directive for dynamic variable insertion in component fields
+- Russian language translation support
+
+### Changed
+
+- Redesigned Google Sheets component editor with improved UI/UX
+- Enhanced component editor validation and field tracking
+
+### Fixed
+
+- Documentation links updated to correct URLs
+- Form field validation now runs only when fields are touched
+
 ## [v4.8.9] - 2025-10-17
 
 ### Added
@@ -820,6 +838,7 @@
 
 - Included the Apple Bonjour installer
 
+[v4.8.10]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.9...v4.8.10
 [v4.8.9]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.8...v4.8.9
 [v4.8.8]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.7...v4.8.8
 [v4.8.7]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.6...v4.8.7
