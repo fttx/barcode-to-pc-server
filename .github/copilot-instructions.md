@@ -70,7 +70,7 @@ export class ScansHandler implements Handler {
   private static instance: ScansHandler;
   private ipcClient; // Set via setIpcClient() after pageLoad
 
-  private constructor(settingsHandler, uiHandler, gsheetHandler) {}
+  private constructor(settingsHandler, uiHandler) {}
 
   static getInstance(deps) {
     if (!ScansHandler.instance) {

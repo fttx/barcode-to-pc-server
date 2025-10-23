@@ -50,7 +50,10 @@ export class Config {
   public static URL_TUTORIAL_HTTP = 'https://docs.barcodetopc.com/output-template/components/http_request/';
   public static URL_TUTORIAL_WOOCOMMERCE = 'https://docs.barcodetopc.com/output-template/components/woocommerce/';
   public static URL_TUTORIAL_IMAGE = 'https://docs.barcodetopc.com/output-template/components/image/';
+  public static URL_TUTORIAL_GOOGLE_SHEETS = 'https://docs.barcodetopc.com/output-template/components/google_sheets/#tutorial';
   public static URL_DOWNGRADE_V3 = Config.URL_WEBSITE + '/downgrade-app-from-v4-to-v3/';
+
+  public static URL_GSHEET_BACKEND = 'https://gsheets.eesystems.it/webhook/v4.8.10-gsheet';
 
   public static URL_PAIR = 'https://app.barcodetopc.com';
 
