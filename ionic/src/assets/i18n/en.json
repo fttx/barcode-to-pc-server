@@ -511,6 +511,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "The maximum distance in kilometers from the saved location to output its name instead of coordinates",
   "title": "Title",
   "message": "Message",
+  "messageHtmlDescription": "The message can be formatted using HTML",
   "optionsList": "Options list",
   "optionsListDescription": "Specify the possible options separed by the comma character<br><br>Use the double curly braces syntax to inject variables.<br><br>",
   "optionsListExample": "Example",

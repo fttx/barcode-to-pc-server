@@ -511,6 +511,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "Die maximale Entfernung in Kilometern vom gespeicherten Standort, um dessen Namen anstelle der Koordinaten auszugeben.",
   "title": "Titel",
   "message": "Nachricht",
+  "messageHtmlDescription": "Die Nachricht kann mit HTML formatiert werden",
   "optionsList": "Optionsliste",
   "optionsListDescription": "Geben Sie die möglichen Optionen durch das Komma-Zeichen getrennt an.<br><br>Verwenden Sie die doppelte geschweifte Klammer-Syntax, um Variablen einzufügen.<br><br>",
   "optionsListExample": "Beispiel",

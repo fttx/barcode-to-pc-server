@@ -511,6 +511,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "A distância máxima em quilômetros da localização salva para exibir seu nome em vez das coordenadas.",
   "title": "Título",
   "message": "Mensagem",
+  "messageHtmlDescription": "A mensagem pode ser formatada usando HTML",
   "optionsList": "Lista de opções",
   "optionsListDescription": "Especifique as possíveis opções separadas pelo caractere de vírgula.<br><br>Use a sintaxe de colchetes duplos para injetar variáveis.<br><br>",
   "optionsListExample": "Exemplo",

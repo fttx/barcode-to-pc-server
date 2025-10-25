@@ -511,6 +511,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "المسافة القصوى بالكيلومترات من الموقع المحفوظ لعرض اسمه بدلاً من الإحداثيات",
   "title": "العنوان",
   "message": "الرسالة",
+  "messageHtmlDescription": "يمكن تنسيق الرسالة باستخدام HTML",
   "optionsList": "قائمة الخيارات",
   "optionsListDescription": "حدد الخيارات الممكنة بفاصلة<br><br>استخدم بنية الأقواس المزدوجة لحقن المتغيرات.<br><br>",
   "optionsListExample": "مثال",

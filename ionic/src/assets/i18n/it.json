@@ -513,6 +513,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "The maximum distance in kilometers from the saved location to output its name instead of coordinates",
   "title": "Titolo",
   "message": "Messaggio",
+  "messageHtmlDescription": "Il messaggio può essere formattato usando HTML",
   "optionsList": "Elenco delle opzioni",
   "optionsListDescription": "Specifica le possibili opzioni separate dalla virgola<br><br>Utilizza la sintassi delle doppie parentesi graffe per iniettare una variabile.<br><br>",
   "optionsListExample": "Esempio",

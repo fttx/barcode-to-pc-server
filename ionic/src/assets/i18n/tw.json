@@ -511,6 +511,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "從已儲存位置到輸出其名稱而不是坐標的最大距離（公里）",
   "title": "標題",
   "message": "訊息",
+  "messageHtmlDescription": "訊息可以使用 HTML 格式化",
   "optionsList": "選項列表",
   "optionsListDescription": "指定可能的選項，並用逗號字符分隔。<br><br>使用雙花括號語法來注入變量。<br><br>",
   "optionsListExample": "示例",

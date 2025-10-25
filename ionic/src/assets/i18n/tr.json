@@ -511,6 +511,7 @@
   "geoLocationMaxDistanceFromSavedLocationDescription": "Kaydedilen konumdan koordinatlar yerine adını çıkarmak için maksimum mesafe (kilometre cinsinden)",
   "title": "Başlık",
   "message": "Mesaj",
+  "messageHtmlDescription": "Mesaj HTML kullanılarak biçimlendirilebilir",
   "optionsList": "Seçenekler listesi",
   "optionsListDescription": "Olası seçenekleri virgül karakteri ile ayırarak belirtin.<br><br>Değişkenleri enjekte etmek için çift süslü parantez sözdizimini kullanın.<br><br>",
   "optionsListExample": "Örnek",

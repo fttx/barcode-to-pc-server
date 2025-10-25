@@ -9,6 +9,8 @@ import { OutputBlockModel } from '../../../models/output-block.model';
 export class ComponentEditorAlertPage {
 
   public outputBlock: OutputBlockModel;
+  public messagePlaceholder = 'Example: <b>Quantity</b>: {{ google_sheets.qty }}';
+
   constructor(
     public navParams: NavParams,
   ) {

@@ -210,6 +210,42 @@ The UI supports multiple languages via JSON translation files in `ionic/src/asse
 
 **Example:** If adding a new button label after line 42 in `en.json`, add the corresponding translations after line 42 in all other language files.
 
+## Angular Template Placeholders with Special Characters
+
+When adding placeholder text to input/textarea elements that contains curly braces `{{ }}` or HTML tags, follow these patterns:
+
+**For `<input>` elements:** Use HTML entities directly in the placeholder attribute:
+
+- `{` → `&#123;`
+- `}` → `&#125;`
+- `<` → `&lt;`
+- `>` → `&gt;`
+- `:` → `&#58;`
+
+Example:
+
+```html
+<input
+  placeholder="&lt;b&gt;Name&lt;/b&gt;&#58; &#123;&#123; barcode &#125;&#125;"
+/>
+```
+
+**For `<textarea>` elements:** Angular will try to parse and evaluate HTML entities as template expressions, causing errors. Instead, use `[attr.placeholder]` binding with a component property:
+
+TypeScript:
+
+```typescript
+public messagePlaceholder = 'Example: <b>Quantity</b>: {{ google_sheets.qty }}';
+```
+
+HTML:
+
+```html
+<textarea [attr.placeholder]="messagePlaceholder"></textarea>
+```
+
+This prevents Angular from interpreting the curly braces as template interpolation expressions.
+
 ## Writing the CHANGELOG.md
 
 As main rule keep it simple and keep in mind it is for the final end-user, not for developers.
