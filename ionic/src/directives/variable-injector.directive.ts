@@ -1,4 +1,4 @@
-import { Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, HostListener, Renderer2, Input } from '@angular/core';
 import { PopoverController } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import { OutputTemplateState } from '../providers/output-template-state/output-template-state';
@@ -7,6 +7,8 @@ import { OutputTemplateState } from '../providers/output-template-state/output-t
   selector: '[variableInjector]'
 })
 export class VariableInjectorDirective {
+  @Input() noBraces: boolean = false; // When true, inserts variables without {{ }}
+  
   private wrapper: HTMLElement;
   private button: HTMLElement;
   private popover: any;
@@ -266,7 +268,8 @@ export class VariableInjectorDirective {
       this.renderer.setStyle(item, 'background', 'rgba(0, 0, 0, 0.03)');
     }
 
-    item.textContent = `{{ ${variable} }}`;
+    // Show variable with or without braces depending on noBraces setting
+    item.textContent = this.noBraces ? variable : `{{ ${variable} }}`;
 
     // Hover effect
     this.renderer.listen(item, 'mouseenter', () => {
@@ -298,7 +301,7 @@ export class VariableInjectorDirective {
 
   private insertVariable(variable: string) {
     const input = this.el.nativeElement;
-    const variableText = `{{ ${variable} }}`;
+    const variableText = this.noBraces ? variable : `{{ ${variable} }}`;
 
     // Get cursor position
     const start = input.selectionStart;

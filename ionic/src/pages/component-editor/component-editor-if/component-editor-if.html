@@ -2,7 +2,7 @@
   <ion-item [hidden]="outputBlock.type != 'if'">
     <label for="_valueIf" color="dark">{{ 'ifDescription' | translate }}</label>
 
-    <input id="_valueIf" variableInjector [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="Example: {{ curlyOpen }} barcode {{ curlyClose }} == '1234'" />
+    <input id="_valueIf" variableInjector [noBraces]="true" [(ngModel)]="outputBlock.value" class="inline-input" type="url" placeholder="Example: {{ curlyOpen }} barcode {{ curlyClose }} == '1234'" />
 
     <br>
     <p>
