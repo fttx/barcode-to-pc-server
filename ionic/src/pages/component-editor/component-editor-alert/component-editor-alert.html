@@ -6,7 +6,7 @@
 
   <ion-item>
     <label for="_valueAlertValue">{{ 'message' | translate }}</label>
-    <input id="_valueAlertValue" [(ngModel)]="outputBlock.value" class="inline-input" type="text" placeholder="Message" variableInjector />
+    <textarea id="_valueAlertValue" variableInjector [(ngModel)]="outputBlock.value" type="text" placeholder="Message" class="inline-input" style="min-height: 100px; line-height: 19px; padding: 6px 7px;max-width: 100%;min-width: 100%;"></textarea>
   </ion-item>
 
   <ion-item>
