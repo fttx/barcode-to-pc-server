@@ -1,7 +1,7 @@
 # Changelog
 
 <!--
-## [vx.x.x] - Not released yet
+## vx.x.x - Not released yet
 
 ### Added
 
@@ -16,7 +16,14 @@
 ### Security
 -->
 
-## [v4.8.10] - 2025-10-23
+## v4.9.0 - 2025-10-26
+
+### Changed
+
+- Enhanced component editor
+- Update camera plugin
+
+## v4.8.10 - 2025-10-23
 
 ### Added
 
@@ -34,7 +41,7 @@
 - Documentation links updated to correct URLs
 - Form field validation now runs only when fields are touched
 
-## [v4.8.9] - 2025-10-17
+## v4.8.9 - 2025-10-17
 
 ### Added
 
@@ -46,7 +53,7 @@
 - Update checker now properly detects new versions on first install
 - Template validation improvements
 
-## [v4.8.8] - 2025-10-08
+## v4.8.8 - 2025-10-08
 
 ### Added
 
@@ -57,7 +64,7 @@
 
 - Improved notification system
 
-## [v4.8.7] - 2025-10-01
+## v4.8.7 - 2025-10-01
 
 ### Added
 
@@ -69,44 +76,44 @@
 - Better user interface with sound effects and animations
 - Improve settings page layout and usability
 
-## [v4.8.6] - 2024-07-01
+## v4.8.6 - 2024-07-01
 
 ### Fixed
 
 - Minor bugs
 
-## [v4.8.5] - 2024-06-01
+## v4.8.5 - 2024-06-01
 
 ### Added
 
 - HTTP requests can be now executed on the smartphone side
 
-## [v4.8.4] - 2024-04-16
+## v4.8.4 - 2024-04-16
 
 ### Changed
 
 - Improve JAVASCRIPT_FUNCTION UI
 - Many other UI/UX improvements
 
-## [v4.8.3] - 2025-03-16
+## v4.8.3 - 2025-03-16
 
 ### Fixed
 
 - Issues with Keyboard Emulation
 
-## [v4.8.2] - 2025-02-19
+## v4.8.2 - 2025-02-19
 
 ### Changed
 
 - Minor fixes
 
-## [v4.8.1] - 2025-02-16
+## v4.8.1 - 2025-02-16
 
 ### Changed
 
 - Minor fixes
 
-## [v4.8.0] - 2025-02-15
+## v4.8.0 - 2025-02-15
 
 ### Changed
 
@@ -115,7 +122,7 @@
 - Reduce executable size (remove bonjour service)
 - Revamped server settings UI
 
-## [v4.7.5] - 2024-09-19
+## v4.7.5 - 2024-09-19
 
 ### Fixed
 
@@ -126,26 +133,26 @@
 
 - Minor UI Improvements in the Select Server Page
 
-## [v4.7.4] - 2024-09-14
+## v4.7.4 - 2024-09-14
 
 ### Fixed
 
 - Welcome Page UI issue on small screens
 
-## [v4.7.3] - 2024-09-12
+## v4.7.3 - 2024-09-12
 
 ### Changed
 
 - Improve Welcome Page
 - Minor UI improvements
 
-## [v4.7.2] - 2024-09-04
+## v4.7.2 - 2024-09-04
 
 ### Changed
 
 - Many UI/UX improvements
 
-## [v4.7.0] - 2024-07-25
+## v4.7.0 - 2024-07-25
 
 ### Added
 
@@ -160,7 +167,7 @@
 
 - Auto-update logic
 
-## [v4.6.6] - 2024-07-09
+## v4.6.6 - 2024-07-09
 
 ### Added
 
@@ -171,7 +178,7 @@
 
 - Issue causing duplicates in CSV files
 
-## [v4.6.5] - 2024-03-15
+## v4.6.5 - 2024-03-15
 
 ### Added
 
@@ -181,7 +188,7 @@
 
 - Privacy Policy links
 
-## [v4.6.4] - 2024-03-02
+## v4.6.4 - 2024-03-02
 
 ### Added
 
@@ -191,7 +198,7 @@
 
 - Minor UI improvements
 
-## [v4.6.3] - 2023-11-20
+## v4.6.3 - 2023-11-20
 
 ### Added
 
@@ -202,14 +209,14 @@
 - Keyboard input issue
 - False positive "Unsupported platform" error
 
-## [v4.6.2] - 2023-10-14
+## v4.6.2 - 2023-10-14
 
 ### Changed
 
 - Minor UX Improvements
 - Improve support for PDA devices
 
-## [v4.6.1] - 2023-10-10
+## v4.6.1 - 2023-10-10
 
 ### Added
 
@@ -224,7 +231,7 @@
 
 - Adjent duplicate barcode detection issue
 
-## [v4.6.0] - 2023-10-03
+## v4.6.0 - 2023-10-03
 
 ### Added
 
@@ -239,14 +246,14 @@
 - Issue with the "Disable special characters" option
 - Issue importing v3 templates
 
-## [v4.5.1] - 2023-05-08
+## v4.5.1 - 2023-05-08
 
 ### Changed
 
 - Minor UX improvements on Windows
 - Improve compatibility with newer mobile devices
 
-## [v4.5.0] - 2023-05-08
+## v4.5.0 - 2023-05-08
 
 ### Added
 
@@ -268,13 +275,13 @@
 - iOS 13 crash issue
 - Fix crash on non-iOS devices
 
-## [v4.4.3] - 2023-04-11
+## v4.4.3 - 2023-04-11
 
 ### Fixed
 
 - Crash issue on Android 12+ devices
 
-## [v4.4.2] - 2023-04-09
+## v4.4.2 - 2023-04-09
 
 ### Changed
 
@@ -285,7 +292,7 @@
 
 - OCR support
 
-## [v4.4.1] - 2023-04-06
+## v4.4.1 - 2023-04-06
 
 ### Added
 
@@ -297,13 +304,13 @@
 - Improved acquisition screen
 - Support for GS1 characters
 
-## [v4.3.2] - 2022-11-24
+## v4.3.2 - 2022-11-24
 
 ### Fixed
 
 - Variables injection in GOOGLE_SHEETS component
 
-## [v4.3.1] - 2022-11-05
+## v4.3.1 - 2022-11-05
 
 ### Added
 
@@ -318,7 +325,7 @@
 - Connections issues on iOS
 - Minimization option on macOS Ventura (server side)
 
-## [v4.3.0] - 2022-10-27
+## v4.3.0 - 2022-10-27
 
 ### Added
 
@@ -330,7 +337,7 @@
 
 - Minor UI issues
 
-## [v4.2.0] - 2022-08-23
+## v4.2.0 - 2022-08-23
 
 ### Added
 
@@ -351,20 +358,20 @@
 - JavaScript error (missing libnut-win32 module)
 - Bonjour installation issue
 
-## [v4.1.0] - 2022-08-06
+## v4.1.0 - 2022-08-06
 
 ### Fixed
 
 - Slow Keyboard Emulation on Windows
 - Fix app blank screen issue on Android 11+
 
-## [v4.0.1] - 2022-07-19
+## v4.0.1 - 2022-07-19
 
 ### Fixed
 
 - Slow typing speed on Windows
 
-## [v4.0.0] - 2022-07-18
+## v4.0.0 - 2022-07-18
 
 ### Added
 
@@ -389,19 +396,19 @@
 - Prevent accidental dismission for the ALERT component
 - Errors in variables injection
 
-## [v3.18.2] - 2021-10-04
+## v3.18.2 - 2021-10-04
 
 ### Fixed
 
 - Multi-line scans
 
-## [v3.18.1] - 2021-08-30
+## v3.18.1 - 2021-08-30
 
 ### Fixed
 
 - Blank screen issue
 
-## [v3.18.0] - 2021-08-30
+## v3.18.0 - 2021-08-30
 
 ### Added
 
@@ -409,7 +416,7 @@
 - Spanish language support
 - Connection instructions page
 
-## [v3.17.0] - 2021-06-21
+## v3.17.0 - 2021-06-21
 
 ### Added
 
@@ -426,13 +433,13 @@
 - CSV Exporting issue with unsupported charsets
 - Fix beep sound not playing after exiting the ScanSession page
 
-## [v3.16.1] - 2021-06-11
+## v3.16.1 - 2021-06-11
 
 ### Fixed
 
 - Icons issue
 
-## [v3.16.0] - 2021-06-11
+## v3.16.0 - 2021-06-11
 
 ### Added
 
@@ -442,7 +449,7 @@
 
 - CSV_UPDATE empty output issue
 
-## [v3.15.0] - 2021-05-25
+## v3.15.0 - 2021-05-25
 
 ### Added
 
@@ -455,7 +462,7 @@
 - Improve QR Code pairing instructions
 - Minor UX improvements
 
-## [v3.14.0] - 2021-04-11
+## v3.14.0 - 2021-04-11
 
 ### Added
 
@@ -473,13 +480,13 @@
 - DELAY component
 - Sync button issue
 
-## [v3.13.2] - 2021-03-07
+## v3.13.2 - 2021-03-07
 
 ### Fixed
 
 - QR Code pairing issue
 
-## [v3.13.1] - 2020-12-06
+## v3.13.1 - 2020-12-06
 
 ### Changed
 
@@ -493,7 +500,7 @@
 
 - macOS Big Sur menu icon dark mode color
 
-## [v3.13.0] - 2020-09-23
+## v3.13.0 - 2020-09-23
 
 ### Added
 
@@ -504,7 +511,7 @@
 
 - FOCUS_WINDOW component
 
-## [v3.12.0] - 2020-09-19
+## v3.12.0 - 2020-09-19
 
 ### Added
 
@@ -526,20 +533,20 @@
 - Empty output when using CSV_LOOKUP
 - Fix "enableTray" error
 
-## [v3.11.2] - 2020-07-29
+## v3.11.2 - 2020-07-29
 
 ### Fixed
 
 - "enableTray" error
 - "image not found" error
 
-## [v3.11.1] - 2020-07-06
+## v3.11.1 - 2020-07-06
 
 ### Added
 
 - CSV_LOOKUP Skip Output option
 
-## [v3.11.0] - 2020-07-04
+## v3.11.0 - 2020-07-04
 
 ### Added
 
@@ -556,7 +563,7 @@
 
 - Keyboard input field issue
 
-## [v3.10.0] - 2020-05-30
+## v3.10.0 - 2020-05-30
 
 ### Added
 
@@ -575,7 +582,7 @@
 
 - Empty CSV lines issue
 
-## [v3.9.0] - 2020-05-09
+## v3.9.0 - 2020-05-09
 
 ### Added
 
@@ -595,7 +602,7 @@
 
 - macOS window minimization issue
 
-## [v3.8.0] - 2020-04-24
+## v3.8.0 - 2020-04-24
 
 ### Added
 
@@ -613,7 +620,7 @@
 
 - macOS tray icon color
 
-## [v3.7.0] - 2020-04-09
+## v3.7.0 - 2020-04-09
 
 ### Added
 
@@ -624,13 +631,13 @@
 - Open the server "Minimized" option
 - Issue with Manual Input that ignores the Enter key from OTG devices
 
-## [v3.6.1] - 2020-02-01
+## v3.6.1 - 2020-02-01
 
 ### Fixed
 
 - macOS JavaScript error
 
-## [v3.6.0] - 2020-01-28
+## v3.6.0 - 2020-01-28
 
 ### Added
 
@@ -648,7 +655,7 @@
 - "Infinite loop" message false positives
 - SELECT_OPTION empty output
 
-## [v3.5.0] - 2019-12-28
+## v3.5.0 - 2019-12-28
 
 ### Added
 
@@ -657,13 +664,13 @@
 - CSV exporting options (app side)
 - Offline server installer for Windows
 
-## [v3.4.2] - 2019-11-17
+## v3.4.2 - 2019-11-17
 
 ### Fixed
 
 - Acquisition issue when there is a "Default mode" selected
 
-## [v3.4.0] - 2019-11-13
+## v3.4.0 - 2019-11-13
 
 ### Added
 
@@ -680,7 +687,7 @@
 - Apple Bonjour error on Linux
 - QUANTITY parameter Alert issue
 
-## [v3.3.0] - 2019-10-17
+## v3.3.0 - 2019-10-17
 
 ### Added
 
@@ -697,7 +704,7 @@
 
 - "Skip output" option
 
-## [v3.2.0] - 2019-09-20
+## v3.2.0 - 2019-09-20
 
 ### Added
 
@@ -709,20 +716,20 @@
 
 - Improve Output components settings UI
 
-## [v3.1.4] - 2019-08-26
+## v3.1.4 - 2019-08-26
 
 ### Added
 
 - SkipOutput option for BARCODE and QUANTITY components
 - Infinite loop detection
 
-## [v3.1.3] - 2019-08-21
+## v3.1.3 - 2019-08-21
 
 ### Fixed
 
 - Fix Android 9 connection issue
 
-## [v3.1.2] - 2019-08-13
+## v3.1.2 - 2019-08-13
 
 ### Added
 
@@ -739,26 +746,26 @@
 - Issue with the DATE_TIME Output component
 - Output template not updating when the app is inside the scanSession page
 
-## [v3.1.1] - 2019-07-04
+## v3.1.1 - 2019-07-04
 
 ### Fixed
 
 - "Append scan to csv" option enabling issue
 
-## [v3.1.0] - 2019-05-19
+## v3.1.0 - 2019-05-19
 
 ### Added
 
 - Output Profiles support (protocol only)
 - Reflect the Output field in the "Export as CSV" option
 
-## [v3.0.3] - 2019-03-07
+## v3.0.3 - 2019-03-07
 
 ### Fixed
 
 - Multi-smartphone device_name variable
 
-## [v3.0.2] - 2019-03-02
+## v3.0.2 - 2019-03-02
 
 ### Added
 
@@ -774,7 +781,7 @@
 
 - Minor UI enhancements
 
-## [v3.0.1] - 2019-02-22
+## v3.0.1 - 2019-02-22
 
 ### Changed
 
@@ -784,7 +791,7 @@
 
 - scrollTop error
 
-## [v3.0.0] - 2019-02-19
+## v3.0.0 - 2019-02-19
 
 ### Added
 
@@ -812,7 +819,7 @@
 - Scan session name sync issue
 - Minor UI enhancements
 
-## [v2.0.0] - 2017-12-05
+## v2.0.0 - 2017-12-05
 
 ### Added
 
@@ -832,83 +839,8 @@
 - Scan session name update problem
 - Bonjour error
 
-## [v1.1.0] - 2017-05-16
+## v1.1.0 - 2017-05-16
 
 ### Changed
 
 - Included the Apple Bonjour installer
-
-[v4.8.10]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.9...v4.8.10
-[v4.8.9]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.8...v4.8.9
-[v4.8.8]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.7...v4.8.8
-[v4.8.7]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.6...v4.8.7
-[v4.8.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.5...v4.8.6
-[v4.8.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.4...v4.8.5
-[v4.8.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.3...v4.8.4
-[v4.8.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.2...v4.8.3
-[v4.8.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.1...v4.8.2
-[v4.8.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.8.0...v4.8.1
-[v4.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.5...v4.8.0
-[v4.7.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.5...v4.7.5
-[v4.7.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.3...v4.7.4
-[v4.7.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.2...v4.7.3
-[v4.7.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.7.0...v4.7.2
-[v4.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.6...v4.7.0
-[v4.6.6]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.5...v4.6.6
-[v4.6.5]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.4...v4.6.5
-[v4.6.4]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.3...v4.6.4
-[v4.6.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.2...v4.6.3
-[v4.6.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.1...v4.6.2
-[v4.6.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.6.0...v4.6.1
-[v4.6.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.5.1...v4.6.0
-[v4.5.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.5.0...v4.5.1
-[v4.5.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.3...v4.5.0
-[v4.4.3]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.2...v4.4.3
-[v4.4.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.1...v4.4.2
-[v4.4.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.4.0...v4.4.1
-[v4.4.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.3.2...v4.4.0
-[v4.3.2]: https://github.com/fttx/barcode-to-pc-server/compare/v4.3.1...v4.3.2
-[v4.3.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.3.0...v4.3.1
-[v4.3.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.2.0...v4.3.0
-[v4.2.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.1.0...v4.2.0
-[v4.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v4.0.1...v4.1.0
-[v4.0.1]: https://github.com/fttx/barcode-to-pc-server/compare/v4.0.0...v4.0.1
-[v4.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.19.0...v4.0.0
-[v3.19.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.2...v3.19.0
-[v3.18.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.1...v3.18.2
-[v3.18.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.18.0...v3.18.1
-[v3.18.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.17.0...v3.18.0
-[v3.17.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.1...v3.17.0
-[v3.16.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.16.0...v3.16.1
-[v3.16.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.15.0...v3.16.0
-[v3.15.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.14.0...v3.15.0
-[v3.14.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.2...v3.14.0
-[v3.13.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.1...v3.13.2
-[v3.13.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.13.0...v3.13.1
-[v3.13.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.12.0...v3.13.0
-[v3.12.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.2...v3.12.0
-[v3.11.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.1...v3.11.2
-[v3.11.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.11.0...v3.11.1
-[v3.11.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.10.0...v3.11.0
-[v3.10.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.9.0...v3.10.0
-[v3.9.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.8.0...v3.9.0
-[v3.8.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.7.0...v3.8.0
-[v3.7.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.1...v3.7.0
-[v3.6.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.6.0...v3.6.1
-[v3.6.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.5.0...v3.6.0
-[v3.5.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.4.2...v3.5.0
-[v3.4.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.4.0...v3.4.2
-[v3.4.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.3.0...v3.4.0
-[v3.3.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.2.0...v3.3.0
-[v3.2.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.4...v3.2.0
-[v3.1.4]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.3...v3.1.4
-[v3.1.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.2...v3.1.3
-[v3.1.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.1...v3.1.2
-[v3.1.1]: https://github.com/fttx/barcode-to-pc-server/compare/v3.1.0...v3.1.1
-[v3.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.3...v3.1.0
-[v3.0.3]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.2...v3.0.3
-[v3.0.2]: https://github.com/fttx/barcode-to-pc-server/compare/v3.0.1...v3.0.2
-[v3.0.1]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.1
-[v3.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v2.0.0...v3.0.0
-[v2.0.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0...v2.0.0
-[v1.1.0]: https://github.com/fttx/barcode-to-pc-server/compare/v1.1.0-rc1...v1.1.0
